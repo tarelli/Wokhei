@@ -1,0 +1,410 @@
+@charset "UTF-8";
+
+/* CSS Document */
+html,body {
+	margin: -8px;
+	background: #eb078f;
+}
+
+A:link {
+	text-decoration: none
+}
+
+A:visited {
+	text-decoration: none
+}
+
+A:active {
+	text-decoration: none
+}
+
+A:hover {
+	text-decoration: none
+}
+
+.header {
+	position: relative;
+	min-height: 149px;
+	background: URL("../images/header.png");
+	background-repeat: no-repeat
+}
+
+.headerDoor {
+	position: relative;
+	min-height: 149px;
+	background: URL("../images/headerDoor.png");
+	background-repeat: no-repeat
+}
+
+.body {
+	position: relative;
+	min-height: 392px;
+	background: URL("../images/body.png");
+	background-repeat: no-repeat
+}
+
+.bodyDoor {
+	position: relative;
+	min-height: 392px;
+	background: URL("../images/bodyDoor.png");
+	background-repeat: no-repeat
+}
+
+.bodytile {
+	position: relative;
+	background: URL("../images/bodytile.png");
+	min-height: 100px;
+}
+
+.bodytileDoor {
+	position: relative;
+	min-height: 100px;
+	background: URL("../images/bodytileDoor.png");
+}
+
+.footer {
+	position: relative;
+	background: URL("../images/footer.png");
+	background-repeat: no-repeat;
+	min-height: 159px;
+}
+
+.footerDoor {
+	position: relative;
+	min-height: 159px;
+	background: URL("../images/footerDoor.png");
+	background-repeat: no-repeat
+}
+
+.logo {
+	position: absolute;
+	left: 50px;
+	top: 45px;
+}
+
+div#page-wrap {
+	width: 1000px;
+	margin: 20px auto;
+}
+
+.takeTour {
+	position: absolute;
+	left: 684px;
+	top: 77px;
+	width: 132px;
+	height: 26px;
+	background: URL("../images/taketouroff.png");
+	color: #FFFFFF;
+	font-family: "Arial Black", Gadget, sans-serif;
+	font-size: 14px;
+	font-weight: 300;
+	text-align: center;
+	font-size: 14px;
+}
+
+.takeTour:hover {
+	background: URL("../images/taketouron.png");
+}
+
+.join {
+	position: absolute;
+	left: 624px;
+	top: 122px;
+	width: 269px;
+	height: 33px;
+	background: URL("../images/joinoff.png");
+	color: #000000;
+	font-family: "Arial Black", Gadget, sans-serif;
+	font-size: 20px;
+	font-weight: 300;
+	text-align: center;
+	font-size: 20px;
+}
+
+.join:hover {
+	background: URL("../images/joinon.png");
+}
+
+h1 {
+	color: #bf007e;
+	font-family: "Arial Black", Gadget, sans-serif;
+	font-size: 20px;
+	font-weight: 600;
+	text-align: left;
+}
+
+h2 {
+	color: #bf007e;
+	font-family: "Arial Black", Gadget, sans-serif;
+	font-size: 10px;
+	font-weight: 600;
+	text-align: left;
+}
+
+h3{
+	color: #000000;
+	font-family: "Arial Black", Gadget, sans-serif;
+	font-size: 14px;	
+}
+
+a1 {
+	color: #bf007e;
+	font-family: "Arial Black", Gadget, sans-serif;
+	font-size: 18px;
+	font-weight: 600;
+	text-align: left;
+}
+
+a1:hover {
+	color: #f9a743
+}
+
+a2 {
+	color: #bf007e;
+	font-family: "Arial Black", Gadget, sans-serif;
+	font-size: 18px;
+	font-weight: 600;
+	text-align: left;
+}
+
+a2:hover {
+	color: #ffffff
+}
+
+.admin {
+	position: absolute;
+	left: 860px;
+	top: 110px;
+	width: 100px;
+	height: 26px;
+}
+
+.signin {
+	position: absolute;
+	left: 860px;
+	top: 77px;
+	width: 100px;
+	height: 26px;
+}
+
+div#orderSubmitter {
+	position: absolute;
+	left: 100px;
+	top: 25px;
+	width: 300px;
+	height: 300px;
+}
+
+.label{
+	color: #bf007e;
+	font-family: "Arial Black", Gadget, sans-serif;
+	font-size: 14px;
+}
+	
+.hintLabel{
+	color: #000000;
+	font-family: "Arial", Gadget, sans-serif;
+	font-size: 10px;
+}
+
+.textBox{
+	color: #000000;
+	font-family: "Arial Black", Gadget, sans-serif;
+	font-size: 13px;
+}
+.errorLabel{
+	color: #FF0000;
+	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+}
+.ordersPanel {
+	position: absolute;
+	left: 550px;
+	top: 20px;
+	width: 336px;
+	height: 384px;
+	background: URL("../images/panel.png");
+	opacity: .50;
+}
+
+.orderRow {
+	clear: both;
+	width: 326px;
+	height: 64px;
+	position: relative;
+}
+
+.orderText {
+	float: right;
+	position: relative;
+	width: 240px;
+	height: 64px;
+	font: 14px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+}
+
+.orderIcon {
+	position: relative;
+	float: left;
+	width: 64px;
+	height: 64px;
+}
+
+.orders {
+	position: absolute;
+	left: 560px;
+	top: 30px;
+	width: 326px;
+	height: 374px;
+}
+
+.screen {
+	position: absolute;
+	left: 105px;
+	top: 15px;
+	width: 293px;
+	height: 200px;
+	background: URL("../images/screen.png");
+}
+
+.logos {
+	position: absolute;
+	left: 18px;
+	top: 4px;
+	width: 258px;
+	height: 158px;
+	background: URL("../images/logos.gif");
+}
+
+.hat {
+	position: absolute;
+	left: 78px;
+	top: 236px;
+	width: 75px;
+	height: 76px;
+	background: URL("../images/hat.png");
+}
+
+.clock {
+	position: absolute;
+	left: 397px;
+	top: 236px;
+	width: 75px;
+	height: 76px;
+	background: URL("../images/clock.png");
+}
+
+.ready {
+	position: absolute;
+	left: 706px;
+	top: 236px;
+	width: 75px;
+	height: 76px;
+	background: URL("../images/ready.png");
+}
+
+.leftsquare {
+	position: absolute;
+	left: 293px;
+	top: 18px;
+	filter: alpha(opacity =     40);
+	-moz-opacity: .40;
+	opacity: .40;
+	width: 288px;
+	height: 313px;
+}
+
+.leftsquarewhat {
+	position: absolute;
+	left: 10px;
+	top: 10px;
+	width: 430px;
+	height: 270px;
+	display: none;
+}
+
+.leftsquaremain {
+	position: absolute;
+	left: 10px;
+	top: 10px;
+	width: 430px;
+	height: 270px;
+}
+
+.leftsquarewhy {
+	position: absolute;
+	left: 10px;
+	top: 10px;
+	width: 430px;
+	height: 270px;
+	display: none;
+}
+
+.leftsquarehow {
+	position: absolute;
+	left: 10px;
+	top: 10px;
+	width: 430px;
+	height: 270px;
+	display: none;
+}
+
+.rightsquare {
+	position: absolute;
+	left: 515px;
+	top: 65px;
+	filter: alpha(opacity =     40);
+	-moz-opacity: .40;
+	opacity: .40;
+}
+
+.language {
+	position: absolute;
+	left: 737px;
+	top: 94px;
+}
+
+.headermenutext {
+	color: #02b5dd;
+	font-family: "Arial Black", Gadget, sans-serif;
+	font-size: 14px;
+	font-weight: 300;
+}
+
+.headermenutext:hover {
+	color: #5aac24;
+}
+
+.headermenu {
+	float: left;
+	position: absolute;
+	left: 600px;
+	top: 80px;
+}
+
+.menuitem {
+	float: left;
+	color: #FFF;
+	font-family: "Arial Black", Gadget, sans-serif;
+	font-size: 22px;
+	font-weight: 700;
+	margin-left: 10px;
+}
+
+.menuitem:hover {
+	font-size: 30px;
+}
+
+input,select {
+	border: 3px #c60089 solid;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	padding-top: 1px;
+	padding-right: 0px;
+	padding-bottom: 1px;
+	padding-left: 2px;
+	height: 18px
+}

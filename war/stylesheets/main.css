@@ -1,0 +1,24 @@
+div.left { 
+width: 80%;
+heigth: 10%;
+position: relative; 
+float: left;
+}
+
+div.right { 
+width: 20%;
+heigth: 10%;
+position: relative; 
+float: right;
+}
+
+div.wrapper { 
+width: 100%; 
+position: relative; 
+clear: both; 
+}
+
+div#content {
+border: medium solid red;
+text-align: center;
+}
