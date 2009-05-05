@@ -302,60 +302,7 @@ div#orderSubmitter {
 	background: URL("../images/ready.png");
 }
 
-.leftsquare {
-	position: absolute;
-	left: 293px;
-	top: 18px;
-	filter: alpha(opacity =     40);
-	-moz-opacity: .40;
-	opacity: .40;
-	width: 288px;
-	height: 313px;
-}
 
-.leftsquarewhat {
-	position: absolute;
-	left: 10px;
-	top: 10px;
-	width: 430px;
-	height: 270px;
-	display: none;
-}
-
-.leftsquaremain {
-	position: absolute;
-	left: 10px;
-	top: 10px;
-	width: 430px;
-	height: 270px;
-}
-
-.leftsquarewhy {
-	position: absolute;
-	left: 10px;
-	top: 10px;
-	width: 430px;
-	height: 270px;
-	display: none;
-}
-
-.leftsquarehow {
-	position: absolute;
-	left: 10px;
-	top: 10px;
-	width: 430px;
-	height: 270px;
-	display: none;
-}
-
-.rightsquare {
-	position: absolute;
-	left: 515px;
-	top: 65px;
-	filter: alpha(opacity =     40);
-	-moz-opacity: .40;
-	opacity: .40;
-}
 
 .language {
 	position: absolute;
@@ -363,36 +310,6 @@ div#orderSubmitter {
 	top: 94px;
 }
 
-.headermenutext {
-	color: #02b5dd;
-	font-family: "Arial Black", Gadget, sans-serif;
-	font-size: 14px;
-	font-weight: 300;
-}
-
-.headermenutext:hover {
-	color: #5aac24;
-}
-
-.headermenu {
-	float: left;
-	position: absolute;
-	left: 600px;
-	top: 80px;
-}
-
-.menuitem {
-	float: left;
-	color: #FFF;
-	font-family: "Arial Black", Gadget, sans-serif;
-	font-size: 22px;
-	font-weight: 700;
-	margin-left: 10px;
-}
-
-.menuitem:hover {
-	font-size: 30px;
-}
 
 input,select {
 	border: 3px #c60089 solid;
