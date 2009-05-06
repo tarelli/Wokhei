@@ -6,6 +6,8 @@ public enum Status {
 	BOUGHT,
 	ARCHIVED,
 	COOKING,
+	TASTING,
 	PAYED,
-	REJECTED
+	REJECTED;
 }
+

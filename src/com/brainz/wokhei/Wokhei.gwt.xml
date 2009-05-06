@@ -6,6 +6,7 @@
   
   <source path="shared"/>
   <source path="client"/>
+  <source path="resources"/>
 
  
   <!-- Inherit the default GWT style sheet.  You can change       -->

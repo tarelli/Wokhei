@@ -40,12 +40,12 @@ public class OrderUtils {
 	 */
 	public static OrderDTO getPreviousOrder(List<OrderDTO> orders, OrderDTO refOrder)
 	{
-		OrderDTO previousOrder=null;
+		OrderDTO previousOrder=refOrder;
 		for (OrderDTO o : orders) 
 		{
 			if
 			(
-					(previousOrder==null && (o.getDate().before(refOrder.getDate())) )
+					(previousOrder==refOrder && (o.getDate().before(refOrder.getDate())) )
 					||
 					(
 							(o.getDate().before(refOrder.getDate()))
@@ -67,12 +67,12 @@ public class OrderUtils {
 	 */
 	public static OrderDTO getNextOrder(List<OrderDTO> orders, OrderDTO refOrder)
 	{
-		OrderDTO nextOrder=null;
+		OrderDTO nextOrder=refOrder;
 		for (OrderDTO o : orders) 
 		{
 			if
 			(
-					(nextOrder==null && (o.getDate().after(refOrder.getDate())) )
+					(nextOrder==refOrder && (o.getDate().after(refOrder.getDate())) )
 					||
 					(
 							(o.getDate().after(refOrder.getDate()))

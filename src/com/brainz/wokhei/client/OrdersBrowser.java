@@ -4,8 +4,8 @@
 package com.brainz.wokhei.client;
 
 import java.util.Arrays;
-import java.util.List;
 
+import com.brainz.wokhei.resources.Images;
 import com.brainz.wokhei.shared.OrderDTO;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -14,6 +14,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -28,11 +29,15 @@ public class OrdersBrowser implements EntryPoint {
 
 	private final VerticalPanel mainPanel = new VerticalPanel();
 
-	private final HorizontalPanel orderPanel = new HorizontalPanel();
+	private final VerticalPanel orderPanel = new VerticalPanel();
+
+	private final HorizontalPanel buttonsPanel = new HorizontalPanel();
 
 	private final Label orderNameLabel = new Label();
 
 	private final Label orderTagsLabel = new Label();
+
+	private final Image orderImage = new Image();
 
 	private final Button previousOrderButton = new Button("Show previous order");
 
@@ -42,7 +47,7 @@ public class OrdersBrowser implements EntryPoint {
 
 	private final Label orderDateLabel = new Label();
 
-	private final List<OrderDTO> _orders=null;
+	private final HorizontalPanel imagePanel = new HorizontalPanel();;
 
 	/* (non-Javadoc)
 	 * @see com.google.gwt.core.client.EntryPoint#onModuleLoad()
@@ -63,15 +68,20 @@ public class OrdersBrowser implements EntryPoint {
 			}
 		});
 
+		imagePanel.add(orderImage);
+		orderNameLabel.setStyleName("logoNameLabel");
+		orderTagsLabel.setStyleName("logoTagsDateLabel");
+		orderDateLabel.setStyleName("logoTagsDateLabel");
 		orderPanel.add(orderNameLabel);
 		orderPanel.add(orderTagsLabel);
 		orderPanel.add(orderDateLabel);
-		orderPanel.add(previousOrderButton);
-		orderPanel.add(nextOrderButton);
+		buttonsPanel.add(previousOrderButton);
+		buttonsPanel.add(nextOrderButton);
 		mainPanel.add(orderPanel);
 
 		RootPanel.get("ordersBrowser").add(mainPanel);
-
+		RootPanel.get("ordersBrowserButtons").add(buttonsPanel);
+		RootPanel.get("ordersBrowserImage").add(imagePanel);
 	}
 
 	protected void getLatestOrder() {
@@ -146,6 +156,18 @@ public class OrdersBrowser implements EntryPoint {
 		orderNameLabel.setText(_currentOrder.getText());
 		orderTagsLabel.setText(Arrays.asList(_currentOrder.getTags()).toString());
 		orderDateLabel.setText(_currentOrder.getDate().toString());
+		switch(_currentOrder.getStatus())
+		{
+		case INCOMING:
+		case COOKING:
+		case TASTING:
+		case READY:
+			orderImage.setUrl(Images.valueOf(_currentOrder.getStatus().toString()).getImageURL());
+			break;
+		default:
+			//			todo set the logo image itself
+			orderImage.setUrl(Images.valueOf(_currentOrder.getStatus().toString()).getImageURL());	
+		}
 	}
 
 }

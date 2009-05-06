@@ -5,7 +5,8 @@
 <%@ page import="com.google.appengine.api.users.User"%>
 <%@ page import="com.google.appengine.api.users.UserService"%>
 <%@ page import="com.google.appengine.api.users.UserServiceFactory"%>
-<%@ page import="com.brainz.wokhei.shared.Order"%>
+<%@ page import="com.brainz.wokhei.Order"%>
+<%@ page import="com.brainz.wokhei.shared.Status"%>
 <%@ page import="com.brainz.wokhei.PMF"%>
 <%@ page import="com.brainz.wokhei.Messages"%>
 <%@ page import="com.brainz.wokhei.Admin"%>
@@ -98,15 +99,15 @@ in</a> to browse your orders!</p>
 	Status: <%=g.getStatus()%> - 
 	<%=g.getDate().toString()%>
 	<%
-		if(g.getStatus()!=null && (g.getStatus().equals(Order.Status.INCOMING))) {
+		if(g.getStatus()!=null && (g.getStatus().equals(Status.INCOMING))) {
 	%>
-	<a href"HELL">SEND LOGO</a> <a href="./rejectOrder?id=<%= g.getId() %>" >REJECT</a>
+	<a href="HELL">SEND LOGO</a> <a href="./rejectOrder?id=<%= g.getId() %>" >REJECT</a>
 	<%}%>
 </blockquote>
 <%
         	}
     	}
-    	pm.close();
+    	pm.close(); 
 %> 
 <br>
 <!-- Submit Order Form -->

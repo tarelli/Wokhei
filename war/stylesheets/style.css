@@ -217,6 +217,20 @@ div#orderSubmitter {
 	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 	font-size: 10px;
 }
+
+.logoNameLabel{
+	color: #000000;
+	font-family: "Arial Black", Gadget, sans-serif;
+	font-size: 12px;
+}
+
+.logoTagsDateLabel{
+	color: #000000;
+	font-family: "Arial", Gadget, sans-serif;
+	font-size: 12px;
+}
+
+	
 .ordersPanel {
 	position: absolute;
 	left: 550px;
@@ -251,10 +265,26 @@ div#orderSubmitter {
 
 .orders {
 	position: absolute;
-	left: 560px;
-	top: 30px;
-	width: 326px;
-	height: 374px;
+	left: 760px;
+	top: 50px;
+	width: 150px;
+	height: 400px;
+}
+
+.ordersImage {
+	position: absolute;
+	left: 565px;
+	top: 20px;
+	width: 200px;
+	height: 300px;
+}
+
+.ordersButtons {
+	position: absolute;
+	left: 755px;
+	top: 150px;
+	width: 150px;
+	height: 100px;
 }
 
 .screen {

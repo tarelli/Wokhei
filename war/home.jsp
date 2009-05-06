@@ -56,9 +56,13 @@
 <div class="bodyDoor"></div>
 
 	<div id="ordersBrowser" class="orders">
-	<h1>Browse your logos</h1>
 	</div>
 	
+	<div id="ordersBrowserButtons" class="ordersButtons">
+	</div>
+	
+	<div id="ordersBrowserImage" class="ordersImage">
+	</div>
 	
 	
 	<div id="orderSubmitter" class="submitOrder">
