@@ -1,6 +1,5 @@
 package com.brainz.wokhei.client;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -151,7 +150,7 @@ public class OrderSubmitter implements EntryPoint {
 				};
 
 				// Make the call to the stock price service.
-				submitOrderSvc.submitOrder(this.logoTextBox.getText(), (ArrayList<String>)Arrays.asList(logoTagsBox.getText().split(" ")), callback);			
+				submitOrderSvc.submitOrder(this.logoTextBox.getText(), Arrays.asList(logoTagsBox.getText().split(" ")), callback);			
 			}
 		}
 		else
