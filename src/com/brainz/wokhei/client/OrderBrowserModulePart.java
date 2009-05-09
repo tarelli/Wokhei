@@ -7,8 +7,6 @@ import java.util.Arrays;
 
 import com.brainz.wokhei.resources.Images;
 import com.brainz.wokhei.shared.OrderDTO;
-import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -16,16 +14,15 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * @author matteocantarelli
  *
  */
-public class OrdersBrowser implements EntryPoint {
+public class OrderBrowserModulePart extends AModulePart{
 
-	private OrdersBrowserServiceAsync ordersBrowserService =GWT.create(OrdersBrowserService.class);
 
 	private final VerticalPanel mainPanel = new VerticalPanel();
 
@@ -47,12 +44,13 @@ public class OrdersBrowser implements EntryPoint {
 
 	private final Label orderDateLabel = new Label();
 
-	private final HorizontalPanel imagePanel = new HorizontalPanel();;
+	private final HorizontalPanel imagePanel = new HorizontalPanel();
 
-	/* (non-Javadoc)
-	 * @see com.google.gwt.core.client.EntryPoint#onModuleLoad()
-	 */
-	public void onModuleLoad() {
+
+
+	@Override
+	public void initModulePart(HomeModuleServiceAsync service) {
+		super.initModulePart(service);
 
 		getLatestOrder();
 
@@ -78,19 +76,36 @@ public class OrdersBrowser implements EntryPoint {
 		buttonsPanel.add(previousOrderButton);
 		buttonsPanel.add(nextOrderButton);
 		mainPanel.add(orderPanel);
-
-		RootPanel.get("ordersBrowser").add(mainPanel);
-		RootPanel.get("ordersBrowserButtons").add(buttonsPanel);
-		RootPanel.get("ordersBrowserImage").add(imagePanel);
 	}
 
+
+
+	/**
+	 * @return
+	 */
+	public Widget getLablesPanel() 
+	{
+		return mainPanel;
+	}
+
+	/**
+	 * @return
+	 */
+	public Widget getButtonsPanel() 
+	{
+		return buttonsPanel;
+	}
+
+	/**
+	 * @return
+	 */
+	public Widget getImageStatusPanel() 
+	{
+		return imagePanel;
+	}
+
+
 	protected void getLatestOrder() {
-		if (ordersBrowserService==null)
-		{
-			ordersBrowserService = GWT.create(OrdersBrowserService.class);
-		}
-
-
 		// Set up the callback object
 		AsyncCallback<OrderDTO> callback = new AsyncCallback<OrderDTO>() {
 
@@ -105,7 +120,7 @@ public class OrdersBrowser implements EntryPoint {
 			}
 		};
 
-		ordersBrowserService.getLatestOrder(callback);
+		_service.getLatestOrder(callback);
 	}
 
 
@@ -124,7 +139,7 @@ public class OrdersBrowser implements EntryPoint {
 			}
 		};
 
-		ordersBrowserService.getNextOrder(_currentOrder, callback);
+		_service.getNextOrder(_currentOrder, callback);
 	}
 
 	/**
@@ -145,7 +160,7 @@ public class OrdersBrowser implements EntryPoint {
 			}
 		};
 
-		ordersBrowserService.getPreviousOrder(_currentOrder, callback);
+		_service.getPreviousOrder(_currentOrder, callback);
 
 	}
 
@@ -171,6 +186,8 @@ public class OrdersBrowser implements EntryPoint {
 				orderImage.setUrl(Images.valueOf(_currentOrder.getStatus().toString()).getImageURL());	
 			}
 		}
+
 	}
+
 
 }

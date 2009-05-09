@@ -29,20 +29,12 @@
 		<url-pattern>/rejectOrder</url-pattern>
 	</servlet-mapping>
 	<servlet>
-		<servlet-name>submitorderservice</servlet-name>
-		<servlet-class>com.brainz.wokhei.server.SubmitOrderServiceImpl</servlet-class>
+		<servlet-name>homemoduleservice</servlet-name>
+		<servlet-class>com.brainz.wokhei.server.HomeModuleServiceImpl</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>submitorderservice</servlet-name>
-		<url-pattern>/wokhei/submitorderservice</url-pattern>
-	</servlet-mapping>
-		<servlet>
-		<servlet-name>ordersbrowserservice</servlet-name>
-		<servlet-class>com.brainz.wokhei.server.OrdersBrowserServiceImpl</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>ordersbrowserservice</servlet-name>
-		<url-pattern>/wokhei/ordersbrowserservice</url-pattern>
+		<servlet-name>homemoduleservice</servlet-name>
+		<url-pattern>/wokhei/homemoduleservice</url-pattern>
 	</servlet-mapping>
 	
 	<welcome-file-list>

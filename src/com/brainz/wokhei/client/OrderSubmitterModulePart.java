@@ -1,11 +1,12 @@
+/**
+ * 
+ */
 package com.brainz.wokhei.client;
 
 import java.util.Arrays;
 
 import com.brainz.wokhei.shared.OrderDTO;
 import com.brainz.wokhei.shared.Status;
-import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -14,8 +15,13 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 
-public class OrderSubmitter implements EntryPoint {
+/**
+ * @author matteocantarelli
+ *
+ */
+public class OrderSubmitterModulePart extends AModulePart {
 
 	private static final int MAX_TAGS = 5;
 
@@ -53,10 +59,9 @@ public class OrderSubmitter implements EntryPoint {
 	// alternate/main panel switch
 	boolean isMainPanelVisible = true;
 
-	private SubmitOrderServiceAsync submitOrderSvc = GWT.create(SubmitOrderService.class);
-	private OrdersBrowserServiceAsync ordersBrowserService = GWT.create(OrdersBrowserService.class);
-
-	public void onModuleLoad() {
+	@Override
+	public void initModulePart(HomeModuleServiceAsync service) {
+		super.initModulePart(service);
 
 		mainPanel.setSpacing(10);
 
@@ -127,8 +132,8 @@ public class OrderSubmitter implements EntryPoint {
 		this.timerLabel.addStyleName("label");
 		this.alternatePanel.add(this.timerLabel);
 
-                // set default visibility
-                this.mainPanel.setVisible(true);
+		// set default visibility
+		this.mainPanel.setVisible(true);
 		this.alternatePanel.setVisible(false);
 
 		//add main and alternate panel to root panel
@@ -148,10 +153,14 @@ public class OrderSubmitter implements EntryPoint {
 				submitOrder();
 			}
 		});
-
 	}
 
-	protected void submitOrder() {
+
+	/**
+	 * 
+	 */
+	protected void submitOrder() 
+	{
 
 		if (this.logoTagsBox.getText().trim().length()!=0)
 		{		
@@ -161,11 +170,6 @@ public class OrderSubmitter implements EntryPoint {
 			}
 			else
 			{
-				if (submitOrderSvc==null)
-				{
-					submitOrderSvc = GWT.create(SubmitOrderService.class);
-				}
-
 				// Set up the callback object.
 				AsyncCallback<Boolean> callback = new AsyncCallback<Boolean>() {
 					public void onFailure(Throwable caught) {
@@ -182,7 +186,7 @@ public class OrderSubmitter implements EntryPoint {
 				};
 
 				// Make the call to the stock price service.
-				submitOrderSvc.submitOrder(this.logoTextBox.getText(), Arrays.asList(logoTagsBox.getText().split(" ")), callback);			
+				_service.submitOrder(this.logoTextBox.getText(), Arrays.asList(logoTagsBox.getText().split(" ")), callback);			
 			}
 		}
 		else
@@ -191,7 +195,11 @@ public class OrderSubmitter implements EntryPoint {
 		}
 	}
 
-	protected void updateAlternatePanelMessage(Boolean result) {
+	/**
+	 * @param result
+	 */
+	protected void updateAlternatePanelMessage(Boolean result) 
+	{
 		if(result)
 		{
 			this.timerLabel.setText("all good - timer will go here!");
@@ -202,7 +210,11 @@ public class OrderSubmitter implements EntryPoint {
 		}
 	}
 
-	protected void updateMessage(Boolean result) {
+	/**
+	 * @param result
+	 */
+	protected void updateMessage(Boolean result) 
+	{
 		if(result)
 		{
 			messageLabel.setText("It's all good - Your request has been sent to the kitchen!");
@@ -213,13 +225,11 @@ public class OrderSubmitter implements EntryPoint {
 		}
 	}
 
-	// gets lastest order and hooks up event success/failure handlers (a bit fucked if you ask me)
-	protected void setViewByLatestOrder() {
-		if (ordersBrowserService==null)
-		{
-			ordersBrowserService = GWT.create(OrdersBrowserService.class);
-		}
-
+	/**
+	 * Gets latest order and hooks up event success/failure handlers (a bit fucked if you ask me)
+	 */
+	protected void setViewByLatestOrder() 
+	{
 		// Set up the callback object
 		AsyncCallback<OrderDTO> callback = new AsyncCallback<OrderDTO>() {
 
@@ -234,10 +244,15 @@ public class OrderSubmitter implements EntryPoint {
 			}
 		};
 
-		ordersBrowserService.getLatestOrder(callback);
+		_service.getLatestOrder(callback);
 	}
 
-	protected void showHidePanels() {
+
+	/**
+	 * 
+	 */
+	protected void showHidePanels() 
+	{
 		if(this.isMainPanelVisible)
 		{
 			// Associate the feckin' Main panel with the HTML element on the host page.
@@ -251,7 +266,11 @@ public class OrderSubmitter implements EntryPoint {
 		}
 	}
 
-	protected void setShowHideStateByLatestOrder(OrderDTO result) {
+	/**
+	 * @param result
+	 */
+	protected void setShowHideStateByLatestOrder(OrderDTO result) 
+	{
 		if(result==null || (result.getStatus() == Status.ARCHIVED 
 				|| result.getStatus() == Status.BOUGHT 
 				|| result.getStatus() == Status.PAYED
@@ -264,5 +283,18 @@ public class OrderSubmitter implements EntryPoint {
 			this.isMainPanelVisible = false;
 		}
 	}
+
+
+
+
+	/**
+	 * @return
+	 */
+	public Widget getOrderSubmitPanel() 
+	{
+		return mainPanel;
+	}
+
+
 
 }

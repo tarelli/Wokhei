@@ -19,6 +19,5 @@
   <!-- Other module inherits                                      -->
 
   <!-- Specify the app entry point class.                         -->
-  	<entry-point class='com.brainz.wokhei.client.OrderSubmitter'/>
-	<entry-point class='com.brainz.wokhei.client.OrdersBrowser'/>
+  	<entry-point class='com.brainz.wokhei.client.HomeModule'/>
 </module>
