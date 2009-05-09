@@ -127,6 +127,10 @@ public class OrderSubmitter implements EntryPoint {
 		this.timerLabel.addStyleName("label");
 		this.alternatePanel.add(this.timerLabel);
 
+                // set default visibility
+                this.mainPanel.setVisible(true);
+		this.alternatePanel.setVisible(false);
+
 		//add main and alternate panel to root panel
 		this.rootPanel.add(this.mainPanel);
 		this.rootPanel.add(this.alternatePanel);
