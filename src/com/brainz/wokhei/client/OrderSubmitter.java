@@ -248,11 +248,10 @@ public class OrderSubmitter implements EntryPoint {
 	}
 
 	protected void setShowHideStateByLatestOrder(OrderDTO result) {
-
-		if(result.getStatus() == Status.ARCHIVED 
+		if(result==null || (result.getStatus() == Status.ARCHIVED 
 				|| result.getStatus() == Status.BOUGHT 
 				|| result.getStatus() == Status.PAYED
-				|| result.getStatus() == Status.REJECTED)
+				|| result.getStatus() == Status.REJECTED))
 		{
 			this.isMainPanelVisible = true;
 		}
