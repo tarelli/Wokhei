@@ -2,6 +2,7 @@ package com.brainz.wokhei.server;
 
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.jdo.PersistenceManager;
@@ -47,7 +48,7 @@ public class SubmitOrderServiceImpl extends RemoteServiceServlet implements Subm
 			catch(Exception ex)
 			{
 				returnValue = false;
-				//TODO: manage exception
+				log.log(Level.SEVERE, ex.toString());
 			}
 			finally {
 				pm.close();

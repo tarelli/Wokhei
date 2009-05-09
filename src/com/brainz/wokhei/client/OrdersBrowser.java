@@ -153,20 +153,23 @@ public class OrdersBrowser implements EntryPoint {
 	 * 
 	 */
 	private void updateLabels() {
-		orderNameLabel.setText(_currentOrder.getText());
-		orderTagsLabel.setText(Arrays.asList(_currentOrder.getTags()).toString());
-		orderDateLabel.setText(_currentOrder.getDate().toString());
-		switch(_currentOrder.getStatus())
+		if(_currentOrder!=null)
 		{
-		case INCOMING:
-		case COOKING:
-		case TASTING:
-		case READY:
-			orderImage.setUrl(Images.valueOf(_currentOrder.getStatus().toString()).getImageURL());
-			break;
-		default:
-			//			todo set the logo image itself
-			orderImage.setUrl(Images.valueOf(_currentOrder.getStatus().toString()).getImageURL());	
+			orderNameLabel.setText(_currentOrder.getText());
+			orderTagsLabel.setText(Arrays.asList(_currentOrder.getTags()).toString());
+			orderDateLabel.setText(_currentOrder.getDate().toString());
+			switch(_currentOrder.getStatus())
+			{
+			case INCOMING:
+			case COOKING:
+			case TASTING:
+			case READY:
+				orderImage.setUrl(Images.valueOf(_currentOrder.getStatus().toString()).getImageURL());
+				break;
+			default:
+				//			todo set the logo image itself
+				orderImage.setUrl(Images.valueOf(_currentOrder.getStatus().toString()).getImageURL());	
+			}
 		}
 	}
 
