@@ -127,8 +127,8 @@ public class OrderSubmitter implements EntryPoint {
 		this.timerLabel.addStyleName("label");
 		this.alternatePanel.add(this.timerLabel);
 
-                // set default visibility
-                this.mainPanel.setVisible(true);
+		// set default visibility
+		this.mainPanel.setVisible(true);
 		this.alternatePanel.setVisible(false);
 
 		//add main and alternate panel to root panel
@@ -139,7 +139,7 @@ public class OrderSubmitter implements EntryPoint {
 
 		RootPanel.get("orderSubmitter").add(rootPanel);
 
-		// Move goddamned cursor focus to the logoText input box.
+		// Move cursor focus to the logoText input box.
 		logoTextBox.setFocus(true);
 
 		// Listen for mouse events on the Add button.
