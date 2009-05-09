@@ -2,6 +2,8 @@ package com.brainz.wokhei.client;
 
 import java.util.Arrays;
 
+import com.brainz.wokhei.shared.OrderDTO;
+import com.brainz.wokhei.shared.Status;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -16,6 +18,9 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 public class OrderSubmitter implements EntryPoint {
 
 	private static final int MAX_TAGS = 5;
+
+	//root panel to host main and alternate panel
+	private final VerticalPanel rootPanel = new VerticalPanel();
 
 	private final VerticalPanel mainPanel = new VerticalPanel();
 
@@ -41,8 +46,15 @@ public class OrderSubmitter implements EntryPoint {
 	private final Button submitOrder = new Button("Send request!");
 	private final Label messageLabel = new Label("");
 
-	private SubmitOrderServiceAsync submitOrderSvc = GWT.create(SubmitOrderService.class);
+	// alternate panel stuff for timer etc.
+	private final VerticalPanel alternatePanel = new VerticalPanel();
+	private final Label timerLabel = new Label("timer here");
 
+	// alternate/main panel switch
+	boolean isMainPanelVisible = true;
+
+	private SubmitOrderServiceAsync submitOrderSvc = GWT.create(SubmitOrderService.class);
+	private OrdersBrowserServiceAsync ordersBrowserService = GWT.create(OrdersBrowserService.class);
 
 	public void onModuleLoad() {
 
@@ -68,7 +80,6 @@ public class OrderSubmitter implements EntryPoint {
 		tagsHintLabel.addStyleName("hintLabel");
 
 		// prepare my motherfuckin' logoText vertical panel
-
 		logoTextPanel.setSpacing(1);
 		logoTextPanel.add(logoTextLabel);
 		logoTextPanel.add(logoHintLabel);
@@ -108,8 +119,21 @@ public class OrderSubmitter implements EntryPoint {
 		mainPanel.add(messageLabel);
 		mainPanel.add(submitOrder);
 
-		// Associate the feckin' Main panel with the HTML element on the host page.
-		RootPanel.get("orderSubmitter").add(mainPanel);
+		//prepare alternate panel with timer
+		// TODO : add timer and shit
+		// 1. check difference between timestamp and server time
+		// 2. setup countdown
+		// 3. setup timer to refresh client with updated countdown timer every sec 
+		this.timerLabel.addStyleName("label");
+		this.alternatePanel.add(this.timerLabel);
+
+		//add main and alternate panel to root panel
+		this.rootPanel.add(this.mainPanel);
+		this.rootPanel.add(this.alternatePanel);
+
+		setViewByLatestOrder();
+
+		RootPanel.get("orderSubmitter").add(rootPanel);
 
 		// Move goddamned cursor focus to the logoText input box.
 		logoTextBox.setFocus(true);
@@ -125,7 +149,7 @@ public class OrderSubmitter implements EntryPoint {
 
 	protected void submitOrder() {
 
-		if (this.logoTagsBox.getText().length()!=0)
+		if (this.logoTagsBox.getText().trim().length()!=0)
 		{		
 			if(logoTagsBox.getText().split(" ").length>MAX_TAGS)
 			{
@@ -145,7 +169,11 @@ public class OrderSubmitter implements EntryPoint {
 					}
 
 					public void onSuccess(Boolean result) {
-						updateMessage(result);
+
+						//updateMessage(result);
+						updateAlternatePanelMessage(result);
+						isMainPanelVisible = false;
+						showHidePanels();
 					}
 				};
 
@@ -159,6 +187,17 @@ public class OrderSubmitter implements EntryPoint {
 		}
 	}
 
+	protected void updateAlternatePanelMessage(Boolean result) {
+		if(result)
+		{
+			this.timerLabel.setText("all good - timer will go here!");
+		}
+		else
+		{
+			this.timerLabel.setText("Error: you're in some deep shit!");
+		}
+	}
+
 	protected void updateMessage(Boolean result) {
 		if(result)
 		{
@@ -167,6 +206,59 @@ public class OrderSubmitter implements EntryPoint {
 		else
 		{
 			messageLabel.setText("Error: A bit of a Fuck-up!");
+		}
+	}
+
+	// gets lastest order and hooks up event success/failure handlers (a bit fucked if you ask me)
+	protected void setViewByLatestOrder() {
+		if (ordersBrowserService==null)
+		{
+			ordersBrowserService = GWT.create(OrdersBrowserService.class);
+		}
+
+		// Set up the callback object
+		AsyncCallback<OrderDTO> callback = new AsyncCallback<OrderDTO>() {
+
+			public void onSuccess(OrderDTO result) {
+				// check state and accordingly set alternate/main panel switch
+				setShowHideStateByLatestOrder(result);
+				showHidePanels();
+			}
+
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+			}
+		};
+
+		ordersBrowserService.getLatestOrder(callback);
+	}
+
+	protected void showHidePanels() {
+		if(this.isMainPanelVisible)
+		{
+			// Associate the feckin' Main panel with the HTML element on the host page.
+			this.mainPanel.setVisible(true);
+			this.alternatePanel.setVisible(false);
+		}
+		else
+		{
+			this.mainPanel.setVisible(false);
+			this.alternatePanel.setVisible(true);	
+		}
+	}
+
+	protected void setShowHideStateByLatestOrder(OrderDTO result) {
+
+		if(result.getStatus() == Status.ARCHIVED 
+				|| result.getStatus() == Status.BOUGHT 
+				|| result.getStatus() == Status.PAYED
+				|| result.getStatus() == Status.REJECTED)
+		{
+			this.isMainPanelVisible = true;
+		}
+		else
+		{
+			this.isMainPanelVisible = false;
 		}
 	}
 

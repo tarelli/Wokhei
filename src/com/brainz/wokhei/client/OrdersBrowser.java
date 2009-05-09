@@ -91,7 +91,7 @@ public class OrdersBrowser implements EntryPoint {
 		}
 
 
-		// Set up the callback object.
+		// Set up the callback object
 		AsyncCallback<OrderDTO> callback = new AsyncCallback<OrderDTO>() {
 
 			public void onSuccess(OrderDTO result) {

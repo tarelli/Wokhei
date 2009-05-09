@@ -20,7 +20,7 @@
 <!-- If you add any GWT meta tags, they must   -->
 <!-- be added before this line.                -->
 <!--                                           -->
-<script type="text/javascript" language="javascript" src="stockwatcher/stockwatcher.nocache.js"></script>
+<script type="text/javascript" language="javascript" src="wokhei/wokhei.nocache.js"></script>
 </head>
 <body>
 <div class="wrapper">
@@ -59,7 +59,7 @@ in</a> to browse your orders!</p>
 <%
 	if(user!= null)
 {
-	if (user.getEmail().equals(Messages.getString("Admin.0")) || AdminAuthenticator.isAdmin(user))
+	if (user.getEmail().equals("giovanni.idili@gmail.com") || AdminAuthenticator.isAdmin(user))
 	{
     	PersistenceManager pm = PMF.get().getPersistenceManager();
     	String select_query = "select from " + Order.class.getName();  

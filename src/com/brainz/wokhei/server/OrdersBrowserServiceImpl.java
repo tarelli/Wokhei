@@ -31,15 +31,23 @@ OrdersBrowserService {
 	private static final long serialVersionUID = -5060860293974160016L;
 	private List<OrderDTO> _orders;
 
+	@SuppressWarnings("unchecked")
 	public OrderDTO getLatestOrder() {
+		//get current user
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
+
+		//prepare query
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		String select_query = "select from " + Order.class.getName(); 
 		Query query = pm.newQuery(select_query); 
 		query.setFilter("customer == paramCustomer"); 
 		query.declareParameters("java.lang.String paramCustomer"); 
+
+		//execute
 		_orders = OrderUtils.getOrderDTOList((List<Order>) query.execute(user));
+
+		//return the shit
 		return OrderUtils.getMostRecentOrder(_orders);
 	}
 

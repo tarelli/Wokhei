@@ -101,10 +101,15 @@ public class OrderUtils {
 	public static List<OrderDTO> getOrderDTOList(List<Order> orders)
 	{
 		List<OrderDTO> ordersDTO=new ArrayList<OrderDTO>();
-		for(Order o:orders)
+
+		if(orders != null)
 		{
-			ordersDTO.add(getOrderDTO(o));
+			for(Order o:orders)
+			{
+				ordersDTO.add(getOrderDTO(o));
+			}
 		}
+
 		return ordersDTO;
 	}
 
