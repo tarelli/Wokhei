@@ -144,7 +144,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 		RootPanel.get("orderSubmitter").add(rootPanel);
 
-		// Move goddamned cursor focus to the logoText input box.
+		// Move cursor focus to the logoText input box.
 		logoTextBox.setFocus(true);
 
 		// Listen for mouse events on the Add button.
