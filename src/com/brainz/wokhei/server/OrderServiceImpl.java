@@ -14,7 +14,7 @@ import javax.jdo.Query;
 import com.brainz.wokhei.Order;
 import com.brainz.wokhei.OrderUtils;
 import com.brainz.wokhei.PMF;
-import com.brainz.wokhei.client.HomeModuleService;
+import com.brainz.wokhei.client.OrderService;
 import com.brainz.wokhei.shared.OrderDTO;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
@@ -25,14 +25,14 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
  * @author matteocantarelli --> piccolino il caghino
  *
  */
-public class HomeModuleServiceImpl extends RemoteServiceServlet implements HomeModuleService {
+public class OrderServiceImpl extends RemoteServiceServlet implements OrderService {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -5060860293974160016L;
 
-	private static final Logger log = Logger.getLogger(HomeModuleServiceImpl.class.getName());
+	private static final Logger log = Logger.getLogger(OrderServiceImpl.class.getName());
 
 	private List<OrderDTO> _orders;
 

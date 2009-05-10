@@ -6,22 +6,24 @@ import java.util.Date;
 public class OrderDTO implements Serializable{
 
 
-	private Long id;
+	private Long _id;
 
-	private String text;
+	private String _text;
 
-	private String[] tags;
+	private String[] _tags;
 
-	private Date date;
+	private Date _date;
 
-	private Status status;
+	private Status _status;
+
+	private String _customerEmail;
 
 	public Long getId() {
-		return id;
+		return _id;
 	}
 
 	public void setId(Long id) {
-		this.id = id;
+		_id = id;
 	}
 
 	public OrderDTO() {
@@ -29,45 +31,46 @@ public class OrderDTO implements Serializable{
 	}
 
 	public OrderDTO(Long id, String text, String[] tags, Date date,
-			Status status) {
+			Status status, String customerEmail) {
 		super();
-		this.id = id;
-		this.text = text;
-		this.tags = tags;
-		this.date = date;
-		this.status = status;
+		_id = id;
+		_text = text;
+		_tags = tags;
+		_date = date;
+		_status = status;
+		_customerEmail = customerEmail;
 	}
 
 	public String getText() {
-		return text;
+		return _text;
 	}
 
 	public void setText(String text) {
-		this.text = text;
+		_text = text;
 	}
 
 	public String[] getTags() {
-		return tags;
+		return _tags;
 	}
 
 	public void setTags(String[] tags) {
-		this.tags = tags;
+		_tags = tags;
 	}
 
 	public Date getDate() {
-		return date;
+		return _date;
 	}
 
 	public void setDate(Date date) {
-		this.date = date;
+		_date = date;
 	}
 
 	public Status getStatus() {
-		return status;
+		return _status;
 	}
 
 	public void setStatus(Status status) {
-		this.status = status;
+		_status = status;
 	}
 
 }

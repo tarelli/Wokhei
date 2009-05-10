@@ -68,7 +68,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 	boolean _isMainPanelVisible = true;
 
 	@Override
-	public void initModulePart(HomeModuleServiceAsync service) {
+	public void initModulePart(OrderServiceAsync service) {
 		super.initModulePart(service);
 
 		_mainPanel.setSpacing(10);

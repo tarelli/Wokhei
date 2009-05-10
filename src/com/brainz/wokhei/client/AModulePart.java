@@ -10,12 +10,12 @@ package com.brainz.wokhei.client;
  */
 public abstract class AModulePart {
 
-	protected HomeModuleServiceAsync _service;
+	protected OrderServiceAsync _service;
 
 	/**
 	 * Init the panel 
 	 */
-	public void initModulePart(HomeModuleServiceAsync service)
+	public void initModulePart(OrderServiceAsync service)
 	{
 		_service=service;
 	}

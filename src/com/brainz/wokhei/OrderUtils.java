@@ -95,7 +95,7 @@ public class OrderUtils {
 	public static OrderDTO getOrderDTO(Order order) {
 		String[] strArr = new String[order.getTags().size()];
 		System.arraycopy(order.getTags().toArray(), 0, strArr, 0, order.getTags().size());
-		return new OrderDTO(order.getId(),order.getText(),strArr,order.getDate(),order.getStatus());
+		return new OrderDTO(order.getId(),order.getText(),strArr,order.getDate(),order.getStatus(), order.getCustomer().getEmail());
 	}
 
 	public static List<OrderDTO> getOrderDTOList(List<Order> orders)

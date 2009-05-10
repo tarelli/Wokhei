@@ -13,7 +13,7 @@ import com.google.gwt.user.client.ui.RootPanel;
  */
 public class HomeModule implements EntryPoint {
 
-	private final HomeModuleServiceAsync _homeModuleService =GWT.create(HomeModuleService.class);
+	private final OrderServiceAsync _homeModuleService =GWT.create(OrderService.class);
 
 	private final OrderBrowserModulePart _orderBrowserModulePart = new OrderBrowserModulePart();
 
