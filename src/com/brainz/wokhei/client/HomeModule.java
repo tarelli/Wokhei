@@ -5,7 +5,6 @@ package com.brainz.wokhei.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.ui.RootPanel;
 
 /**
  * @author matteocantarelli
@@ -13,32 +12,24 @@ import com.google.gwt.user.client.ui.RootPanel;
  */
 public class HomeModule implements EntryPoint {
 
-	private final HomeModuleServiceAsync _homeModuleService =GWT.create(HomeModuleService.class);
-
-	private final OrderBrowserModulePart _orderBrowserModulePart = new OrderBrowserModulePart();
-
-	private final OrderSubmitterModulePart _orderSubmitterModulePart = new OrderSubmitterModulePart();
-
 	/* (non-Javadoc)
 	 * @see com.google.gwt.core.client.EntryPoint#onModuleLoad()
 	 */
-	public void onModuleLoad() {
+	public void onModuleLoad() 
+	{
+		//Initialize Order Service
+		HomeModuleServiceAsync homeModuleService = GWT.create(HomeModuleService.class);
 
-		_orderBrowserModulePart.initModulePart(_homeModuleService);
-		_orderSubmitterModulePart.initModulePart(_homeModuleService);
+		//Create the module parts
+		OrderBrowserModulePart orderBrowserModulePart = new OrderBrowserModulePart();
+		OrderSubmitterModulePart orderSubmitterModulePart = new OrderSubmitterModulePart();
 
-		RootPanel.get("ordersBrowser").add(_orderBrowserModulePart.getLablesPanel());
-		RootPanel.get("ordersBrowserButtons").add(_orderBrowserModulePart.getButtonsPanel());
-		RootPanel.get("ordersBrowserImage").add(_orderBrowserModulePart.getImageStatusPanel());
+		//Initialize the module parts
+		orderSubmitterModulePart.addModulePartListener(orderBrowserModulePart);
 
-		RootPanel.get("orderSubmitter").add(_orderSubmitterModulePart.getOrderSubmitPanel());
-		RootPanel.get("orderSubmitterAlternateBody").add(_orderSubmitterModulePart.getOrderSubmitAlternateBodyPanel());
-		RootPanel.get("orderSubmitterAlternateBodytile").add(_orderSubmitterModulePart.getOrderSubmitAlternateBodytilePanel());
-		RootPanel.get("orderSubmitterAlternateFooter").add(_orderSubmitterModulePart.getOrderSubmitAlternateFooterPanel());
-
-
+		orderBrowserModulePart.initModulePart(homeModuleService);
+		orderSubmitterModulePart.initModulePart(homeModuleService);
 	}
-
 
 }
 

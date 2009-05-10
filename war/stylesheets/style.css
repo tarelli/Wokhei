@@ -22,17 +22,17 @@ A:hover {
 	text-decoration: none
 }
 
+/* COMMON */
+
+div#page-wrap {
+	width: 1000px;
+	margin: 20px auto;
+}
+
 .header {
 	position: relative;
 	min-height: 149px;
 	background: URL("../images/header.png");
-	background-repeat: no-repeat
-}
-
-.headerDoor {
-	position: relative;
-	min-height: 149px;
-	background: URL("../images/headerDoor.png");
 	background-repeat: no-repeat
 }
 
@@ -41,39 +41,14 @@ A:hover {
 	min-height: 392px;
 	background: URL("../images/body.png");
 	background-repeat: no-repeat
-}
-
-.bodyDoor {
-	position: relative;
-	min-height: 392px;
-	background: URL("../images/bodyDoor.png");
-	background-repeat: no-repeat
-}
-
-.orderSubmitterDrinkBody {
-	position: relative;
-	min-height: 392px;
-	background: URL("../images/bodyDrink.png");
-}
-
+	}
+	
 .bodytile {
 	position: relative;
 	background: URL("../images/bodytile.png");
 	min-height: 1px;
 }
-
-.bodytileDoor {
-	position: relative;
-	min-height: 1px;
-	background: URL("../images/bodytileDoor.png");
-}
-
-.orderSubmitterDrinkBodytile {
-	position: relative;
-	min-height: 1px;
-	background: URL("../images/bodytileDrink.png");
-}
-
+	
 .footer {
 	position: relative;
 	background: URL("../images/footer.png");
@@ -81,68 +56,7 @@ A:hover {
 	min-height: 159px;
 }
 
-.footerDoor {
-	position: relative;
-	min-height: 159px;
-	background: URL("../images/footerDoor.png");
-	background-repeat: no-repeat;
-}
 
-.orderSubmitterDrinkFooter {
-	position: relative;
-	min-height: 159px;
-	background: URL("../images/footerDrink.png");
-	background-repeat: no-repeat;
-}
-
-.logo {
-	position: absolute;
-	left: 50px;
-	top: 45px;
-}
-
-div#page-wrap {
-	width: 1000px;
-	margin: 20px auto;
-}
-
-.takeTour {
-	position: absolute;
-	left: 684px;
-	top: 77px;
-	width: 132px;
-	height: 26px;
-	background: URL("../images/taketouroff.png");
-	color: #FFFFFF;
-	font-family: "Arial Black", Gadget, sans-serif;
-	font-size: 14px;
-	font-weight: 300;
-	text-align: center;
-	font-size: 14px;
-}
-
-.takeTour:hover {
-	background: URL("../images/taketouron.png");
-}
-
-.join {
-	position: absolute;
-	left: 624px;
-	top: 122px;
-	width: 269px;
-	height: 33px;
-	background: URL("../images/joinoff.png");
-	color: #000000;
-	font-family: "Arial Black", Gadget, sans-serif;
-	font-size: 20px;
-	font-weight: 300;
-	text-align: center;
-	font-size: 20px;
-}
-
-.join:hover {
-	background: URL("../images/joinon.png");
-}
 
 h1 {
 	color: #bf007e;
@@ -190,30 +104,6 @@ a2:hover {
 	color: #ffffff
 }
 
-.admin {
-	position: absolute;
-	left: 860px;
-	top: 110px;
-	width: 100px;
-	height: 26px;
-}
-
-.signin {
-	position: absolute;
-	left: 860px;
-	top: 77px;
-	width: 100px;
-	height: 26px;
-}
-
-div#orderSubmitter {
-	position: absolute;
-	left: 100px;
-	top: 25px;
-	width: 300px;
-	height: 300px;
-}
-
 .label {
 	color: #bf007e;
 	font-family: "Arial Black", Gadget, sans-serif;
@@ -226,85 +116,61 @@ div#orderSubmitter {
 	font-size: 10px;
 }
 
-.textBox {
+input,select {
+	border: 3px #c60089 solid;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	padding-top: 1px;
+	padding-right: 0px;
+	padding-bottom: 1px;
+	padding-left: 2px;
+	height: 18px
+}
+
+/* HOME NOT LOGGED*/
+
+.takeTour {
+	position: absolute;
+	left: 684px;
+	top: 77px;
+	width: 132px;
+	height: 26px;
+	background: URL("../images/taketouroff.png");
+	color: #FFFFFF;
+	font-family: "Arial Black", Gadget, sans-serif;
+	font-size: 14px;
+	font-weight: 300;
+	text-align: center;
+	font-size: 14px;
+}
+
+.takeTour:hover {
+	background: URL("../images/taketouron.png");
+}
+
+.join {
+	position: absolute;
+	left: 624px;
+	top: 122px;
+	width: 269px;
+	height: 33px;
+	background: URL("../images/joinoff.png");
 	color: #000000;
 	font-family: "Arial Black", Gadget, sans-serif;
-	font-size: 13px;
+	font-size: 20px;
+	font-weight: 300;
+	text-align: center;
+	font-size: 20px;
 }
 
-.errorLabel {
-	color: #FF0000;
-	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
-	font-size: 10px;
+.join:hover {
+	background: URL("../images/joinon.png");
 }
 
-.logoNameLabel {
-	color: #000000;
-	font-family: "Arial Black", Gadget, sans-serif;
-	font-size: 12px;
-}
-
-.logoTagsDateLabel {
-	color: #000000;
-	font-family: "Arial", Gadget, sans-serif;
-	font-size: 12px;
-}
-
-.ordersPanel {
-	position: absolute;
-	left: 550px;
-	top: 20px;
-	width: 336px;
-	height: 384px;
-	background: URL("../images/panel.png");
-	opacity: .50;
-}
-
-.orderRow {
-	clear: both;
-	width: 326px;
-	height: 64px;
-	position: relative;
-}
-
-.orderText {
-	float: right;
-	position: relative;
-	width: 240px;
-	height: 64px;
-	font: 14px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
-}
-
-.orderIcon {
-	position: relative;
-	float: left;
-	width: 64px;
-	height: 64px;
-}
-
-.orders {
-	position: absolute;
-	left: 760px;
-	top: 50px;
-	width: 150px;
-	height: 400px;
-}
-
-.ordersImage {
-	position: absolute;
-	left: 565px;
-	top: 20px;
-	width: 200px;
-	height: 300px;
-}
-
-.ordersButtons {
-	position: absolute;
-	left: 755px;
-	top: 150px;
-	width: 150px;
-	height: 100px;
-}
 
 .screen {
 	position: absolute;
@@ -351,17 +217,156 @@ div#orderSubmitter {
 	background: URL("../images/ready.png");
 }
 
-input,select {
-	border: 3px #c60089 solid;
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 11px;
-	margin-top: 0px;
-	margin-right: 0px;
-	margin-bottom: 0px;
-	margin-left: 0px;
-	padding-top: 1px;
-	padding-right: 0px;
-	padding-bottom: 1px;
-	padding-left: 2px;
-	height: 18px
+.signin {
+	position: absolute;
+	left: 860px;
+	top: 77px;
+	width: 100px;
+	height: 26px;
 }
+
+/* HOME LOGGED*/
+
+	/* DOOR */
+
+.headerDoor {
+	position: relative;
+	min-height: 149px;
+	background: URL("../images/headerDoor.png");
+	background-repeat: no-repeat
+}
+
+.bodyDoor {
+	position: relative;
+	min-height: 392px;
+	background: URL("../images/bodyDoor.png");
+	background-repeat: no-repeat
+}
+
+.bodytileDoor {
+	position: relative;
+	min-height: 1px;
+	background: URL("../images/bodytileDoor.png");
+}
+
+.footerDoor {
+	position: relative;
+	min-height: 159px;
+	background: URL("../images/footerDoor.png");
+	background-repeat: no-repeat;
+}
+
+	/* DRINK */
+
+orderSubmitterAlternateBody{
+	position: relative;
+	min-height: 392px;
+}
+
+
+orderSubmitterAlternateBodytile{
+	position: relative;
+	min-height: 1px;
+}
+
+orderSubmitterAlternateFooter{
+	position: relative;
+	min-height: 159px;
+}
+
+
+.admin {
+	position: absolute;
+	left: 860px;
+	top: 110px;
+	width: 100px;
+	height: 26px;
+}
+
+
+
+div#orderSubmitter {
+	position: absolute;
+	left: 100px;
+	top: 25px;
+	width: 300px;
+	height: 300px;
+}
+
+
+
+.textBox {
+	color: #000000;
+	font-family: "Arial Black", Gadget, sans-serif;
+	font-size: 13px;
+}
+
+.errorLabel {
+	color: #FF0000;
+	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+}
+
+.logoNameLabel {
+	color: #000000;
+	font-family: "Arial Black", Gadget, sans-serif;
+	font-size: 12px;
+}
+
+.logoTagsDateLabel {
+	color: #000000;
+	font-family: "Arial", Gadget, sans-serif;
+	font-size: 12px;
+}
+
+.ordersPanel {
+	position: absolute;
+	left: 550px;
+	top: 20px;
+	width: 336px;
+	height: 384px;
+	background: URL("../images/panel.png");
+	opacity: .50;
+}
+
+
+.orderText {
+	float: right;
+	position: relative;
+	width: 240px;
+	height: 64px;
+	font: 14px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+}
+
+.orderIcon {
+	position: relative;
+	float: left;
+	width: 64px;
+	height: 64px;
+}
+
+.orders {
+	position: absolute;
+	left: 760px;
+	top: 50px;
+	width: 150px;
+	height: 400px;
+}
+
+.ordersImage {
+	position: absolute;
+	left: 565px;
+	top: 20px;
+	width: 200px;
+	height: 300px;
+}
+
+.ordersButtons {
+	position: absolute;
+	left: 755px;
+	top: 150px;
+	width: 150px;
+	height: 100px;
+}
+
+

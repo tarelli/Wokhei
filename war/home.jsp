@@ -56,7 +56,7 @@
 
 
 <div class="bodyDoor">
-<div id="orderSubmitterAlternateBody"></div>
+<div id="orderSubmitterAlternateBody" class="orderSubmitterAlternateBody"></div>
 </div>
 
 	<div id="ordersBrowser" class="orders">
@@ -77,14 +77,14 @@
 
 <div class="bodytile">
 <div class="bodytileDoor">
-<div id="orderSubmitterAlternateBodytile"></div>
+<div id="orderSubmitterAlternateBodytile" class="orderSubmitterAlternateBodytile"></div>
 </div>
 
 </div>
 
 <div class="footer">
 <div class="footerDoor">
-<div id="orderSubmitterAlternateFooter"></div>
+<div id="orderSubmitterAlternateFooter" class="orderSubmitterAlternateFooter"></div>
 </div>
 
 </div>

@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -76,6 +77,10 @@ public class OrderBrowserModulePart extends AModulePart{
 		buttonsPanel.add(previousOrderButton);
 		buttonsPanel.add(nextOrderButton);
 		mainPanel.add(orderPanel);
+
+		RootPanel.get("ordersBrowser").add(getLablesPanel());
+		RootPanel.get("ordersBrowserButtons").add(getButtonsPanel());
+		RootPanel.get("ordersBrowserImage").add(getImageStatusPanel());
 	}
 
 
@@ -83,7 +88,7 @@ public class OrderBrowserModulePart extends AModulePart{
 	/**
 	 * @return
 	 */
-	public Widget getLablesPanel() 
+	private Widget getLablesPanel() 
 	{
 		return mainPanel;
 	}
@@ -91,7 +96,7 @@ public class OrderBrowserModulePart extends AModulePart{
 	/**
 	 * @return
 	 */
-	public Widget getButtonsPanel() 
+	private Widget getButtonsPanel() 
 	{
 		return buttonsPanel;
 	}
@@ -99,7 +104,7 @@ public class OrderBrowserModulePart extends AModulePart{
 	/**
 	 * @return
 	 */
-	public Widget getImageStatusPanel() 
+	private Widget getImageStatusPanel() 
 	{
 		return imagePanel;
 	}
@@ -187,6 +192,15 @@ public class OrderBrowserModulePart extends AModulePart{
 			}
 		}
 
+	}
+
+	/* (non-Javadoc)
+	 * @see com.brainz.wokhei.client.AModulePart#updateModulePart()
+	 */
+	@Override
+	public void updateModulePart() 
+	{
+		getLatestOrder();
 	}
 
 
