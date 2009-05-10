@@ -5,14 +5,13 @@ package com.brainz.wokhei.client;
 
 import java.util.Arrays;
 
-import com.brainz.wokhei.resources.Images;
 import com.brainz.wokhei.shared.OrderDTO;
 import com.brainz.wokhei.shared.Status;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -60,26 +59,26 @@ public class OrderSubmitterModulePart extends AModulePart {
 	private final VerticalPanel _alternateRootPanelFooter= new VerticalPanel();
 
 	// these panels are the place olders for the drink images
-	private final VerticalPanel _alternateSubPanelBody= new VerticalPanel();
-	private final VerticalPanel _alternateSubPanelBodyTile= new VerticalPanel();
-	private final VerticalPanel _alternateSubPanelFooter= new VerticalPanel();
+	private final AbsolutePanel _alternateSubPanelBody= new AbsolutePanel();
+	private final AbsolutePanel _alternateSubPanelBodyTile= new AbsolutePanel();
+	private final AbsolutePanel _alternateSubPanelFooter= new AbsolutePanel();
 
-	//these panels are those linked to CSS that will actually contain the images.
-	//these panels can be either hidden or visible
-	private final Image _bodyDrinkImage= new Image(Images.DRINKBODY.getImageURL());
-	private final Image _bodyTileDrinkImage= new Image(Images.DRINKBODYTILE.getImageURL());
-	private final Image _footerDrinkImage= new Image(Images.DRINKFOOTER.getImageURL());
 
-	private final Label _timerLabel = new Label("timer here");
+	private final Label _timerLabel = new Label("Your logo is getting ready, do you fancy a drink meanwhile?");
 
 	// alternate/main panel switch
 	private boolean _isMainPanelVisible = true;
+
+	private final Label _requestLabel = new Label("Request your logo here:");
 
 	@Override
 	public void initModulePart(OrderServiceAsync service) {
 		super.initModulePart(service);
 
 		_mainPanel.setSpacing(10);
+
+		_requestLabel.addStyleName("h3");
+		_mainPanel.add(_requestLabel );
 
 		_logoTextLabel.addStyleName("label");
 
@@ -145,13 +144,18 @@ public class OrderSubmitterModulePart extends AModulePart {
 		// 1. check difference between timestamp and server time
 		// 2. setup countdown
 		// 3. setup timer to refresh client with updated countdown timer every sec 
-		_timerLabel.addStyleName("label");
+		_timerLabel.addStyleName("waitLabel");
+		_timerLabel.setWidth("350px");
 
-		_alternateSubPanelBody.add(_bodyDrinkImage);
-		_alternateSubPanelBodyTile.add(_bodyTileDrinkImage);
-		_alternateSubPanelFooter.add(_footerDrinkImage);
+		_alternateSubPanelBody.addStyleName("orderSubmitterAlternateBody");
+		_alternateSubPanelBodyTile.addStyleName("orderSubmitterAlternateBodytile");
+		_alternateSubPanelFooter.addStyleName("orderSubmitterAlternateFooter");
 
-		_alternateSubPanelBody.add(_timerLabel);
+
+		_alternateSubPanelBody.add(_timerLabel,80,50);
+		_alternateRootPanelBody.setWidth("500px");
+		_alternateRootPanelBodyTile.setWidth("500px");
+		_alternateRootPanelFooter.setWidth("500px");
 
 		_alternateRootPanelBody.add(_alternateSubPanelBody);
 		_alternateRootPanelBodyTile.add(_alternateSubPanelBodyTile);
@@ -232,11 +236,11 @@ public class OrderSubmitterModulePart extends AModulePart {
 	{
 		if(result)
 		{
-			this._timerLabel.setText("all good - timer will go here!");
+			this._timerLabel.setText("Your logo is getting ready, do you fancy a drink meanwhile?");
 		}
 		else
 		{
-			this._timerLabel.setText("Error: you're in some deep shit!");
+			this._timerLabel.setText("An error occurred while sending your request. Please do complain!");
 		}
 	}
 

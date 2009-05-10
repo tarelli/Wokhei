@@ -232,6 +232,7 @@ input,select {
 .headerDoor {
 	position: relative;
 	min-height: 149px;
+	top:1px;
 	background: URL("../images/headerDoor.png");
 	background-repeat: no-repeat
 }
@@ -257,23 +258,54 @@ input,select {
 }
 
 	/* DRINK */
-
-orderSubmitterAlternateBody{
+	
+.orderSubmitterAlternateBodyPanel{
 	position: relative;
 	min-height: 392px;
+	width:500px;
+
 }
 
 
-orderSubmitterAlternateBodytile{
+.orderSubmitterAlternateBodytilePanel{
 	position: relative;
 	min-height: 1px;
+	width:500px;
+
 }
 
-orderSubmitterAlternateFooter{
+.orderSubmitterAlternateFooterPanel{
 	position: relative;
 	min-height: 159px;
+
 }
 
+.orderSubmitterAlternateBody{
+	position: relative;
+	min-height: 392px;
+	background: URL("../images/bodyDrink.png");
+}
+
+
+.orderSubmitterAlternateBodytile{
+	position: relative;
+	min-height: 1px;
+	background: URL("../images/bodytileDrink.png");
+}
+
+.orderSubmitterAlternateFooter{
+	position: relative;
+	min-height: 159px;
+	background: URL("../images/footerDrink.png");
+}
+
+.waitLabel {
+	color: #bf007e;
+	font-family: "Arial Black", Gadget, sans-serif;
+	font-size: 30px;
+	left:50px;
+	top:20px;
+}
 
 .admin {
 	position: absolute;
