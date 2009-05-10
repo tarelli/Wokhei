@@ -5,14 +5,6 @@
 
 <web-app xmlns="http://java.sun.com/xml/ns/javaee" version="2.5">
 	<servlet>
-		<servlet-name>submitorder</servlet-name>
-		<servlet-class>com.brainz.wokhei.servlets.SubmitOrderServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>submitorder</servlet-name>
-		<url-pattern>/submitorder</url-pattern>
-	</servlet-mapping>
-	<servlet>
 		<servlet-name>addadmin</servlet-name>
 		<servlet-class>com.brainz.wokhei.servlets.AddAdminServlet</servlet-class>
 	</servlet>
@@ -29,12 +21,20 @@
 		<url-pattern>/rejectOrder</url-pattern>
 	</servlet-mapping>
 	<servlet>
-		<servlet-name>homemoduleservice</servlet-name>
-		<servlet-class>com.brainz.wokhei.server.HomeModuleServiceImpl</servlet-class>
+		<servlet-name>orderservice</servlet-name>
+		<servlet-class>com.brainz.wokhei.server.OrderServiceImpl</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>homemoduleservice</servlet-name>
-		<url-pattern>/wokhei/homemoduleservice</url-pattern>
+		<servlet-name>orderservice</servlet-name>
+		<url-pattern>/wokhei/orderservice</url-pattern>
+	</servlet-mapping>
+		<servlet>
+		<servlet-name>utilityservice</servlet-name>
+		<servlet-class>com.brainz.wokhei.server.UtilityServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>utilityservice</servlet-name>
+		<url-pattern>/wokhei/utilityservice</url-pattern>
 	</servlet-mapping>
 	
 	<welcome-file-list>

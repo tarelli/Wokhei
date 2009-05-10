@@ -13,8 +13,8 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
  * @author matteocantarelli
  *
  */
-@RemoteServiceRelativePath("homemoduleservice")
-public interface HomeModuleService extends RemoteService {
+@RemoteServiceRelativePath("orderservice")
+public interface OrderService extends RemoteService {
 
 	OrderDTO getNextOrder(OrderDTO order);
 

@@ -12,7 +12,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * @author matteocantarelli
  *
  */
-public interface HomeModuleServiceAsync {
+public interface OrderServiceAsync {
 
 	void getNextOrder(OrderDTO order, AsyncCallback<OrderDTO> callback);
 

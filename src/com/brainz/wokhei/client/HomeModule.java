@@ -12,13 +12,14 @@ import com.google.gwt.core.client.GWT;
  */
 public class HomeModule implements EntryPoint {
 
+
 	/* (non-Javadoc)
 	 * @see com.google.gwt.core.client.EntryPoint#onModuleLoad()
 	 */
 	public void onModuleLoad() 
 	{
 		//Initialize Order Service
-		HomeModuleServiceAsync homeModuleService = GWT.create(HomeModuleService.class);
+		OrderServiceAsync orderService = GWT.create(OrderService.class);
 
 		//Create the module parts
 		OrderBrowserModulePart orderBrowserModulePart = new OrderBrowserModulePart();
@@ -27,8 +28,8 @@ public class HomeModule implements EntryPoint {
 		//Initialize the module parts
 		orderSubmitterModulePart.addModulePartListener(orderBrowserModulePart);
 
-		orderBrowserModulePart.initModulePart(homeModuleService);
-		orderSubmitterModulePart.initModulePart(homeModuleService);
+		orderBrowserModulePart.initModulePart(orderService);
+		orderSubmitterModulePart.initModulePart(orderService);
 	}
 
 }

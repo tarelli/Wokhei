@@ -13,13 +13,13 @@ import java.util.List;
  */
 public abstract class AModulePart {
 
-	protected HomeModuleServiceAsync _service;
+	protected OrderServiceAsync _service;
 	private final List<AModulePart> _moduleParts=new ArrayList<AModulePart>();
 
 	/**
 	 * Init the panel 
 	 */
-	public void initModulePart(HomeModuleServiceAsync service)
+	public void initModulePart(OrderServiceAsync service)
 	{
 		_service=service;
 	}

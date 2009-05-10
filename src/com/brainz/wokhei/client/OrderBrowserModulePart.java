@@ -50,7 +50,7 @@ public class OrderBrowserModulePart extends AModulePart{
 
 
 	@Override
-	public void initModulePart(HomeModuleServiceAsync service) {
+	public void initModulePart(OrderServiceAsync service) {
 		super.initModulePart(service);
 
 		getLatestOrder();
