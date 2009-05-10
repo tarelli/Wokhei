@@ -32,6 +32,11 @@ public class HomeModule implements EntryPoint {
 		RootPanel.get("ordersBrowserImage").add(_orderBrowserModulePart.getImageStatusPanel());
 
 		RootPanel.get("orderSubmitter").add(_orderSubmitterModulePart.getOrderSubmitPanel());
+		RootPanel.get("orderSubmitterAlternateBody").add(_orderSubmitterModulePart.getOrderSubmitAlternateBodyPanel());
+		RootPanel.get("orderSubmitterAlternateBodytile").add(_orderSubmitterModulePart.getOrderSubmitAlternateBodytilePanel());
+		RootPanel.get("orderSubmitterAlternateFooter").add(_orderSubmitterModulePart.getOrderSubmitAlternateFooterPanel());
+
+
 	}
 
 
