@@ -22,7 +22,7 @@ import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
- * @author matteocantarelli
+ * @author matteocantarelli --> piccolino il caghino
  *
  */
 public class HomeModuleServiceImpl extends RemoteServiceServlet implements HomeModuleService {
