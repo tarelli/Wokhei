@@ -26,129 +26,146 @@ public class OrderSubmitterModulePart extends AModulePart {
 	private static final int MAX_TAGS = 5;
 
 	//root panel to host main and alternate panel
-	private final VerticalPanel rootPanel = new VerticalPanel();
+	private final VerticalPanel _rootPanel = new VerticalPanel();
 
-	private final VerticalPanel mainPanel = new VerticalPanel();
+	private final VerticalPanel _mainPanel = new VerticalPanel();
 
 	// logotext controls
-	private final VerticalPanel logoTextPanel = new VerticalPanel();
-	private final TextBox logoTextBox = new TextBox();
-	private final Label logoTextLabel = new Label("Logo name");
-	private final Label logoHintLabel = new Label("e.g. Franco Restaurant");
+	private final VerticalPanel _logoTextPanel = new VerticalPanel();
+	private final TextBox _logoTextBox = new TextBox();
+	private final Label _logoTextLabel = new Label("Logo name");
+	private final Label _logoHintLabel = new Label("e.g. Franco Restaurant");
 
 	// TODO: Add color-picker
-	private final VerticalPanel colorPanel = new VerticalPanel();
+	private final VerticalPanel _colorPanel = new VerticalPanel();
 	//private final TextBox logoTextBox = new TextBox();
-	private final Label colorLabel = new Label("Main color");
-	private final Label colorHintLabel = new Label("a hint for what main colour you would like for your logo");
+	private final Label _colorLabel = new Label("Main color");
+	private final Label _colorHintLabel = new Label("a hint for what main colour you would like for your logo");
 
 	// logotags controls
-	private final VerticalPanel logoTagsPanel = new VerticalPanel();
-	private final TextBox logoTagsBox = new TextBox();
-	private final Label logoTagsLabel = new Label("5 Tags");
-	private final Label tagsHintLabel = new Label("e.g. #FoodIndustry #Restaurant #Fancy #FrenchCuisine");
+	private final VerticalPanel _logoTagsPanel = new VerticalPanel();
+	private final TextBox _logoTagsBox = new TextBox();
+	private final Label _logoTagsLabel = new Label("5 Tags");
+	private final Label _tagsHintLabel = new Label("e.g. #FoodIndustry #Restaurant #Fancy #FrenchCuisine");
 
 	// a pretty self-explanatory submit button
-	private final Button submitOrder = new Button("Send request!");
-	private final Label messageLabel = new Label("");
+	private final Button _submitOrder = new Button("Send request!");
+	private final Label _messageLabel = new Label("");
 
-	// alternate panel stuff for timer etc.
-	private final VerticalPanel alternatePanel = new VerticalPanel();
-	private final Label timerLabel = new Label("timer here");
+	// these panels are the place olders for the drink images
+	private final VerticalPanel _alternatePanelBody= new VerticalPanel();
+	private final VerticalPanel _alternatePanelBodyTile= new VerticalPanel();
+	private final VerticalPanel _alternatePanelFooter= new VerticalPanel();
+
+	//these panels are those linked to CSS that will actually contain the images.
+	//these panels can be either hidden or visible
+	private final VerticalPanel _alternatePanelBodyDrink= new VerticalPanel();
+	private final VerticalPanel _alternatePanelBodyTileDrink= new VerticalPanel();
+	private final VerticalPanel _alternatePanelFooterDrink= new VerticalPanel();
+	private final Label _timerLabel = new Label("timer here");
 
 	// alternate/main panel switch
-	boolean isMainPanelVisible = true;
+	boolean _isMainPanelVisible = true;
 
 	@Override
 	public void initModulePart(HomeModuleServiceAsync service) {
 		super.initModulePart(service);
 
-		mainPanel.setSpacing(10);
+		_mainPanel.setSpacing(10);
 
-		logoTextLabel.addStyleName("label");
+		_logoTextLabel.addStyleName("label");
 
-		logoHintLabel.setStyleName("hintLabel");
+		_logoHintLabel.setStyleName("hintLabel");
 
-		logoTextBox.setText("the text in your logo");
-		logoTextBox.setWidth("255px");
-		logoTextBox.setStyleName("textBox");
+		_logoTextBox.setText("the text in your logo");
+		_logoTextBox.setWidth("255px");
+		_logoTextBox.setStyleName("textBox");
 
-		logoTextBox.addClickHandler(new ClickHandler(){
+		_logoTextBox.addClickHandler(new ClickHandler(){
 			public void onClick(ClickEvent event) {
-				if(logoTextBox.getText().equals("the text in your logo"))
+				if(_logoTextBox.getText().equals("the text in your logo"))
 				{
-					logoTextBox.selectAll();
+					_logoTextBox.selectAll();
 				}
 			}});
 
-		logoTagsLabel.addStyleName("label");
-		tagsHintLabel.addStyleName("hintLabel");
+		_logoTagsLabel.addStyleName("label");
+		_tagsHintLabel.addStyleName("hintLabel");
 
 		// prepare my motherfuckin' logoText vertical panel
-		logoTextPanel.setSpacing(1);
-		logoTextPanel.add(logoTextLabel);
-		logoTextPanel.add(logoHintLabel);
-		logoTextPanel.add(logoTextBox);
+		_logoTextPanel.setSpacing(1);
+		_logoTextPanel.add(_logoTextLabel);
+		_logoTextPanel.add(_logoHintLabel);
+		_logoTextPanel.add(_logoTextBox);
 
 
 		// prepare my cock-fuckerin' tags vertical panel
-		logoTagsBox.setWidth("255px");
-		logoTagsBox.setText("describe what the logo is for!");
-		logoTagsBox.setStyleName("textBox");
-		logoTagsBox.addClickHandler(new ClickHandler(){
+		_logoTagsBox.setWidth("255px");
+		_logoTagsBox.setText("describe what the logo is for!");
+		_logoTagsBox.setStyleName("textBox");
+		_logoTagsBox.addClickHandler(new ClickHandler(){
 			public void onClick(ClickEvent event) {
-				if(logoTagsBox.getText().equals("describe what the logo is for!"))
+				if(_logoTagsBox.getText().equals("describe what the logo is for!"))
 				{
-					logoTagsBox.selectAll();
+					_logoTagsBox.selectAll();
 				}
 			}});
 
-		logoTagsPanel.setSpacing(1);
-		logoTagsPanel.add(logoTagsLabel);
-		logoTagsPanel.add(tagsHintLabel);
-		logoTagsPanel.add(logoTagsBox);
+		_logoTagsPanel.setSpacing(1);
+		_logoTagsPanel.add(_logoTagsLabel);
+		_logoTagsPanel.add(_tagsHintLabel);
+		_logoTagsPanel.add(_logoTagsBox);
 
-		colorLabel.addStyleName("label");
-		colorHintLabel.addStyleName("hintLabel");
+		_colorLabel.addStyleName("label");
+		_colorHintLabel.addStyleName("hintLabel");
 
-		colorPanel.setSpacing(1);
-		colorPanel.add(colorLabel);
-		colorPanel.add(colorHintLabel);
+		_colorPanel.setSpacing(1);
+		_colorPanel.add(_colorLabel);
+		_colorPanel.add(_colorHintLabel);
 
-		messageLabel.addStyleName("errorLabel");
+		_messageLabel.addStyleName("errorLabel");
 
 		// Fill up that son of a bitch of a mainPanel
-		mainPanel.add(logoTextPanel);
-		mainPanel.add(logoTagsPanel);
-		mainPanel.add(colorPanel);
-		mainPanel.add(messageLabel);
-		mainPanel.add(submitOrder);
+		_mainPanel.add(_logoTextPanel);
+		_mainPanel.add(_logoTagsPanel);
+		_mainPanel.add(_colorPanel);
+		_mainPanel.add(_messageLabel);
+		_mainPanel.add(_submitOrder);
 
 		//prepare alternate panel with timer
 		// TODO : add timer and shit
 		// 1. check difference between timestamp and server time
 		// 2. setup countdown
 		// 3. setup timer to refresh client with updated countdown timer every sec 
-		this.timerLabel.addStyleName("label");
-		this.alternatePanel.add(this.timerLabel);
+		_timerLabel.addStyleName("label");
+
+		_alternatePanelBodyDrink.setStyleName("orderSubmitterDrinkBody");
+		_alternatePanelBodyTileDrink.setStyleName("orderSubmitterDrinkBodytile");
+		_alternatePanelFooterDrink.setStyleName("orderSubmitterDrinkFooter");
+
+		_alternatePanelBodyDrink.add(_timerLabel);
+
+		_alternatePanelBody.add(_alternatePanelBodyDrink);
+		_alternatePanelBodyTile.add(_alternatePanelBodyTileDrink);
+		_alternatePanelFooter.add(_alternatePanelFooterDrink);
+
 
 		// set default visibility
-		this.mainPanel.setVisible(true);
-		this.alternatePanel.setVisible(false);
+		_mainPanel.setVisible(true);
+		showAlternatePanels(false);
 
 		//add main and alternate panel to root panel
-		this.rootPanel.add(this.mainPanel);
-		this.rootPanel.add(this.alternatePanel);
+		_rootPanel.add(_mainPanel);
 
 		setViewByLatestOrder();
 
-		RootPanel.get("orderSubmitter").add(rootPanel);
+		RootPanel.get("orderSubmitter").add(_rootPanel);
 
 		// Move cursor focus to the logoText input box.
-		logoTextBox.setFocus(true);
+		_logoTextBox.setFocus(true);
 
 		// Listen for mouse events on the Add button.
-		submitOrder.addClickHandler(new ClickHandler() {
+		_submitOrder.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				submitOrder();
 			}
@@ -162,36 +179,36 @@ public class OrderSubmitterModulePart extends AModulePart {
 	protected void submitOrder() 
 	{
 
-		if (this.logoTagsBox.getText().trim().length()!=0)
+		if (this._logoTagsBox.getText().trim().length()!=0)
 		{		
-			if(logoTagsBox.getText().split(" ").length>MAX_TAGS)
+			if(_logoTagsBox.getText().split(" ").length>MAX_TAGS)
 			{
-				messageLabel.setText("Sorry, our Chefs gets confused with more than 5 tags!");
+				_messageLabel.setText("Sorry, our Chefs get confused with more than 5 tags!");
 			}
 			else
 			{
 				// Set up the callback object.
 				AsyncCallback<Boolean> callback = new AsyncCallback<Boolean>() {
 					public void onFailure(Throwable caught) {
-						messageLabel.setText("Fuck-up: " + caught.getMessage());
+						_messageLabel.setText("Fuck-up: " + caught.getMessage());
 					}
 
 					public void onSuccess(Boolean result) {
 
 						//updateMessage(result);
 						updateAlternatePanelMessage(result);
-						isMainPanelVisible = false;
+						_isMainPanelVisible = false;
 						showHidePanels();
 					}
 				};
 
 				// Make the call to the stock price service.
-				_service.submitOrder(this.logoTextBox.getText(), Arrays.asList(logoTagsBox.getText().split(" ")), callback);			
+				_service.submitOrder(this._logoTextBox.getText(), Arrays.asList(_logoTagsBox.getText().split(" ")), callback);			
 			}
 		}
 		else
 		{
-			messageLabel.setText("You need to put at least some tags!");
+			_messageLabel.setText("You need to put at least some tags!");
 		}
 	}
 
@@ -202,11 +219,11 @@ public class OrderSubmitterModulePart extends AModulePart {
 	{
 		if(result)
 		{
-			this.timerLabel.setText("all good - timer will go here!");
+			this._timerLabel.setText("all good - timer will go here!");
 		}
 		else
 		{
-			this.timerLabel.setText("Error: you're in some deep shit!");
+			this._timerLabel.setText("Error: you're in some deep shit!");
 		}
 	}
 
@@ -217,11 +234,11 @@ public class OrderSubmitterModulePart extends AModulePart {
 	{
 		if(result)
 		{
-			messageLabel.setText("It's all good - Your request has been sent to the kitchen!");
+			_messageLabel.setText("It's all good - Your request has been sent to the kitchen!");
 		}
 		else
 		{
-			messageLabel.setText("Error: A bit of a Fuck-up!");
+			_messageLabel.setText("Error: A bit of a Fuck-up!");
 		}
 	}
 
@@ -253,16 +270,16 @@ public class OrderSubmitterModulePart extends AModulePart {
 	 */
 	protected void showHidePanels() 
 	{
-		if(this.isMainPanelVisible)
+		if(_isMainPanelVisible)
 		{
 			// Associate the feckin' Main panel with the HTML element on the host page.
-			this.mainPanel.setVisible(true);
-			this.alternatePanel.setVisible(false);
+			_mainPanel.setVisible(true);
+			showAlternatePanels(false);
 		}
 		else
 		{
-			this.mainPanel.setVisible(false);
-			this.alternatePanel.setVisible(true);	
+			_mainPanel.setVisible(false);
+			showAlternatePanels(true);	
 		}
 	}
 
@@ -276,15 +293,13 @@ public class OrderSubmitterModulePart extends AModulePart {
 				|| result.getStatus() == Status.PAYED
 				|| result.getStatus() == Status.REJECTED))
 		{
-			this.isMainPanelVisible = true;
+			_isMainPanelVisible = true;
 		}
 		else
 		{
-			this.isMainPanelVisible = false;
+			_isMainPanelVisible = false;
 		}
 	}
-
-
 
 
 	/**
@@ -292,9 +307,43 @@ public class OrderSubmitterModulePart extends AModulePart {
 	 */
 	public Widget getOrderSubmitPanel() 
 	{
-		return mainPanel;
+		return _mainPanel;
 	}
 
+	/**
+	 * @return
+	 */
+	public Widget getOrderSubmitAlternateFooterPanel() 
+	{
+		return _alternatePanelFooter;
+	}
+	/**
+	 * @return
+	 */
+	public Widget getOrderSubmitAlternateBodyPanel() 
+	{
+		return _alternatePanelBody;
+	}
+	/**
+	 * @return
+	 */
+	public Widget getOrderSubmitAlternateBodytilePanel() 
+	{
+		return _alternatePanelBodyTile;
+	}
+
+
+
+
+	/**
+	 * @param show
+	 */
+	private void showAlternatePanels(boolean show)
+	{
+		_alternatePanelBodyDrink.setVisible(show);
+		_alternatePanelBodyTileDrink.setVisible(show);
+		_alternatePanelFooterDrink.setVisible(show);
+	}
 
 
 }

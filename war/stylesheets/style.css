@@ -50,16 +50,28 @@ A:hover {
 	background-repeat: no-repeat
 }
 
+.orderSubmitterDrinkBody {
+	position: relative;
+	min-height: 392px;
+	background: URL("../images/bodyDrink.png");
+}
+
 .bodytile {
 	position: relative;
 	background: URL("../images/bodytile.png");
-	min-height: 100px;
+	min-height: 1px;
 }
 
 .bodytileDoor {
 	position: relative;
-	min-height: 100px;
+	min-height: 1px;
 	background: URL("../images/bodytileDoor.png");
+}
+
+.orderSubmitterDrinkBodytile {
+	position: relative;
+	min-height: 1px;
+	background: URL("../images/bodytileDrink.png");
 }
 
 .footer {
@@ -73,7 +85,14 @@ A:hover {
 	position: relative;
 	min-height: 159px;
 	background: URL("../images/footerDoor.png");
-	background-repeat: no-repeat
+	background-repeat: no-repeat;
+}
+
+.orderSubmitterDrinkFooter {
+	position: relative;
+	min-height: 159px;
+	background: URL("../images/footerDrink.png");
+	background-repeat: no-repeat;
 }
 
 .logo {
@@ -141,10 +160,10 @@ h2 {
 	text-align: left;
 }
 
-h3{
+h3 {
 	color: #000000;
 	font-family: "Arial Black", Gadget, sans-serif;
-	font-size: 14px;	
+	font-size: 14px;
 }
 
 a1 {
@@ -195,42 +214,42 @@ div#orderSubmitter {
 	height: 300px;
 }
 
-.label{
+.label {
 	color: #bf007e;
 	font-family: "Arial Black", Gadget, sans-serif;
 	font-size: 14px;
 }
-	
-.hintLabel{
+
+.hintLabel {
 	color: #000000;
 	font-family: "Arial", Gadget, sans-serif;
 	font-size: 10px;
 }
 
-.textBox{
+.textBox {
 	color: #000000;
 	font-family: "Arial Black", Gadget, sans-serif;
 	font-size: 13px;
 }
-.errorLabel{
+
+.errorLabel {
 	color: #FF0000;
 	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 	font-size: 10px;
 }
 
-.logoNameLabel{
+.logoNameLabel {
 	color: #000000;
 	font-family: "Arial Black", Gadget, sans-serif;
 	font-size: 12px;
 }
 
-.logoTagsDateLabel{
+.logoTagsDateLabel {
 	color: #000000;
 	font-family: "Arial", Gadget, sans-serif;
 	font-size: 12px;
 }
 
-	
 .ordersPanel {
 	position: absolute;
 	left: 550px;
@@ -331,8 +350,6 @@ div#orderSubmitter {
 	height: 76px;
 	background: URL("../images/ready.png");
 }
-
-
 
 input,select {
 	border: 3px #c60089 solid;
