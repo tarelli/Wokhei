@@ -1,3 +1,4 @@
+<<<<<<< HEAD:war/stylesheets/style.css
 @charset "UTF-8";
 
 /* CSS Document */
@@ -365,3 +366,409 @@ input,select {
 	padding-left: 2px;
 	height: 18px
 }
+=======
+@charset "UTF-8";
+
+/* CSS Document */
+html,body {
+	margin: -8px;
+	background: #eb078f;
+}
+
+A:link {
+	text-decoration: none
+}
+
+A:visited {
+	text-decoration: none
+}
+
+A:active {
+	text-decoration: none
+}
+
+A:hover {
+	text-decoration: none
+}
+
+/* COMMON */
+
+div#page-wrap {
+	width: 1000px;
+	margin: 20px auto;
+}
+
+.header {
+	position: relative;
+	min-height: 149px;
+	background: URL("../images/header.png");
+	background-repeat: no-repeat
+}
+
+.body {
+	position: relative;
+	min-height: 392px;
+	background: URL("../images/body.png");
+	background-repeat: no-repeat
+	}
+	
+.bodytile {
+	position: relative;
+	background: URL("../images/bodytile.png");
+	min-height: 1px;
+}
+	
+.footer {
+	position: relative;
+	background: URL("../images/footer.png");
+	background-repeat: no-repeat;
+	min-height: 159px;
+}
+
+
+
+h1 {
+	color: #bf007e;
+	font-family: "Arial Black", Gadget, sans-serif;
+	font-size: 20px;
+	font-weight: 600;
+	text-align: left;
+}
+
+h2 {
+	color: #bf007e;
+	font-family: "Arial Black", Gadget, sans-serif;
+	font-size: 10px;
+	font-weight: 600;
+	text-align: left;
+}
+
+h3 {
+	color: #000000;
+	font-family: "Arial Black", Gadget, sans-serif;
+	font-size: 14px;
+}
+
+a1 {
+	color: #bf007e;
+	font-family: "Arial Black", Gadget, sans-serif;
+	font-size: 18px;
+	font-weight: 600;
+	text-align: left;
+}
+
+a1:hover {
+	color: #f9a743
+}
+
+a2 {
+	color: #bf007e;
+	font-family: "Arial Black", Gadget, sans-serif;
+	font-size: 18px;
+	font-weight: 600;
+	text-align: left;
+}
+
+a2:hover {
+	color: #ffffff
+}
+
+.label {
+	color: #bf007e;
+	font-family: "Arial Black", Gadget, sans-serif;
+	font-size: 14px;
+}
+
+.hintLabel {
+	color: #000000;
+	font-family: "Arial", Gadget, sans-serif;
+	font-size: 10px;
+}
+
+input,select {
+	border: 3px #c60089 solid;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	padding-top: 1px;
+	padding-right: 0px;
+	padding-bottom: 1px;
+	padding-left: 2px;
+	height: 18px
+}
+
+/* HOME NOT LOGGED*/
+
+.takeTour {
+	position: absolute;
+	left: 684px;
+	top: 77px;
+	width: 132px;
+	height: 26px;
+	background: URL("../images/taketouroff.png");
+	color: #FFFFFF;
+	font-family: "Arial Black", Gadget, sans-serif;
+	font-size: 14px;
+	font-weight: 300;
+	text-align: center;
+	font-size: 14px;
+}
+
+.takeTour:hover {
+	background: URL("../images/taketouron.png");
+}
+
+.join {
+	position: absolute;
+	left: 624px;
+	top: 122px;
+	width: 269px;
+	height: 33px;
+	background: URL("../images/joinoff.png");
+	color: #000000;
+	font-family: "Arial Black", Gadget, sans-serif;
+	font-size: 20px;
+	font-weight: 300;
+	text-align: center;
+	font-size: 20px;
+}
+
+.join:hover {
+	background: URL("../images/joinon.png");
+}
+
+
+.screen {
+	position: absolute;
+	left: 105px;
+	top: 15px;
+	width: 293px;
+	height: 200px;
+	background: URL("../images/screen.png");
+}
+
+.logos {
+	position: absolute;
+	left: 18px;
+	top: 4px;
+	width: 258px;
+	height: 158px;
+	background: URL("../images/logos.gif");
+}
+
+.hat {
+	position: absolute;
+	left: 78px;
+	top: 236px;
+	width: 75px;
+	height: 76px;
+	background: URL("../images/hat.png");
+}
+
+.clock {
+	position: absolute;
+	left: 397px;
+	top: 236px;
+	width: 75px;
+	height: 76px;
+	background: URL("../images/clock.png");
+}
+
+.ready {
+	position: absolute;
+	left: 706px;
+	top: 236px;
+	width: 75px;
+	height: 76px;
+	background: URL("../images/ready.png");
+}
+
+.signin {
+	position: absolute;
+	left: 860px;
+	top: 77px;
+	width: 100px;
+	height: 26px;
+}
+
+/* HOME LOGGED*/
+
+	/* DOOR */
+
+.headerDoor {
+	position: relative;
+	min-height: 149px;
+	top:1px;
+	background: URL("../images/headerDoor.png");
+	background-repeat: no-repeat
+}
+
+.bodyDoor {
+	position: relative;
+	min-height: 392px;
+	background: URL("../images/bodyDoor.png");
+	background-repeat: no-repeat
+}
+
+.bodytileDoor {
+	position: relative;
+	min-height: 1px;
+	background: URL("../images/bodytileDoor.png");
+}
+
+.footerDoor {
+	position: relative;
+	min-height: 159px;
+	background: URL("../images/footerDoor.png");
+	background-repeat: no-repeat;
+}
+
+	/* DRINK */
+	
+.orderSubmitterAlternateBodyPanel{
+	position: relative;
+	min-height: 392px;
+	width:500px;
+
+}
+
+
+.orderSubmitterAlternateBodytilePanel{
+	position: relative;
+	min-height: 1px;
+	width:500px;
+
+}
+
+.orderSubmitterAlternateFooterPanel{
+	position: relative;
+	min-height: 159px;
+
+}
+
+.orderSubmitterAlternateBody{
+	position: relative;
+	min-height: 392px;
+	background: URL("../images/bodyDrink.png");
+}
+
+
+.orderSubmitterAlternateBodytile{
+	position: relative;
+	min-height: 1px;
+	background: URL("../images/bodytileDrink.png");
+}
+
+.orderSubmitterAlternateFooter{
+	position: relative;
+	min-height: 159px;
+	background: URL("../images/footerDrink.png");
+}
+
+.waitLabel {
+	color: #bf007e;
+	font-family: "Arial Black", Gadget, sans-serif;
+	font-size: 30px;
+	left:50px;
+	top:20px;
+}
+
+.admin {
+	position: absolute;
+	left: 860px;
+	top: 110px;
+	width: 100px;
+	height: 26px;
+}
+
+
+
+div#orderSubmitter {
+	position: absolute;
+	left: 100px;
+	top: 25px;
+	width: 300px;
+	height: 300px;
+}
+
+
+
+.textBox {
+	color: #000000;
+	font-family: "Arial Black", Gadget, sans-serif;
+	font-size: 13px;
+}
+
+.errorLabel {
+	color: #FF0000;
+	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+}
+
+.logoNameLabel {
+	color: #000000;
+	font-family: "Arial Black", Gadget, sans-serif;
+	font-size: 12px;
+}
+
+.logoTagsDateLabel {
+	color: #000000;
+	font-family: "Arial", Gadget, sans-serif;
+	font-size: 12px;
+}
+
+.ordersPanel {
+	position: absolute;
+	left: 550px;
+	top: 20px;
+	width: 336px;
+	height: 384px;
+	background: URL("../images/panel.png");
+	opacity: .50;
+}
+
+
+.orderText {
+	float: right;
+	position: relative;
+	width: 240px;
+	height: 64px;
+	font: 14px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+}
+
+.orderIcon {
+	position: relative;
+	float: left;
+	width: 64px;
+	height: 64px;
+}
+
+.orders {
+	position: absolute;
+	left: 760px;
+	top: 50px;
+	width: 150px;
+	height: 400px;
+}
+
+.ordersImage {
+	position: absolute;
+	left: 565px;
+	top: 20px;
+	width: 200px;
+	height: 300px;
+}
+
+.ordersButtons {
+	position: absolute;
+	left: 755px;
+	top: 150px;
+	width: 150px;
+	height: 100px;
+}
+
+
+>>>>>>> da6367076e46ca79b8ba44a9d53608e39c553665:war/stylesheets/style.css

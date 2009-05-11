@@ -9,7 +9,11 @@ public enum Images {
 	COOKING("./images/status/cooking.png"),
 	TASTING("./images/status/tasting.png"),
 	PAYED("./images/status/payed.png"),
-	REJECTED("./images/status/rejected.png");
+	REJECTED("./images/status/rejected.png"),
+
+	DRINKBODY("./images/bodydrink.png"),
+	DRINKBODYTILE("./images/bodytiledrink.png"),
+	DRINKFOOTER("./images/footerdrink.png");
 
 	String _imageName;
 

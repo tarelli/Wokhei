@@ -10,6 +10,7 @@ import com.brainz.wokhei.shared.Status;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -53,25 +54,31 @@ public class OrderSubmitterModulePart extends AModulePart {
 	private final Label _messageLabel = new Label("");
 
 	// these panels are the place olders for the drink images
-	private final VerticalPanel _alternatePanelBody= new VerticalPanel();
-	private final VerticalPanel _alternatePanelBodyTile= new VerticalPanel();
-	private final VerticalPanel _alternatePanelFooter= new VerticalPanel();
+	private final VerticalPanel _alternateRootPanelBody= new VerticalPanel();
+	private final VerticalPanel _alternateRootPanelBodyTile= new VerticalPanel();
+	private final VerticalPanel _alternateRootPanelFooter= new VerticalPanel();
 
-	//these panels are those linked to CSS that will actually contain the images.
-	//these panels can be either hidden or visible
-	private final VerticalPanel _alternatePanelBodyDrink= new VerticalPanel();
-	private final VerticalPanel _alternatePanelBodyTileDrink= new VerticalPanel();
-	private final VerticalPanel _alternatePanelFooterDrink= new VerticalPanel();
-	private final Label _timerLabel = new Label("timer here");
+	// these panels are the place olders for the drink images
+	private final AbsolutePanel _alternateSubPanelBody= new AbsolutePanel();
+	private final AbsolutePanel _alternateSubPanelBodyTile= new AbsolutePanel();
+	private final AbsolutePanel _alternateSubPanelFooter= new AbsolutePanel();
+
+
+	private final Label _timerLabel = new Label("Your logo is getting ready, do you fancy a drink meanwhile?");
 
 	// alternate/main panel switch
-	boolean _isMainPanelVisible = true;
+	private boolean _isMainPanelVisible = true;
+
+	private final Label _requestLabel = new Label("Request your logo here:");
 
 	@Override
 	public void initModulePart(OrderServiceAsync service) {
 		super.initModulePart(service);
 
 		_mainPanel.setSpacing(10);
+
+		_requestLabel.addStyleName("h3");
+		_mainPanel.add(_requestLabel );
 
 		_logoTextLabel.addStyleName("label");
 
@@ -137,18 +144,22 @@ public class OrderSubmitterModulePart extends AModulePart {
 		// 1. check difference between timestamp and server time
 		// 2. setup countdown
 		// 3. setup timer to refresh client with updated countdown timer every sec 
-		_timerLabel.addStyleName("label");
+		_timerLabel.addStyleName("waitLabel");
+		_timerLabel.setWidth("350px");
 
-		_alternatePanelBodyDrink.setStyleName("orderSubmitterDrinkBody");
-		_alternatePanelBodyTileDrink.setStyleName("orderSubmitterDrinkBodytile");
-		_alternatePanelFooterDrink.setStyleName("orderSubmitterDrinkFooter");
+		_alternateSubPanelBody.addStyleName("orderSubmitterAlternateBody");
+		_alternateSubPanelBodyTile.addStyleName("orderSubmitterAlternateBodytile");
+		_alternateSubPanelFooter.addStyleName("orderSubmitterAlternateFooter");
 
-		_alternatePanelBodyDrink.add(_timerLabel);
 
-		_alternatePanelBody.add(_alternatePanelBodyDrink);
-		_alternatePanelBodyTile.add(_alternatePanelBodyTileDrink);
-		_alternatePanelFooter.add(_alternatePanelFooterDrink);
+		_alternateSubPanelBody.add(_timerLabel,80,50);
+		_alternateRootPanelBody.setWidth("500px");
+		_alternateRootPanelBodyTile.setWidth("500px");
+		_alternateRootPanelFooter.setWidth("500px");
 
+		_alternateRootPanelBody.add(_alternateSubPanelBody);
+		_alternateRootPanelBodyTile.add(_alternateSubPanelBodyTile);
+		_alternateRootPanelFooter.add(_alternateSubPanelFooter);
 
 		// set default visibility
 		_mainPanel.setVisible(true);
@@ -170,6 +181,11 @@ public class OrderSubmitterModulePart extends AModulePart {
 				submitOrder();
 			}
 		});
+
+		RootPanel.get("orderSubmitter").add(getOrderSubmitPanel());
+		RootPanel.get("orderSubmitterAlternateBody").add(getOrderSubmitAlternateBodyPanel());
+		RootPanel.get("orderSubmitterAlternateBodytile").add(getOrderSubmitAlternateBodytilePanel());
+		RootPanel.get("orderSubmitterAlternateFooter").add(getOrderSubmitAlternateFooterPanel());
 	}
 
 
@@ -199,6 +215,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 						updateAlternatePanelMessage(result);
 						_isMainPanelVisible = false;
 						showHidePanels();
+						notifyChanges();
 					}
 				};
 
@@ -219,11 +236,11 @@ public class OrderSubmitterModulePart extends AModulePart {
 	{
 		if(result)
 		{
-			this._timerLabel.setText("all good - timer will go here!");
+			this._timerLabel.setText("Your logo is getting ready, do you fancy a drink meanwhile?");
 		}
 		else
 		{
-			this._timerLabel.setText("Error: you're in some deep shit!");
+			this._timerLabel.setText("An error occurred while sending your request. Please do complain!");
 		}
 	}
 
@@ -305,7 +322,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 	/**
 	 * @return
 	 */
-	public Widget getOrderSubmitPanel() 
+	private Widget getOrderSubmitPanel() 
 	{
 		return _mainPanel;
 	}
@@ -313,23 +330,23 @@ public class OrderSubmitterModulePart extends AModulePart {
 	/**
 	 * @return
 	 */
-	public Widget getOrderSubmitAlternateFooterPanel() 
+	private Widget getOrderSubmitAlternateFooterPanel() 
 	{
-		return _alternatePanelFooter;
+		return _alternateRootPanelFooter;
 	}
 	/**
 	 * @return
 	 */
-	public Widget getOrderSubmitAlternateBodyPanel() 
+	private Widget getOrderSubmitAlternateBodyPanel() 
 	{
-		return _alternatePanelBody;
+		return _alternateRootPanelBody;
 	}
 	/**
 	 * @return
 	 */
-	public Widget getOrderSubmitAlternateBodytilePanel() 
+	private Widget getOrderSubmitAlternateBodytilePanel() 
 	{
-		return _alternatePanelBodyTile;
+		return _alternateRootPanelBodyTile;
 	}
 
 
@@ -340,9 +357,16 @@ public class OrderSubmitterModulePart extends AModulePart {
 	 */
 	private void showAlternatePanels(boolean show)
 	{
-		_alternatePanelBodyDrink.setVisible(show);
-		_alternatePanelBodyTileDrink.setVisible(show);
-		_alternatePanelFooterDrink.setVisible(show);
+		_alternateSubPanelBody.setVisible(show);
+		_alternateSubPanelBodyTile.setVisible(show);
+		_alternateSubPanelFooter.setVisible(show);
+	}
+
+
+	@Override
+	public void updateModulePart() {
+		// TODO Auto-generated method stub
+
 	}
 
 

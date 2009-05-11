@@ -3,6 +3,9 @@
  */
 package com.brainz.wokhei.client;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * @author matteocantarelli
@@ -11,6 +14,7 @@ package com.brainz.wokhei.client;
 public abstract class AModulePart {
 
 	protected OrderServiceAsync _service;
+	private final List<AModulePart> _moduleParts=new ArrayList<AModulePart>();
 
 	/**
 	 * Init the panel 
@@ -21,5 +25,29 @@ public abstract class AModulePart {
 	}
 
 
+	/**
+	 * 
+	 */
+	public abstract void updateModulePart();
+
+
+	/**
+	 * 
+	 */
+	public void notifyChanges()
+	{
+		for(AModulePart modulePart:_moduleParts)
+		{
+			modulePart.updateModulePart();
+		}
+	}
+
+	/**
+	 * @param modulePart
+	 */
+	public void addModulePartListener(AModulePart modulePart)
+	{
+		_moduleParts.add(modulePart);
+	}
 
 }

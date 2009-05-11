@@ -56,7 +56,7 @@
 
 
 <div class="bodyDoor">
-<div id="orderSubmitterAlternateBody"></div>
+<div id="orderSubmitterAlternateBody" class="orderSubmitterAlternateBodyPanel"></div>
 </div>
 
 	<div id="ordersBrowser" class="orders">
@@ -70,21 +70,21 @@
 	
 	
 	<div id="orderSubmitter" class="submitOrder">
-	<h3>Request your logo here</h3>
+
 	</div>
 
 </div>
 
 <div class="bodytile">
 <div class="bodytileDoor">
-<div id="orderSubmitterAlternateBodytile"></div>
+<div id="orderSubmitterAlternateBodytile" class="orderSubmitterAlternateBodyTilePanel"></div>
 </div>
 
 </div>
 
 <div class="footer">
 <div class="footerDoor">
-<div id="orderSubmitterAlternateFooter"></div>
+<div id="orderSubmitterAlternateFooter" class="orderSubmitterAlternateFooterPanel"></div>
 </div>
 
 </div>

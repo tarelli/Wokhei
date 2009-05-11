@@ -12,7 +12,6 @@ public class UtilityServiceImpl extends RemoteServiceServlet implements UtilityS
 
 	private static final Logger log = Logger.getLogger(UtilityServiceImpl.class.getName());
 
-	@Override
 	public Date getServerTimestamp() {
 
 		Date timeStamp = new Date();

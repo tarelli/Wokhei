@@ -36,7 +36,6 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 
 	private List<OrderDTO> _orders;
 
-	@SuppressWarnings("unchecked")
 	public synchronized OrderDTO getLatestOrder() {
 		//get current user
 		UserService userService = UserServiceFactory.getUserService();
