@@ -131,6 +131,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 		_colorPanel.add(_colorHintLabel);
 
 		_messageLabel.addStyleName("errorLabel");
+		_submitOrder.addStyleName("submitRequest");
 
 		// Fill up that son of a bitch of a mainPanel
 		_mainPanel.add(_logoTextPanel);
