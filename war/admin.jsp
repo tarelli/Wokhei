@@ -59,7 +59,7 @@ in</a> to browse your orders!</p>
 <%
 	if(user!= null)
 {
-	if (user.getEmail().equals("tarelli") || AdminAuthenticator.isAdmin(user))
+	if (user.getEmail().equals("matteo.cantarelli@wokhei.com") || AdminAuthenticator.isAdmin(user))
 	{
     	PersistenceManager pm = PMF.get().getPersistenceManager();
     	String select_query = "select from " + Order.class.getName();  

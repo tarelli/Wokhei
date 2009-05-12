@@ -56,22 +56,10 @@
 
 
 <div class="bodyDoor">
-<div id="orderSubmitterAlternateBody" class="orderSubmitterAlternateBodyPanel"></div>
+	<div id="orderSubmitterAlternateBody" class="orderSubmitterAlternateBodyPanel"></div>
 </div>
-
-	<div id="ordersBrowser" class="orders">
-	</div>
-	
-	<div id="ordersBrowserButtons" class="ordersButtons">
-	</div>
-	
-	<div id="ordersBrowserImage" class="ordersImage">
-	</div>
-	
-	
-	<div id="orderSubmitter" class="submitOrder">
-
-	</div>
+	<div id="ordersBrowser" class="orders"></div>
+	<div id="orderSubmitter" class="submitOrder"></div>
 
 </div>
 

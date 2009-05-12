@@ -233,27 +233,27 @@ input,select {
 	position: relative;
 	min-height: 149px;
 	top:1px;
-	background: URL("../images/headerDoor.png");
+	background: URL("../images/headerDOOR.png");
 	background-repeat: no-repeat
 }
 
 .bodyDoor {
 	position: relative;
 	min-height: 392px;
-	background: URL("../images/bodyDoor.png");
+	background: URL("../images/bodyDOOR.png");
 	background-repeat: no-repeat
 }
 
 .bodytileDoor {
 	position: relative;
 	min-height: 1px;
-	background: URL("../images/bodytileDoor.png");
+	background: URL("../images/bodytileDOOR.png");
 }
 
 .footerDoor {
 	position: relative;
 	min-height: 159px;
-	background: URL("../images/footerDoor.png");
+	background: URL("../images/footerDOOR.png");
 	background-repeat: no-repeat;
 }
 
@@ -283,26 +283,26 @@ input,select {
 .orderSubmitterAlternateBody{
 	position: relative;
 	min-height: 392px;
-	background: URL("../images/bodyDrink.png");
+	background: URL("../images/bodyDRINK.png");
 }
 
 
 .orderSubmitterAlternateBodytile{
 	position: relative;
 	min-height: 1px;
-	background: URL("../images/bodytileDrink.png");
+	background: URL("../images/bodytileDRINK.png");
 }
 
 .orderSubmitterAlternateFooter{
 	position: relative;
 	min-height: 159px;
-	background: URL("../images/footerDrink.png");
+	background: URL("../images/footerDRINK.png");
 }
 
 	/* OTHERS */
 	
 .submitRequest {
-	background: URL("../images/leftarrowoff.png");
+	background: URL("../images/leftarrowOFF.png");
 	border:0px;
 	width:34px;
 	height:29px;
@@ -331,7 +331,7 @@ input,select {
 }
 
 .leftArrow {
-	background: URL("../images/leftarrowoff.png");
+	background: URL("../images/leftarrowOFF.png");
 	border:0px;
 	width:34px;
 	height:29px;
@@ -342,7 +342,7 @@ input,select {
 }
 	
 .rightArrow {
-	background: URL("../images/rightarrowoff.png");
+	background: URL("../images/rightarrowOFF.png");
 	border:0px;
 	width:34px;
 	height:29px;
@@ -403,17 +403,6 @@ div#orderSubmitter {
 	font-size: 12px;
 }
 
-.ordersPanel {
-	position: absolute;
-	left: 550px;
-	top: 20px;
-	width: 336px;
-	height: 384px;
-	background: URL("../images/panel.png");
-	opacity: .50;
-}
-
-
 .orderText {
 	float: right;
 	position: relative;
@@ -424,33 +413,15 @@ div#orderSubmitter {
 
 .orderIcon {
 	position: relative;
-	float: left;
 	width: 64px;
 	height: 64px;
 }
 
 .orders {
 	position: absolute;
-	left: 760px;
-	top: 50px;
-	width: 150px;
-	height: 400px;
-}
-
-.ordersImage {
-	position: absolute;
-	left: 565px;
+	left: 550px;
 	top: 20px;
-	width: 200px;
-	height: 300px;
 }
 
-.ordersButtons {
-	position: absolute;
-	left: 755px;
-	top: 150px;
-	width: 150px;
-	height: 100px;
-}
 
 

@@ -18,6 +18,10 @@
     {
     	response.sendRedirect("home.jsp");
     }
+    else
+    {
+    	response.sendRedirect(userService.createLoginURL(request.getRequestURI()));
+    }
 %>
 
 <body>
