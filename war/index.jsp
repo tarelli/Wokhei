@@ -7,7 +7,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>WOKHEI - Stir Fried Logos</title>
+<title>Wokhei</title>
 <link href="/stylesheets/style.css" rel="stylesheet" type="text/css" />
 </head>
 
@@ -51,5 +51,7 @@
 </div>
 </div>
 
+<!-- OPTIONAL: include this if you want history support -->
+<iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1' style="position:absolute;width:0;height:0;border:0"></iframe>
 </body>
 </html>
