@@ -37,9 +37,9 @@ public class OrderBrowserModulePart extends AModulePart{
 
 	private final Image orderImage = new Image();
 
-	private final Button previousOrderButton = new Button("Show previous order");
+	private final Button previousOrderButton = new Button();
 
-	private final Button nextOrderButton = new Button("Show next order");
+	private final Button nextOrderButton = new Button();
 
 	private OrderDTO _currentOrder=null;
 
@@ -68,6 +68,8 @@ public class OrderBrowserModulePart extends AModulePart{
 		});
 
 		imagePanel.add(orderImage);
+		previousOrderButton.setStyleName("leftArrow");
+		nextOrderButton.setStyleName("rightArrow");
 		orderNameLabel.setStyleName("logoNameLabel");
 		orderTagsLabel.setStyleName("logoTagsDateLabel");
 		orderDateLabel.setStyleName("logoTagsDateLabel");
