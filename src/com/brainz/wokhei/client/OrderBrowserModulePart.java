@@ -9,6 +9,7 @@ import com.brainz.wokhei.resources.Images;
 import com.brainz.wokhei.shared.OrderDTO;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
@@ -75,7 +76,7 @@ public class OrderBrowserModulePart extends AModulePart{
 		ordersPanel.add(orderNameLabel);
 		ordersPanel.add(orderTagsLabel);
 		ordersPanel.add(orderDateLabel);
-		mainPanel.add(ordersPanel,206,45);
+		mainPanel.add(ordersPanel,220,45);
 		mainPanel.add(previousOrderButton,220,120);
 		mainPanel.add(nextOrderButton,270,120);
 
@@ -163,15 +164,11 @@ public class OrderBrowserModulePart extends AModulePart{
 			orderNameLabel.setText(_currentOrder.getText());
 			String list=Arrays.asList(_currentOrder.getTags()).toString();
 			//DateFormat class is not supported on the client side. 
-			//Using deprecated methods temporarily (this will never get changed).
-			String date=
-				((Integer)_currentOrder.getDate().getMonth()).toString()+"/"+
-				((Integer)_currentOrder.getDate().getDay()).toString()+"/"+
-				((Integer)_currentOrder.getDate().getYear()).toString()+" "+
-				((Integer)_currentOrder.getDate().getHours()).toString()+":"+
-				((Integer)_currentOrder.getDate().getMinutes()).toString();
+			//Using deprecated methods temporarily (this will never get changed).	
+			DateTimeFormat fmt = DateTimeFormat.getFormat("EEE MMM yy k:m");
+
 			orderTagsLabel.setText(list.substring(1, list.length()-1));
-			orderDateLabel.setText(date);
+			orderDateLabel.setText(fmt.format(_currentOrder.getDate()));
 			switch(_currentOrder.getStatus())
 			{
 			case INCOMING:
