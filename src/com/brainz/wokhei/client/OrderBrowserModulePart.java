@@ -10,8 +10,8 @@ import com.brainz.wokhei.shared.OrderDTO;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -24,12 +24,9 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class OrderBrowserModulePart extends AModulePart{
 
+	private final AbsolutePanel mainPanel = new AbsolutePanel();
 
-	private final VerticalPanel mainPanel = new VerticalPanel();
-
-	private final VerticalPanel orderPanel = new VerticalPanel();
-
-	private final HorizontalPanel buttonsPanel = new HorizontalPanel();
+	private final VerticalPanel ordersPanel = new VerticalPanel();
 
 	private final Label orderNameLabel = new Label();
 
@@ -44,8 +41,6 @@ public class OrderBrowserModulePart extends AModulePart{
 	private OrderDTO _currentOrder=null;
 
 	private final Label orderDateLabel = new Label();
-
-	private final HorizontalPanel imagePanel = new HorizontalPanel();
 
 
 
@@ -67,22 +62,24 @@ public class OrderBrowserModulePart extends AModulePart{
 			}
 		});
 
-		imagePanel.add(orderImage);
+
 		previousOrderButton.setStyleName("leftArrow");
 		nextOrderButton.setStyleName("rightArrow");
 		orderNameLabel.setStyleName("logoNameLabel");
 		orderTagsLabel.setStyleName("logoTagsDateLabel");
 		orderDateLabel.setStyleName("logoTagsDateLabel");
-		orderPanel.add(orderNameLabel);
-		orderPanel.add(orderTagsLabel);
-		orderPanel.add(orderDateLabel);
-		buttonsPanel.add(previousOrderButton);
-		buttonsPanel.add(nextOrderButton);
-		mainPanel.add(orderPanel);
+		mainPanel.setHeight("600px");
+		mainPanel.setWidth("400px");
+		mainPanel.add(orderImage, 12, 0);
 
-		RootPanel.get("ordersBrowser").add(getLablesPanel());
-		RootPanel.get("ordersBrowserButtons").add(getButtonsPanel());
-		RootPanel.get("ordersBrowserImage").add(getImageStatusPanel());
+		ordersPanel.add(orderNameLabel);
+		ordersPanel.add(orderTagsLabel);
+		ordersPanel.add(orderDateLabel);
+		mainPanel.add(ordersPanel,206,45);
+		mainPanel.add(previousOrderButton,220,120);
+		mainPanel.add(nextOrderButton,270,120);
+
+		RootPanel.get("ordersBrowser").add(getPanel());
 	}
 
 
@@ -90,26 +87,12 @@ public class OrderBrowserModulePart extends AModulePart{
 	/**
 	 * @return
 	 */
-	private Widget getLablesPanel() 
+	private Widget getPanel() 
 	{
 		return mainPanel;
 	}
 
-	/**
-	 * @return
-	 */
-	private Widget getButtonsPanel() 
-	{
-		return buttonsPanel;
-	}
 
-	/**
-	 * @return
-	 */
-	private Widget getImageStatusPanel() 
-	{
-		return imagePanel;
-	}
 
 
 	protected void getLatestOrder() {
@@ -178,8 +161,17 @@ public class OrderBrowserModulePart extends AModulePart{
 		if(_currentOrder!=null)
 		{
 			orderNameLabel.setText(_currentOrder.getText());
-			orderTagsLabel.setText(Arrays.asList(_currentOrder.getTags()).toString());
-			orderDateLabel.setText(_currentOrder.getDate().toString());
+			String list=Arrays.asList(_currentOrder.getTags()).toString();
+			//DateFormat class is not supported on the client side. 
+			//Using deprecated methods temporarily (this will never get changed).
+			String date=
+				((Integer)_currentOrder.getDate().getMonth()).toString()+"/"+
+				((Integer)_currentOrder.getDate().getDay()).toString()+"/"+
+				((Integer)_currentOrder.getDate().getYear()).toString()+" "+
+				((Integer)_currentOrder.getDate().getHours()).toString()+":"+
+				((Integer)_currentOrder.getDate().getMinutes()).toString();
+			orderTagsLabel.setText(list.substring(1, list.length()-1));
+			orderDateLabel.setText(date);
 			switch(_currentOrder.getStatus())
 			{
 			case INCOMING:
