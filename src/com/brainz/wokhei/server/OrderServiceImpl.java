@@ -3,6 +3,7 @@
  */
 package com.brainz.wokhei.server;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -71,10 +72,11 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 		return OrderUtils.getPreviousOrder(_orders, order);
 	}
 
+
 	/* (non-Javadoc)
-	 * @see com.brainz.wokhei.client.HomeModuleService#submitOrder(java.lang.String, java.util.List)
+	 * @see com.brainz.wokhei.client.OrderService#submitOrder(com.brainz.wokhei.shared.OrderDTO)
 	 */
-	public Boolean submitOrder(String logoText, List<String> logoTags) 
+	public Boolean submitOrder(OrderDTO orderDTO) 
 	{
 		Boolean returnValue;
 
@@ -83,7 +85,7 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 		User user = userService.getCurrentUser();
 
 		// Instantiate order
-		Order order = new Order(user, logoText, logoTags, new Date());
+		Order order = new Order(user, orderDTO.getText(),Arrays.asList(orderDTO.getTags()),orderDTO.getColour(), new Date());
 
 		if (user!= null)
 		{
@@ -97,7 +99,7 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 				returnValue = true;
 
 				// log - this is fucked-up - if no user set there's something wrong
-				log.info("order submitted by user " + order.getCustomer().getNickname() + ": " + order.getText() + " - " + order.getTags().toString());
+				log.info("order submitted by user " + order.getCustomer().getNickname() + ": " + order.getText() + " - " + order.getTags().toString() + " COLOUR:" + order.getColour().getName());
 			} 
 			catch(Exception ex)
 			{

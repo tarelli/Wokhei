@@ -12,7 +12,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -35,13 +35,21 @@ public class OrderBrowserModulePart extends AModulePart{
 
 	private final Image orderImage = new Image();
 
-	private final Button previousOrderButton = new Button();
+	private final Label colour= new Label();
 
-	private final Button nextOrderButton = new Button();
+	private final Label previousOrderButton = new Label();
+
+	private final Label nextOrderButton = new Label();
 
 	private OrderDTO _currentOrder=null;
 
 	private final Label orderDateLabel = new Label();
+
+	private final Label colourLabel = new Label();
+
+	private final HorizontalPanel colourPanel=new HorizontalPanel();
+
+	private final Label colourSpace = new Label();
 
 
 
@@ -71,14 +79,26 @@ public class OrderBrowserModulePart extends AModulePart{
 		orderDateLabel.setStyleName("logoTagsDateLabel");
 		mainPanel.setHeight("600px");
 		mainPanel.setWidth("400px");
+		colour.setHeight("10px");
+		colour.setWidth("10px");
+		colourSpace.setWidth("3px");
+		colourLabel.setStyleName("pantoneLabel");
 		mainPanel.add(orderImage, 12, 0);
+		colourPanel.setVerticalAlignment(HorizontalPanel.ALIGN_MIDDLE);
+		colourPanel.add(colourLabel);
+		colourPanel.add(colourSpace);
+		colourPanel.add(colour);
 
+		ordersPanel.setWidth("150px");
 		ordersPanel.add(orderNameLabel);
 		ordersPanel.add(orderTagsLabel);
+		ordersPanel.add(colourPanel);
+
+
 		ordersPanel.add(orderDateLabel);
-		mainPanel.add(ordersPanel,220,45);
-		mainPanel.add(previousOrderButton,220,120);
-		mainPanel.add(nextOrderButton,270,120);
+		mainPanel.add(ordersPanel,220,25);
+		mainPanel.add(previousOrderButton,230,130);
+		mainPanel.add(nextOrderButton,280,130);
 
 		RootPanel.get("ordersBrowser").add(getPanel());
 	}
@@ -166,7 +186,8 @@ public class OrderBrowserModulePart extends AModulePart{
 			//DateFormat class is not supported on the client side. 
 			//Using deprecated methods temporarily (this will never get changed).	
 			DateTimeFormat fmt = DateTimeFormat.getFormat("EEE MMM yy k:m");
-
+			colour.setStyleName("colour"+_currentOrder.getColour().toString());
+			colourLabel.setText(_currentOrder.getColour().getName()+" ");
 			orderTagsLabel.setText(list.substring(1, list.length()-1));
 			orderDateLabel.setText(fmt.format(_currentOrder.getDate()));
 			switch(_currentOrder.getStatus())

@@ -9,6 +9,7 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import com.brainz.wokhei.shared.Colour;
 import com.brainz.wokhei.shared.Status;
 import com.google.appengine.api.users.User;
 import com.google.gwt.user.client.rpc.IsSerializable;
@@ -36,12 +37,24 @@ public class Order implements IsSerializable{
 	@Persistent
 	private Status status;
 
-	public Order(User author, String text, List<String> tags, Date date) {
+	@Persistent
+	private Colour colour;
+
+	public Order(User author, String text, List<String> tags, Colour colour, Date date) {
 		this.customer = author;
-		this.setText(text);
+		this.text=text;
 		this.tags = tags;
 		this.date = date;
+		this.colour=colour;
 		this.status=Status.INCOMING;
+	}
+
+	public Colour getColour() {
+		return colour;
+	}
+
+	public void setColour(Colour colour) {
+		this.colour = colour;
 	}
 
 	public Long getId() {

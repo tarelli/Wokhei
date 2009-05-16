@@ -5,7 +5,6 @@ import java.util.Date;
 
 public class OrderDTO implements Serializable{
 
-
 	private Long _id;
 
 	private String _text;
@@ -18,58 +17,149 @@ public class OrderDTO implements Serializable{
 
 	private String _customerEmail;
 
-	public Long getId() {
-		return _id;
-	}
+	private Colour _colour;
 
-	public void setId(Long id) {
-		_id = id;
-	}
 
-	public OrderDTO() {
+	/**
+	 * 
+	 */
+	public OrderDTO() 
+	{
 		super();	
 	}
 
+	/**
+	 * @param id
+	 * @param text
+	 * @param tags
+	 * @param date
+	 * @param status
+	 * @param colour
+	 * @param customerEmail
+	 */
 	public OrderDTO(Long id, String text, String[] tags, Date date,
-			Status status, String customerEmail) {
+			Status status, Colour colour, String customerEmail) 
+	{
 		super();
 		_id = id;
 		_text = text;
 		_tags = tags;
 		_date = date;
 		_status = status;
+		_colour=colour;
 		_customerEmail = customerEmail;
 	}
 
-	public String getText() {
+	/**
+	 * @return
+	 */
+	public String getCustomerEmail()
+	{
+		return _customerEmail;
+	}
+
+	/**
+	 * @param email
+	 */
+	public void setCustomerEmail(String email) 
+	{
+		_customerEmail = email;
+	}
+
+	/**
+	 * @return
+	 */
+	public Colour getColour() 
+	{
+		return _colour;
+	}
+
+	/**
+	 * @param colour
+	 */
+	public void setColour(Colour colour) 
+	{
+		this._colour = colour;
+	}
+
+	/**
+	 * @return
+	 */
+	public Long getId() 
+	{
+		return _id;
+	}
+
+	/**
+	 * @param id
+	 */
+	public void setId(Long id) 
+	{
+		_id = id;
+	}
+
+
+	/**
+	 * @return
+	 */
+	public String getText() 
+	{
 		return _text;
 	}
 
-	public void setText(String text) {
+	/**
+	 * @param text
+	 */
+	public void setText(String text) 
+	{
 		_text = text;
 	}
 
-	public String[] getTags() {
+	/**
+	 * @return
+	 */
+	public String[] getTags() 
+	{
 		return _tags;
 	}
 
-	public void setTags(String[] tags) {
+	/**
+	 * @param tags
+	 */
+	public void setTags(String[] tags) 
+	{
 		_tags = tags;
 	}
 
-	public Date getDate() {
+	/**
+	 * @return
+	 */
+	public Date getDate() 
+	{
 		return _date;
 	}
 
-	public void setDate(Date date) {
+	/**
+	 * @param date
+	 */
+	public void setDate(Date date) 
+	{
 		_date = date;
 	}
 
-	public Status getStatus() {
+	/**
+	 * @return
+	 */
+	public Status getStatus() 
+	{
 		return _status;
 	}
 
-	public void setStatus(Status status) {
+	/**
+	 * @param status
+	 */
+	public void setStatus(Status status) 
+	{
 		_status = status;
 	}
 

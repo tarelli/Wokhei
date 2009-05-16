@@ -3,8 +3,7 @@
  */
 package com.brainz.wokhei.client;
 
-import java.util.Arrays;
-
+import com.brainz.wokhei.shared.Colour;
 import com.brainz.wokhei.shared.OrderDTO;
 import com.brainz.wokhei.shared.Status;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -12,6 +11,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -26,6 +26,8 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 	private static final int MAX_TAGS = 5;
 
+	private static final int NUM_COLOURS = 24;
+
 	//root panel to host main and alternate panel
 	private final VerticalPanel _rootPanel = new VerticalPanel();
 
@@ -37,11 +39,22 @@ public class OrderSubmitterModulePart extends AModulePart {
 	private final Label _logoTextLabel = new Label("Logo name");
 	private final Label _logoHintLabel = new Label("e.g. Franco Restaurant");
 
-	// TODO: Add color-picker
+	//COLOURS
 	private final VerticalPanel _colorPanel = new VerticalPanel();
-	//private final TextBox logoTextBox = new TextBox();
-	private final Label _colorLabel = new Label("Main color");
-	private final Label _colorHintLabel = new Label("a hint for what main colour you would like for your logo");
+	private final Label _colorLabel = new Label("Main color  ");
+	private final Label _colorHintLabel = new Label("Logo's primary colour");
+	private final VerticalPanel _rows = new VerticalPanel();
+	private final HorizontalPanel _colorSubPanel= new HorizontalPanel();
+	private final HorizontalPanel _firstRow = new HorizontalPanel();
+	private final HorizontalPanel _secondRow = new HorizontalPanel();
+	private final HorizontalPanel _thirdRow = new HorizontalPanel();
+	private final Label _pantoneTextBox = new Label();
+	private final Label _colours[] = new Label[NUM_COLOURS];
+
+	private Colour _selectedColour;
+	private Label _selectedColourButton=null;
+
+
 
 	// logotags controls
 	private final VerticalPanel _logoTagsPanel = new VerticalPanel();
@@ -69,7 +82,9 @@ public class OrderSubmitterModulePart extends AModulePart {
 	// alternate/main panel switch
 	private boolean _isMainPanelVisible = true;
 
-	private final Label _requestLabel = new Label("Request your logo here:");
+	private final Label _requestLabel = new Label("Request your logo");
+
+
 
 	@Override
 	public void initModulePart(OrderServiceAsync service) {
@@ -124,11 +139,33 @@ public class OrderSubmitterModulePart extends AModulePart {
 		_logoTagsPanel.add(_logoTagsBox);
 
 		_colorLabel.addStyleName("label");
+		_colorLabel.setWidth("80px");
 		_colorHintLabel.addStyleName("hintLabel");
-
-		_colorPanel.setSpacing(1);
 		_colorPanel.add(_colorLabel);
-		_colorPanel.add(_colorHintLabel);
+		_colorSubPanel.setHeight("15px");
+		configureColoursPanels();
+
+		_pantoneTextBox.setWidth("180px");
+		_pantoneTextBox.setStyleName("pantoneLabel");
+
+		_colorSubPanel.setVerticalAlignment(HorizontalPanel.ALIGN_BOTTOM);
+		_colorSubPanel.setHorizontalAlignment(HorizontalPanel.ALIGN_RIGHT);
+		_colorSubPanel.add(_colorHintLabel);
+		_colorSubPanel.add(_pantoneTextBox);
+
+		_colorPanel.setWidth("300px");
+		_colorPanel.setSpacing(0);
+		_rows.setSpacing(0);
+		_colorPanel.add(_colorSubPanel);
+
+
+
+		_rows.add(_firstRow);
+		_rows.add(_secondRow);
+		_rows.add(_thirdRow);
+
+		_colorPanel.add(_rows);
+
 
 		_messageLabel.addStyleName("errorLabel");
 		_submitOrder.addStyleName("submitRequest");
@@ -190,6 +227,48 @@ public class OrderSubmitterModulePart extends AModulePart {
 	}
 
 
+	private void configureColoursPanels() 
+	{
+		_firstRow.setSpacing(1);
+		_secondRow.setSpacing(1);
+		_thirdRow.setSpacing(1);
+
+		for(int i=0;i<NUM_COLOURS;i++)
+		{
+			_colours[i]=new Label();
+			_colours[i].setHeight("28px");
+			_colours[i].setWidth("28px");
+			_colours[i].addStyleName("colour"+Colour.values()[i].toString());
+			_colours[i].addStyleName("colourNormal");
+			_colours[i].addStyleName("colourBorder");
+
+			final int index=i;
+
+			_colours[i].addClickHandler(new ClickHandler(){
+				public void onClick(ClickEvent event) {
+					_pantoneTextBox.setText(Colour.values()[index].getName());
+					if(_selectedColourButton!=null)
+					{
+						_selectedColourButton.removeStyleName("colourSelected");
+						_selectedColourButton.addStyleName("colourNormal");
+					}
+					_selectedColour=Colour.values()[index];
+					_colours[index].removeStyleName("colourNormal");
+					_colours[index].addStyleName("colourSelected");
+					_selectedColourButton=_colours[index];
+				}});
+
+			if(i<8)
+				_firstRow.add(_colours[i]);
+			else if(i<16)
+				_secondRow.add(_colours[i]);
+			else if(i<NUM_COLOURS)
+				_thirdRow.add(_colours[i]);
+		}
+
+	}
+
+
 	/**
 	 * 
 	 */
@@ -201,6 +280,10 @@ public class OrderSubmitterModulePart extends AModulePart {
 			if(_logoTagsBox.getText().split(" ").length>MAX_TAGS)
 			{
 				_messageLabel.setText("Sorry, our Chefs get confused with more than 5 tags!");
+			}
+			else if(_selectedColour==null)
+			{
+				_messageLabel.setText("Pick up the main colour!");
 			}
 			else
 			{
@@ -221,7 +304,12 @@ public class OrderSubmitterModulePart extends AModulePart {
 				};
 
 				// Make the call to the stock price service.
-				_service.submitOrder(this._logoTextBox.getText(), Arrays.asList(_logoTagsBox.getText().split(" ")), callback);			
+				OrderDTO order=new OrderDTO();
+				order.setStatus(Status.INCOMING);
+				order.setTags(_logoTagsBox.getText().split(" "));
+				order.setText(_logoTextBox.getText());
+				order.setColour(_selectedColour);
+				_service.submitOrder(order, callback);			
 			}
 		}
 		else
@@ -319,7 +407,6 @@ public class OrderSubmitterModulePart extends AModulePart {
 		}
 	}
 
-
 	/**
 	 * @return
 	 */
@@ -335,6 +422,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 	{
 		return _alternateRootPanelFooter;
 	}
+
 	/**
 	 * @return
 	 */
@@ -342,6 +430,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 	{
 		return _alternateRootPanelBody;
 	}
+
 	/**
 	 * @return
 	 */
@@ -349,9 +438,6 @@ public class OrderSubmitterModulePart extends AModulePart {
 	{
 		return _alternateRootPanelBodyTile;
 	}
-
-
-
 
 	/**
 	 * @param show
