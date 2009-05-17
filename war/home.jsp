@@ -7,7 +7,6 @@
 <%@ page import="com.google.appengine.api.users.UserServiceFactory"%>
 <%@ page import="com.brainz.wokhei.OrderUtils"%>
 <%@ page import="com.brainz.wokhei.PMF"%>
-<%@ page import="com.brainz.wokhei.Messages"%>
 <%@ page import="com.brainz.wokhei.AdminAuthenticator"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
@@ -35,7 +34,7 @@
     }
     else
     {
-  		if(user.getEmail().equals(Messages.getString("Admin.0")) || AdminAuthenticator.isAdmin(user))
+  		if(user.getEmail().equals("matteo.cantarelli@wokhei.com") || AdminAuthenticator.isAdmin(user))
 		{
 %>
 <div class="admin"><a href="/admin.jsp"><a2>Admin<a2></a></div>

@@ -3,6 +3,7 @@
  */
 package com.brainz.wokhei.client;
 
+import com.brainz.wokhei.resources.Messages;
 import com.brainz.wokhei.shared.Colour;
 import com.brainz.wokhei.shared.OrderDTO;
 import com.brainz.wokhei.shared.Status;
@@ -36,13 +37,13 @@ public class OrderSubmitterModulePart extends AModulePart {
 	// logotext controls
 	private final VerticalPanel _logoTextPanel = new VerticalPanel();
 	private final TextBox _logoTextBox = new TextBox();
-	private final Label _logoTextLabel = new Label("Logo name");
-	private final Label _logoHintLabel = new Label("e.g. Franco Restaurant");
+	private final Label _logoTextLabel = new Label(Messages.LOGO_NAME_LBL.getString()); //$NON-NLS-1$
+	private final Label _logoHintLabel = new Label(Messages.LOGO_NAME_EG_LBL.getString()); //$NON-NLS-1$
 
 	//COLOURS
 	private final VerticalPanel _colorPanel = new VerticalPanel();
-	private final Label _colorLabel = new Label("Main color  ");
-	private final Label _colorHintLabel = new Label("Logo's primary colour");
+	private final Label _colorLabel = new Label(Messages.LOGO_COLOUR_LBL.getString()); //$NON-NLS-1$
+	private final Label _colorHintLabel = new Label(Messages.LOGO_COLOUR_EG_LBL.getString()); //$NON-NLS-1$
 	private final VerticalPanel _rows = new VerticalPanel();
 	private final HorizontalPanel _colorSubPanel= new HorizontalPanel();
 	private final HorizontalPanel _firstRow = new HorizontalPanel();
@@ -59,12 +60,12 @@ public class OrderSubmitterModulePart extends AModulePart {
 	// logotags controls
 	private final VerticalPanel _logoTagsPanel = new VerticalPanel();
 	private final TextBox _logoTagsBox = new TextBox();
-	private final Label _logoTagsLabel = new Label("5 Tags");
-	private final Label _tagsHintLabel = new Label("e.g. #FoodIndustry #Restaurant #Fancy #FrenchCuisine");
+	private final Label _logoTagsLabel = new Label(Messages.LOGO_TAGS_LBL.getString()); //$NON-NLS-1$
+	private final Label _tagsHintLabel = new Label(Messages.LOGO_TAGS_EG_LBL.getString()); //$NON-NLS-1$
 
 	// a pretty self-explanatory submit button
-	private final Button _submitOrder = new Button("Send request!");
-	private final Label _messageLabel = new Label("");
+	private final Button _submitOrder = new Button(Messages.SEND_REQUEST.getString()); //$NON-NLS-1$
+	private final Label _messageLabel = new Label(""); //$NON-NLS-1$
 
 	// these panels are the place olders for the drink images
 	private final VerticalPanel _alternateRootPanelBody= new VerticalPanel();
@@ -77,12 +78,12 @@ public class OrderSubmitterModulePart extends AModulePart {
 	private final AbsolutePanel _alternateSubPanelFooter= new AbsolutePanel();
 
 
-	private final Label _timerLabel = new Label("Your logo is getting ready, do you fancy a drink meanwhile?");
+	private final Label _timerLabel = new Label(); //$NON-NLS-1$
 
 	// alternate/main panel switch
 	private boolean _isMainPanelVisible = true;
 
-	private final Label _requestLabel = new Label("Request your logo");
+	private final Label _requestLabel = new Label(Messages.REQUEST_LOGO_LBL.getString()); //$NON-NLS-1$
 
 
 
@@ -92,27 +93,27 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 		_mainPanel.setSpacing(10);
 
-		_requestLabel.addStyleName("h3");
+		_requestLabel.addStyleName("h3"); //$NON-NLS-1$
 		_mainPanel.add(_requestLabel );
 
-		_logoTextLabel.addStyleName("label");
+		_logoTextLabel.addStyleName("label"); //$NON-NLS-1$
 
-		_logoHintLabel.setStyleName("hintLabel");
+		_logoHintLabel.setStyleName("hintLabel"); //$NON-NLS-1$
 
-		_logoTextBox.setText("the text in your logo");
-		_logoTextBox.setWidth("255px");
-		_logoTextBox.setStyleName("textBox");
+		_logoTextBox.setText(Messages.LOGO_NAME_TXTBOX.getString()); //$NON-NLS-1$
+		_logoTextBox.setWidth("255px"); //$NON-NLS-1$
+		_logoTextBox.setStyleName("textBox"); //$NON-NLS-1$
 
 		_logoTextBox.addClickHandler(new ClickHandler(){
 			public void onClick(ClickEvent event) {
-				if(_logoTextBox.getText().equals("the text in your logo"))
+				if(_logoTextBox.getText().equals(Messages.LOGO_NAME_TXTBOX.getString())) //$NON-NLS-1$
 				{
 					_logoTextBox.selectAll();
 				}
 			}});
 
-		_logoTagsLabel.addStyleName("label");
-		_tagsHintLabel.addStyleName("hintLabel");
+		_logoTagsLabel.addStyleName("label"); //$NON-NLS-1$
+		_tagsHintLabel.addStyleName("hintLabel"); //$NON-NLS-1$
 
 		// prepare my motherfuckin' logoText vertical panel
 		_logoTextPanel.setSpacing(1);
@@ -122,12 +123,12 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 
 		// prepare my cock-fuckerin' tags vertical panel
-		_logoTagsBox.setWidth("255px");
-		_logoTagsBox.setText("describe what the logo is for!");
-		_logoTagsBox.setStyleName("textBox");
+		_logoTagsBox.setWidth("255px"); //$NON-NLS-1$
+		_logoTagsBox.setText(Messages.LOGO_TAGS_TXTBOX.getString()); //$NON-NLS-1$
+		_logoTagsBox.setStyleName("textBox"); //$NON-NLS-1$
 		_logoTagsBox.addClickHandler(new ClickHandler(){
 			public void onClick(ClickEvent event) {
-				if(_logoTagsBox.getText().equals("describe what the logo is for!"))
+				if(_logoTagsBox.getText().equals(Messages.LOGO_TAGS_TXTBOX.getString())) //$NON-NLS-1$
 				{
 					_logoTagsBox.selectAll();
 				}
@@ -138,22 +139,21 @@ public class OrderSubmitterModulePart extends AModulePart {
 		_logoTagsPanel.add(_tagsHintLabel);
 		_logoTagsPanel.add(_logoTagsBox);
 
-		_colorLabel.addStyleName("label");
-		_colorLabel.setWidth("80px");
-		_colorHintLabel.addStyleName("hintLabel");
+		_colorLabel.addStyleName("label"); //$NON-NLS-1$
+		_colorHintLabel.addStyleName("hintLabel"); //$NON-NLS-1$
 		_colorPanel.add(_colorLabel);
-		_colorSubPanel.setHeight("15px");
+		_colorSubPanel.setHeight("15px"); //$NON-NLS-1$
 		configureColoursPanels();
 
-		_pantoneTextBox.setWidth("180px");
-		_pantoneTextBox.setStyleName("pantoneLabel");
+		_pantoneTextBox.setWidth("180px"); //$NON-NLS-1$
+		_pantoneTextBox.setStyleName("pantoneLabel"); //$NON-NLS-1$
 
 		_colorSubPanel.setVerticalAlignment(HorizontalPanel.ALIGN_BOTTOM);
 		_colorSubPanel.setHorizontalAlignment(HorizontalPanel.ALIGN_RIGHT);
 		_colorSubPanel.add(_colorHintLabel);
 		_colorSubPanel.add(_pantoneTextBox);
 
-		_colorPanel.setWidth("300px");
+		_colorPanel.setWidth("300px"); //$NON-NLS-1$
 		_colorPanel.setSpacing(0);
 		_rows.setSpacing(0);
 		_colorPanel.add(_colorSubPanel);
@@ -167,8 +167,8 @@ public class OrderSubmitterModulePart extends AModulePart {
 		_colorPanel.add(_rows);
 
 
-		_messageLabel.addStyleName("errorLabel");
-		_submitOrder.addStyleName("submitRequest");
+		_messageLabel.addStyleName("errorLabel"); //$NON-NLS-1$
+		_submitOrder.addStyleName("submitRequest"); //$NON-NLS-1$
 
 		// Fill up that son of a bitch of a mainPanel
 		_mainPanel.add(_logoTextPanel);
@@ -182,18 +182,18 @@ public class OrderSubmitterModulePart extends AModulePart {
 		// 1. check difference between timestamp and server time
 		// 2. setup countdown
 		// 3. setup timer to refresh client with updated countdown timer every sec 
-		_timerLabel.addStyleName("waitLabel");
-		_timerLabel.setWidth("350px");
+		_timerLabel.addStyleName("waitLabel"); //$NON-NLS-1$
+		_timerLabel.setWidth("350px"); //$NON-NLS-1$
 
-		_alternateSubPanelBody.addStyleName("orderSubmitterAlternateBody");
-		_alternateSubPanelBodyTile.addStyleName("orderSubmitterAlternateBodytile");
-		_alternateSubPanelFooter.addStyleName("orderSubmitterAlternateFooter");
+		_alternateSubPanelBody.addStyleName("orderSubmitterAlternateBody"); //$NON-NLS-1$
+		_alternateSubPanelBodyTile.addStyleName("orderSubmitterAlternateBodytile"); //$NON-NLS-1$
+		_alternateSubPanelFooter.addStyleName("orderSubmitterAlternateFooter"); //$NON-NLS-1$
 
 
 		_alternateSubPanelBody.add(_timerLabel,80,50);
-		_alternateRootPanelBody.setWidth("500px");
-		_alternateRootPanelBodyTile.setWidth("500px");
-		_alternateRootPanelFooter.setWidth("500px");
+		_alternateRootPanelBody.setWidth("500px"); //$NON-NLS-1$
+		_alternateRootPanelBodyTile.setWidth("500px"); //$NON-NLS-1$
+		_alternateRootPanelFooter.setWidth("500px"); //$NON-NLS-1$
 
 		_alternateRootPanelBody.add(_alternateSubPanelBody);
 		_alternateRootPanelBodyTile.add(_alternateSubPanelBodyTile);
@@ -208,7 +208,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 		setViewByLatestOrder();
 
-		RootPanel.get("orderSubmitter").add(_rootPanel);
+		RootPanel.get("orderSubmitter").add(_rootPanel); //$NON-NLS-1$
 
 		// Move cursor focus to the logoText input box.
 		_logoTextBox.setFocus(true);
@@ -220,10 +220,10 @@ public class OrderSubmitterModulePart extends AModulePart {
 			}
 		});
 
-		RootPanel.get("orderSubmitter").add(getOrderSubmitPanel());
-		RootPanel.get("orderSubmitterAlternateBody").add(getOrderSubmitAlternateBodyPanel());
-		RootPanel.get("orderSubmitterAlternateBodytile").add(getOrderSubmitAlternateBodytilePanel());
-		RootPanel.get("orderSubmitterAlternateFooter").add(getOrderSubmitAlternateFooterPanel());
+		RootPanel.get("orderSubmitter").add(getOrderSubmitPanel()); //$NON-NLS-1$
+		RootPanel.get("orderSubmitterAlternateBody").add(getOrderSubmitAlternateBodyPanel()); //$NON-NLS-1$
+		RootPanel.get("orderSubmitterAlternateBodytile").add(getOrderSubmitAlternateBodytilePanel()); //$NON-NLS-1$
+		RootPanel.get("orderSubmitterAlternateFooter").add(getOrderSubmitAlternateFooterPanel()); //$NON-NLS-1$
 	}
 
 
@@ -236,11 +236,11 @@ public class OrderSubmitterModulePart extends AModulePart {
 		for(int i=0;i<NUM_COLOURS;i++)
 		{
 			_colours[i]=new Label();
-			_colours[i].setHeight("28px");
-			_colours[i].setWidth("28px");
-			_colours[i].addStyleName("colour"+Colour.values()[i].toString());
-			_colours[i].addStyleName("colourNormal");
-			_colours[i].addStyleName("colourBorder");
+			_colours[i].setHeight("28px"); //$NON-NLS-1$
+			_colours[i].setWidth("28px"); //$NON-NLS-1$
+			_colours[i].addStyleName("colour"+Colour.values()[i].toString()); //$NON-NLS-1$
+			_colours[i].addStyleName("colourNormal"); //$NON-NLS-1$
+			_colours[i].addStyleName("colourBorder"); //$NON-NLS-1$
 
 			final int index=i;
 
@@ -249,12 +249,12 @@ public class OrderSubmitterModulePart extends AModulePart {
 					_pantoneTextBox.setText(Colour.values()[index].getName());
 					if(_selectedColourButton!=null)
 					{
-						_selectedColourButton.removeStyleName("colourSelected");
-						_selectedColourButton.addStyleName("colourNormal");
+						_selectedColourButton.removeStyleName("colourSelected"); //$NON-NLS-1$
+						_selectedColourButton.addStyleName("colourNormal"); //$NON-NLS-1$
 					}
 					_selectedColour=Colour.values()[index];
-					_colours[index].removeStyleName("colourNormal");
-					_colours[index].addStyleName("colourSelected");
+					_colours[index].removeStyleName("colourNormal"); //$NON-NLS-1$
+					_colours[index].addStyleName("colourSelected"); //$NON-NLS-1$
 					_selectedColourButton=_colours[index];
 				}});
 
@@ -277,20 +277,20 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 		if (this._logoTagsBox.getText().trim().length()!=0)
 		{		
-			if(_logoTagsBox.getText().split(" ").length>MAX_TAGS)
+			if(_logoTagsBox.getText().split(" ").length>=MAX_TAGS) //$NON-NLS-1$
 			{
-				_messageLabel.setText("Sorry, our Chefs get confused with more than 5 tags!");
+				_messageLabel.setText(Messages.LOGO_TAGS_ERROR_TOOMANY.getString()); //$NON-NLS-1$
 			}
 			else if(_selectedColour==null)
 			{
-				_messageLabel.setText("Pick up the main colour!");
+				_messageLabel.setText(Messages.LOGO_COLOUR_ERROR_NONE.getString()); //$NON-NLS-1$
 			}
 			else
 			{
 				// Set up the callback object.
 				AsyncCallback<Boolean> callback = new AsyncCallback<Boolean>() {
 					public void onFailure(Throwable caught) {
-						_messageLabel.setText("Fuck-up: " + caught.getMessage());
+						_messageLabel.setText(Messages.GENERIC_ERROR.getString() + caught.getMessage()); //$NON-NLS-1$
 					}
 
 					public void onSuccess(Boolean result) {
@@ -306,7 +306,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 				// Make the call to the stock price service.
 				OrderDTO order=new OrderDTO();
 				order.setStatus(Status.INCOMING);
-				order.setTags(_logoTagsBox.getText().split(" "));
+				order.setTags(_logoTagsBox.getText().split(" ")); //$NON-NLS-1$
 				order.setText(_logoTextBox.getText());
 				order.setColour(_selectedColour);
 				_service.submitOrder(order, callback);			
@@ -314,7 +314,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 		}
 		else
 		{
-			_messageLabel.setText("You need to put at least some tags!");
+			_messageLabel.setText(Messages.LOGO_TAGS_ERROR_NOTENOUGH.getString()); //$NON-NLS-1$
 		}
 	}
 
@@ -325,28 +325,14 @@ public class OrderSubmitterModulePart extends AModulePart {
 	{
 		if(result)
 		{
-			this._timerLabel.setText("Your logo is getting ready, do you fancy a drink meanwhile?");
+			this._timerLabel.setText(Messages.INCOMING_WAITMSG.getString()); //$NON-NLS-1$
 		}
 		else
 		{
-			this._timerLabel.setText("An error occurred while sending your request. Please do complain!");
+			this._timerLabel.setText(Messages.ERROR_WAITMSG.getString()); //$NON-NLS-1$
 		}
 	}
 
-	/**
-	 * @param result
-	 */
-	protected void updateMessage(Boolean result) 
-	{
-		if(result)
-		{
-			_messageLabel.setText("It's all good - Your request has been sent to the kitchen!");
-		}
-		else
-		{
-			_messageLabel.setText("Error: A bit of a Fuck-up!");
-		}
-	}
 
 	/**
 	 * Gets latest order and hooks up event success/failure handlers (a bit fucked if you ask me)

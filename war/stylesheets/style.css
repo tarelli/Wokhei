@@ -6,6 +6,12 @@ html,body {
 	background: #eb078f;
 }
 
+@font-face {
+    font-family: "Arial Rounded MT Bold";
+    src: url(../fonts/ArialRoundedBold.ttf);
+}
+
+
 A:link {
 	text-decoration: none
 }
@@ -57,7 +63,7 @@ div#page-wrap {
 
 h1 {
 	color: #bf007e;
-	font-family: "Arial Black", Gadget, sans-serif;
+	font-family: "Arial Rounded MT Bold";
 	font-size: 20px;
 	font-weight: 600;
 	text-align: left;
@@ -65,7 +71,7 @@ h1 {
 
 .h2 {
 	color: #bf007e;
-	font-family: "Arial Black", Gadget, sans-serif;
+	font-family: "Arial Rounded MT Bold";
 	font-size: 10px;
 	font-weight: 600;
 	text-align: left;
@@ -73,7 +79,7 @@ h1 {
 
 .h3 {
 	color: #000000;
-	font-family: "Arial Black", Gadget, sans-serif;
+	font-family: "Arial Rounded MT Bold";
 	font-size: 14px;
 }
 
@@ -91,7 +97,7 @@ a1:hover {
 
 a2 {
 	color: #bf007e;
-	font-family: "Arial Black", Gadget, sans-serif;
+	font-family: "Arial Rounded MT Bold";
 	font-size: 18px;
 	font-weight: 600;
 	text-align: left;
@@ -103,13 +109,13 @@ a2:hover {
 
 .label {
 	color: #bf007e;
-	font-family: "Arial Black", Gadget, sans-serif;
+	font-family: "Arial Rounded MT Bold";
 	font-size: 14px;
 }
 
 .hintLabel {
 	color: #000000;
-	font-family: "Arial", Gadget, sans-serif;
+	font-family: "Arial Rounded MT Bold";
 	font-size: 10px;
 }
 
@@ -337,10 +343,30 @@ input,select {
 	background: URL("../images/rightarrow.png");
 }
 
+.infoButton{
+	background: URL("../images/info.png");
+	border: 0px;
+	width: 20px;
+	height: 20px;
+}
+.infoButton:hover{
+	background: URL("../images/infoHover.png");
+}
+.infoButtonClicked{
+	background: URL("../images/infoOn.png");
+	border: 0px;
+	width: 20px;
+	height: 20px;
+}
+.infoButtonClicked:hover{
+	background: URL("../images/infoHover.png");
+}
+
 .waitLabel {
 	color: #bf007e;
-	font-family: "Arial Black", Gadget, sans-serif;
-	font-size: 30px;
+	font-family: "Arial Rounded MT Bold";
+	font-size: 36px;
+	font-weight: bold;
 	left: 50px;
 	top: 20px;
 }
@@ -401,8 +427,8 @@ div#orderSubmitter {
 
 .orders {
 	position: absolute;
-	left: 550px;
-	top: 20px;
+	left: 100px;
+	top: 0px;
 }
 
 .pantoneLabel {

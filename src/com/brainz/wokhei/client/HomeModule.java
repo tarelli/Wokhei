@@ -22,8 +22,9 @@ public class HomeModule implements EntryPoint {
 		OrderServiceAsync orderService = GWT.create(OrderService.class);
 
 		//Create the module parts
-		OrderBrowserModulePart orderBrowserModulePart = new OrderBrowserModulePart();
 		OrderSubmitterModulePart orderSubmitterModulePart = new OrderSubmitterModulePart();
+		OrderBrowserModulePart orderBrowserModulePart = new OrderBrowserModulePart();
+
 
 		//Initialize the module parts
 		orderSubmitterModulePart.addModulePartListener(orderBrowserModulePart);

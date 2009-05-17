@@ -5,7 +5,6 @@
 <%@ page import="com.google.appengine.api.users.User"%>
 <%@ page import="com.google.appengine.api.users.UserService"%>
 <%@ page import="com.google.appengine.api.users.UserServiceFactory"%>
-<%@ page import="com.brainz.wokhei.Messages"%>
 <%@ page import="com.brainz.wokhei.Admin"%>
 <%@ page import="com.brainz.wokhei.AdminAuthenticator"%>
 <%@ page import="com.brainz.wokhei.Order"%>

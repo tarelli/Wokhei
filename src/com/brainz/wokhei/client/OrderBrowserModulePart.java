@@ -37,6 +37,10 @@ public class OrderBrowserModulePart extends AModulePart{
 
 	private final Label colour= new Label();
 
+	private final Label infoButton = new Label();
+
+	private final Image infos = new Image();
+
 	private final Label previousOrderButton = new Label();
 
 	private final Label nextOrderButton = new Label();
@@ -72,33 +76,56 @@ public class OrderBrowserModulePart extends AModulePart{
 		});
 
 
+		infoButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				infos.setVisible(!infos.isVisible());
+				if(infos.isVisible())
+				{
+					infoButton.setStyleName("infoButtonClicked");
+				}
+				else
+				{
+					infoButton.setStyleName("infoButton");
+				}
+			}
+		});
+
+
 		previousOrderButton.setStyleName("leftArrow");
 		nextOrderButton.setStyleName("rightArrow");
 		orderNameLabel.setStyleName("logoNameLabel");
 		orderTagsLabel.setStyleName("logoTagsDateLabel");
 		orderDateLabel.setStyleName("logoTagsDateLabel");
+		infoButton.setStyleName("infoButton");
+		infos.setVisible(false);
+		infos.setUrl(Images.INFOS.getImageURL());
+
 		mainPanel.setHeight("600px");
-		mainPanel.setWidth("400px");
+		mainPanel.setWidth("900px");
 		colour.setHeight("10px");
 		colour.setWidth("10px");
 		colourSpace.setWidth("3px");
+
 		colourLabel.setStyleName("pantoneLabel");
-		mainPanel.add(orderImage, 12, 0);
 		colourPanel.setVerticalAlignment(HorizontalPanel.ALIGN_MIDDLE);
 		colourPanel.add(colourLabel);
 		colourPanel.add(colourSpace);
 		colourPanel.add(colour);
 
 		ordersPanel.setWidth("150px");
+		ordersPanel.add(infoButton);
 		ordersPanel.add(orderNameLabel);
 		ordersPanel.add(orderTagsLabel);
 		ordersPanel.add(colourPanel);
-
-
 		ordersPanel.add(orderDateLabel);
-		mainPanel.add(ordersPanel,220,25);
-		mainPanel.add(previousOrderButton,230,130);
-		mainPanel.add(nextOrderButton,280,130);
+
+		mainPanel.add(orderImage, 462, 18);
+		mainPanel.add(previousOrderButton,670,150);
+		mainPanel.add(nextOrderButton,720,150);
+		mainPanel.add(infos,350,30);
+		mainPanel.add(ordersPanel,660,43);
+
+
 
 		RootPanel.get("ordersBrowser").add(getPanel());
 	}
