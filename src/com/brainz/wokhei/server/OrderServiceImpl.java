@@ -114,8 +114,6 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 		else
 			returnValue = false;
 
-		//TODO: some kind of response.redirect here? Maybe not
-
 		return returnValue;
 	}
 
