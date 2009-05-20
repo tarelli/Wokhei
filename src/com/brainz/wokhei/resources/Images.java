@@ -4,12 +4,13 @@ public enum Images {
 
 	INCOMING("./images/status/incoming.png"),
 	READY("./images/status/ready.png"),
-	BOUGHT("./images/status/bought.png"),
 	ARCHIVED("./images/status/archived.png"),
-	COOKING("./images/status/cooking.png"),
+	IN_PROGRESS("./images/status/inprogress.png"),
 	TASTING("./images/status/tasting.png"),
-	PAYED("./images/status/payed.png"),
+	BOUGHT("./images/status/bought.png"),
 	REJECTED("./images/status/rejected.png"),
+	ACCEPTED("./images/status/accepted.png"),
+	QUALITY_GATE("./images/status/qualitygate.png"),
 
 	DRINKBODY("./images/bodydrink.png"),
 	DRINKBODYTILE("./images/bodytiledrink.png"),

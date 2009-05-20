@@ -6,6 +6,15 @@ html,body {
 	background: #eb078f;
 }
 
+div#preloaded-images {
+   position: absolute;
+   overflow: hidden;
+   left: -9999px; 
+   top: -9999px;
+   height: 1px;
+   width: 1px;
+}
+
 @font-face {
     font-family: "Arial Rounded MT Bold";
     src: url(../fonts/ArialRoundedBold.ttf);
@@ -64,7 +73,7 @@ div#page-wrap {
 h1 {
 	color: #bf007e;
 	font-family: "Arial Rounded MT Bold";
-	font-size: 20px;
+	font-size: 17pt;
 	font-weight: 600;
 	text-align: left;
 }
@@ -72,7 +81,7 @@ h1 {
 .h2 {
 	color: #bf007e;
 	font-family: "Arial Rounded MT Bold";
-	font-size: 10px;
+	font-size: 8pt;
 	font-weight: 600;
 	text-align: left;
 }
@@ -80,13 +89,14 @@ h1 {
 .h3 {
 	color: #000000;
 	font-family: "Arial Rounded MT Bold";
-	font-size: 14px;
+	font-weight: bold;
+	font-size: 12pt;
 }
 
 a1 {
 	color: #bf007e;
 	font-family: "Arial Black", Gadget, sans-serif;
-	font-size: 18px;
+	font-size: 16pt;
 	font-weight: 600;
 	text-align: left;
 }
@@ -110,19 +120,17 @@ a2:hover {
 .label {
 	color: #bf007e;
 	font-family: "Arial Rounded MT Bold";
-	font-size: 14px;
+	font-size: 11pt;
 }
 
 .hintLabel {
 	color: #000000;
 	font-family: "Arial Rounded MT Bold";
-	font-size: 10px;
+	font-size: 7pt;
 }
 
 input,select {
 	border: 3px #c60089 solid;
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 11px;
 	margin-top: 0px;
 	margin-right: 0px;
 	margin-bottom: 0px;
@@ -292,6 +300,19 @@ input,select {
 }
 
 /* OTHERS */
+
+
+.statusTitle{
+	font-family: "Arial Rounded MT Bold";
+	font-size: 14pt;
+	font-weight: bold;
+}
+
+.statusDescription{
+	font-family: "Trebuchet MS";
+	font-size: 10pt;
+}
+
 .submitRequest {
 	background: URL("../images/leftarrowOFF.png");
 	border: 0px;
@@ -310,9 +331,9 @@ input,select {
 	border: 0px;
 	background: URL("../images/joinoff.png");
 	color: #000000;
-	font-family: "Arial Black", Gadget, sans-serif;
-	font-size: 18px;
-	font-weight: 300;
+	font-family: "Arial Rounded MT Bold";
+	font-size: 18pt;
+	font-weight: bold;
 	text-align: center;
 	font-size: 20px;
 }
@@ -346,8 +367,8 @@ input,select {
 .infoButton{
 	background: URL("../images/info.png");
 	border: 0px;
-	width: 20px;
-	height: 20px;
+	width: 34px;
+	height: 34px;
 }
 .infoButton:hover{
 	background: URL("../images/infoHover.png");
@@ -355,8 +376,8 @@ input,select {
 .infoButtonClicked{
 	background: URL("../images/infoOn.png");
 	border: 0px;
-	width: 20px;
-	height: 20px;
+	width: 34px;
+	height: 34px;
 }
 .infoButtonClicked:hover{
 	background: URL("../images/infoHover.png");
@@ -365,7 +386,7 @@ input,select {
 .waitLabel {
 	color: #bf007e;
 	font-family: "Arial Rounded MT Bold";
-	font-size: 36px;
+	font-size: 30pt;
 	font-weight: bold;
 	left: 50px;
 	top: 20px;
@@ -389,26 +410,27 @@ div#orderSubmitter {
 
 .textBox {
 	color: #000000;
-	font-family: "Arial Black", Gadget, sans-serif;
-	font-size: 13px;
+	font-family: "Arial Rounded MT Bold";
+	font-size: 11pt;
 }
 
 .errorLabel {
 	color: #FF0000;
 	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
-	font-size: 10px;
+	font-size: 10pt;
 }
 
 .logoNameLabel {
 	color: #000000;
-	font-family: "Arial Black", Gadget, sans-serif;
-	font-size: 12px;
+	font-family:"Arial Rounded MT Bold";
+	font-weight: bold;
+	font-size: 10pt;
 }
 
 .logoTagsDateLabel {
 	color: #000000;
-	font-family: "Arial", Gadget, sans-serif;
-	font-size: 12px;
+	font-family: "Trebuchet MS";
+	font-size: 9pt;
 }
 
 .orderText {
@@ -416,7 +438,7 @@ div#orderSubmitter {
 	position: relative;
 	width: 240px;
 	height: 64px;
-	font: 14px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	font: 11pt "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 }
 
 .orderIcon {
@@ -434,7 +456,7 @@ div#orderSubmitter {
 .pantoneLabel {
 	color: #000000;
 	font-family: "Arial Black", Gadget, sans-serif;
-	font-size: 10px;
+	font-size: 7pt;
 }
 
 .colourBorder {

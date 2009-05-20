@@ -6,6 +6,7 @@ package com.brainz.wokhei.client;
 import java.util.Arrays;
 
 import com.brainz.wokhei.resources.Images;
+import com.brainz.wokhei.resources.Messages;
 import com.brainz.wokhei.shared.OrderDTO;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -40,6 +41,10 @@ public class OrderBrowserModulePart extends AModulePart{
 	private final Label infoButton = new Label();
 
 	private final Image infos = new Image();
+
+	private final Label statusDescription = new Label();
+
+	private final Label statusTitle = new Label();
 
 	private final Label previousOrderButton = new Label();
 
@@ -104,6 +109,10 @@ public class OrderBrowserModulePart extends AModulePart{
 		mainPanel.setWidth("900px");
 		colour.setHeight("10px");
 		colour.setWidth("10px");
+		statusDescription.setHeight("150px");
+		statusDescription.setWidth("250px");
+		statusDescription.setStylePrimaryName("statusDescription");
+		statusTitle.setStylePrimaryName("statusTitle");
 		colourSpace.setWidth("3px");
 
 		colourLabel.setStyleName("pantoneLabel");
@@ -113,7 +122,7 @@ public class OrderBrowserModulePart extends AModulePart{
 		colourPanel.add(colour);
 
 		ordersPanel.setWidth("150px");
-		ordersPanel.add(infoButton);
+
 		ordersPanel.add(orderNameLabel);
 		ordersPanel.add(orderTagsLabel);
 		ordersPanel.add(colourPanel);
@@ -122,8 +131,11 @@ public class OrderBrowserModulePart extends AModulePart{
 		mainPanel.add(orderImage, 462, 18);
 		mainPanel.add(previousOrderButton,670,150);
 		mainPanel.add(nextOrderButton,720,150);
-		mainPanel.add(infos,350,30);
+		mainPanel.add(statusDescription,470,250);
+		mainPanel.add(statusTitle,470,220);
+		mainPanel.add(infoButton,425,220);
 		mainPanel.add(ordersPanel,660,43);
+		mainPanel.add(infos,490,20);
 
 
 
@@ -217,14 +229,21 @@ public class OrderBrowserModulePart extends AModulePart{
 			colourLabel.setText(_currentOrder.getColour().getName()+" ");
 			orderTagsLabel.setText(list.substring(1, list.length()-1));
 			orderDateLabel.setText(fmt.format(_currentOrder.getDate()));
+			statusTitle.setText(Messages.valueOf(_currentOrder.getStatus().toString()+"_TITLE").getString());
+			statusDescription.setText(Messages.valueOf(_currentOrder.getStatus().toString()+"_TEXT").getString());
 			switch(_currentOrder.getStatus())
 			{
 			case INCOMING:
-			case COOKING:
-			case TASTING:
+			case ACCEPTED:
+			case ARCHIVED:
+			case BOUGHT:
+			case IN_PROGRESS:
+			case QUALITY_GATE:
+			case REJECTED:
 			case READY:
 				orderImage.setUrl(Images.valueOf(_currentOrder.getStatus().toString()).getImageURL());
 				break;
+			case VIEWED:
 			default:
 				//			todo set the logo image itself
 				orderImage.setUrl(Images.valueOf(_currentOrder.getStatus().toString()).getImageURL());	

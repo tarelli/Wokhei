@@ -78,13 +78,14 @@ public class OrderSubmitterModulePart extends AModulePart {
 	private final AbsolutePanel _alternateSubPanelFooter= new AbsolutePanel();
 
 
-	private final Label _timerLabel = new Label(); //$NON-NLS-1$
+	private final Label _waitLabel = new Label(); //$NON-NLS-1$
 
 	// alternate/main panel switch
 	private boolean _isMainPanelVisible = true;
 
 	private final Label _requestLabel = new Label(Messages.REQUEST_LOGO_LBL.getString()); //$NON-NLS-1$
 
+	private final Label _whiteSpace=new Label();
 
 
 	@Override
@@ -139,27 +140,29 @@ public class OrderSubmitterModulePart extends AModulePart {
 		_logoTagsPanel.add(_tagsHintLabel);
 		_logoTagsPanel.add(_logoTagsBox);
 
-		_colorLabel.addStyleName("label"); //$NON-NLS-1$
-		_colorHintLabel.addStyleName("hintLabel"); //$NON-NLS-1$
-		_colorPanel.add(_colorLabel);
+		_colorLabel.setStyleName("label"); //$NON-NLS-1$
+		_colorHintLabel.setStyleName("hintLabel"); //$NON-NLS-1$
+		_pantoneTextBox.setStyleName("pantoneLabel"); //$NON-NLS-1$
+		_whiteSpace.setWidth("5px");
+		_colorSubPanel.setVerticalAlignment(HorizontalPanel.ALIGN_BOTTOM);
+		_colorSubPanel.setHorizontalAlignment(HorizontalPanel.ALIGN_LEFT);
+		_colorSubPanel.add(_colorLabel);
+		_colorSubPanel.add(_whiteSpace);
+		_colorSubPanel.add(_pantoneTextBox);
 		_colorSubPanel.setHeight("15px"); //$NON-NLS-1$
+
+		_colorPanel.add(_colorSubPanel);
+		_colorPanel.add(_colorHintLabel);
+
 		configureColoursPanels();
 
-		_pantoneTextBox.setWidth("180px"); //$NON-NLS-1$
-		_pantoneTextBox.setStyleName("pantoneLabel"); //$NON-NLS-1$
+		//_pantoneTextBox.setWidth("180px"); //$NON-NLS-1$
 
-		_colorSubPanel.setVerticalAlignment(HorizontalPanel.ALIGN_BOTTOM);
-		_colorSubPanel.setHorizontalAlignment(HorizontalPanel.ALIGN_RIGHT);
-		_colorSubPanel.add(_colorHintLabel);
-		_colorSubPanel.add(_pantoneTextBox);
 
 		_colorPanel.setWidth("300px"); //$NON-NLS-1$
 		_colorPanel.setSpacing(0);
+
 		_rows.setSpacing(0);
-		_colorPanel.add(_colorSubPanel);
-
-
-
 		_rows.add(_firstRow);
 		_rows.add(_secondRow);
 		_rows.add(_thirdRow);
@@ -182,15 +185,15 @@ public class OrderSubmitterModulePart extends AModulePart {
 		// 1. check difference between timestamp and server time
 		// 2. setup countdown
 		// 3. setup timer to refresh client with updated countdown timer every sec 
-		_timerLabel.addStyleName("waitLabel"); //$NON-NLS-1$
-		_timerLabel.setWidth("350px"); //$NON-NLS-1$
+		_waitLabel.addStyleName("waitLabel"); //$NON-NLS-1$
+		_waitLabel.setWidth("350px"); //$NON-NLS-1$
 
 		_alternateSubPanelBody.addStyleName("orderSubmitterAlternateBody"); //$NON-NLS-1$
 		_alternateSubPanelBodyTile.addStyleName("orderSubmitterAlternateBodytile"); //$NON-NLS-1$
 		_alternateSubPanelFooter.addStyleName("orderSubmitterAlternateFooter"); //$NON-NLS-1$
 
 
-		_alternateSubPanelBody.add(_timerLabel,80,50);
+		_alternateSubPanelBody.add(_waitLabel,80,20);
 		_alternateRootPanelBody.setWidth("500px"); //$NON-NLS-1$
 		_alternateRootPanelBodyTile.setWidth("500px"); //$NON-NLS-1$
 		_alternateRootPanelFooter.setWidth("500px"); //$NON-NLS-1$
@@ -287,6 +290,14 @@ public class OrderSubmitterModulePart extends AModulePart {
 			}
 			else
 			{
+				// Make the call to the stock price service.
+				final OrderDTO order=new OrderDTO();
+				order.setStatus(Status.INCOMING);
+				order.setTags(_logoTagsBox.getText().split(" ")); //$NON-NLS-1$
+				order.setText(_logoTextBox.getText());
+				order.setColour(_selectedColour);
+
+
 				// Set up the callback object.
 				AsyncCallback<Boolean> callback = new AsyncCallback<Boolean>() {
 					public void onFailure(Throwable caught) {
@@ -294,22 +305,16 @@ public class OrderSubmitterModulePart extends AModulePart {
 					}
 
 					public void onSuccess(Boolean result) {
-
-						//updateMessage(result);
-						updateAlternatePanelMessage(result);
+						updateAlternatePanelMessage(order, result);
 						_isMainPanelVisible = false;
 						showHidePanels();
 						notifyChanges();
 					}
 				};
 
-				// Make the call to the stock price service.
-				OrderDTO order=new OrderDTO();
-				order.setStatus(Status.INCOMING);
-				order.setTags(_logoTagsBox.getText().split(" ")); //$NON-NLS-1$
-				order.setText(_logoTextBox.getText());
-				order.setColour(_selectedColour);
-				_service.submitOrder(order, callback);			
+				_service.submitOrder(order, callback);	
+
+
 			}
 		}
 		else
@@ -319,17 +324,17 @@ public class OrderSubmitterModulePart extends AModulePart {
 	}
 
 	/**
-	 * @param result
+	 * @param error
 	 */
-	protected void updateAlternatePanelMessage(Boolean result) 
+	protected void updateAlternatePanelMessage(OrderDTO order, Boolean error) 
 	{
-		if(result)
+		if(error!=null)
 		{
-			this._timerLabel.setText(Messages.INCOMING_WAITMSG.getString()); //$NON-NLS-1$
+			this._waitLabel.setText(Messages.valueOf(order.getStatus().toString()+"_WAITMSG").getString()); //$NON-NLS-1$
 		}
 		else
 		{
-			this._timerLabel.setText(Messages.ERROR_WAITMSG.getString()); //$NON-NLS-1$
+			this._waitLabel.setText(Messages.ERROR_WAITMSG.getString()); //$NON-NLS-1$
 		}
 	}
 
@@ -382,7 +387,6 @@ public class OrderSubmitterModulePart extends AModulePart {
 	{
 		if(result==null || (result.getStatus() == Status.ARCHIVED 
 				|| result.getStatus() == Status.BOUGHT 
-				|| result.getStatus() == Status.PAYED
 				|| result.getStatus() == Status.REJECTED))
 		{
 			_isMainPanelVisible = true;
@@ -390,6 +394,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 		else
 		{
 			_isMainPanelVisible = false;
+			updateAlternatePanelMessage(result,false);
 		}
 	}
 
@@ -438,8 +443,6 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 	@Override
 	public void updateModulePart() {
-		// TODO Auto-generated method stub
-
 	}
 
 

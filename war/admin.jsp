@@ -36,7 +36,7 @@
 	if (user == null) {
 		// if you're not legged in go back to index
 		response.sendRedirect("index.jsp");
-	} else if (!(user.getEmail().equals("giovanni.idili@wokhei.com") || AdminAuthenticator.isAdmin(user))) {
+	} else if (!(user.getEmail().equals("matteo.cantarelli@wokhei.com") || AdminAuthenticator.isAdmin(user))) {
 		// if you're not admin go back to home - you son of a bitch
 		response.sendRedirect("home.jsp");
 	}
@@ -51,7 +51,7 @@
 <div id="content">
 <%
 	if (user != null) {
-		if (user.getEmail().equals("giovanni.idili@wokhei.com") || AdminAuthenticator.isAdmin(user)) {
+		if (user.getEmail().equals("matteo.cantarelli@wokhei.com") || AdminAuthenticator.isAdmin(user)) {
 			PersistenceManager pm = PMF.get().getPersistenceManager();
 			String select_query = "select from "
 					+ Order.class.getName();

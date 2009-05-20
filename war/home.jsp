@@ -78,6 +78,20 @@
 
 </div>
 
+<div id="preloaded-images">
+   <img src="/images/bodytileDRINK.png" width="1" height="1" alt="" />
+   <img src="/images/bodyDRINK.png" width="1" height="1" alt="" />
+   <img src="/images/headerDRINK.png" width="1" height="1" alt="" />
+   <img src="/images/footerDRINK.png" width="1" height="1" alt="" />
+   <img src="/images/leftarrow.png" width="1" height="1" alt="" />
+   <img src="/images/rightarrow.png" width="1" height="1" alt="" />
+   <img src="/images/legend.png" width="1" height="1" alt="" />
+   <img src="/images/infoHover.png" width="1" height="1" alt="" />
+   <img src="/images/infoOn.png" width="1" height="1" alt="" />
+   <img src="/images/joinon.png" width="1" height="1" alt="" />
+
+</div>
+
 <!-- OPTIONAL: include this if you want history support -->
 <iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1' style="position:absolute;width:0;height:0;border:0"></iframe>
 </body>
