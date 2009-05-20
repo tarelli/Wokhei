@@ -3,7 +3,7 @@ package com.brainz.wokhei.resources;
 public enum Messages {
 
 	LOGO_NAME_LBL("Logo name"),
-	LOGO_NAME_EG_LBL("e.g. Franco Restaurant"),
+	LOGO_NAME_EG_LBL("e.g. Franco Bovale Restaurant"),
 	LOGO_NAME_TXTBOX("the text in your logo"),
 	LOGO_COLOUR_LBL("Main color"),
 	LOGO_TAGS_TXTBOX("describe what the logo is for!"),
@@ -23,23 +23,23 @@ public enum Messages {
 
 
 	INCOMING_TITLE("Pending request..."),
-	INCOMING_TEXT("Your request has been registered. In a short time our coordinator (Tony) will approve it or reject it. Just give him a moment, it might be on his coffee break!"),
+	INCOMING_TEXT("Your request has been registered. In a short time our chef Tony will approve it or reject it. Just give him a moment, he might be on his coffee break!"),
 	ACCEPTED_TITLE("Request accepted!"),
-	ACCEPTED_TEXT("You request has been accepted (thanks Tony), this means that in 24hrs you will receive the logo you requested. We are assigning the job to one of our pure-genius designers."),
+	ACCEPTED_TEXT("You request has been accepted by our chef Tony - in 24hrs you will receive the logo you requested. We are tasking one of our pure-genius help-chefs with the job!"),
 	REJECTED_TITLE("Request rejected"),
-	REJECTED_TEXT("Unfortunately we couldn't accept this request (blame Tony). This might happen in case the request violated some copyright, or if he considered it inappropriate, offensive or just a joke (sometimes he just doesn't get them). Unfortunately we have so many serious requests that we don't have time to deal with the funny ones. That's the business!"),
+	REJECTED_TEXT("Unfortunately Tony didn't accept this request. This can happen if the request violated some copyright, or Tony didn't like it."),
 	IN_PROGRESS_TITLE("Designing your logo..."),
-	IN_PROGRESS_TEXT("has been chosen to design your logo. He's very good don't worry, you are in very good hands (yes we do say the same for all of them)"),
+	IN_PROGRESS_TEXT("has been chosen to cook you up a tasty logo. You are in very good hands (yes we do say the same for all of them)."),
 	QUALITY_GATE_TITLE("Checking quality..."),
-	QUALITY_GATE_TEXT("Does the logo have the Wokhei quality? Does it have what makes each one of our logos a success? That's what we are checking, we deliver only the best designs, that's what you deserve!"),
+	QUALITY_GATE_TEXT("Tony himself manages the quality gate to making sure your logo is as good as you deserve!"),
 	READY_TITLE("It's ready"),
-	READY_TEXT("Your logo is ready there for you. Check it out clicking on the icon above! This logo has been created from our experience and competence. Does it have the Wokhei taste? Oh yeah..."),
+	READY_TEXT("Your logo is finally ready - check it out clicking on the icon above and flood your senses with Wokhei goodness!"),
 	VIEWED_TITLE("Don't make it go cold!"),
-	VIEWED_TEXT("We hope you liked our job, we do like it very much! You have 24hrs to buy the logo and make it yours having so the rights to use it for any purpose you have in mind (yes also commercial ones!). You'll have also access to the high resolution version and to the vectorial format. Thanks for your time!"),
+	VIEWED_TEXT("We hope you like your logo (we like it very much, if that can help!). You have 24hrs to buy it: in case you decide to pull out the money you will be able to use the logo for commercial purposes (and you'll get access to the fancy high resolution and vectorial versions)."),
 	BOUGHT_TITLE("You purchased this logo"),
 	BOUGHT_TEXT("This logo is yours, just make anything you want with it!"),
 	ARCHIVED_TITLE("This logo is archived"),
-	ARCHIVED_TEXT("You didn't purchase this logo. We know that you still do recnognize and appreciate the effort and expertise we put into realizing this logo for you, so you can still use it under licence for non commercial purposes. We will appreciate if you'll advertise Wokhei wherever you'll decide to use this logo so don't be shy!"),
+	ARCHIVED_TEXT("You didn't purchase this logo. You can still use it under licence for non-commercial purposes. We will appreciate if you'll notify Wokhei whenever you'll decide to use this logo - so don't be shy!"),
 
 	;
 
