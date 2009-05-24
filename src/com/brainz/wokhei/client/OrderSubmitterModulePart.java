@@ -90,143 +90,155 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 	@Override
 	public void initModulePart(OrderServiceAsync service) {
-		super.initModulePart(service);
 
-		_mainPanel.setSpacing(10);
+		if((RootPanel.get("orderSubmitter")!=null)&&
+				(RootPanel.get("orderSubmitterAlternateBody")!=null)&&
+				(RootPanel.get("orderSubmitterAlternateBodytile")!=null)&&
+				(RootPanel.get("orderSubmitterAlternateFooter")!=null))
+		{
 
-		_requestLabel.addStyleName("h3"); //$NON-NLS-1$
-		_mainPanel.add(_requestLabel );
+			super.initModulePart(service);
 
-		_logoTextLabel.addStyleName("label"); //$NON-NLS-1$
+			_mainPanel.setSpacing(10);
 
-		_logoHintLabel.setStyleName("hintLabel"); //$NON-NLS-1$
+			_requestLabel.addStyleName("h3"); //$NON-NLS-1$
+			_mainPanel.add(_requestLabel );
 
-		_logoTextBox.setText(Messages.LOGO_NAME_TXTBOX.getString()); //$NON-NLS-1$
-		_logoTextBox.setWidth("255px"); //$NON-NLS-1$
-		_logoTextBox.setStyleName("textBox"); //$NON-NLS-1$
+			_logoTextLabel.addStyleName("label"); //$NON-NLS-1$
 
-		_logoTextBox.addClickHandler(new ClickHandler(){
-			public void onClick(ClickEvent event) {
-				if(_logoTextBox.getText().equals(Messages.LOGO_NAME_TXTBOX.getString())) //$NON-NLS-1$
-				{
-					_logoTextBox.selectAll();
+			_logoHintLabel.setStyleName("hintLabel"); //$NON-NLS-1$
+
+			_logoTextBox.setText(Messages.LOGO_NAME_TXTBOX.getString()); //$NON-NLS-1$
+			_logoTextBox.setWidth("255px"); //$NON-NLS-1$
+			_logoTextBox.setStyleName("textBox"); //$NON-NLS-1$
+
+			_logoTextBox.addClickHandler(new ClickHandler(){
+				public void onClick(ClickEvent event) {
+					if(_logoTextBox.getText().equals(Messages.LOGO_NAME_TXTBOX.getString())) //$NON-NLS-1$
+					{
+						_logoTextBox.selectAll();
+					}
+				}});
+
+			_logoTagsLabel.addStyleName("label"); //$NON-NLS-1$
+			_tagsHintLabel.addStyleName("hintLabel"); //$NON-NLS-1$
+
+			// prepare my motherfuckin' logoText vertical panel
+			_logoTextPanel.setSpacing(1);
+			_logoTextPanel.add(_logoTextLabel);
+			_logoTextPanel.add(_logoHintLabel);
+			_logoTextPanel.add(_logoTextBox);
+
+
+			// prepare my cock-fuckerin' tags vertical panel
+			_logoTagsBox.setWidth("255px"); //$NON-NLS-1$
+			_logoTagsBox.setText(Messages.LOGO_TAGS_TXTBOX.getString()); //$NON-NLS-1$
+			_logoTagsBox.setStyleName("textBox"); //$NON-NLS-1$
+			_logoTagsBox.addClickHandler(new ClickHandler(){
+				public void onClick(ClickEvent event) {
+					if(_logoTagsBox.getText().equals(Messages.LOGO_TAGS_TXTBOX.getString())) //$NON-NLS-1$
+					{
+						_logoTagsBox.selectAll();
+					}
+				}});
+
+			_logoTagsPanel.setSpacing(1);
+			_logoTagsPanel.add(_logoTagsLabel);
+			_logoTagsPanel.add(_tagsHintLabel);
+			_logoTagsPanel.add(_logoTagsBox);
+
+			_colorLabel.setStyleName("label"); //$NON-NLS-1$
+			_colorHintLabel.setStyleName("hintLabel"); //$NON-NLS-1$
+			_pantoneTextBox.setStyleName("pantoneLabel"); //$NON-NLS-1$
+			_whiteSpace.setWidth("5px");
+			_colorSubPanel.setVerticalAlignment(HorizontalPanel.ALIGN_BOTTOM);
+			_colorSubPanel.setHorizontalAlignment(HorizontalPanel.ALIGN_LEFT);
+			_colorSubPanel.add(_colorLabel);
+			_colorSubPanel.add(_whiteSpace);
+			_colorSubPanel.add(_pantoneTextBox);
+			_colorSubPanel.setHeight("15px"); //$NON-NLS-1$
+
+			_colorPanel.add(_colorSubPanel);
+			_colorPanel.add(_colorHintLabel);
+
+			configureColoursPanels();
+
+			//_pantoneTextBox.setWidth("180px"); //$NON-NLS-1$
+
+
+			_colorPanel.setWidth("300px"); //$NON-NLS-1$
+			_colorPanel.setSpacing(0);
+
+			_rows.setSpacing(0);
+			_rows.add(_firstRow);
+			_rows.add(_secondRow);
+			_rows.add(_thirdRow);
+
+			_colorPanel.add(_rows);
+
+
+			_messageLabel.addStyleName("errorLabel"); //$NON-NLS-1$
+			_submitOrder.addStyleName("submitRequest"); //$NON-NLS-1$
+
+			// Fill up that son of a bitch of a mainPanel
+			_mainPanel.add(_logoTextPanel);
+			_mainPanel.add(_logoTagsPanel);
+			_mainPanel.add(_colorPanel);
+			_mainPanel.add(_messageLabel);
+			_mainPanel.add(_submitOrder);
+
+			//prepare alternate panel with timer
+			// TODO : add timer and shit
+			// 1. check difference between timestamp and server time
+			// 2. setup countdown
+			// 3. setup timer to refresh client with updated countdown timer every sec 
+			_waitLabel.addStyleName("waitLabel"); //$NON-NLS-1$
+			_waitLabel.setWidth("350px"); //$NON-NLS-1$
+
+			_alternateSubPanelBody.addStyleName("orderSubmitterAlternateBody"); //$NON-NLS-1$
+			_alternateSubPanelBodyTile.addStyleName("orderSubmitterAlternateBodytile"); //$NON-NLS-1$
+			_alternateSubPanelFooter.addStyleName("orderSubmitterAlternateFooter"); //$NON-NLS-1$
+
+
+			_alternateSubPanelBody.add(_waitLabel,80,20);
+			_alternateRootPanelBody.setWidth("500px"); //$NON-NLS-1$
+			_alternateRootPanelBodyTile.setWidth("500px"); //$NON-NLS-1$
+			_alternateRootPanelFooter.setWidth("500px"); //$NON-NLS-1$
+
+			_alternateRootPanelBody.add(_alternateSubPanelBody);
+			_alternateRootPanelBodyTile.add(_alternateSubPanelBodyTile);
+			_alternateRootPanelFooter.add(_alternateSubPanelFooter);
+
+			// set default visibility
+			_mainPanel.setVisible(true);
+			showAlternatePanels(false);
+
+			//add main and alternate panel to root panel
+			_rootPanel.add(_mainPanel);
+
+			setViewByLatestOrder();
+
+			RootPanel.get("orderSubmitter").add(_rootPanel); //$NON-NLS-1$
+
+			// Move cursor focus to the logoText input box.
+			_logoTextBox.setFocus(true);
+
+			// Listen for mouse events on the Add button.
+			_submitOrder.addClickHandler(new ClickHandler() {
+				public void onClick(ClickEvent event) {
+					submitOrder();
 				}
-			}});
+			});
 
-		_logoTagsLabel.addStyleName("label"); //$NON-NLS-1$
-		_tagsHintLabel.addStyleName("hintLabel"); //$NON-NLS-1$
+			RootPanel.get("orderSubmitter").add(getOrderSubmitPanel()); //$NON-NLS-1$
 
-		// prepare my motherfuckin' logoText vertical panel
-		_logoTextPanel.setSpacing(1);
-		_logoTextPanel.add(_logoTextLabel);
-		_logoTextPanel.add(_logoHintLabel);
-		_logoTextPanel.add(_logoTextBox);
+			RootPanel.get("orderSubmitterAlternateBody").add(getOrderSubmitAlternateBodyPanel()); //$NON-NLS-1$
 
+			RootPanel.get("orderSubmitterAlternateBodytile").add(getOrderSubmitAlternateBodytilePanel()); //$NON-NLS-1$
 
-		// prepare my cock-fuckerin' tags vertical panel
-		_logoTagsBox.setWidth("255px"); //$NON-NLS-1$
-		_logoTagsBox.setText(Messages.LOGO_TAGS_TXTBOX.getString()); //$NON-NLS-1$
-		_logoTagsBox.setStyleName("textBox"); //$NON-NLS-1$
-		_logoTagsBox.addClickHandler(new ClickHandler(){
-			public void onClick(ClickEvent event) {
-				if(_logoTagsBox.getText().equals(Messages.LOGO_TAGS_TXTBOX.getString())) //$NON-NLS-1$
-				{
-					_logoTagsBox.selectAll();
-				}
-			}});
+			RootPanel.get("orderSubmitterAlternateFooter").add(getOrderSubmitAlternateFooterPanel()); //$NON-NLS-1$
+		}
 
-		_logoTagsPanel.setSpacing(1);
-		_logoTagsPanel.add(_logoTagsLabel);
-		_logoTagsPanel.add(_tagsHintLabel);
-		_logoTagsPanel.add(_logoTagsBox);
-
-		_colorLabel.setStyleName("label"); //$NON-NLS-1$
-		_colorHintLabel.setStyleName("hintLabel"); //$NON-NLS-1$
-		_pantoneTextBox.setStyleName("pantoneLabel"); //$NON-NLS-1$
-		_whiteSpace.setWidth("5px");
-		_colorSubPanel.setVerticalAlignment(HorizontalPanel.ALIGN_BOTTOM);
-		_colorSubPanel.setHorizontalAlignment(HorizontalPanel.ALIGN_LEFT);
-		_colorSubPanel.add(_colorLabel);
-		_colorSubPanel.add(_whiteSpace);
-		_colorSubPanel.add(_pantoneTextBox);
-		_colorSubPanel.setHeight("15px"); //$NON-NLS-1$
-
-		_colorPanel.add(_colorSubPanel);
-		_colorPanel.add(_colorHintLabel);
-
-		configureColoursPanels();
-
-		//_pantoneTextBox.setWidth("180px"); //$NON-NLS-1$
-
-
-		_colorPanel.setWidth("300px"); //$NON-NLS-1$
-		_colorPanel.setSpacing(0);
-
-		_rows.setSpacing(0);
-		_rows.add(_firstRow);
-		_rows.add(_secondRow);
-		_rows.add(_thirdRow);
-
-		_colorPanel.add(_rows);
-
-
-		_messageLabel.addStyleName("errorLabel"); //$NON-NLS-1$
-		_submitOrder.addStyleName("submitRequest"); //$NON-NLS-1$
-
-		// Fill up that son of a bitch of a mainPanel
-		_mainPanel.add(_logoTextPanel);
-		_mainPanel.add(_logoTagsPanel);
-		_mainPanel.add(_colorPanel);
-		_mainPanel.add(_messageLabel);
-		_mainPanel.add(_submitOrder);
-
-		//prepare alternate panel with timer
-		// TODO : add timer and shit
-		// 1. check difference between timestamp and server time
-		// 2. setup countdown
-		// 3. setup timer to refresh client with updated countdown timer every sec 
-		_waitLabel.addStyleName("waitLabel"); //$NON-NLS-1$
-		_waitLabel.setWidth("350px"); //$NON-NLS-1$
-
-		_alternateSubPanelBody.addStyleName("orderSubmitterAlternateBody"); //$NON-NLS-1$
-		_alternateSubPanelBodyTile.addStyleName("orderSubmitterAlternateBodytile"); //$NON-NLS-1$
-		_alternateSubPanelFooter.addStyleName("orderSubmitterAlternateFooter"); //$NON-NLS-1$
-
-
-		_alternateSubPanelBody.add(_waitLabel,80,20);
-		_alternateRootPanelBody.setWidth("500px"); //$NON-NLS-1$
-		_alternateRootPanelBodyTile.setWidth("500px"); //$NON-NLS-1$
-		_alternateRootPanelFooter.setWidth("500px"); //$NON-NLS-1$
-
-		_alternateRootPanelBody.add(_alternateSubPanelBody);
-		_alternateRootPanelBodyTile.add(_alternateSubPanelBodyTile);
-		_alternateRootPanelFooter.add(_alternateSubPanelFooter);
-
-		// set default visibility
-		_mainPanel.setVisible(true);
-		showAlternatePanels(false);
-
-		//add main and alternate panel to root panel
-		_rootPanel.add(_mainPanel);
-
-		setViewByLatestOrder();
-
-		RootPanel.get("orderSubmitter").add(_rootPanel); //$NON-NLS-1$
-
-		// Move cursor focus to the logoText input box.
-		_logoTextBox.setFocus(true);
-
-		// Listen for mouse events on the Add button.
-		_submitOrder.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				submitOrder();
-			}
-		});
-
-		RootPanel.get("orderSubmitter").add(getOrderSubmitPanel()); //$NON-NLS-1$
-		RootPanel.get("orderSubmitterAlternateBody").add(getOrderSubmitAlternateBodyPanel()); //$NON-NLS-1$
-		RootPanel.get("orderSubmitterAlternateBodytile").add(getOrderSubmitAlternateBodytilePanel()); //$NON-NLS-1$
-		RootPanel.get("orderSubmitterAlternateFooter").add(getOrderSubmitAlternateFooterPanel()); //$NON-NLS-1$
 	}
 
 

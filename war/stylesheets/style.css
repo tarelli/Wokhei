@@ -570,4 +570,9 @@ background-color: #ffffff;
 .colourPANTONE7449 {
 background-color: #3d0e21;	
 }
+
+.adminModule {
+position: absolute;
+left: 100px;
+top: 0px;
 }

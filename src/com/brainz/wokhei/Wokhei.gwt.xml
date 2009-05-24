@@ -20,4 +20,5 @@
 
   <!-- Specify the app entry point class.                         -->
   	<entry-point class='com.brainz.wokhei.client.HomeModule'/>
+  	<entry-point class='com.brainz.wokhei.client.AdminModule'/>
 </module>
