@@ -11,6 +11,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -57,7 +58,9 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 	private AsyncCallback<Boolean> _setOrderStatusCallback = null;
 
-	private int _rowForStatusUpdate;
+	//related with status update chaching during async call
+	private int _rowForClientStatusUpdate;
+	private Status _statusForClientUpdate;
 
 	/* 
 	 * Init module part
@@ -122,13 +125,16 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 		if(result)
 		{
 			// set new status
-			ordersFlexTable.setText(_rowForStatusUpdate, Columns.STATUS.ordinal(), Status.REJECTED.toString());
-			// disable button
-			((Button)ordersFlexTable.getWidget(_rowForStatusUpdate, Columns.ACTIONS.ordinal())).setEnabled(false);
+			ordersFlexTable.setText(_rowForClientStatusUpdate, Columns.STATUS.ordinal(), _statusForClientUpdate.toString());
+			// disable buttons 
+			//TODO --> decision to show or not row according to filters
+			HorizontalPanel actionPanel = ((HorizontalPanel)ordersFlexTable.getWidget(_rowForClientStatusUpdate, Columns.ACTIONS.ordinal()));
+			((Button)actionPanel.getWidget(0)).setEnabled(false);
+			((Button)actionPanel.getWidget(1)).setEnabled(false);
 		}
 		else
 		{
-			Window.alert("status Amend Operation Failed - try again, you might be luckier!");
+			Window.alert("status amend Operation Failed - try again, you may get lucky!");
 		}
 
 	}
@@ -164,26 +170,65 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 					rejectOrderButton.addClickHandler(new ClickHandler() {
 						public void onClick(ClickEvent event) {
+
 							//get ID from clicked row
-							long rejectedID = Long.parseLong(ordersFlexTable.getText(row, Columns.ID.ordinal()));
+							long rejectedId = Long.parseLong(ordersFlexTable.getText(row, Columns.ID.ordinal()));
 
-							//set row index - it will be used on callback success (this is shit!)
-							_rowForStatusUpdate = row;
-
-							//call rejectOrder callback
-							_service.rejectOrder(rejectedID, _setOrderStatusCallback);
+							statusChangedSubHandler(row, rejectedId, Status.REJECTED);
 						}
 					});
 
-					ordersFlexTable.setWidget(row, Columns.ACTIONS.ordinal(), rejectOrderButton);
+					// Add a button to remove this stock from the table.
+					Button acceptOrderButton = new Button("Accept");
+
+					acceptOrderButton.addClickHandler(new ClickHandler() {
+						public void onClick(ClickEvent event) {
+
+							//get ID from clicked row
+							long acceptedId = Long.parseLong(ordersFlexTable.getText(row, Columns.ID.ordinal()));
+
+							statusChangedSubHandler(row, acceptedId, Status.ACCEPTED);
+						}
+					});
+
+					HorizontalPanel actionPanel = new HorizontalPanel();
+					actionPanel.add(acceptOrderButton);
+					actionPanel.add(rejectOrderButton);
+
+					ordersFlexTable.setWidget(row, Columns.ACTIONS.ordinal(), actionPanel);
+				}
+				else if (order.getStatus()!=Status.READY && order.getStatus()!=Status.REJECTED)
+				{
+					// if is not incoming and it's not ready or rejected - arguably it's always possible to upload
+					Button uploadLogoButton = new Button("Upload");
+
+					uploadLogoButton.addClickHandler(new ClickHandler() {
+						public void onClick(ClickEvent event) {
+							//get ID from clicked row
+							long orderId = Long.parseLong(ordersFlexTable.getText(row, Columns.ID.ordinal()));
+
+							Window.alert("This feature is not implemented yet - stay tuned for good!");
+						}
+					});
+
+					ordersFlexTable.setWidget(row, Columns.ACTIONS.ordinal(), uploadLogoButton);
 				}
 				else
 				{
-					// for now nothing
 					ordersFlexTable.setText(row, Columns.ACTIONS.ordinal(), "N/A");
 				}
 			}
 		}
+	}
+
+	private void statusChangedSubHandler(int row, long orderId, Status status)
+	{
+		//set row index - it will be used on callback success (let's be aware this is shit!)
+		_rowForClientStatusUpdate = row;
+		_statusForClientUpdate = status;
+
+		//call setOrderStatus callback
+		_service.setOrderStatus(orderId, status, _setOrderStatusCallback);
 	}
 
 	/*

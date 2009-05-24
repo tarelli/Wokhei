@@ -27,5 +27,5 @@ public interface OrderService extends RemoteService {
 
 	List<OrderDTO> getOrdersByUserAndStatus(Status status, String userEmail);
 
-	Boolean rejectOrder(long orderID);
+	Boolean setOrderStatus(long orderID, Status newStatus);
 }

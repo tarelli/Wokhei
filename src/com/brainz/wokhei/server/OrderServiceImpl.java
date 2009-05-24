@@ -181,7 +181,7 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 		return orderList;
 	}
 
-	public Boolean rejectOrder(long orderId)
+	public Boolean setOrderStatus(long orderId, Status newStatus)
 	{
 		Boolean returnValue = false;
 
@@ -202,7 +202,7 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 
 			try {
 
-				order.setStatus(Status.REJECTED);
+				order.setStatus(newStatus);
 				//persist change
 				pm.makePersistent(order);
 

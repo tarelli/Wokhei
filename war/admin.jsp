@@ -23,6 +23,7 @@
 <!-- be added before this line.                -->
 <!--                                           -->
 <script type="text/javascript" language="javascript" src="wokhei/wokhei.nocache.js"></script>
+<noscript>Your browser does not support JavaScript - you're fecked!</noscript>
 </head>
 
 <body>
@@ -46,7 +47,7 @@
 <div class="admin"><a href="home.jsp"><a2>Home</a2></a></div>
 
 </div>
-<div class="body">
+<div class="body" style="overflow: auto">
 
 <!-- gwt adminModule goes here -->
 <div class="adminModule" id="adminConsole"></div>

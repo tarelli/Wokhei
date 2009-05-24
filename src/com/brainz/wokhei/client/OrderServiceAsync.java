@@ -25,6 +25,6 @@ public interface OrderServiceAsync {
 
 	void getOrdersByUserAndStatus(Status status, String userEmail, AsyncCallback<List<OrderDTO>> callback);
 
-	void rejectOrder(long orderId, AsyncCallback<Boolean> callback);
+	void setOrderStatus(long orderId, Status newStatus, AsyncCallback<Boolean> callback);
 
 }
