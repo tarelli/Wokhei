@@ -17,13 +17,14 @@ import com.brainz.wokhei.OrderUtils;
 import com.brainz.wokhei.PMF;
 import com.brainz.wokhei.client.OrderService;
 import com.brainz.wokhei.shared.OrderDTO;
+import com.brainz.wokhei.shared.Status;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
- * @author matteocantarelli --> piccolino il caghino
+ * @author matteocantarelli
  *
  */
 public class OrderServiceImpl extends RemoteServiceServlet implements OrderService {
@@ -52,7 +53,8 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 		//execute
 		_orders = OrderUtils.getOrderDTOList((List<Order>) query.execute(user));
 
-		//return the shit
+		pm.close();
+
 		return OrderUtils.getMostRecentOrder(_orders);
 	}
 
@@ -113,6 +115,114 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 		}
 		else
 			returnValue = false;
+
+		return returnValue;
+	}
+
+	// un bel metodo per succhiare il cazzo all'amministratore e a tarelli frocio male
+	@Override
+	public List<OrderDTO> getOrdersByUserAndStatus(Status status,
+			String userEmail) {
+
+		List<OrderDTO> orderList = null;
+		User user = null;
+
+		// create user given user email (if any - else we're gonna go all the way and get the whole bunch of users)
+		if(userEmail != null)
+		{
+			user = new User(userEmail, "wokhei.com");
+		}
+
+		//prepare query
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		String select_query = "select from " + Order.class.getName(); 
+		Query query = pm.newQuery(select_query); 
+
+		try
+		{
+			//attenzione che qui ci sono porcate malefiche
+			if(userEmail!= null && status !=null)
+			{
+				query.setFilter("customer == paramCustomer && status == paramStatus"); 
+				query.declareParameters("java.lang.String paramCustomer");
+				query.declareParameters("java.lang.String paramStatus");
+				//execute
+				orderList = OrderUtils.getOrderDTOList((List<Order>) query.execute(user, status));
+			}
+			else if(status != null)
+			{
+				query.setFilter("status == paramStatus");
+				query.declareParameters("java.lang.String paramStatus");
+				//execute
+				orderList = OrderUtils.getOrderDTOList((List<Order>) query.execute(status));
+			}
+			else if(userEmail!= null)
+			{
+				query.setFilter("customer == paramCustomer"); 
+				query.declareParameters("java.lang.String paramCustomer");
+				//execute
+				orderList = OrderUtils.getOrderDTOList((List<Order>) query.execute(user));
+			}
+			else
+			{
+				//execute
+				orderList = OrderUtils.getOrderDTOList((List<Order>) query.execute());
+			}
+		}
+		catch(Exception ex)
+		{
+			log.log(Level.SEVERE, ex.toString());
+		}
+		finally
+		{
+			pm.close();
+		}
+
+		return orderList;
+	}
+
+	public Boolean rejectOrder(long orderId)
+	{
+		Boolean returnValue = false;
+
+		UserService userService = UserServiceFactory.getUserService();
+		User user = userService.getCurrentUser();
+
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		String select_query = "select from " + Order.class.getName();
+		Query query = pm.newQuery(select_query);
+		query.setFilter("id == paramId");
+		query.declareParameters("java.lang.Long paramId");
+		//execute
+		List<Order> orders = (List<Order>) query.execute(orderId);
+
+		if (!orders.isEmpty()) {
+			//should be only one - safety check here
+			Order order = orders.get(0);
+
+			try {
+
+				order.setStatus(Status.REJECTED);
+				//persist change
+				pm.makePersistent(order);
+
+				returnValue = true;
+
+				if (user != null) 
+				{
+					log.info("order " + order.getId() + " rejected from " + user.getNickname());
+				} 
+				else 
+				{
+					//should never happen!
+					log.info("order " + order.getId() + " rejected from nobody");
+				}
+			} 
+			finally 
+			{
+				pm.close();
+			}
+		} 
 
 		return returnValue;
 	}

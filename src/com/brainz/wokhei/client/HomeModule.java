@@ -25,7 +25,6 @@ public class HomeModule implements EntryPoint {
 		OrderSubmitterModulePart orderSubmitterModulePart = new OrderSubmitterModulePart();
 		OrderBrowserModulePart orderBrowserModulePart = new OrderBrowserModulePart();
 
-
 		//Initialize the module parts
 		orderSubmitterModulePart.addModulePartListener(orderBrowserModulePart);
 

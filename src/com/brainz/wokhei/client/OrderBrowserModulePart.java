@@ -56,7 +56,7 @@ public class OrderBrowserModulePart extends AModulePart{
 
 	private final Label colourLabel = new Label();
 
-	private final HorizontalPanel colourPanel=new HorizontalPanel();
+	private final HorizontalPanel colourPanel = new HorizontalPanel();
 
 	private final Label colourSpace = new Label();
 
@@ -138,8 +138,8 @@ public class OrderBrowserModulePart extends AModulePart{
 		mainPanel.add(infos,490,20);
 
 
-
-		RootPanel.get("ordersBrowser").add(getPanel());
+		if(RootPanel.get("ordersBrowser")!=null)
+			RootPanel.get("ordersBrowser").add(getPanel());
 	}
 
 

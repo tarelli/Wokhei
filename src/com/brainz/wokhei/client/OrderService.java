@@ -3,12 +3,15 @@
  */
 package com.brainz.wokhei.client;
 
+import java.util.List;
+
 import com.brainz.wokhei.shared.OrderDTO;
+import com.brainz.wokhei.shared.Status;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 /**
- * @author matteocantarelli
+ * @author matteocantarelli & latroiadigiovazza
  *
  */
 @RemoteServiceRelativePath("orderservice")
@@ -22,4 +25,7 @@ public interface OrderService extends RemoteService {
 
 	Boolean submitOrder(OrderDTO orderDTO);
 
+	List<OrderDTO> getOrdersByUserAndStatus(Status status, String userEmail);
+
+	Boolean rejectOrder(long orderID);
 }
