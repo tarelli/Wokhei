@@ -120,7 +120,6 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 	}
 
 	// un bel metodo per succhiare il cazzo all'amministratore e a tarelli frocio male
-	@Override
 	public List<OrderDTO> getOrdersByUserAndStatus(Status status,
 			String userEmail) {
 
