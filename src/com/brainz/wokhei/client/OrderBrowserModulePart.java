@@ -4,10 +4,14 @@
 package com.brainz.wokhei.client;
 
 import java.util.Arrays;
+import java.util.List;
 
 import com.brainz.wokhei.resources.Images;
 import com.brainz.wokhei.resources.Messages;
 import com.brainz.wokhei.shared.OrderDTO;
+import com.brainz.wokhei.shared.OrderDTOUtils;
+import com.brainz.wokhei.shared.Status;
+import com.codelathe.gwt.client.Callback;
 import com.codelathe.gwt.client.SlideShow;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -54,6 +58,8 @@ public class OrderBrowserModulePart extends AModulePart{
 
 	private OrderDTO _currentOrder=null;
 
+	private List<OrderDTO> _orders=null;
+
 	private final Label orderDateLabel = new Label();
 
 	private final Label colourLabel = new Label();
@@ -66,84 +72,150 @@ public class OrderBrowserModulePart extends AModulePart{
 
 	private HandlerRegistration handlerReg;
 
+	private AsyncCallback<Boolean> _setOrderStatusCallback = null;
+
+	private AsyncCallback<List<OrderDTO>> _getOrdersCallback = null;
+
+
 	@Override
-	public void initModulePart(OrderServiceAsync service) {
-		super.initModulePart(service);
-
-		getLatestOrder();
-
-		previousOrderButton.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				getPreviousOrder();
-			}
-		});
-
-		nextOrderButton.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				getNextOrder();
-			}
-		});
-
-
-		infoButton.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				infos.setVisible(!infos.isVisible());
-				if(infos.isVisible())
-				{
-					infoButton.setStyleName("infoButtonClicked");
-				}
-				else
-				{
-					infoButton.setStyleName("infoButton");
-				}
-			}
-		});
-
-
-		previousOrderButton.setStyleName("leftArrow");
-		nextOrderButton.setStyleName("rightArrow");
-		orderNameLabel.setStyleName("logoNameLabel");
-		orderTagsLabel.setStyleName("logoTagsDateLabel");
-		orderDateLabel.setStyleName("logoTagsDateLabel");
-		infoButton.setStyleName("infoButton");
-		infos.setVisible(false);
-		infos.setUrl(Images.INFOS.getImageURL());
-
-		mainPanel.setHeight("600px");
-		mainPanel.setWidth("900px");
-		colour.setHeight("10px");
-		colour.setWidth("10px");
-		statusDescription.setHeight("150px");
-		statusDescription.setWidth("250px");
-		statusDescription.setStylePrimaryName("statusDescription");
-		statusTitle.setStylePrimaryName("statusTitle");
-		colourSpace.setWidth("3px");
-
-		colourLabel.setStyleName("pantoneLabel");
-		colourPanel.setVerticalAlignment(HorizontalPanel.ALIGN_MIDDLE);
-		colourPanel.add(colourLabel);
-		colourPanel.add(colourSpace);
-		colourPanel.add(colour);
-
-		ordersPanel.setWidth("150px");
-
-		ordersPanel.add(orderNameLabel);
-		ordersPanel.add(orderTagsLabel);
-		ordersPanel.add(colourPanel);
-		ordersPanel.add(orderDateLabel);
-
-		mainPanel.add(orderImage, 462, 18);
-		mainPanel.add(previousOrderButton,670,150);
-		mainPanel.add(nextOrderButton,720,150);
-		mainPanel.add(statusDescription,470,250);
-		mainPanel.add(statusTitle,470,220);
-		mainPanel.add(infoButton,425,220);
-		mainPanel.add(ordersPanel,660,43);
-		mainPanel.add(infos,490,20);
-
-
+	public void initModulePart(OrderServiceAsync service) 
+	{
 		if(RootPanel.get("ordersBrowser")!=null)
+		{
+			super.initModulePart(service);
+
+			hookUpCallbacks();
+
+			getOrdersForCurrentCustomer();
+
+			setupLightBox();
+
+			previousOrderButton.addClickHandler(new ClickHandler() {
+				public void onClick(ClickEvent event) {
+					getPreviousOrder();
+					updatePanel();
+				}
+			});
+
+			nextOrderButton.addClickHandler(new ClickHandler() {
+				public void onClick(ClickEvent event) {
+					getNextOrder();
+					updatePanel();
+				}
+			});
+
+
+			infoButton.addClickHandler(new ClickHandler() {
+				public void onClick(ClickEvent event) {
+					infos.setVisible(!infos.isVisible());
+					if(infos.isVisible())
+					{
+						infoButton.setStyleName("infoButtonClicked");
+					}
+					else
+					{
+						infoButton.setStyleName("infoButton");
+					}
+				}
+			});
+
+			previousOrderButton.setStyleName("leftArrow");
+			nextOrderButton.setStyleName("rightArrow");
+			orderNameLabel.setStyleName("logoNameLabel");
+			orderTagsLabel.setStyleName("logoTagsDateLabel");
+			orderDateLabel.setStyleName("logoTagsDateLabel");
+			infoButton.setStyleName("infoButton");
+			infos.setVisible(false);
+			infos.setUrl(Images.INFOS.getImageURL());
+
+			mainPanel.setHeight("600px");
+			mainPanel.setWidth("900px");
+			colour.setHeight("10px");
+			colour.setWidth("10px");
+			statusDescription.setHeight("150px");
+			statusDescription.setWidth("250px");
+			statusDescription.setStylePrimaryName("statusDescription");
+			statusTitle.setStylePrimaryName("statusTitle");
+			colourSpace.setWidth("3px");
+
+			colourLabel.setStyleName("pantoneLabel");
+			colourPanel.setVerticalAlignment(HorizontalPanel.ALIGN_MIDDLE);
+			colourPanel.add(colourLabel);
+			colourPanel.add(colourSpace);
+			colourPanel.add(colour);
+
+			ordersPanel.setWidth("150px");
+
+			ordersPanel.add(orderNameLabel);
+			ordersPanel.add(orderTagsLabel);
+			ordersPanel.add(colourPanel);
+			ordersPanel.add(orderDateLabel);
+
+			mainPanel.add(orderImage, 462, 18);
+			mainPanel.add(previousOrderButton,670,150);
+			mainPanel.add(nextOrderButton,720,150);
+			mainPanel.add(statusDescription,470,250);
+			mainPanel.add(statusTitle,470,220);
+			mainPanel.add(infoButton,425,220);
+			mainPanel.add(ordersPanel,660,43);
+			mainPanel.add(infos,490,20);
+
 			RootPanel.get("ordersBrowser").add(getPanel());
+		}
+	}
+
+	private void hookUpCallbacks() 
+	{
+		_setOrderStatusCallback = new AsyncCallback<Boolean>() {
+
+			public void onSuccess(Boolean result) {
+				if(result)
+					updatePanel();
+			}
+
+			public void onFailure(Throwable caught) {
+			}
+		};
+
+		// Set up the callback object
+		_getOrdersCallback = new AsyncCallback<List<OrderDTO>>() {
+
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+
+			}
+
+			public void onSuccess(List<OrderDTO> result) {
+				_orders=result;
+				_currentOrder=OrderDTOUtils.getMostRecentOrder(result);
+				updatePanel();
+			}
+		};
+	}
+
+	private void setupLightBox() {
+		orderImage.addClickHandler(new ClickHandler(){
+
+			public void onClick(ClickEvent event) 
+			{	
+				//TODO change the fake logo.png with the image that has been uploaded when the logo was made
+				if(_currentOrder.getStatus().equals(Status.READY) || _currentOrder.getStatus().equals(Status.VIEWED))
+					slideShow.showSingleImage("./images/logo.png", "Copyright\u00a9 2009 WOKHEI");
+			}
+
+		});
+
+		slideShow.onFinish(new Callback(){
+			public void execute() {
+				if(_currentOrder.getStatus().equals(Status.READY))
+				{
+					if(_setOrderStatusCallback!=null)
+					{
+						_service.setOrderStatus(_currentOrder.getId(),Status.VIEWED, _setOrderStatusCallback);
+					}
+				}
+
+			}});
 	}
 
 	/**
@@ -154,72 +226,35 @@ public class OrderBrowserModulePart extends AModulePart{
 		return mainPanel;
 	}
 
-
-
-
-	protected void getLatestOrder() {
-		// Set up the callback object
-		AsyncCallback<OrderDTO> callback = new AsyncCallback<OrderDTO>() {
-
-			public void onSuccess(OrderDTO result) {
-				_currentOrder=result;
-				updateLabels();
-			}
-
-			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-
-			}
-		};
-
-		_service.getLatestOrder(callback);
+	/**
+	 * 
+	 */
+	protected void getOrdersForCurrentCustomer() 
+	{
+		_service.getOrdersForCurrentUser(_getOrdersCallback);
 	}
 
 
-	protected void getNextOrder() {
-		// Set up the callback object.
-		AsyncCallback<OrderDTO> callback = new AsyncCallback<OrderDTO>() {
-
-			public void onSuccess(OrderDTO result) {
-				_currentOrder=result;
-				updateLabels();
-			}
-
-			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-
-			}
-		};
-
-		_service.getNextOrder(_currentOrder, callback);
+	/**
+	 * 
+	 */
+	protected void getNextOrder() 
+	{
+		_currentOrder=OrderDTOUtils.getNextOrder(_orders,_currentOrder);
 	}
 
 	/**
 	 * 
 	 */
-	protected void getPreviousOrder() {
-		// Set up the callback object.
-		AsyncCallback<OrderDTO> callback = new AsyncCallback<OrderDTO>() {
-
-			public void onSuccess(OrderDTO result) {
-				_currentOrder=result;
-				updateLabels();
-			}
-
-			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-
-			}
-		};
-
-		_service.getPreviousOrder(_currentOrder, callback);
-
+	protected void getPreviousOrder() 
+	{
+		_currentOrder=OrderDTOUtils.getPreviousOrder(_orders,_currentOrder);
 	}
 
 	/**
 	 * 
 	 */
-	private void updateLabels() {
+	private void updatePanel() {
 		if(_currentOrder!=null)
 		{
 			orderNameLabel.setText(_currentOrder.getText());
@@ -242,28 +277,20 @@ public class OrderBrowserModulePart extends AModulePart{
 			case IN_PROGRESS:
 			case QUALITY_GATE:
 			case REJECTED:
+				if(handlerReg!=null)
+					handlerReg.removeHandler();
+				orderImage.setUrl(Images.valueOf(_currentOrder.getStatus().toString()).getImageURL());
+				break;
 			case READY:
 				orderImage.setUrl(Images.valueOf(_currentOrder.getStatus().toString()).getImageURL());
+
 				break;
 			case VIEWED:
 			default:
 				//			todo set the logo image itself
 				orderImage.setUrl(Images.valueOf(_currentOrder.getStatus().toString()).getImageURL());
 			}
-
-			if(handlerReg!=null)
-				handlerReg.removeHandler();
-
-			handlerReg=orderImage.addClickHandler(new ClickHandler(){
-
-				public void onClick(ClickEvent event) 
-				{	
-					slideShow.showSingleImage("./images/logo.png", "Copyright\u00a9 2009 WOKHEI");
-				}
-
-			});
 		}
-
 	}
 
 	/* (non-Javadoc)
@@ -272,7 +299,7 @@ public class OrderBrowserModulePart extends AModulePart{
 	@Override
 	public void updateModulePart() 
 	{
-		getLatestOrder();
+		getOrdersForCurrentCustomer();
 	}
 
 

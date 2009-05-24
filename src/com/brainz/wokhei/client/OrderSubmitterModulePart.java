@@ -3,15 +3,17 @@
  */
 package com.brainz.wokhei.client;
 
+import java.util.List;
+
 import com.brainz.wokhei.resources.Messages;
 import com.brainz.wokhei.shared.Colour;
 import com.brainz.wokhei.shared.OrderDTO;
+import com.brainz.wokhei.shared.OrderDTOUtils;
 import com.brainz.wokhei.shared.Status;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -64,7 +66,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 	private final Label _tagsHintLabel = new Label(Messages.LOGO_TAGS_EG_LBL.getString()); //$NON-NLS-1$
 
 	// a pretty self-explanatory submit button
-	private final Button _submitOrder = new Button(Messages.SEND_REQUEST.getString()); //$NON-NLS-1$
+	private final Label _submitOrderButton = new Label(Messages.SEND_REQUEST.getString()); //$NON-NLS-1$
 	private final Label _messageLabel = new Label(""); //$NON-NLS-1$
 
 	// these panels are the place olders for the drink images
@@ -87,6 +89,11 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 	private final Label _whiteSpace=new Label();
 
+	private AsyncCallback<List<OrderDTO>> _getOrdersCallback = null;
+
+	private AsyncCallback<Boolean> _submitOrderCallback =null;
+
+	private OrderDTO _submittedOrder = null;
 
 	@Override
 	public void initModulePart(OrderServiceAsync service) {
@@ -98,6 +105,8 @@ public class OrderSubmitterModulePart extends AModulePart {
 		{
 
 			super.initModulePart(service);
+
+			hookUpCallbacks();
 
 			_mainPanel.setSpacing(10);
 
@@ -178,14 +187,14 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 
 			_messageLabel.addStyleName("errorLabel"); //$NON-NLS-1$
-			_submitOrder.addStyleName("submitRequest"); //$NON-NLS-1$
+			_submitOrderButton.addStyleName("submitRequest"); //$NON-NLS-1$
 
 			// Fill up that son of a bitch of a mainPanel
 			_mainPanel.add(_logoTextPanel);
 			_mainPanel.add(_logoTagsPanel);
 			_mainPanel.add(_colorPanel);
 			_mainPanel.add(_messageLabel);
-			_mainPanel.add(_submitOrder);
+			_mainPanel.add(_submitOrderButton);
 
 			//prepare alternate panel with timer
 			// TODO : add timer and shit
@@ -224,7 +233,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 			_logoTextBox.setFocus(true);
 
 			// Listen for mouse events on the Add button.
-			_submitOrder.addClickHandler(new ClickHandler() {
+			_submitOrderButton.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
 					submitOrder();
 				}
@@ -239,6 +248,40 @@ public class OrderSubmitterModulePart extends AModulePart {
 			RootPanel.get("orderSubmitterAlternateFooter").add(getOrderSubmitAlternateFooterPanel()); //$NON-NLS-1$
 		}
 
+	}
+
+
+	private void hookUpCallbacks() {
+		// Set up the callback object
+		_getOrdersCallback = new AsyncCallback<List<OrderDTO>>() {
+
+			public void onSuccess(List<OrderDTO> result) {
+				// check state and accordingly set alternate/main panel switch
+				setShowHideStateByLatestOrder(OrderDTOUtils.getMostRecentOrder(result));
+				showHidePanels();
+			}
+
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+			}
+		};
+
+		// Set up the callback object.
+		_submitOrderCallback  = new AsyncCallback<Boolean>() {
+			public void onFailure(Throwable caught) {
+				_messageLabel.setText(Messages.GENERIC_ERROR.getString() + caught.getMessage()); //$NON-NLS-1$
+			}
+
+			public void onSuccess(Boolean result) {
+				if(result!=false && _submittedOrder!=null)
+				{
+					updateAlternatePanelMessage(_submittedOrder, result);
+					_isMainPanelVisible = false;
+					showHidePanels();
+					notifyChanges();
+				}
+			}
+		};
 	}
 
 
@@ -303,30 +346,13 @@ public class OrderSubmitterModulePart extends AModulePart {
 			else
 			{
 				// Make the call to the stock price service.
-				final OrderDTO order=new OrderDTO();
-				order.setStatus(Status.INCOMING);
-				order.setTags(_logoTagsBox.getText().split(" ")); //$NON-NLS-1$
-				order.setText(_logoTextBox.getText());
-				order.setColour(_selectedColour);
+				_submittedOrder=new OrderDTO();
+				_submittedOrder.setStatus(Status.INCOMING);
+				_submittedOrder.setTags(_logoTagsBox.getText().split(" ")); //$NON-NLS-1$
+				_submittedOrder.setText(_logoTextBox.getText());
+				_submittedOrder.setColour(_selectedColour);
 
-
-				// Set up the callback object.
-				AsyncCallback<Boolean> callback = new AsyncCallback<Boolean>() {
-					public void onFailure(Throwable caught) {
-						_messageLabel.setText(Messages.GENERIC_ERROR.getString() + caught.getMessage()); //$NON-NLS-1$
-					}
-
-					public void onSuccess(Boolean result) {
-						updateAlternatePanelMessage(order, result);
-						_isMainPanelVisible = false;
-						showHidePanels();
-						notifyChanges();
-					}
-				};
-
-				_service.submitOrder(order, callback);	
-
-
+				_service.submitOrder(_submittedOrder, _submitOrderCallback);	
 			}
 		}
 		else
@@ -356,21 +382,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 	 */
 	protected void setViewByLatestOrder() 
 	{
-		// Set up the callback object
-		AsyncCallback<OrderDTO> callback = new AsyncCallback<OrderDTO>() {
-
-			public void onSuccess(OrderDTO result) {
-				// check state and accordingly set alternate/main panel switch
-				setShowHideStateByLatestOrder(result);
-				showHidePanels();
-			}
-
-			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-			}
-		};
-
-		_service.getLatestOrder(callback);
+		_service.getOrdersForCurrentUser(_getOrdersCallback);
 	}
 
 

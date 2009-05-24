@@ -13,7 +13,6 @@ import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
 import com.brainz.wokhei.Order;
-import com.brainz.wokhei.OrderUtils;
 import com.brainz.wokhei.PMF;
 import com.brainz.wokhei.client.OrderService;
 import com.brainz.wokhei.shared.OrderDTO;
@@ -35,45 +34,6 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 	private static final long serialVersionUID = -5060860293974160016L;
 
 	private static final Logger log = Logger.getLogger(OrderServiceImpl.class.getName());
-
-	private List<OrderDTO> _orders;
-
-	public synchronized OrderDTO getLatestOrder() {
-		//get current user
-		UserService userService = UserServiceFactory.getUserService();
-		User user = userService.getCurrentUser();
-
-		//prepare query
-		PersistenceManager pm = PMF.get().getPersistenceManager();
-		String select_query = "select from " + Order.class.getName(); 
-		Query query = pm.newQuery(select_query); 
-		query.setFilter("customer == paramCustomer"); 
-		query.declareParameters("java.lang.String paramCustomer"); 
-
-		//execute
-		_orders = OrderUtils.getOrderDTOList((List<Order>) query.execute(user));
-
-		pm.close();
-
-		return OrderUtils.getMostRecentOrder(_orders);
-	}
-
-	/* (non-Javadoc)
-	 * @see com.brainz.wokhei.client.HomeModuleService#getNextOrder(com.brainz.wokhei.shared.OrderDTO)
-	 */
-	public OrderDTO getNextOrder(OrderDTO order) 
-	{
-		return OrderUtils.getNextOrder(_orders, order);
-	}
-
-	/* (non-Javadoc)
-	 * @see com.brainz.wokhei.client.HomeModuleService#getPreviousOrder(com.brainz.wokhei.shared.OrderDTO)
-	 */
-	public OrderDTO getPreviousOrder(OrderDTO order) 
-	{
-		return OrderUtils.getPreviousOrder(_orders, order);
-	}
-
 
 	/* (non-Javadoc)
 	 * @see com.brainz.wokhei.client.OrderService#submitOrder(com.brainz.wokhei.shared.OrderDTO)
@@ -224,6 +184,30 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 		} 
 
 		return returnValue;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.brainz.wokhei.client.OrderService#getOrdersForCurrentUser()
+	 */
+	public List<OrderDTO> getOrdersForCurrentUser() 
+	{
+		//get current user
+		UserService userService = UserServiceFactory.getUserService();
+		User user = userService.getCurrentUser();
+
+		//prepare query
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		String select_query = "select from " + Order.class.getName(); 
+		Query query = pm.newQuery(select_query); 
+		query.setFilter("customer == paramCustomer"); 
+		query.declareParameters("java.lang.String paramCustomer"); 
+
+		//execute
+		List<OrderDTO> result= OrderUtils.getOrderDTOList((List<Order>) query.execute(user));
+
+		pm.close();
+
+		return result;
 	}
 
 }

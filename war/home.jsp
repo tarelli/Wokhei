@@ -5,7 +5,7 @@
 <%@ page import="com.google.appengine.api.users.User"%>
 <%@ page import="com.google.appengine.api.users.UserService"%>
 <%@ page import="com.google.appengine.api.users.UserServiceFactory"%>
-<%@ page import="com.brainz.wokhei.OrderUtils"%>
+<%@ page import="com.brainz.wokhei.shared.OrderDTOUtils"%>
 <%@ page import="com.brainz.wokhei.PMF"%>
 <%@ page import="com.brainz.wokhei.AdminAuthenticator"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
