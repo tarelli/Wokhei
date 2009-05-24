@@ -17,15 +17,11 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("orderservice")
 public interface OrderService extends RemoteService {
 
-	OrderDTO getNextOrder(OrderDTO order);
-
-	OrderDTO getPreviousOrder(OrderDTO order);
-
-	OrderDTO getLatestOrder();
-
 	Boolean submitOrder(OrderDTO orderDTO);
 
 	List<OrderDTO> getOrdersByUserAndStatus(Status status, String userEmail);
+
+	List<OrderDTO> getOrdersForCurrentUser();
 
 	Boolean setOrderStatus(long orderID, Status newStatus);
 }

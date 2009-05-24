@@ -5,7 +5,7 @@
 <%@ page import="com.google.appengine.api.users.User"%>
 <%@ page import="com.google.appengine.api.users.UserService"%>
 <%@ page import="com.google.appengine.api.users.UserServiceFactory"%>
-<%@ page import="com.brainz.wokhei.OrderUtils"%>
+<%@ page import="com.brainz.wokhei.shared.OrderDTOUtils"%>
 <%@ page import="com.brainz.wokhei.PMF"%>
 <%@ page import="com.brainz.wokhei.AdminAuthenticator"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -19,6 +19,8 @@
 <noscript>Your browser does not support JavaScript - you're fecked!</noscript>
 
 <link href="/stylesheets/style.css" rel="stylesheet" type="text/css" />
+
+
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Wokhei</title>
 
@@ -37,7 +39,7 @@
     }
     else
     {
-  		if(user.getEmail().equals("giovanni") || AdminAuthenticator.isAdmin(user))
+  		if(user.getEmail().equals("matteo.cantarelli@wokhei.com") || AdminAuthenticator.isAdmin(user))
 		{
 %>
 <div class="admin"><a href="/admin.jsp"><a2>Admin<a2></a></div>
@@ -48,21 +50,15 @@
 
 <div class="signin"><a
 	href="<%= userService.createLogoutURL(request.getRequestURI()) %>"><a2>Logout</a2></a></div>
-
-
-
 </div>
 
 <div class="body">
-
-
 
 <div class="bodyDoor">
 	<div id="orderSubmitterAlternateBody" class="orderSubmitterAlternateBodyPanel"></div>
 </div>
 	<div id="ordersBrowser" class="orders"></div>
 	<div id="orderSubmitter" class="submitOrder"></div>
-
 </div>
 
 <div class="bodytile">
@@ -84,7 +80,6 @@
 <div id="preloaded-images">
    <img src="/images/bodytileDRINK.png" width="1" height="1" alt="" />
    <img src="/images/bodyDRINK.png" width="1" height="1" alt="" />
-   <img src="/images/headerDRINK.png" width="1" height="1" alt="" />
    <img src="/images/footerDRINK.png" width="1" height="1" alt="" />
    <img src="/images/leftarrow.png" width="1" height="1" alt="" />
    <img src="/images/rightarrow.png" width="1" height="1" alt="" />

@@ -71,7 +71,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 		{
 			super.initModulePart(service);
 
-			HookUpCallbacks();
+			hookUpCallbacks();
 
 			// Create table for order data.
 			ordersFlexTable.setText(0, Columns.ID.ordinal(), Columns.ID.getColumnText());
@@ -95,7 +95,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 		}
 	}
 
-	private void HookUpCallbacks() {
+	private void hookUpCallbacks() {
 
 		// Set up the callback object
 		_getOrdersCallback = new AsyncCallback<List<OrderDTO>>() {

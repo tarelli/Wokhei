@@ -5,8 +5,11 @@ import com.google.gwt.core.client.GWT;
 
 public class AdminModule implements EntryPoint {
 
-	@Override
-	public void onModuleLoad() {
+	/* (non-Javadoc)
+	 * @see com.google.gwt.core.client.EntryPoint#onModuleLoad()
+	 */
+	public void onModuleLoad() 
+	{
 		//Initialize Order Service
 		OrderServiceAsync orderService = GWT.create(OrderService.class);
 

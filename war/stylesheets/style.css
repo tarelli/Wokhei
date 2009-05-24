@@ -2,7 +2,7 @@
 
 /* CSS Document */
 html,body {
-	margin: -8px;
+	margin: 0; padding: 0;
 	background: #eb078f;
 }
 
