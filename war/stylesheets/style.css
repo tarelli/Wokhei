@@ -571,8 +571,22 @@ background-color: #ffffff;
 background-color: #3d0e21;	
 }
 
+/* Admin specific stuff */
+
 .adminModule {
 position: absolute;
 left: 100px;
 top: 0px;
+}
+
+.orderListHeader {
+  background-color: #bf007e;
+  color: white;
+  font-style: bold;
+}
+
+.orderList {
+  border: 1px solid #bf007e;
+  padding: 2px;
+  margin-bottom:6px;
 }

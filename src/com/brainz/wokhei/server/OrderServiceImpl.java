@@ -210,12 +210,12 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 
 				if (user != null) 
 				{
-					log.info("order " + order.getId() + " rejected from " + user.getNickname());
+					log.info("order [" + order.getId() + "] status change to " + newStatus.toString() + " from " + user.getNickname());
 				} 
 				else 
 				{
 					//should never happen!
-					log.info("order " + order.getId() + " rejected from nobody");
+					log.info("order [" + order.getId() + "] status changed to " + newStatus.toString() + " from NOBODY");
 				}
 			} 
 			finally 

@@ -82,6 +82,10 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 			ordersFlexTable.setText(0, Columns.TIMER.ordinal(), Columns.TIMER.getColumnText());
 			ordersFlexTable.setText(0, Columns.ACTIONS.ordinal(), Columns.ACTIONS.getColumnText());
 
+			// set flexTable style
+			ordersFlexTable.getRowFormatter().addStyleName(0, "orderListHeader");
+			ordersFlexTable.addStyleName("orderList");
+
 			populateOrdersTable();
 
 			mainPanel.add(ordersFlexTable);
@@ -237,7 +241,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	@Override
 	public void updateModulePart() {
 		try {
-			throw new Exception("Metti he il VP ci implementa tutto e usa questo metodo ...");
+			throw new Exception("Metti che il VP ci implementa tutto e usa questo metodo ...");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

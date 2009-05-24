@@ -64,82 +64,83 @@ public class OrderBrowserModulePart extends AModulePart{
 
 	@Override
 	public void initModulePart(OrderServiceAsync service) {
-		super.initModulePart(service);
-
-		getLatestOrder();
-
-		previousOrderButton.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				getPreviousOrder();
-			}
-		});
-
-		nextOrderButton.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				getNextOrder();
-			}
-		});
-
-
-		infoButton.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				infos.setVisible(!infos.isVisible());
-				if(infos.isVisible())
-				{
-					infoButton.setStyleName("infoButtonClicked");
-				}
-				else
-				{
-					infoButton.setStyleName("infoButton");
-				}
-			}
-		});
-
-
-		previousOrderButton.setStyleName("leftArrow");
-		nextOrderButton.setStyleName("rightArrow");
-		orderNameLabel.setStyleName("logoNameLabel");
-		orderTagsLabel.setStyleName("logoTagsDateLabel");
-		orderDateLabel.setStyleName("logoTagsDateLabel");
-		infoButton.setStyleName("infoButton");
-		infos.setVisible(false);
-		infos.setUrl(Images.INFOS.getImageURL());
-
-		mainPanel.setHeight("600px");
-		mainPanel.setWidth("900px");
-		colour.setHeight("10px");
-		colour.setWidth("10px");
-		statusDescription.setHeight("150px");
-		statusDescription.setWidth("250px");
-		statusDescription.setStylePrimaryName("statusDescription");
-		statusTitle.setStylePrimaryName("statusTitle");
-		colourSpace.setWidth("3px");
-
-		colourLabel.setStyleName("pantoneLabel");
-		colourPanel.setVerticalAlignment(HorizontalPanel.ALIGN_MIDDLE);
-		colourPanel.add(colourLabel);
-		colourPanel.add(colourSpace);
-		colourPanel.add(colour);
-
-		ordersPanel.setWidth("150px");
-
-		ordersPanel.add(orderNameLabel);
-		ordersPanel.add(orderTagsLabel);
-		ordersPanel.add(colourPanel);
-		ordersPanel.add(orderDateLabel);
-
-		mainPanel.add(orderImage, 462, 18);
-		mainPanel.add(previousOrderButton,670,150);
-		mainPanel.add(nextOrderButton,720,150);
-		mainPanel.add(statusDescription,470,250);
-		mainPanel.add(statusTitle,470,220);
-		mainPanel.add(infoButton,425,220);
-		mainPanel.add(ordersPanel,660,43);
-		mainPanel.add(infos,490,20);
-
-
 		if(RootPanel.get("ordersBrowser")!=null)
+		{
+			super.initModulePart(service);
+
+			getLatestOrder();
+
+			previousOrderButton.addClickHandler(new ClickHandler() {
+				public void onClick(ClickEvent event) {
+					getPreviousOrder();
+				}
+			});
+
+			nextOrderButton.addClickHandler(new ClickHandler() {
+				public void onClick(ClickEvent event) {
+					getNextOrder();
+				}
+			});
+
+
+			infoButton.addClickHandler(new ClickHandler() {
+				public void onClick(ClickEvent event) {
+					infos.setVisible(!infos.isVisible());
+					if(infos.isVisible())
+					{
+						infoButton.setStyleName("infoButtonClicked");
+					}
+					else
+					{
+						infoButton.setStyleName("infoButton");
+					}
+				}
+			});
+
+
+			previousOrderButton.setStyleName("leftArrow");
+			nextOrderButton.setStyleName("rightArrow");
+			orderNameLabel.setStyleName("logoNameLabel");
+			orderTagsLabel.setStyleName("logoTagsDateLabel");
+			orderDateLabel.setStyleName("logoTagsDateLabel");
+			infoButton.setStyleName("infoButton");
+			infos.setVisible(false);
+			infos.setUrl(Images.INFOS.getImageURL());
+
+			mainPanel.setHeight("600px");
+			mainPanel.setWidth("900px");
+			colour.setHeight("10px");
+			colour.setWidth("10px");
+			statusDescription.setHeight("150px");
+			statusDescription.setWidth("250px");
+			statusDescription.setStylePrimaryName("statusDescription");
+			statusTitle.setStylePrimaryName("statusTitle");
+			colourSpace.setWidth("3px");
+
+			colourLabel.setStyleName("pantoneLabel");
+			colourPanel.setVerticalAlignment(HorizontalPanel.ALIGN_MIDDLE);
+			colourPanel.add(colourLabel);
+			colourPanel.add(colourSpace);
+			colourPanel.add(colour);
+
+			ordersPanel.setWidth("150px");
+
+			ordersPanel.add(orderNameLabel);
+			ordersPanel.add(orderTagsLabel);
+			ordersPanel.add(colourPanel);
+			ordersPanel.add(orderDateLabel);
+
+			mainPanel.add(orderImage, 462, 18);
+			mainPanel.add(previousOrderButton,670,150);
+			mainPanel.add(nextOrderButton,720,150);
+			mainPanel.add(statusDescription,470,250);
+			mainPanel.add(statusTitle,470,220);
+			mainPanel.add(infoButton,425,220);
+			mainPanel.add(ordersPanel,660,43);
+			mainPanel.add(infos,490,20);
+
 			RootPanel.get("ordersBrowser").add(getPanel());
+		}
 	}
 
 
