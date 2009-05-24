@@ -15,7 +15,6 @@ import com.codelathe.gwt.client.Callback;
 import com.codelathe.gwt.client.SlideShow;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
@@ -69,8 +68,6 @@ public class OrderBrowserModulePart extends AModulePart{
 	private final Label colourSpace = new Label();
 
 	private final SlideShow slideShow=new SlideShow();
-
-	private HandlerRegistration handlerReg;
 
 	private AsyncCallback<Boolean> _setOrderStatusCallback = null;
 
@@ -234,7 +231,6 @@ public class OrderBrowserModulePart extends AModulePart{
 		_service.getOrdersForCurrentUser(_getOrdersCallback);
 	}
 
-
 	/**
 	 * 
 	 */
@@ -277,18 +273,15 @@ public class OrderBrowserModulePart extends AModulePart{
 			case IN_PROGRESS:
 			case QUALITY_GATE:
 			case REJECTED:
-				if(handlerReg!=null)
-					handlerReg.removeHandler();
 				orderImage.setUrl(Images.valueOf(_currentOrder.getStatus().toString()).getImageURL());
 				break;
 			case READY:
 				orderImage.setUrl(Images.valueOf(_currentOrder.getStatus().toString()).getImageURL());
-
 				break;
 			case VIEWED:
-			default:
-				//			todo set the logo image itself
-				orderImage.setUrl(Images.valueOf(_currentOrder.getStatus().toString()).getImageURL());
+				//TODO set the logo image itself
+				orderImage.setUrl("./images/logo.png");
+				break;
 			}
 		}
 	}
