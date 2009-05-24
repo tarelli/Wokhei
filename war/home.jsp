@@ -13,9 +13,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<script type="text/javascript" language="javascript"
-	src="wokhei/wokhei.nocache.js"></script>
+<script type="text/javascript" language="javascript" src="wokhei/wokhei.nocache.js"></script>
+
+
 <link href="/stylesheets/style.css" rel="stylesheet" type="text/css" />
+
+
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Wokhei</title>
 
@@ -45,21 +48,15 @@
 
 <div class="signin"><a
 	href="<%= userService.createLogoutURL(request.getRequestURI()) %>"><a2>Logout</a2></a></div>
-
-
-
 </div>
 
 <div class="body">
-
-
 
 <div class="bodyDoor">
 	<div id="orderSubmitterAlternateBody" class="orderSubmitterAlternateBodyPanel"></div>
 </div>
 	<div id="ordersBrowser" class="orders"></div>
 	<div id="orderSubmitter" class="submitOrder"></div>
-
 </div>
 
 <div class="bodytile">
@@ -81,7 +78,6 @@
 <div id="preloaded-images">
    <img src="/images/bodytileDRINK.png" width="1" height="1" alt="" />
    <img src="/images/bodyDRINK.png" width="1" height="1" alt="" />
-   <img src="/images/headerDRINK.png" width="1" height="1" alt="" />
    <img src="/images/footerDRINK.png" width="1" height="1" alt="" />
    <img src="/images/leftarrow.png" width="1" height="1" alt="" />
    <img src="/images/rightarrow.png" width="1" height="1" alt="" />

@@ -8,8 +8,10 @@ import java.util.Arrays;
 import com.brainz.wokhei.resources.Images;
 import com.brainz.wokhei.resources.Messages;
 import com.brainz.wokhei.shared.OrderDTO;
+import com.codelathe.gwt.client.SlideShow;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
@@ -60,7 +62,9 @@ public class OrderBrowserModulePart extends AModulePart{
 
 	private final Label colourSpace = new Label();
 
+	private final SlideShow slideShow=new SlideShow();
 
+	private HandlerRegistration handlerReg;
 
 	@Override
 	public void initModulePart(OrderServiceAsync service) {
@@ -137,12 +141,8 @@ public class OrderBrowserModulePart extends AModulePart{
 		mainPanel.add(ordersPanel,660,43);
 		mainPanel.add(infos,490,20);
 
-
-
 		RootPanel.get("ordersBrowser").add(getPanel());
 	}
-
-
 
 	/**
 	 * @return
@@ -246,8 +246,20 @@ public class OrderBrowserModulePart extends AModulePart{
 			case VIEWED:
 			default:
 				//			todo set the logo image itself
-				orderImage.setUrl(Images.valueOf(_currentOrder.getStatus().toString()).getImageURL());	
+				orderImage.setUrl(Images.valueOf(_currentOrder.getStatus().toString()).getImageURL());
 			}
+
+			if(handlerReg!=null)
+				handlerReg.removeHandler();
+
+			handlerReg=orderImage.addClickHandler(new ClickHandler(){
+
+				public void onClick(ClickEvent event) 
+				{	
+					slideShow.showSingleImage("./images/logo.png", "Copyright\u00a9 2009 WOKHEI");
+				}
+
+			});
 		}
 
 	}
