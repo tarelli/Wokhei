@@ -2,24 +2,24 @@
 
 /* CSS Document */
 html,body {
-	margin: 0; padding: 0;
+	margin: 0;
+	padding: 0;
 	background: #eb078f;
 }
 
 div#preloaded-images {
-   position: absolute;
-   overflow: hidden;
-   left: -9999px; 
-   top: -9999px;
-   height: 1px;
-   width: 1px;
+	position: absolute;
+	overflow: hidden;
+	left: -9999px;
+	top: -9999px;
+	height: 1px;
+	width: 1px;
 }
 
 @font-face {
-    font-family: "Arial Rounded MT Bold";
-    src: url(../fonts/ArialRoundedBold.ttf);
+	font-family: "Arial Rounded MT Bold";
+	src: url(../fonts/ArialRoundedBold.ttf);
 }
-
 
 A:link {
 	text-decoration: none
@@ -41,6 +41,19 @@ A:hover {
 div#page-wrap {
 	width: 1000px;
 	margin: 20px auto;
+	overflow: visible;
+}
+
+.headerPanel {
+	position: absolute;
+	left: 480px;
+	top: 55px;
+	font-family: "Trebuchet MS";
+	font-size: 10pt;
+}
+
+.username {
+	font-weight: bold;
 }
 
 .header {
@@ -54,13 +67,16 @@ div#page-wrap {
 	position: relative;
 	min-height: 392px;
 	background: URL("../images/body.png");
-	background-repeat: no-repeat
+	background-repeat: no-repeat;
+	overflow: visible;
+	z-index: 2;
 }
 
 .bodytile {
 	position: relative;
 	background: URL("../images/bodytile.png");
 	min-height: 1px;
+	z-index: 1;
 }
 
 .footer {
@@ -68,6 +84,7 @@ div#page-wrap {
 	background: URL("../images/footer.png");
 	background-repeat: no-repeat;
 	min-height: 159px;
+	z-index: 1;
 }
 
 h1 {
@@ -300,15 +317,13 @@ input,select {
 }
 
 /* OTHERS */
-
-
-.statusTitle{
+.statusTitle {
 	font-family: "Arial Rounded MT Bold";
 	font-size: 14pt;
 	font-weight: bold;
 }
 
-.statusDescription{
+.statusDescription {
 	font-family: "Trebuchet MS";
 	font-size: 10pt;
 }
@@ -364,22 +379,25 @@ input,select {
 	background: URL("../images/rightarrow.png");
 }
 
-.infoButton{
+.infoButton {
 	background: URL("../images/info.png");
 	border: 0px;
 	width: 34px;
 	height: 34px;
 }
-.infoButton:hover{
+
+.infoButton:hover {
 	background: URL("../images/infoHover.png");
 }
-.infoButtonClicked{
+
+.infoButtonClicked {
 	background: URL("../images/infoOn.png");
 	border: 0px;
 	width: 34px;
 	height: 34px;
 }
-.infoButtonClicked:hover{
+
+.infoButtonClicked:hover {
 	background: URL("../images/infoHover.png");
 }
 
@@ -402,10 +420,11 @@ input,select {
 
 div#orderSubmitter {
 	position: absolute;
-	left: 100px;
+	left: 90px;
 	top: 15px;
 	width: 300px;
-	height: 300px;
+	height: 350px;
+	overflow: visible;
 }
 
 .textBox {
@@ -417,12 +436,14 @@ div#orderSubmitter {
 .errorLabel {
 	color: #FF0000;
 	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
-	font-size: 10pt;
+	font-size: 8pt;
+	height:12px;
+	vertical-align: bottom;
 }
 
 .logoNameLabel {
 	color: #000000;
-	font-family:"Arial Rounded MT Bold";
+	font-family: "Arial Rounded MT Bold";
 	font-weight: bold;
 	font-size: 10pt;
 }
@@ -496,83 +517,83 @@ div#orderSubmitter {
 }
 
 .colourPANTONE456 {
-background-color: #977600;	
+	background-color: #977600;
 }
 
 .colourPANTONE186 {
-background-color: #f50021;	
+	background-color: #f50021;
 }
 
 .colourPANTONEPurple {
-background-color: #a32289;	
+	background-color: #a32289;
 }
 
 .colourPANTONEWarmGray8 {
-background-color: #938477;	
+	background-color: #938477;
 }
 
 .colourPANTONE485 {
-background-color: #ff0c05;	
+	background-color: #ff0c05;
 }
 
 .colourPANTONE357 {
-background-color: #005519;	
+	background-color: #005519;
 }
 
 .colourPANTONE371 {
-background-color: #375f0b;	
+	background-color: #375f0b;
 }
 
 .colourPANTONE457 {
-background-color: #bd9300;	
+	background-color: #bd9300;
 }
 
 .colourPANTONE7427 {
-background-color: #b90025;	
+	background-color: #b90025;
 }
 
 .colourPANTONEBlack {
-background-color: #000000;	
+	background-color: #000000;
 }
 
 .colourPANTONE361 {
-background-color: #1bb231;	
+	background-color: #1bb231;
 }
 
 .colourPANTONE368 {
-background-color: #4ebc29;	
+	background-color: #4ebc29;
 }
 
 .colourPANTONERubinRed {
-background-color: #f50063;	
+	background-color: #f50063;
 }
 
 .colourPANTONE306 {
-background-color: #00b2e2;	
+	background-color: #00b2e2;
 }
 
 .colourPANTONE676 {
-background-color: #bc005f;	
+	background-color: #bc005f;
 }
 
 .colourPANTONE159 {
-background-color: #ee5300;	
+	background-color: #ee5300;
 }
 
 .colourPANTONEWarmRed {
-background-color: #ff4415;	
+	background-color: #ff4415;
 }
 
 .colourPANTONEWhite {
-background-color: #ffffff;	
+	background-color: #ffffff;
 }
 
 .colourPANTONE7449 {
-background-color: #3d0e21;	
+	background-color: #3d0e21;
 }
 
 .adminModule {
-position: absolute;
-left: 100px;
-top: 0px;
+	position: absolute;
+	left: 100px;
+	top: 0px;
 }

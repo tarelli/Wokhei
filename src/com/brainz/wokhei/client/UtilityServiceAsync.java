@@ -4,13 +4,14 @@ import java.util.Date;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
+
 /**
  * @author Giovacchia
  *
  */
 
-public interface UtilityServiceAsync extends UtilityService {
+public interface UtilityServiceAsync {
 
-	void getServerTimestamp(AsyncCallback<Date> callback);
-
+	void getCurrentUsername(AsyncCallback<String> result);
+	void getServerTimestamp(AsyncCallback<Date> result);
 }

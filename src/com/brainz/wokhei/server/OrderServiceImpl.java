@@ -189,7 +189,7 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 	/* (non-Javadoc)
 	 * @see com.brainz.wokhei.client.OrderService#getOrdersForCurrentUser()
 	 */
-	public List<OrderDTO> getOrdersForCurrentUser() 
+	public synchronized List<OrderDTO> getOrdersForCurrentUser() 
 	{
 		//get current user
 		UserService userService = UserServiceFactory.getUserService();

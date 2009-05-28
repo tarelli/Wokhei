@@ -30,6 +30,7 @@
 <div id="page-wrap">
 <div class="header">
 <div class="headerDoor"></div>
+<div id="headerPanel" class="headerPanel"></div>
 <%
     UserService userService = UserServiceFactory.getUserService();
     User user = userService.getCurrentUser();

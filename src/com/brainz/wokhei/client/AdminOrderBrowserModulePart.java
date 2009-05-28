@@ -66,10 +66,10 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	 * Init module part
 	 */
 	@Override
-	public void initModulePart(OrderServiceAsync service) {
+	public void initModulePart(OrderServiceAsync orderService, UtilityServiceAsync utilityService) {
 		if(RootPanel.get("adminConsole")!=null)
 		{
-			super.initModulePart(service);
+			super.initModulePart(orderService, utilityService);
 
 			hookUpCallbacks();
 
@@ -146,7 +146,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 	protected void getOrdersAndUpdateTable() {
 		if (_getOrdersCallback != null)
-			_service.getOrdersByUserAndStatus(null, null, _getOrdersCallback);
+			_orderService.getOrdersByUserAndStatus(null, null, _getOrdersCallback);
 	}
 
 	private void UpdateTable()
@@ -228,7 +228,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 		_statusForClientUpdate = status;
 
 		//call setOrderStatus callback
-		_service.setOrderStatus(orderId, status, _setOrderStatusCallback);
+		_orderService.setOrderStatus(orderId, status, _setOrderStatusCallback);
 	}
 
 	/*

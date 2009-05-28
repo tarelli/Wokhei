@@ -14,4 +14,6 @@ public interface UtilityService extends RemoteService {
 
 	Date getServerTimestamp();
 
+	String getCurrentUsername();
+
 }
