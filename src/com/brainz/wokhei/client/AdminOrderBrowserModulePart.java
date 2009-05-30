@@ -1,7 +1,13 @@
 package com.brainz.wokhei.client;
 
 import java.util.Arrays;
-import java.util.List;
+
+import org.gwtwidgets.client.ui.pagination.Column;
+import org.gwtwidgets.client.ui.pagination.DataProvider;
+import org.gwtwidgets.client.ui.pagination.DefaultPaginationBehavior;
+import org.gwtwidgets.client.ui.pagination.PaginationBehavior;
+import org.gwtwidgets.client.ui.pagination.PaginationParameters;
+import org.gwtwidgets.client.ui.pagination.RowRenderer;
 
 import com.brainz.wokhei.shared.OrderDTO;
 import com.brainz.wokhei.shared.Status;
@@ -11,6 +17,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -51,10 +58,8 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 	private final VerticalPanel mainPanel = new VerticalPanel();
 	private final FlexTable ordersFlexTable = new FlexTable();
-
-	private List<OrderDTO> _orders = null;
-
-	private AsyncCallback<List<OrderDTO>> _getOrdersCallback = null;
+	private final FlexTable pagingControlsTable = new FlexTable();
+	private DefaultPaginationBehavior paginationBehavior;
 
 	private AsyncCallback<Boolean> _setOrderStatusCallback = null;
 
@@ -73,42 +78,142 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 			hookUpCallbacks();
 
-			// Create table for order data.
-			ordersFlexTable.setText(0, Columns.ID.ordinal(), Columns.ID.getColumnText());
-			ordersFlexTable.setText(0, Columns.USER.ordinal(), Columns.USER.getColumnText());
-			ordersFlexTable.setText(0, Columns.LOGO_TEXT.ordinal(), Columns.LOGO_TEXT.getColumnText());
-			ordersFlexTable.setText(0, Columns.TAGS.ordinal(), Columns.TAGS.getColumnText());
-			ordersFlexTable.setText(0, Columns.STATUS.ordinal(), Columns.STATUS.getColumnText());
-			ordersFlexTable.setText(0, Columns.TIMER.ordinal(), Columns.TIMER.getColumnText());
-			ordersFlexTable.setText(0, Columns.ACTIONS.ordinal(), Columns.ACTIONS.getColumnText());
+			setPaginator();
 
-			// set flexTable style
-			ordersFlexTable.getRowFormatter().addStyleName(0, "orderListHeader");
+			//set orders flexTable style - header picks up headeRow style bcs of paginationBehavior
 			ordersFlexTable.addStyleName("orderList");
+			ordersFlexTable.setWidth("800px");
 
-			populateOrdersTable();
+			//set mainPanel Style
+			mainPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 
 			mainPanel.add(ordersFlexTable);
+			mainPanel.add(pagingControlsTable);
+
+			paginationBehavior.showPage(1,Columns.ID._columnText, true);
 
 			// Associate the Main panel with the HTML host page.
 			RootPanel.get("adminConsole").add(mainPanel);
 		}
 	}
 
-	private void hookUpCallbacks() {
+	/**
+	 * Set the paginator
+	 */
+	private void setPaginator() 
+	{
+		paginationBehavior = new DefaultPaginationBehavior(pagingControlsTable,ordersFlexTable,15) {
 
-		// Set up the callback object
-		_getOrdersCallback = new AsyncCallback<List<OrderDTO>>() {
+			@Override
+			protected RowRenderer getRowRenderer() {
+				return new RowRenderer(){
 
-			public void onSuccess(List<OrderDTO> result) {
-				_orders = result; 
-				UpdateTable();
+					@Override
+					public void populateRow(PaginationBehavior pagination, int row,
+							Object object) {
+						OrderDTO order=(OrderDTO)object;
+						//The header row will be added afterward (apparently, it's 2am we might be wrong)
+						final int frow = row +1 ;
+						ordersFlexTable.setText(row, Columns.ID.ordinal(), order.getId().toString());
+						ordersFlexTable.setText(row, Columns.USER.ordinal(), order.getCustomerEmail());
+						ordersFlexTable.setText(row, Columns.LOGO_TEXT.ordinal(), order.getText());
+						ordersFlexTable.setText(row, Columns.TAGS.ordinal(), Arrays.asList(order.getTags()).toString());
+						ordersFlexTable.setText(row, Columns.STATUS.ordinal(), order.getStatus().toString());
+						ordersFlexTable.setText(row, Columns.TIMER.ordinal(), "N/A");
+
+						if(order.getStatus()==Status.INCOMING)
+						{
+							// Add a button to remove this stock from the table.
+							Button rejectOrderButton = new Button("Reject");
+
+							rejectOrderButton.addClickHandler(new ClickHandler() {
+								public void onClick(ClickEvent event) {
+
+									//get ID from clicked row
+									long rejectedId = Long.parseLong(ordersFlexTable.getText(frow, Columns.ID.ordinal()));
+
+									statusChangedSubHandler(frow, rejectedId, Status.REJECTED);
+								}
+							});
+
+							// Add a button to remove this stock from the table.
+							Button acceptOrderButton = new Button("Accept");
+
+							acceptOrderButton.addClickHandler(new ClickHandler() {
+								public void onClick(ClickEvent event) {
+
+									//get ID from clicked row
+									long acceptedId = Long.parseLong(ordersFlexTable.getText(frow, Columns.ID.ordinal()));
+
+									statusChangedSubHandler(frow, acceptedId, Status.ACCEPTED);
+								}
+							});
+
+							HorizontalPanel actionPanel = new HorizontalPanel();
+							actionPanel.add(acceptOrderButton);
+							actionPanel.add(rejectOrderButton);
+
+							ordersFlexTable.setWidget(row, Columns.ACTIONS.ordinal(), actionPanel);
+						}
+						else if (order.getStatus()!=Status.READY && order.getStatus()!=Status.REJECTED)
+						{
+							// if is not incoming and it's not ready or rejected - arguably it's always possible to upload
+							Button uploadLogoButton = new Button("Upload");
+
+							uploadLogoButton.addClickHandler(new ClickHandler() {
+								public void onClick(ClickEvent event) {
+									//get ID from clicked row
+									//long orderId = Long.parseLong(ordersFlexTable.getText(frow, Columns.ID.ordinal()));
+
+									Window.alert("This feature is not implemented yet - stay tuned for good!");
+								}
+							});
+
+							ordersFlexTable.setWidget(row, Columns.ACTIONS.ordinal(), uploadLogoButton);
+						}
+						else
+						{
+							ordersFlexTable.setText(row, Columns.ACTIONS.ordinal(), "N/A");
+						}
+					}};
+
+
 			}
 
-			public void onFailure(Throwable caught) {
-				_orders = null;
+			@Override
+			protected DataProvider getDataProvider() {
+				return new DataProvider(){
+					@Override
+					public void update(PaginationParameters parameters,
+							AsyncCallback updateTableCallback) {
+						_service.getOrdersByUserAndStatus(
+								null, 
+								null,
+								parameters.getOffset(), 
+								parameters.getMaxResults(), 
+								updateTableCallback);
+					}};
+			}
+
+			@Override
+			protected Column[] getColumns() {
+
+				return new Column[] { new Column(Columns.ID.getColumnText()),
+						new Column(Columns.USER.getColumnText()),
+						new Column(Columns.LOGO_TEXT.getColumnText()),
+						new Column(Columns.TAGS.getColumnText()),
+						new Column(Columns.STATUS.getColumnText()),
+						new Column(Columns.TIMER.getColumnText()),
+						new Column(Columns.ACTIONS.getColumnText())	};
 			}
 		};
+
+		paginationBehavior.setNextPageText("Next >>");
+		paginationBehavior.setPreviousPageText("<< Prev");
+	}
+
+	private void hookUpCallbacks() 
+	{
 
 		_setOrderStatusCallback = new AsyncCallback<Boolean>() {
 
@@ -141,89 +246,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 			Window.alert("status amend Operation Failed - try again, you may get lucky!");
 		}
 
-	}
-
-	private void populateOrdersTable() {
-		// get orders and update table
-		getOrdersAndUpdateTable();
-	}
-
-	protected void getOrdersAndUpdateTable() {
-		if (_getOrdersCallback != null)
-			_service.getOrdersByUserAndStatus(null, null, _getOrdersCallback);
-	}
-
-	private void UpdateTable()
-	{
-		if (_orders!=null)
-		{
-			for(OrderDTO order : _orders)
-			{
-				final int row = ordersFlexTable.getRowCount();
-				ordersFlexTable.setText(row, Columns.ID.ordinal(), order.getId().toString());
-				ordersFlexTable.setText(row, Columns.USER.ordinal(), order.getCustomerEmail());
-				ordersFlexTable.setText(row, Columns.LOGO_TEXT.ordinal(), order.getText());
-				ordersFlexTable.setText(row, Columns.TAGS.ordinal(), Arrays.asList(order.getTags()).toString());
-				ordersFlexTable.setText(row, Columns.STATUS.ordinal(), order.getStatus().toString());
-				ordersFlexTable.setText(row, Columns.TIMER.ordinal(), "N/A");
-
-				if(order.getStatus()==Status.INCOMING)
-				{
-					// Add a button to remove this stock from the table.
-					Button rejectOrderButton = new Button("Reject");
-
-					rejectOrderButton.addClickHandler(new ClickHandler() {
-						public void onClick(ClickEvent event) {
-
-							//get ID from clicked row
-							long rejectedId = Long.parseLong(ordersFlexTable.getText(row, Columns.ID.ordinal()));
-
-							statusChangedSubHandler(row, rejectedId, Status.REJECTED);
-						}
-					});
-
-					// Add a button to remove this stock from the table.
-					Button acceptOrderButton = new Button("Accept");
-
-					acceptOrderButton.addClickHandler(new ClickHandler() {
-						public void onClick(ClickEvent event) {
-
-							//get ID from clicked row
-							long acceptedId = Long.parseLong(ordersFlexTable.getText(row, Columns.ID.ordinal()));
-
-							statusChangedSubHandler(row, acceptedId, Status.ACCEPTED);
-						}
-					});
-
-					HorizontalPanel actionPanel = new HorizontalPanel();
-					actionPanel.add(acceptOrderButton);
-					actionPanel.add(rejectOrderButton);
-
-					ordersFlexTable.setWidget(row, Columns.ACTIONS.ordinal(), actionPanel);
-				}
-				else if (order.getStatus()!=Status.READY && order.getStatus()!=Status.REJECTED)
-				{
-					// if is not incoming and it's not ready or rejected - arguably it's always possible to upload
-					Button uploadLogoButton = new Button("Upload");
-
-					uploadLogoButton.addClickHandler(new ClickHandler() {
-						public void onClick(ClickEvent event) {
-							//get ID from clicked row
-							long orderId = Long.parseLong(ordersFlexTable.getText(row, Columns.ID.ordinal()));
-
-							Window.alert("This feature is not implemented yet - stay tuned for good!");
-						}
-					});
-
-					ordersFlexTable.setWidget(row, Columns.ACTIONS.ordinal(), uploadLogoButton);
-				}
-				else
-				{
-					ordersFlexTable.setText(row, Columns.ACTIONS.ordinal(), "N/A");
-				}
-			}
-		}
-	}
+	}	
 
 	private void statusChangedSubHandler(int row, long orderId, Status status)
 	{

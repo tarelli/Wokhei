@@ -67,7 +67,7 @@ public class OrderBrowserModulePart extends AModulePart{
 
 	private final Label colourSpace = new Label();
 
-	private final SlideShow slideShow=new SlideShow();
+	private final SlideShow slideShow = new SlideShow();
 
 	private AsyncCallback<Boolean> _setOrderStatusCallback = null;
 
@@ -75,14 +75,6 @@ public class OrderBrowserModulePart extends AModulePart{
 
 
 	@Override
-<<<<<<< HEAD:src/com/brainz/wokhei/client/OrderBrowserModulePart.java
-	public void initModulePart(OrderServiceAsync service) {
-		if(RootPanel.get("ordersBrowser")!=null)
-		{
-			super.initModulePart(service);
-
-			getLatestOrder();
-=======
 	public void initModulePart(OrderServiceAsync service) 
 	{
 		if(RootPanel.get("ordersBrowser")!=null)
@@ -94,25 +86,20 @@ public class OrderBrowserModulePart extends AModulePart{
 			getOrdersForCurrentCustomer();
 
 			setupLightBox();
->>>>>>> 68eb4e13da6e6559ddfcf2307226ba3dfbc0d6bd:src/com/brainz/wokhei/client/OrderBrowserModulePart.java
 
 			previousOrderButton.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
 					getPreviousOrder();
-<<<<<<< HEAD:src/com/brainz/wokhei/client/OrderBrowserModulePart.java
-=======
+
 					updatePanel();
->>>>>>> 68eb4e13da6e6559ddfcf2307226ba3dfbc0d6bd:src/com/brainz/wokhei/client/OrderBrowserModulePart.java
 				}
 			});
 
 			nextOrderButton.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
 					getNextOrder();
-<<<<<<< HEAD:src/com/brainz/wokhei/client/OrderBrowserModulePart.java
-=======
+
 					updatePanel();
->>>>>>> 68eb4e13da6e6559ddfcf2307226ba3dfbc0d6bd:src/com/brainz/wokhei/client/OrderBrowserModulePart.java
 				}
 			});
 
@@ -131,10 +118,6 @@ public class OrderBrowserModulePart extends AModulePart{
 				}
 			});
 
-<<<<<<< HEAD:src/com/brainz/wokhei/client/OrderBrowserModulePart.java
-
-=======
->>>>>>> 68eb4e13da6e6559ddfcf2307226ba3dfbc0d6bd:src/com/brainz/wokhei/client/OrderBrowserModulePart.java
 			previousOrderButton.setStyleName("leftArrow");
 			nextOrderButton.setStyleName("rightArrow");
 			orderNameLabel.setStyleName("logoNameLabel");

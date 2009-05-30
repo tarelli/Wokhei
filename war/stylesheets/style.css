@@ -63,6 +63,12 @@ div#page-wrap {
 	min-height: 1px;
 }
 
+.bodytileAdmin {
+	position: relative;
+	background: URL("../images/bodytile.png");
+	min-height: 200px;
+}
+
 .footer {
 	position: relative;
 	background: URL("../images/footer.png");
@@ -579,14 +585,40 @@ left: 100px;
 top: 0px;
 }
 
-.orderListHeader {
-  background-color: #bf007e;
-  color: white;
-  font-style: bold;
-}
-
 .orderList {
   border: 1px solid #bf007e;
   padding: 2px;
   margin-bottom:6px;
+}
+
+/*paginator stuff - shit don't work!*/
+
+  /***
+   * Default Pagination Behavior
+   * 
+   * <h3>CSS Style Rules</h3>
+   * <ul class="css">
+   * <li>.oddRow { }</li>
+   * <li>.evenRow { }</li>
+   * <li>.oddCell { }</li>
+   * <li>.evenCell { }</li>
+   * <li>.headerRow { }</li> --> this works!
+   * <li>.headerCell { }</li>
+   * <li>.pagingRow { }</li> --> this doesn't work!
+   * <li>.noPreviousPageCell { }</li>
+   * <li>.previousPageCell { }</li>
+   * <li>.pageCell { }</li>
+   * <li>.currentPageCell { }</li>
+   * <li>.noNextPageCell { }</li>
+   * <li>.nextPageCell { }</li> --> this doesn't work!
+   * </ul>
+   * 
+   * @author Joe Toth (joetoth@gmail.com)
+   * 
+   */
+   
+.headerRow { 
+  background-color: #bf007e;
+  color: white;
+  font-style: bold;
 }
