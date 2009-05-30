@@ -58,6 +58,7 @@
 <div class="bodyDoor">
 	<div id="orderSubmitterAlternateBody" class="orderSubmitterAlternateBodyPanel"></div>
 </div>
+	<div id="okImagesPanel" class="okImagesPanel"></div>
 	<div id="ordersBrowser" class="orders"></div>
 	<div id="orderSubmitter" class="submitOrder"></div>
 </div>

@@ -46,7 +46,7 @@ public class Validator {
 		{
 			return TagsErrors.TOO_FEW_TAGS;
 		}
-		else if(tags.length>=MAX_TAGS)
+		else if(tags.length>MAX_TAGS)
 		{
 			return TagsErrors.TOO_MANY_TAGS;
 		}

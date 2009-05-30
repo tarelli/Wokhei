@@ -8,6 +8,7 @@ import java.util.List;
 import com.brainz.wokhei.client.Validator.ColourErrors;
 import com.brainz.wokhei.client.Validator.LogoErrors;
 import com.brainz.wokhei.client.Validator.TagsErrors;
+import com.brainz.wokhei.resources.Images;
 import com.brainz.wokhei.resources.Messages;
 import com.brainz.wokhei.shared.Colour;
 import com.brainz.wokhei.shared.OrderDTO;
@@ -21,6 +22,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -47,12 +49,15 @@ public class OrderSubmitterModulePart extends AModulePart {
 	private final Label _logoTextLabel = new Label(Messages.LOGO_NAME_LBL.getString()); //$NON-NLS-1$
 	private final Label _logoHintLabel = new Label(Messages.LOGO_NAME_EG_LBL.getString()); //$NON-NLS-1$
 	private final Label _logoErrorLabel = new Label(); 
+	private final Image _logoOkImage = new Image();
 
 	//COLOURS
 	private final VerticalPanel _colorPanel = new VerticalPanel();
-	private final Label _colorLabel = new Label(Messages.LOGO_COLOUR_LBL.getString()); //$NON-NLS-1$
+	private final Label _colourLabel = new Label(Messages.LOGO_COLOUR_LBL.getString()); //$NON-NLS-1$
 	private final Label _colorHintLabel = new Label(Messages.LOGO_COLOUR_EG_LBL.getString()); //$NON-NLS-1$
-	private final Label _colourErrorLabel = new Label(); 
+	private final Label _colourErrorLabel = new Label();
+	private final Image _colourOkImage = new Image();
+
 	private final VerticalPanel _rows = new VerticalPanel();
 	private final HorizontalPanel _colorSubPanel= new HorizontalPanel();
 	private final HorizontalPanel _firstRow = new HorizontalPanel();
@@ -70,9 +75,11 @@ public class OrderSubmitterModulePart extends AModulePart {
 	private final Label _logoTagsLabel = new Label(Messages.LOGO_TAGS_LBL.getString()); //$NON-NLS-1$
 	private final Label _tagsHintLabel = new Label(Messages.LOGO_TAGS_EG_LBL.getString()); //$NON-NLS-1$
 	private final Label _tagsErrorLabel = new Label(); 
+	private final Image _tagsOkImage = new Image();
 
 	// a pretty self-explanatory submit button
 	private final Button _submitOrderButton = new Button(Messages.SEND_REQUEST.getString()); //$NON-NLS-1$
+	private final AbsolutePanel _okImagesPanel = new AbsolutePanel();
 
 	// these panels are the place olders for the drink images
 	private final VerticalPanel _alternateRootPanelBody= new VerticalPanel();
@@ -184,13 +191,13 @@ public class OrderSubmitterModulePart extends AModulePart {
 			_logoTagsPanel.add(_logoTagsBox);
 			_logoTagsPanel.add(_tagsErrorLabel);
 
-			_colorLabel.setStyleName("label"); //$NON-NLS-1$
+			_colourLabel.setStyleName("label"); //$NON-NLS-1$
 			_colorHintLabel.setStyleName("hintLabel"); //$NON-NLS-1$
 			_pantoneTextBox.setStyleName("pantoneLabel"); //$NON-NLS-1$
 			_whiteSpace.setWidth("5px");
 			_colorSubPanel.setVerticalAlignment(HorizontalPanel.ALIGN_BOTTOM);
 			_colorSubPanel.setHorizontalAlignment(HorizontalPanel.ALIGN_LEFT);
-			_colorSubPanel.add(_colorLabel);
+			_colorSubPanel.add(_colourLabel);
 			_colorSubPanel.add(_whiteSpace);
 			_colorSubPanel.add(_pantoneTextBox);
 			_colorSubPanel.setHeight("15px"); //$NON-NLS-1$
@@ -220,11 +227,18 @@ public class OrderSubmitterModulePart extends AModulePart {
 			_colourErrorLabel.addStyleName("errorLabel"); //$NON-NLS-1$
 			_submitOrderButton.addStyleName("submitRequest"); //$NON-NLS-1$
 
+			_okImagesPanel.setHeight("600px");
+			_okImagesPanel.setWidth("500px");
+			_okImagesPanel.add(_logoOkImage,  390,82);
+			_okImagesPanel.add(_tagsOkImage, 390,162);
+			_okImagesPanel.add(_colourOkImage, 390,212);
 			// Fill up that son of a bitch of a mainPanel
+
 			_mainPanel.add(_logoTextPanel);
 			_mainPanel.add(_logoTagsPanel);
 			_mainPanel.add(_colorPanel);
 			_mainPanel.add(_submitOrderButton);
+
 
 			//prepare alternate panel with timer
 			// TODO : add timer and shit
@@ -268,6 +282,8 @@ public class OrderSubmitterModulePart extends AModulePart {
 					submitOrder();
 				}
 			});
+
+			RootPanel.get("okImagesPanel").add(_okImagesPanel);
 
 			RootPanel.get("orderSubmitter").add(getOrderSubmitPanel()); //$NON-NLS-1$
 
@@ -403,12 +419,15 @@ public class OrderSubmitterModulePart extends AModulePart {
 		{
 		case EMPTY:
 			_logoErrorLabel.setText(Messages.LOGO_NAME_ERROR_NONE.getString());
+			_logoOkImage.setUrl(Images.NOK.getImageURL());
 			break;
 		case TOO_LONG:
 			_logoErrorLabel.setText(Messages.LOGO_NAME_ERROR_TOOLONG.getString());
+			_logoOkImage.setUrl(Images.NOK.getImageURL());
 			break;
 		case NONE:
 			_logoErrorLabel.setText("");
+			_logoOkImage.setUrl(Images.OK.getImageURL());
 			break;
 		}
 	}
@@ -423,9 +442,11 @@ public class OrderSubmitterModulePart extends AModulePart {
 		{
 		case NO_COLOR:
 			_colourErrorLabel.setText(Messages.LOGO_COLOUR_ERROR_NONE.getString());
+			_colourOkImage.setUrl(Images.NOK.getImageURL());
 			break;
 		case NONE:
 			_colourErrorLabel.setText("");
+			_colourOkImage.setUrl(Images.OK.getImageURL());
 			break;
 		}
 	}
@@ -440,15 +461,19 @@ public class OrderSubmitterModulePart extends AModulePart {
 		{
 		case TOO_FEW_TAGS:
 			_tagsErrorLabel.setText(Messages.LOGO_TAGS_ERROR_NOTENOUGH.getString());
+			_tagsOkImage.setUrl(Images.NOK.getImageURL());
 			break;
 		case NONE:
 			_tagsErrorLabel.setText("");
+			_tagsOkImage.setUrl(Images.OK.getImageURL());
 			break;
 		case TAGS_TOO_LONG:
 			_tagsErrorLabel.setText(Messages.LOGO_TAGS_ERROR_TOOLONG.getString());
+			_tagsOkImage.setUrl(Images.NOK.getImageURL());
 			break;
 		case TOO_MANY_TAGS:
 			_tagsErrorLabel.setText(Messages.LOGO_TAGS_ERROR_TOOMANY.getString());
+			_tagsOkImage.setUrl(Images.NOK.getImageURL());
 			break;
 		}
 	}
@@ -488,11 +513,13 @@ public class OrderSubmitterModulePart extends AModulePart {
 		{
 			// Associate the feckin' Main panel with the HTML element on the host page.
 			_mainPanel.setVisible(true);
+			_okImagesPanel.setVisible(true);
 			showAlternatePanels(false);
 		}
 		else
 		{
 			_mainPanel.setVisible(false);
+			_okImagesPanel.setVisible(false);
 			showAlternatePanels(true);	
 		}
 	}

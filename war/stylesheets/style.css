@@ -252,6 +252,12 @@ input,select {
 }
 
 /* HOME LOGGED*/ /* DOOR */
+.okImagesPanel{
+	position: absolute;
+	left: 0px;
+	top: 0px;
+}
+	
 .headerDoor {
 	position: relative;
 	min-height: 149px;

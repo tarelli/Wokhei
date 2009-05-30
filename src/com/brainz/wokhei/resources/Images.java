@@ -16,6 +16,9 @@ public enum Images {
 	DRINKBODYTILE("./images/bodytiledrink.png"),
 	DRINKFOOTER("./images/footerdrink.png"),
 
+	OK("./images/okSign.png"),
+	NOK("./images/nokSign.png"),
+
 	INFOS("./images/legend.png");
 
 	String _imageName;
