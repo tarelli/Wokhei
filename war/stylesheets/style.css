@@ -79,6 +79,13 @@ div#page-wrap {
 	z-index: 1;
 }
 
+.bodytileAdmin {
+	position: relative;
+	background: URL("../images/bodytile.png");
+	min-height: 200px;
+	z-index: 1;
+}
+
 .footer {
 	position: relative;
 	background: URL("../images/footer.png");
@@ -598,8 +605,48 @@ div#orderSubmitter {
 	background-color: #3d0e21;
 }
 
+/* Admin specific stuff */
+
 .adminModule {
-	position: absolute;
-	left: 100px;
-	top: 0px;
+position: absolute;
+left: 100px;
+top: 0px;
+}
+
+.orderList {
+  border: 1px solid #bf007e;
+  padding: 2px;
+  margin-bottom:6px;
+}
+
+/*paginator stuff - shit don't work!*/
+
+  /***
+   * Default Pagination Behavior
+   * 
+   * <h3>CSS Style Rules</h3>
+   * <ul class="css">
+   * <li>.oddRow { }</li>
+   * <li>.evenRow { }</li>
+   * <li>.oddCell { }</li>
+   * <li>.evenCell { }</li>
+   * <li>.headerRow { }</li> --> this works!
+   * <li>.headerCell { }</li>
+   * <li>.pagingRow { }</li> --> this doesn't work!
+   * <li>.noPreviousPageCell { }</li>
+   * <li>.previousPageCell { }</li>
+   * <li>.pageCell { }</li>
+   * <li>.currentPageCell { }</li>
+   * <li>.noNextPageCell { }</li>
+   * <li>.nextPageCell { }</li> --> this doesn't work!
+   * </ul>
+   * 
+   * @author Joe Toth (joetoth@gmail.com)
+   * 
+   */
+   
+.headerRow { 
+  background-color: #bf007e;
+  color: white;
+  font-style: bold;
 }

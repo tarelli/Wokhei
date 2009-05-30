@@ -28,7 +28,7 @@
 
 <body>
 
-<div id="page-wrap">
+<div id="page-wrap" style="overflow: visible;">
 <div class="header">
 <div id="headerPanel" class="headerPanel"></div>
 <%
@@ -38,7 +38,7 @@
 	if (user == null) {
 		// if you're not legged in go back to index
 		response.sendRedirect("index.jsp");
-	} else if (!(user.getEmail().equals("matteo.cantarelli@wokhei.com") || AdminAuthenticator.isAdmin(user))) {
+	} else if (!(user.getEmail().equals("giovanni") || AdminAuthenticator.isAdmin(user))) {
 		// if you're not admin go back to home - you son of a bitch
 		response.sendRedirect("home.jsp");
 	}
@@ -48,15 +48,15 @@
 <div class="admin"><a href="home.jsp"><a2>Home</a2></a></div>
 
 </div>
-<div class="body" style="overflow: auto">
+<div class="body" style="overflow: visible; z-index: 2;">
 
 <!-- gwt adminModule goes here -->
 <div class="adminModule" id="adminConsole"></div>
 
 </div>
-<div class="bodytile">
+<div class="bodytileAdmin" style="z-index: 1;">
 </div>
-<div class="footer">
+<div class="footer" style="z-index: 1;">
 </div>
 </div>
 

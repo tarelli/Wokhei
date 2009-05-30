@@ -3,6 +3,7 @@
  */
 package com.brainz.wokhei.server;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -11,6 +12,8 @@ import java.util.logging.Logger;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
+
+import org.gwtwidgets.client.ui.pagination.Results;
 
 import com.brainz.wokhei.Order;
 import com.brainz.wokhei.PMF;
@@ -80,8 +83,8 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 	}
 
 	// un bel metodo per succhiare il cazzo all'amministratore e a tarelli frocio male
-	public List<OrderDTO> getOrdersByUserAndStatus(Status status,
-			String userEmail) {
+	public Results getOrdersByUserAndStatus(Status status,
+			String userEmail,int offset, int maxResult) {
 
 		List<OrderDTO> orderList = null;
 		User user = null;
@@ -137,7 +140,14 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 			pm.close();
 		}
 
-		return orderList;
+		//TODO Fai una query che prende solo quelli che servono!
+		List<OrderDTO> partialResult=new ArrayList<OrderDTO>();
+		int maxNumber=Math.min(offset+maxResult,orderList.size());
+		for(int i=offset;i<maxNumber;i++)
+		{
+			partialResult.add(orderList.get(i));
+		}
+		return new Results(orderList.size(),partialResult);
 	}
 
 	public Boolean setOrderStatus(long orderId, Status newStatus)
@@ -169,12 +179,12 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 
 				if (user != null) 
 				{
-					log.info("order " + order.getId() + " rejected from " + user.getNickname());
+					log.info("order [" + order.getId() + "] status change to " + newStatus.toString() + " from " + user.getNickname());
 				} 
 				else 
 				{
 					//should never happen!
-					log.info("order " + order.getId() + " rejected from nobody");
+					log.info("order [" + order.getId() + "] status changed to " + newStatus.toString() + " from NOBODY");
 				}
 			} 
 			finally 

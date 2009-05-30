@@ -40,7 +40,7 @@
     }
     else
     {
-  		if(user.getEmail().equals("matteo.cantarelli@wokhei.com") || AdminAuthenticator.isAdmin(user))
+  		if(user.getEmail().equals("giovanni") || AdminAuthenticator.isAdmin(user))
 		{
 %>
 <div class="admin"><a href="/admin.jsp"><a2>Admin<a2></a></div>

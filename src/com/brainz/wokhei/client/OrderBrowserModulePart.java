@@ -67,7 +67,7 @@ public class OrderBrowserModulePart extends AModulePart{
 
 	private final Label colourSpace = new Label();
 
-	private final SlideShow slideShow=new SlideShow();
+	private final SlideShow slideShow = new SlideShow();
 
 	private AsyncCallback<Boolean> _setOrderStatusCallback = null;
 
@@ -90,6 +90,7 @@ public class OrderBrowserModulePart extends AModulePart{
 			previousOrderButton.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
 					getPreviousOrder();
+
 					updatePanel();
 				}
 			});
@@ -97,6 +98,7 @@ public class OrderBrowserModulePart extends AModulePart{
 			nextOrderButton.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
 					getNextOrder();
+
 					updatePanel();
 				}
 			});
