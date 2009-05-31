@@ -41,6 +41,7 @@ public enum Messages {
 	ARCHIVED_TITLE("This logo is archived"),
 	ARCHIVED_TEXT("You didn't purchase this logo. You can still use it under licence for non-commercial purposes. We will appreciate if you'll notify Wokhei whenever you'll decide to use this logo - so don't be shy!"),
 
+	ADMIN_STATUS_FILTER_LABEL("Pick Status"),
 	;
 
 	private String _text;

@@ -1,6 +1,7 @@
 package com.brainz.wokhei.client;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.gwtwidgets.client.ui.pagination.Column;
 import org.gwtwidgets.client.ui.pagination.DataProvider;
@@ -9,6 +10,7 @@ import org.gwtwidgets.client.ui.pagination.PaginationBehavior;
 import org.gwtwidgets.client.ui.pagination.PaginationParameters;
 import org.gwtwidgets.client.ui.pagination.RowRenderer;
 
+import com.brainz.wokhei.resources.Messages;
 import com.brainz.wokhei.shared.OrderDTO;
 import com.brainz.wokhei.shared.Status;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -19,6 +21,8 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -54,12 +58,21 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 		{
 			return _columnText;
 		}
+
 	}
 
-	private final VerticalPanel mainPanel = new VerticalPanel();
-	private final FlexTable ordersFlexTable = new FlexTable();
-	private final FlexTable pagingControlsTable = new FlexTable();
-	private DefaultPaginationBehavior paginationBehavior;
+	private final VerticalPanel _mainPanel = new VerticalPanel();
+	private final FlexTable _ordersFlexTable = new FlexTable();
+	private final FlexTable _pagingControlsTable = new FlexTable();
+	private DefaultPaginationBehavior _paginationBehavior;
+
+	// contains all the different filters needed
+	private final HorizontalPanel _filteringPanel = new HorizontalPanel();
+	// filter controls
+	private final VerticalPanel _statusFilter = new VerticalPanel();
+	private final ListBox _statusFilterBox = new ListBox();
+	private final Button _filterButton = new Button("Filter!");
+
 
 	private AsyncCallback<Boolean> _setOrderStatusCallback = null;
 
@@ -78,23 +91,79 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 			hookUpCallbacks();
 
+			setFilters();
+
 			setPaginator();
 
 			//set orders flexTable style - header picks up headeRow style bcs of paginationBehavior
-			ordersFlexTable.addStyleName("orderList");
-			ordersFlexTable.setWidth("800px");
+			_ordersFlexTable.addStyleName("orderList");
+			_ordersFlexTable.setWidth("800px");
 
 			//set mainPanel Style
-			mainPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+			_mainPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 
-			mainPanel.add(ordersFlexTable);
-			mainPanel.add(pagingControlsTable);
+			_mainPanel.add(_filteringPanel);
+			_mainPanel.add(_ordersFlexTable);
+			_mainPanel.add(_pagingControlsTable);
 
-			paginationBehavior.showPage(1,Columns.ID._columnText, true);
+			_paginationBehavior.showPage(1,Columns.ID._columnText, true);
 
 			// Associate the Main panel with the HTML host page.
-			RootPanel.get("adminConsole").add(mainPanel);
+			RootPanel.get("adminConsole").add(_mainPanel);
 		}
+	}
+
+	/**
+	 * Set the filters
+	 */
+	private void setFilters() {
+
+		setStatusFilter();
+
+		_filterButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				//TODO --> reload!
+				_paginationBehavior.showPage(1,Columns.ID._columnText, true);
+			}
+		});
+
+		// add stuff to filtering panel
+		_filteringPanel.add(_statusFilter);
+		_filteringPanel.add(_filterButton);
+	}
+
+	private void setStatusFilter() {
+
+		Label statusFilterLbl = new Label(Messages.ADMIN_STATUS_FILTER_LABEL.getString()); 
+		_statusFilterBox.setHeight("30px");
+
+		//retrieve all possible statuses
+		List<Status> Statuses = Arrays.asList(Status.values());
+
+		// loop through items and generate checkboxes for status
+		for (Status status : Statuses)
+		{
+			String statusStr = status.toString().toLowerCase();
+
+			_statusFilterBox.addItem(statusStr);
+		}
+
+		//set default (accepted --> maybe should be incoming)
+		_statusFilterBox.setItemSelected(1, true);
+
+		//add label and checkbox panel to filterPanel
+		_statusFilter.add(statusFilterLbl);
+		_statusFilter.add(_statusFilterBox);
+	}
+
+	private Status getStatusFromStatusFilter()
+	{
+		String statusAsStr = _statusFilterBox.getItemText(_statusFilterBox.getSelectedIndex());
+
+		Status status = Status.valueOf(statusAsStr.toUpperCase());
+
+
+		return status;
 	}
 
 	/**
@@ -102,7 +171,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	 */
 	private void setPaginator() 
 	{
-		paginationBehavior = new DefaultPaginationBehavior(pagingControlsTable,ordersFlexTable,15) {
+		_paginationBehavior = new DefaultPaginationBehavior(_pagingControlsTable,_ordersFlexTable,15) {
 
 			@Override
 			protected RowRenderer getRowRenderer() {
@@ -114,12 +183,12 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 						OrderDTO order=(OrderDTO)object;
 						//The header row will be added afterward (apparently, it's 2am we might be wrong)
 						final int frow = row +1 ;
-						ordersFlexTable.setText(row, Columns.ID.ordinal(), order.getId().toString());
-						ordersFlexTable.setText(row, Columns.USER.ordinal(), order.getCustomerEmail());
-						ordersFlexTable.setText(row, Columns.LOGO_TEXT.ordinal(), order.getText());
-						ordersFlexTable.setText(row, Columns.TAGS.ordinal(), Arrays.asList(order.getTags()).toString());
-						ordersFlexTable.setText(row, Columns.STATUS.ordinal(), order.getStatus().toString());
-						ordersFlexTable.setText(row, Columns.TIMER.ordinal(), "N/A");
+						_ordersFlexTable.setText(row, Columns.ID.ordinal(), order.getId().toString());
+						_ordersFlexTable.setText(row, Columns.USER.ordinal(), order.getCustomerEmail());
+						_ordersFlexTable.setText(row, Columns.LOGO_TEXT.ordinal(), order.getText());
+						_ordersFlexTable.setText(row, Columns.TAGS.ordinal(), Arrays.asList(order.getTags()).toString());
+						_ordersFlexTable.setText(row, Columns.STATUS.ordinal(), order.getStatus().toString());
+						_ordersFlexTable.setText(row, Columns.TIMER.ordinal(), "N/A");
 
 						if(order.getStatus()==Status.INCOMING)
 						{
@@ -130,7 +199,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 								public void onClick(ClickEvent event) {
 
 									//get ID from clicked row
-									long rejectedId = Long.parseLong(ordersFlexTable.getText(frow, Columns.ID.ordinal()));
+									long rejectedId = Long.parseLong(_ordersFlexTable.getText(frow, Columns.ID.ordinal()));
 
 									statusChangedSubHandler(frow, rejectedId, Status.REJECTED);
 								}
@@ -143,7 +212,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 								public void onClick(ClickEvent event) {
 
 									//get ID from clicked row
-									long acceptedId = Long.parseLong(ordersFlexTable.getText(frow, Columns.ID.ordinal()));
+									long acceptedId = Long.parseLong(_ordersFlexTable.getText(frow, Columns.ID.ordinal()));
 
 									statusChangedSubHandler(frow, acceptedId, Status.ACCEPTED);
 								}
@@ -153,7 +222,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 							actionPanel.add(acceptOrderButton);
 							actionPanel.add(rejectOrderButton);
 
-							ordersFlexTable.setWidget(row, Columns.ACTIONS.ordinal(), actionPanel);
+							_ordersFlexTable.setWidget(row, Columns.ACTIONS.ordinal(), actionPanel);
 						}
 						else if (order.getStatus()!=Status.READY && order.getStatus()!=Status.REJECTED)
 						{
@@ -169,11 +238,11 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 								}
 							});
 
-							ordersFlexTable.setWidget(row, Columns.ACTIONS.ordinal(), uploadLogoButton);
+							_ordersFlexTable.setWidget(row, Columns.ACTIONS.ordinal(), uploadLogoButton);
 						}
 						else
 						{
-							ordersFlexTable.setText(row, Columns.ACTIONS.ordinal(), "N/A");
+							_ordersFlexTable.setText(row, Columns.ACTIONS.ordinal(), "N/A");
 						}
 					}};
 
@@ -186,8 +255,11 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 					@Override
 					public void update(PaginationParameters parameters,
 							AsyncCallback updateTableCallback) {
+
+						Status status = getStatusFromStatusFilter();
+
 						_service.getOrdersByUserAndStatus(
-								null, 
+								status, 
 								null,
 								parameters.getOffset(), 
 								parameters.getMaxResults(), 
@@ -208,8 +280,8 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 			}
 		};
 
-		paginationBehavior.setNextPageText("Next >>");
-		paginationBehavior.setPreviousPageText("<< Prev");
+		_paginationBehavior.setNextPageText("Next >>");
+		_paginationBehavior.setPreviousPageText("<< Prev");
 	}
 
 	private void hookUpCallbacks() 
@@ -234,10 +306,10 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 		if(result)
 		{
 			// set new status
-			ordersFlexTable.setText(_rowForClientStatusUpdate, Columns.STATUS.ordinal(), _statusForClientUpdate.toString());
+			_ordersFlexTable.setText(_rowForClientStatusUpdate, Columns.STATUS.ordinal(), _statusForClientUpdate.toString());
 			// disable buttons 
 			//TODO --> decision to show or not row according to filters
-			HorizontalPanel actionPanel = ((HorizontalPanel)ordersFlexTable.getWidget(_rowForClientStatusUpdate, Columns.ACTIONS.ordinal()));
+			HorizontalPanel actionPanel = ((HorizontalPanel)_ordersFlexTable.getWidget(_rowForClientStatusUpdate, Columns.ACTIONS.ordinal()));
 			((Button)actionPanel.getWidget(0)).setEnabled(false);
 			((Button)actionPanel.getWidget(1)).setEnabled(false);
 		}

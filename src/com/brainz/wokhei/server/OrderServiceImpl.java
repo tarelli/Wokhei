@@ -83,6 +83,7 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 	}
 
 	// un bel metodo per succhiare il cazzo all'amministratore e a tarelli frocio male
+	@SuppressWarnings("unchecked")
 	public Results getOrdersByUserAndStatus(Status status,
 			String userEmail,int offset, int maxResult) {
 
@@ -97,50 +98,67 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 
 		//prepare query
 		PersistenceManager pm = PMF.get().getPersistenceManager();
-		String select_query = "select from " + Order.class.getName(); 
-		Query query = pm.newQuery(select_query); 
+
+		String filters = "";
+
+		//build filters
+		if (status!=null)
+		{
+			if (filters!="")
+			{
+				filters += " && ";
+			}
+
+			filters += " ( ";
+
+			//build status filter
+
+			filters += " status == '" + status.toString() + "'";
+
+			filters += " ) ";
+		}
+
+		if (user!=null)
+		{
+			if (filters!=null)
+			{
+				filters += " && ";
+			}
+
+			filters += " ( ";
+
+			//build user filter
+			filters += " customer == '" + user.getEmail() + "'";
+
+			filters += " ) ";
+		}
+
+		Query query;
+
+		// new query
+		if(filters!="")
+		{
+			query = pm.newQuery(Order.class, filters);
+		}
+		else
+		{
+			query = pm.newQuery(Order.class);
+		}
 
 		try
 		{
-			//attenzione che qui ci sono porcate malefiche
-			if(userEmail!= null && status !=null)
-			{
-				query.setFilter("customer == paramCustomer && status == paramStatus"); 
-				query.declareParameters("java.lang.String paramCustomer");
-				query.declareParameters("java.lang.String paramStatus");
-				//execute
-				orderList = OrderUtils.getOrderDTOList((List<Order>) query.execute(user, status));
-			}
-			else if(status != null)
-			{
-				query.setFilter("status == paramStatus");
-				query.declareParameters("java.lang.String paramStatus");
-				//execute
-				orderList = OrderUtils.getOrderDTOList((List<Order>) query.execute(status));
-			}
-			else if(userEmail!= null)
-			{
-				query.setFilter("customer == paramCustomer"); 
-				query.declareParameters("java.lang.String paramCustomer");
-				//execute
-				orderList = OrderUtils.getOrderDTOList((List<Order>) query.execute(user));
-			}
-			else
-			{
-				//execute
-				orderList = OrderUtils.getOrderDTOList((List<Order>) query.execute());
-			}
+			orderList = OrderUtils.getOrderDTOList((List<Order>) query.execute());
 		}
-		catch(Exception ex)
+		catch(Exception e)
 		{
-			log.log(Level.SEVERE, ex.toString());
+			log.log(Level.SEVERE, e.toString());
 		}
 		finally
 		{
 			pm.close();
 		}
 
-		//TODO Fai una query che prende solo quelli che servono!
+		//TODO Fai una query che prende solo quelli che servono! --> stucazzo!
 		List<OrderDTO> partialResult=new ArrayList<OrderDTO>();
 		int maxNumber=Math.min(offset+maxResult,orderList.size());
 		for(int i=offset;i<maxNumber;i++)
