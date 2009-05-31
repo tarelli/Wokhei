@@ -84,10 +84,10 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	 * Init module part
 	 */
 	@Override
-	public void initModulePart(OrderServiceAsync service) {
+	public void initModulePart(OrderServiceAsync orderService, UtilityServiceAsync utilityService) {
 		if(RootPanel.get("adminConsole")!=null)
 		{
-			super.initModulePart(service);
+			super.initModulePart(orderService,utilityService);
 
 			hookUpCallbacks();
 
@@ -122,7 +122,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 		_filterButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				//TODO --> reload!
+				//--> reload grid!
 				_paginationBehavior.showPage(1,Columns.ID._columnText, true);
 			}
 		});
@@ -177,7 +177,6 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 			protected RowRenderer getRowRenderer() {
 				return new RowRenderer(){
 
-					@Override
 					public void populateRow(PaginationBehavior pagination, int row,
 							Object object) {
 						OrderDTO order=(OrderDTO)object;
@@ -252,13 +251,12 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 			@Override
 			protected DataProvider getDataProvider() {
 				return new DataProvider(){
-					@Override
 					public void update(PaginationParameters parameters,
 							AsyncCallback updateTableCallback) {
 
 						Status status = getStatusFromStatusFilter();
 
-						_service.getOrdersByUserAndStatus(
+						_orderService.getOrdersByUserAndStatus(
 								status, 
 								null,
 								parameters.getOffset(), 
@@ -327,7 +325,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 		_statusForClientUpdate = status;
 
 		//call setOrderStatus callback
-		_service.setOrderStatus(orderId, status, _setOrderStatusCallback);
+		_orderService.setOrderStatus(orderId, status, _setOrderStatusCallback);
 	}
 
 	/*

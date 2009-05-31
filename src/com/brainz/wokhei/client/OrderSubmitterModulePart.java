@@ -5,29 +5,36 @@ package com.brainz.wokhei.client;
 
 import java.util.List;
 
+import com.brainz.wokhei.client.Validator.ColourErrors;
+import com.brainz.wokhei.client.Validator.LogoErrors;
+import com.brainz.wokhei.client.Validator.TagsErrors;
+import com.brainz.wokhei.resources.Images;
 import com.brainz.wokhei.resources.Messages;
 import com.brainz.wokhei.shared.Colour;
 import com.brainz.wokhei.shared.OrderDTO;
 import com.brainz.wokhei.shared.OrderDTOUtils;
 import com.brainz.wokhei.shared.Status;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-
 /**
  * @author matteocantarelli
  *
  */
 public class OrderSubmitterModulePart extends AModulePart {
 
-	private static final int MAX_TAGS = 5;
+
 
 	private static final int NUM_COLOURS = 24;
 
@@ -41,11 +48,16 @@ public class OrderSubmitterModulePart extends AModulePart {
 	private final TextBox _logoTextBox = new TextBox();
 	private final Label _logoTextLabel = new Label(Messages.LOGO_NAME_LBL.getString()); //$NON-NLS-1$
 	private final Label _logoHintLabel = new Label(Messages.LOGO_NAME_EG_LBL.getString()); //$NON-NLS-1$
+	private final Label _logoErrorLabel = new Label(); 
+	private final Image _logoOkImage = new Image();
 
 	//COLOURS
 	private final VerticalPanel _colorPanel = new VerticalPanel();
-	private final Label _colorLabel = new Label(Messages.LOGO_COLOUR_LBL.getString()); //$NON-NLS-1$
+	private final Label _colourLabel = new Label(Messages.LOGO_COLOUR_LBL.getString()); //$NON-NLS-1$
 	private final Label _colorHintLabel = new Label(Messages.LOGO_COLOUR_EG_LBL.getString()); //$NON-NLS-1$
+	private final Label _colourErrorLabel = new Label();
+	private final Image _colourOkImage = new Image();
+
 	private final VerticalPanel _rows = new VerticalPanel();
 	private final HorizontalPanel _colorSubPanel= new HorizontalPanel();
 	private final HorizontalPanel _firstRow = new HorizontalPanel();
@@ -57,17 +69,17 @@ public class OrderSubmitterModulePart extends AModulePart {
 	private Colour _selectedColour;
 	private Label _selectedColourButton=null;
 
-
-
 	// logotags controls
 	private final VerticalPanel _logoTagsPanel = new VerticalPanel();
 	private final TextBox _logoTagsBox = new TextBox();
 	private final Label _logoTagsLabel = new Label(Messages.LOGO_TAGS_LBL.getString()); //$NON-NLS-1$
 	private final Label _tagsHintLabel = new Label(Messages.LOGO_TAGS_EG_LBL.getString()); //$NON-NLS-1$
+	private final Label _tagsErrorLabel = new Label(); 
+	private final Image _tagsOkImage = new Image();
 
 	// a pretty self-explanatory submit button
-	private final Label _submitOrderButton = new Label(Messages.SEND_REQUEST.getString()); //$NON-NLS-1$
-	private final Label _messageLabel = new Label(""); //$NON-NLS-1$
+	private final Button _submitOrderButton = new Button(Messages.SEND_REQUEST.getString()); //$NON-NLS-1$
+	private final AbsolutePanel _okImagesPanel = new AbsolutePanel();
 
 	// these panels are the place olders for the drink images
 	private final VerticalPanel _alternateRootPanelBody= new VerticalPanel();
@@ -96,7 +108,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 	private OrderDTO _submittedOrder = null;
 
 	@Override
-	public void initModulePart(OrderServiceAsync service) {
+	public void initModulePart(OrderServiceAsync orderService, UtilityServiceAsync utilityService) {
 
 		if((RootPanel.get("orderSubmitter")!=null)&&
 				(RootPanel.get("orderSubmitterAlternateBody")!=null)&&
@@ -104,7 +116,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 				(RootPanel.get("orderSubmitterAlternateFooter")!=null))
 		{
 
-			super.initModulePart(service);
+			super.initModulePart(orderService,utilityService);
 
 			hookUpCallbacks();
 
@@ -137,6 +149,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 			_logoTextPanel.add(_logoTextLabel);
 			_logoTextPanel.add(_logoHintLabel);
 			_logoTextPanel.add(_logoTextBox);
+			_logoTextPanel.add(_logoErrorLabel);
 
 
 			// prepare my cock-fuckerin' tags vertical panel
@@ -151,18 +164,40 @@ public class OrderSubmitterModulePart extends AModulePart {
 					}
 				}});
 
+			_logoTagsBox.addChangeHandler(new ChangeHandler(){
+				public void onChange(ChangeEvent event) {
+					if(_logoTagsBox.getText().length()!=0)
+					{
+						String[] tags=_logoTagsBox.getText().split(" ");
+						String tagsString="";
+						for(int i=0;i<tags.length;i++)
+						{
+							if(tags[i].charAt(0)!='#')
+							{
+								tagsString+="#"+tags[i]+" ";
+							}
+							else
+							{
+								tagsString+=tags[i]+" ";
+							}
+						}
+						_logoTagsBox.setText(tagsString.trim());
+					}
+				}});
+
 			_logoTagsPanel.setSpacing(1);
 			_logoTagsPanel.add(_logoTagsLabel);
 			_logoTagsPanel.add(_tagsHintLabel);
 			_logoTagsPanel.add(_logoTagsBox);
+			_logoTagsPanel.add(_tagsErrorLabel);
 
-			_colorLabel.setStyleName("label"); //$NON-NLS-1$
+			_colourLabel.setStyleName("label"); //$NON-NLS-1$
 			_colorHintLabel.setStyleName("hintLabel"); //$NON-NLS-1$
 			_pantoneTextBox.setStyleName("pantoneLabel"); //$NON-NLS-1$
 			_whiteSpace.setWidth("5px");
 			_colorSubPanel.setVerticalAlignment(HorizontalPanel.ALIGN_BOTTOM);
 			_colorSubPanel.setHorizontalAlignment(HorizontalPanel.ALIGN_LEFT);
-			_colorSubPanel.add(_colorLabel);
+			_colorSubPanel.add(_colourLabel);
 			_colorSubPanel.add(_whiteSpace);
 			_colorSubPanel.add(_pantoneTextBox);
 			_colorSubPanel.setHeight("15px"); //$NON-NLS-1$
@@ -184,17 +219,26 @@ public class OrderSubmitterModulePart extends AModulePart {
 			_rows.add(_thirdRow);
 
 			_colorPanel.add(_rows);
+			_colorPanel.add(_colourErrorLabel);
 
 
-			_messageLabel.addStyleName("errorLabel"); //$NON-NLS-1$
+			_tagsErrorLabel.addStyleName("errorLabel"); //$NON-NLS-1$
+			_logoErrorLabel.addStyleName("errorLabel"); //$NON-NLS-1$
+			_colourErrorLabel.addStyleName("errorLabel"); //$NON-NLS-1$
 			_submitOrderButton.addStyleName("submitRequest"); //$NON-NLS-1$
 
+			_okImagesPanel.setHeight("600px");
+			_okImagesPanel.setWidth("500px");
+			_okImagesPanel.add(_logoOkImage,  390,82);
+			_okImagesPanel.add(_tagsOkImage, 390,162);
+			_okImagesPanel.add(_colourOkImage, 390,212);
 			// Fill up that son of a bitch of a mainPanel
+
 			_mainPanel.add(_logoTextPanel);
 			_mainPanel.add(_logoTagsPanel);
 			_mainPanel.add(_colorPanel);
-			_mainPanel.add(_messageLabel);
 			_mainPanel.add(_submitOrderButton);
+
 
 			//prepare alternate panel with timer
 			// TODO : add timer and shit
@@ -239,6 +283,8 @@ public class OrderSubmitterModulePart extends AModulePart {
 				}
 			});
 
+			RootPanel.get("okImagesPanel").add(_okImagesPanel);
+
 			RootPanel.get("orderSubmitter").add(getOrderSubmitPanel()); //$NON-NLS-1$
 
 			RootPanel.get("orderSubmitterAlternateBody").add(getOrderSubmitAlternateBodyPanel()); //$NON-NLS-1$
@@ -269,7 +315,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 		// Set up the callback object.
 		_submitOrderCallback  = new AsyncCallback<Boolean>() {
 			public void onFailure(Throwable caught) {
-				_messageLabel.setText(Messages.GENERIC_ERROR.getString() + caught.getMessage()); //$NON-NLS-1$
+				//				_messageLabel.setText(Messages.GENERIC_ERROR.getString() + caught.getMessage()); //$NON-NLS-1$
 			}
 
 			public void onSuccess(Boolean result) {
@@ -332,34 +378,106 @@ public class OrderSubmitterModulePart extends AModulePart {
 	 */
 	protected void submitOrder() 
 	{
-
-		if (this._logoTagsBox.getText().trim().length()!=0)
-		{		
-			if(_logoTagsBox.getText().split(" ").length>=MAX_TAGS) //$NON-NLS-1$
-			{
-				_messageLabel.setText(Messages.LOGO_TAGS_ERROR_TOOMANY.getString()); //$NON-NLS-1$
-			}
-			else if(_selectedColour==null)
-			{
-				_messageLabel.setText(Messages.LOGO_COLOUR_ERROR_NONE.getString()); //$NON-NLS-1$
-			}
-			else
-			{
-				// Make the call to the stock price service.
-				_submittedOrder=new OrderDTO();
-				_submittedOrder.setStatus(Status.INCOMING);
-				_submittedOrder.setTags(_logoTagsBox.getText().split(" ")); //$NON-NLS-1$
-				_submittedOrder.setText(_logoTextBox.getText());
-				_submittedOrder.setColour(_selectedColour);
-
-				_service.submitOrder(_submittedOrder, _submitOrderCallback);	
-			}
-		}
-		else
+		if(checkErrors())
 		{
-			_messageLabel.setText(Messages.LOGO_TAGS_ERROR_NOTENOUGH.getString()); //$NON-NLS-1$
+			// Make the call to the stock price service.
+			_submittedOrder=new OrderDTO();
+			_submittedOrder.setStatus(Status.INCOMING);
+			_submittedOrder.setTags(_logoTagsBox.getText().split(" ")); //$NON-NLS-1$
+			_submittedOrder.setText(_logoTextBox.getText());
+			_submittedOrder.setColour(_selectedColour);
+
+			_orderService.submitOrder(_submittedOrder, _submitOrderCallback);	
 		}
 	}
+
+	/**
+	 * @return
+	 */
+	private boolean checkErrors() 
+	{
+		Validator.TagsErrors tagsError=Validator.validateTags(_logoTagsBox.getText());
+		Validator.LogoErrors logoError=Validator.validateLogoName(_logoTextBox.getText());
+		Validator.ColourErrors colourError=Validator.validateColour(_selectedColour);
+
+		setTagErrorStatus(tagsError);
+		setColourError(colourError);
+		setLogoNameError(logoError);
+
+		return tagsError.equals(TagsErrors.NONE) && 
+		colourError.equals(ColourErrors.NONE) && 
+		logoError.equals(LogoErrors.NONE);
+	}
+
+
+	/**
+	 * @param logoError
+	 */
+	private void setLogoNameError(LogoErrors logoError) 
+	{
+		switch(logoError)
+		{
+		case EMPTY:
+			_logoErrorLabel.setText(Messages.LOGO_NAME_ERROR_NONE.getString());
+			_logoOkImage.setUrl(Images.NOK.getImageURL());
+			break;
+		case TOO_LONG:
+			_logoErrorLabel.setText(Messages.LOGO_NAME_ERROR_TOOLONG.getString());
+			_logoOkImage.setUrl(Images.NOK.getImageURL());
+			break;
+		case NONE:
+			_logoErrorLabel.setText("");
+			_logoOkImage.setUrl(Images.OK.getImageURL());
+			break;
+		}
+	}
+
+
+	/**
+	 * @param colourError
+	 */
+	private void setColourError(ColourErrors colourError) 
+	{
+		switch(colourError)
+		{
+		case NO_COLOR:
+			_colourErrorLabel.setText(Messages.LOGO_COLOUR_ERROR_NONE.getString());
+			_colourOkImage.setUrl(Images.NOK.getImageURL());
+			break;
+		case NONE:
+			_colourErrorLabel.setText("");
+			_colourOkImage.setUrl(Images.OK.getImageURL());
+			break;
+		}
+	}
+
+
+	/**
+	 * @param tagsError
+	 */
+	private void setTagErrorStatus(TagsErrors tagsError) 
+	{
+		switch(tagsError)
+		{
+		case TOO_FEW_TAGS:
+			_tagsErrorLabel.setText(Messages.LOGO_TAGS_ERROR_NOTENOUGH.getString());
+			_tagsOkImage.setUrl(Images.NOK.getImageURL());
+			break;
+		case NONE:
+			_tagsErrorLabel.setText("");
+			_tagsOkImage.setUrl(Images.OK.getImageURL());
+			break;
+		case TAGS_TOO_LONG:
+			_tagsErrorLabel.setText(Messages.LOGO_TAGS_ERROR_TOOLONG.getString());
+			_tagsOkImage.setUrl(Images.NOK.getImageURL());
+			break;
+		case TOO_MANY_TAGS:
+			_tagsErrorLabel.setText(Messages.LOGO_TAGS_ERROR_TOOMANY.getString());
+			_tagsOkImage.setUrl(Images.NOK.getImageURL());
+			break;
+		}
+	}
+
 
 	/**
 	 * @param error
@@ -382,7 +500,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 	 */
 	protected void setViewByLatestOrder() 
 	{
-		_service.getOrdersForCurrentUser(_getOrdersCallback);
+		_orderService.getOrdersForCurrentUser(_getOrdersCallback);
 	}
 
 
@@ -395,11 +513,13 @@ public class OrderSubmitterModulePart extends AModulePart {
 		{
 			// Associate the feckin' Main panel with the HTML element on the host page.
 			_mainPanel.setVisible(true);
+			_okImagesPanel.setVisible(true);
 			showAlternatePanels(false);
 		}
 		else
 		{
 			_mainPanel.setVisible(false);
+			_okImagesPanel.setVisible(false);
 			showAlternatePanels(true);	
 		}
 	}

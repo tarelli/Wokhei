@@ -75,11 +75,11 @@ public class OrderBrowserModulePart extends AModulePart{
 
 
 	@Override
-	public void initModulePart(OrderServiceAsync service) 
+	public void initModulePart(OrderServiceAsync orderService, UtilityServiceAsync utilityService) 
 	{
 		if(RootPanel.get("ordersBrowser")!=null)
 		{
-			super.initModulePart(service);
+			super.initModulePart(orderService,utilityService);
 
 			hookUpCallbacks();
 
@@ -210,7 +210,7 @@ public class OrderBrowserModulePart extends AModulePart{
 				{
 					if(_setOrderStatusCallback!=null)
 					{
-						_service.setOrderStatus(_currentOrder.getId(),Status.VIEWED, _setOrderStatusCallback);
+						_orderService.setOrderStatus(_currentOrder.getId(),Status.VIEWED, _setOrderStatusCallback);
 					}
 				}
 
@@ -230,7 +230,7 @@ public class OrderBrowserModulePart extends AModulePart{
 	 */
 	protected void getOrdersForCurrentCustomer() 
 	{
-		_service.getOrdersForCurrentUser(_getOrdersCallback);
+		_orderService.getOrdersForCurrentUser(_getOrdersCallback);
 	}
 
 	/**
@@ -255,10 +255,9 @@ public class OrderBrowserModulePart extends AModulePart{
 	private void updatePanel() {
 		if(_currentOrder!=null)
 		{
+			alwaysInfos(false);
 			orderNameLabel.setText(_currentOrder.getText());
-			String list=Arrays.asList(_currentOrder.getTags()).toString();
-			//DateFormat class is not supported on the client side. 
-			//Using deprecated methods temporarily (this will never get changed).	
+			String list=Arrays.asList(_currentOrder.getTags()).toString().replace(",","");
 			DateTimeFormat fmt = DateTimeFormat.getFormat("EEE MMM yy k:m");
 			colour.setStyleName("colour"+_currentOrder.getColour().toString());
 			colourLabel.setText(_currentOrder.getColour().getName()+" ");
@@ -275,8 +274,6 @@ public class OrderBrowserModulePart extends AModulePart{
 			case IN_PROGRESS:
 			case QUALITY_GATE:
 			case REJECTED:
-				orderImage.setUrl(Images.valueOf(_currentOrder.getStatus().toString()).getImageURL());
-				break;
 			case READY:
 				orderImage.setUrl(Images.valueOf(_currentOrder.getStatus().toString()).getImageURL());
 				break;
@@ -285,6 +282,22 @@ public class OrderBrowserModulePart extends AModulePart{
 				orderImage.setUrl("./images/logo.png");
 				break;
 			}
+		}
+		else
+		{
+			alwaysInfos(true);
+		}
+	}
+
+	/**
+	 * @param show
+	 */
+	private void alwaysInfos(boolean show) 
+	{
+		if(show==infoButton.isVisible())
+		{
+			infoButton.setVisible(!show);
+			infos.setVisible(show);
 		}
 	}
 

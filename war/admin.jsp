@@ -30,6 +30,7 @@
 
 <div id="page-wrap" style="overflow: visible;">
 <div class="header">
+<div id="headerPanel" class="headerPanel"></div>
 <%
 	// redirection block
 	UserService userService = UserServiceFactory.getUserService();

@@ -5,15 +5,18 @@ public enum Messages {
 	LOGO_NAME_LBL("Logo name"),
 	LOGO_NAME_EG_LBL("e.g. Franco Bovale Restaurant"),
 	LOGO_NAME_TXTBOX("the text in your logo"),
+	LOGO_NAME_ERROR_NONE("You need to write the text for you logo!"),
+	LOGO_NAME_ERROR_TOOLONG("Sorry the text for your logo is too long!"),
 	LOGO_COLOUR_LBL("Main color"),
 	LOGO_TAGS_TXTBOX("describe what the logo is for!"),
 	LOGO_COLOUR_EG_LBL("Logo's primary colour"),
-	LOGO_TAGS_LBL("5 Tags"),
+	LOGO_TAGS_LBL("Up to 5 Tags"),
 	LOGO_TAGS_EG_LBL("e.g. #FoodIndustry #Restaurant #Fancy #FrenchCuisine"),
-	LOGO_TAGS_ERROR_TOOMANY("Sorry, our Chefs get confused with more than 5 tags!"),
+	LOGO_TAGS_ERROR_TOOMANY("Sorry, our Chefs get confused with more than five tags!"),
+	LOGO_TAGS_ERROR_TOOLONG("Sorry, tags can't be too long!"),
 	LOGO_COLOUR_ERROR_NONE("Pick up the main colour!"),
 	GENERIC_ERROR("Error"), 
-	LOGO_TAGS_ERROR_NOTENOUGH("You need to put at least some tags!"),
+	LOGO_TAGS_ERROR_NOTENOUGH("You need to put at least three tags!"),
 	REQUEST_LOGO_LBL("Request your logo"),
 	SEND_REQUEST("Send request!"),
 
@@ -39,7 +42,8 @@ public enum Messages {
 	BOUGHT_TITLE("You purchased this logo"),
 	BOUGHT_TEXT("This logo is yours, just make anything you want with it!"),
 	ARCHIVED_TITLE("This logo is archived"),
-	ARCHIVED_TEXT("You didn't purchase this logo. You can still use it under licence for non-commercial purposes. We will appreciate if you'll notify Wokhei whenever you'll decide to use this logo - so don't be shy!"),
+	ARCHIVED_TEXT("You didn't purchase this logo. You can still use it under licence for non-commercial purposes. We will appreciate if you'll notify Wokhei whenever you'll decide to use this logo - so don't be shy!"), 
+
 
 	ADMIN_STATUS_FILTER_LABEL("Pick Status"),
 	;
