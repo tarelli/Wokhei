@@ -10,12 +10,13 @@ import com.brainz.wokhei.client.Validator.LogoErrors;
 import com.brainz.wokhei.client.Validator.TagsErrors;
 import com.brainz.wokhei.resources.Images;
 import com.brainz.wokhei.resources.Messages;
+import com.brainz.wokhei.resources.TagsOracle;
 import com.brainz.wokhei.shared.Colour;
 import com.brainz.wokhei.shared.OrderDTO;
 import com.brainz.wokhei.shared.OrderDTOUtils;
 import com.brainz.wokhei.shared.Status;
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -24,7 +25,9 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -71,7 +74,8 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 	// logotags controls
 	private final VerticalPanel _logoTagsPanel = new VerticalPanel();
-	private final TextBox _logoTagsBox = new TextBox();
+	private final MultiWordSuggestOracle _logoTagsOracle = new MultiWordSuggestOracle();  
+	private final SuggestBox _logoTagsBox = new SuggestBox(_logoTagsOracle,new MultipleTextBox());
 	private final Label _logoTagsLabel = new Label(Messages.LOGO_TAGS_LBL.getString()); //$NON-NLS-1$
 	private final Label _tagsHintLabel = new Label(Messages.LOGO_TAGS_EG_LBL.getString()); //$NON-NLS-1$
 	private final Label _tagsErrorLabel = new Label(); 
@@ -130,8 +134,13 @@ public class OrderSubmitterModulePart extends AModulePart {
 			_logoHintLabel.setStyleName("hintLabel"); //$NON-NLS-1$
 
 			_logoTextBox.setText(Messages.LOGO_NAME_TXTBOX.getString()); //$NON-NLS-1$
-			_logoTextBox.setWidth("255px"); //$NON-NLS-1$
+			_logoTextBox.setWidth("290px"); //$NON-NLS-1$
 			_logoTextBox.setStyleName("textBox"); //$NON-NLS-1$
+			_logoTextBox.addBlurHandler(new BlurHandler(){
+				public void onBlur(BlurEvent event) {
+					checkErrors();
+				}
+			});
 
 			_logoTextBox.addClickHandler(new ClickHandler(){
 				public void onClick(ClickEvent event) {
@@ -153,37 +162,30 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 
 			// prepare my cock-fuckerin' tags vertical panel
-			_logoTagsBox.setWidth("255px"); //$NON-NLS-1$
+
+			for(TagsOracle tag:TagsOracle.values())
+			{
+				_logoTagsOracle.add(tag.getString());
+				_logoTagsOracle.add(tag.getHashedString());
+			}
+
+			_logoTagsBox.setWidth("290px"); //$NON-NLS-1$
 			_logoTagsBox.setText(Messages.LOGO_TAGS_TXTBOX.getString()); //$NON-NLS-1$
 			_logoTagsBox.setStyleName("textBox"); //$NON-NLS-1$
-			_logoTagsBox.addClickHandler(new ClickHandler(){
+			_logoTagsBox.setLimit(15);
+			_logoTagsBox.getTextBox().addClickHandler(new ClickHandler(){
 				public void onClick(ClickEvent event) {
-					if(_logoTagsBox.getText().equals(Messages.LOGO_TAGS_TXTBOX.getString())) //$NON-NLS-1$
+					if(((MultipleTextBox)_logoTagsBox.getTextBox()).getWholeText().equals(Messages.LOGO_TAGS_TXTBOX.getString())) //$NON-NLS-1$
 					{
-						_logoTagsBox.selectAll();
+						_logoTagsBox.getTextBox().selectAll();
 					}
 				}});
 
-			_logoTagsBox.addChangeHandler(new ChangeHandler(){
-				public void onChange(ChangeEvent event) {
-					if(_logoTagsBox.getText().length()!=0)
-					{
-						String[] tags=_logoTagsBox.getText().split(" ");
-						String tagsString="";
-						for(int i=0;i<tags.length;i++)
-						{
-							if(tags[i].charAt(0)!='#')
-							{
-								tagsString+="#"+tags[i]+" ";
-							}
-							else
-							{
-								tagsString+=tags[i]+" ";
-							}
-						}
-						_logoTagsBox.setText(tagsString.trim());
-					}
-				}});
+			_logoTagsBox.getTextBox().addBlurHandler(new BlurHandler(){
+				public void onBlur(BlurEvent event) {
+					checkErrors();
+				}
+			});
 
 			_logoTagsPanel.setSpacing(1);
 			_logoTagsPanel.add(_logoTagsLabel);
@@ -204,6 +206,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 			_colorPanel.add(_colorSubPanel);
 			_colorPanel.add(_colorHintLabel);
+			_colorPanel.add(_colourErrorLabel);
 
 			configureColoursPanels();
 
@@ -219,7 +222,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 			_rows.add(_thirdRow);
 
 			_colorPanel.add(_rows);
-			_colorPanel.add(_colourErrorLabel);
+
 
 
 			_tagsErrorLabel.addStyleName("errorLabel"); //$NON-NLS-1$
@@ -229,9 +232,9 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 			_okImagesPanel.setHeight("600px");
 			_okImagesPanel.setWidth("500px");
-			_okImagesPanel.add(_logoOkImage,  390,82);
-			_okImagesPanel.add(_tagsOkImage, 390,162);
-			_okImagesPanel.add(_colourOkImage, 390,212);
+			_okImagesPanel.add(_logoOkImage,  60,52);
+			_okImagesPanel.add(_tagsOkImage, 60,132);
+			_okImagesPanel.add(_colourOkImage, 60,212);
 			// Fill up that son of a bitch of a mainPanel
 
 			_mainPanel.add(_logoTextPanel);
@@ -285,7 +288,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 			RootPanel.get("okImagesPanel").add(_okImagesPanel);
 
-			RootPanel.get("orderSubmitter").add(getOrderSubmitPanel()); //$NON-NLS-1$
+			RootPanel.get("orderSubmitter").add(getOrderSubmitPanel(),90,15); //$NON-NLS-1$
 
 			RootPanel.get("orderSubmitterAlternateBody").add(getOrderSubmitAlternateBodyPanel()); //$NON-NLS-1$
 
@@ -296,6 +299,32 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 	}
 
+	/**
+	 * 
+	 */
+	private void addHashToTags() 
+	{
+		if(!_logoTagsBox.isSuggestionListShowing())
+		{
+			if(((MultipleTextBox)_logoTagsBox.getTextBox()).getWholeText().length()!=0)
+			{
+				String[] tags=((MultipleTextBox)_logoTagsBox.getTextBox()).getWholeText().split(" ");
+				String tagsString="";
+				for(int i=0;i<tags.length;i++)
+				{
+					if(tags[i].charAt(0)!='#')
+					{
+						tagsString+="#"+tags[i]+" ";
+					}
+					else
+					{
+						tagsString+=tags[i]+" ";
+					}
+				}
+				((MultipleTextBox)_logoTagsBox.getTextBox()).setWholeText(tagsString.trim());
+			}
+		}
+	}
 
 	private void hookUpCallbacks() {
 		// Set up the callback object
@@ -360,6 +389,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 					_colours[index].removeStyleName("colourNormal"); //$NON-NLS-1$
 					_colours[index].addStyleName("colourSelected"); //$NON-NLS-1$
 					_selectedColourButton=_colours[index];
+					checkErrors();
 				}});
 
 			if(i<8)
@@ -383,7 +413,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 			// Make the call to the stock price service.
 			_submittedOrder=new OrderDTO();
 			_submittedOrder.setStatus(Status.INCOMING);
-			_submittedOrder.setTags(_logoTagsBox.getText().split(" ")); //$NON-NLS-1$
+			_submittedOrder.setTags(((MultipleTextBox)_logoTagsBox.getTextBox()).getWholeText().split(" ")); //$NON-NLS-1$
 			_submittedOrder.setText(_logoTextBox.getText());
 			_submittedOrder.setColour(_selectedColour);
 
@@ -396,7 +426,9 @@ public class OrderSubmitterModulePart extends AModulePart {
 	 */
 	private boolean checkErrors() 
 	{
-		Validator.TagsErrors tagsError=Validator.validateTags(_logoTagsBox.getText());
+		addHashToTags();
+
+		Validator.TagsErrors tagsError=Validator.validateTags(((MultipleTextBox)_logoTagsBox.getTextBox()).getWholeText());
 		Validator.LogoErrors logoError=Validator.validateLogoName(_logoTextBox.getText());
 		Validator.ColourErrors colourError=Validator.validateColour(_selectedColour);
 

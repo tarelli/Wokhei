@@ -69,25 +69,21 @@ div#page-wrap {
 	background: URL("../images/body.png");
 	background-repeat: no-repeat;
 	overflow: visible;
-	z-index: 2;
+	z-index: 1;
 }
 
 .bodytile {
 	position: relative;
 	background: URL("../images/bodytile.png");
 	min-height: 1px;
-	z-index: 1;
+	z-index: 0;
 }
 
 .bodytileAdmin {
 	position: relative;
 	background: URL("../images/bodytile.png");
-<<<<<<< HEAD:war/stylesheets/style.css
 	min-height: 300px;
-=======
-	min-height: 200px;
-	z-index: 1;
->>>>>>> ed28dcddbef8e23cb7dd25b67bf6fe076c9dda80:war/stylesheets/style.css
+	z-index: 0;
 }
 
 .footer {
@@ -95,7 +91,7 @@ div#page-wrap {
 	background: URL("../images/footer.png");
 	background-repeat: no-repeat;
 	min-height: 159px;
-	z-index: 1;
+	z-index: 0;
 }
 
 h1 {
@@ -263,12 +259,12 @@ input,select {
 }
 
 /* HOME LOGGED*/ /* DOOR */
-.okImagesPanel{
+.okImagesPanel {
 	position: absolute;
 	left: 0px;
 	top: 0px;
 }
-	
+
 .headerDoor {
 	position: relative;
 	min-height: 149px;
@@ -435,10 +431,7 @@ input,select {
 	height: 26px;
 }
 
-div#orderSubmitter {
-	position: absolute;
-	left: 90px;
-	top: 15px;
+.orderSubmitter {
 	width: 300px;
 	height: 350px;
 	overflow: visible;
@@ -451,10 +444,10 @@ div#orderSubmitter {
 }
 
 .errorLabel {
-	color: #FF0000;
+	color: #bf007e;
 	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 	font-size: 8pt;
-	height:12px;
+	height: 12px;
 	vertical-align: bottom;
 }
 
@@ -483,6 +476,29 @@ div#orderSubmitter {
 	position: relative;
 	width: 64px;
 	height: 64px;
+}
+
+.gwt-SuggestBox {
+	z-index: 3;
+
+}
+
+.gwt-SuggestBoxPopup {
+	z-index: 3;
+	background-color: #fbe3ee;
+}
+
+.gwt-SuggestBoxPopup .item {
+	z-index: 3;
+	font-family: "Trebuchet MS";
+	color:#bf007e;
+	font-size: 9pt;
+}
+
+.gwt-SuggestBoxPopup .item-selected {
+	z-index: 3;
+	background-color: #eec3dd;
+
 }
 
 .orders {
@@ -610,22 +626,19 @@ div#orderSubmitter {
 }
 
 /* Admin specific stuff */
-
 .adminModule {
-position: absolute;
-left: 100px;
-top: 0px;
+	position: absolute;
+	left: 100px;
+	top: 0px;
 }
 
 .orderList {
-  border: 1px solid #bf007e;
-  padding: 2px;
-  margin-bottom:6px;
+	border: 1px solid #bf007e;
+	padding: 2px;
+	margin-bottom: 6px;
 }
 
-/*paginator stuff - shit don't work!*/
-
-  /***
+/*paginator stuff - shit don't work!*/ /***
    * Default Pagination Behavior
    * 
    * <h3>CSS Style Rules</h3>
@@ -648,9 +661,8 @@ top: 0px;
    * @author Joe Toth (joetoth@gmail.com)
    * 
    */
-   
-.headerRow { 
-  background-color: #bf007e;
-  color: white;
-  font-style: bold;
+.headerRow {
+	background-color: #bf007e;
+	color: white;
+	font-style: bold;
 }
