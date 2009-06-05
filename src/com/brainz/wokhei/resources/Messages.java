@@ -46,6 +46,9 @@ public enum Messages {
 
 
 	ADMIN_STATUS_FILTER_LABEL("Pick Status"),
+	ADMIN_USER_FILTER_LABEL("Pick User"),
+	ADMIN_USER_FILTER_BOX("User Email Here"),
+	ADMIN_DATE_FILTER_LABEL("Pick Date Range"),
 	;
 
 	private String _text;

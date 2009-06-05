@@ -3,6 +3,7 @@
  */
 package com.brainz.wokhei.client;
 
+import java.util.Date;
 import java.util.List;
 
 import org.gwtwidgets.client.ui.pagination.Results;
@@ -21,7 +22,7 @@ public interface OrderService extends RemoteService {
 
 	Boolean submitOrder(OrderDTO orderDTO);
 
-	Results getOrdersByUserAndStatus(Status status, String userEmail, int offset, int maxResult);
+	Results getOrdersByUserAndStatus(Status status, String userEmail, Date startDate, Date endDate, int offset, int maxResult);
 
 	List<OrderDTO> getOrdersForCurrentUser();
 

@@ -3,6 +3,7 @@
  */
 package com.brainz.wokhei.server;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -37,6 +38,10 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 	private static final long serialVersionUID = -5060860293974160016L;
 
 	private static final Logger log = Logger.getLogger(OrderServiceImpl.class.getName());
+
+	private String _filters = "";
+
+	private String _paramDeclarations = "";
 
 	/* (non-Javadoc)
 	 * @see com.brainz.wokhei.client.OrderService#submitOrder(com.brainz.wokhei.shared.OrderDTO)
@@ -85,7 +90,11 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 	// un bel metodo per succhiare il cazzo all'amministratore e a tarelli frocio male
 	@SuppressWarnings("unchecked")
 	public Results getOrdersByUserAndStatus(Status status,
-			String userEmail,int offset, int maxResult) {
+			String userEmail, Date startDate, Date endDate,int offset, int maxResult) {
+
+		//clean up filter and paramDeclaration for Query
+		_filters = "";
+		_paramDeclarations = "";
 
 		List<OrderDTO> orderList = null;
 		User user = null;
@@ -93,61 +102,70 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 		// create user given user email (if any - else we're gonna go all the way and get the whole bunch of users)
 		if(userEmail != null)
 		{
-			user = new User(userEmail, "wokhei.com");
+			user = new User(userEmail, "@wokhei.com");
 		}
 
-		//prepare query
+		//prepare persistance manager for query
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 
-		String filters = "";
+		//init paramList
+		List<Object> paramList = new ArrayList<Object>();
 
-		//build filters
+		//status
 		if (status!=null)
-		{
-			if (filters!="")
-			{
-				filters += " && ";
-			}
-
-			filters += " ( ";
-
-			//build status filter
-
-			filters += " status == '" + status.toString() + "'";
-
-			filters += " ) ";
+		{	
+			this.AddObjectToFilterAndParamForQuery(status, "==", "status", "paramStatus", paramList);
 		}
 
+		//User
 		if (user!=null)
-		{
-			if (filters!=null)
-			{
-				filters += " && ";
-			}
+		{	
+			this.AddObjectToFilterAndParamForQuery(user, "==", "customer", "paramUser", paramList);
+		}
 
-			filters += " ( ";
+		//StartDate
+		if (startDate!=null)
+		{	
+			this.AddObjectToFilterAndParamForQuery(startDate, ">=", "date", "paramStartDate", paramList);
+		}
 
-			//build user filter
-			filters += " customer == '" + user.getEmail() + "'";
-
-			filters += " ) ";
+		//StartDate
+		if (endDate!=null)
+		{	
+			this.AddObjectToFilterAndParamForQuery(endDate, "<=", "date", "paramEndDate", paramList);
 		}
 
 		Query query;
-
-		// new query
-		if(filters!="")
-		{
-			query = pm.newQuery(Order.class, filters);
-		}
-		else
-		{
-			query = pm.newQuery(Order.class);
-		}
-
 		try
 		{
-			orderList = OrderUtils.getOrderDTOList((List<Order>) query.execute());
+			// attenzione a questa cascata di porcate immonde
+			if(user != null || status!=null || startDate!=null || endDate!=null)
+			{
+				// if any of these is not null then invoke execute method on query object with reflection
+				query = pm.newQuery(Order.class, _filters);
+				query.declareParameters(_paramDeclarations);
+
+				// now prepare for reflection
+
+				//get class
+				Class cls = Class.forName("javax.jdo.Query");
+				//get param types --> we need to pass in a single parameter of type Object[]
+				Class parTypes[] = new Class[]{Object[].class};
+				// get method
+				Method meth = cls.getMethod("executeWithArray", parTypes);
+				//put our argList in another argList (we need to pass an arglist with an array to the method)
+				Object[] argList = new Object[]{paramList.toArray()};
+				// invoke! invoke!
+				List<Order> realOrderList = (List<Order>) meth.invoke(query, argList);
+				// convert to OrderDTO
+				orderList = OrderUtils.getOrderDTOList(realOrderList);
+			}
+			else
+			{
+				query = pm.newQuery(Order.class);
+				orderList = OrderUtils.getOrderDTOList((List<Order>) query.execute());
+			}
+
 		}
 		catch(Exception e)
 		{
@@ -158,7 +176,7 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 			pm.close();
 		}
 
-		//TODO Fai una query che prende solo quelli che servono! --> stucazzo!
+		//TODO Fai una query che prende solo quelli che servono! --> stucazzo! --> misa che fa male senza cagare cazzi con cosa di range
 		List<OrderDTO> partialResult=new ArrayList<OrderDTO>();
 		int maxNumber=Math.min(offset+maxResult,orderList.size());
 		for(int i=offset;i<maxNumber;i++)
@@ -166,6 +184,36 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 			partialResult.add(orderList.get(i));
 		}
 		return new Results(orderList.size(),partialResult);
+	}
+
+
+	/**
+	 * Refactor this shit into a class
+	 * @param obj
+	 * @param filterQuery
+	 * @param fieldName
+	 * @param paramQuery
+	 * @param paramName
+	 * @param argList
+	 */
+	private void AddObjectToFilterAndParamForQuery(Object obj, String operator, String fieldName, String paramName, List<Object> argList)
+	{
+		if (_filters!="")
+		{
+			_filters += " && ";
+		}
+
+		if (_paramDeclarations!="")
+		{
+			_paramDeclarations += " , ";
+		}
+
+		//build user filter
+		_filters += " ( " + fieldName + " " + operator + " " + paramName + " ) ";
+		//build status ParamDeclaration
+		_paramDeclarations += " " + obj.getClass().getName() + " " + paramName + " ";
+
+		argList.add(obj);
 	}
 
 	public Boolean setOrderStatus(long orderId, Status newStatus)
@@ -228,7 +276,7 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 		String select_query = "select from " + Order.class.getName(); 
 		Query query = pm.newQuery(select_query); 
 		query.setFilter("customer == paramCustomer"); 
-		query.declareParameters("java.lang.String paramCustomer"); 
+		query.declareParameters("com.google.appengine.api.users.User paramCustomer"); 
 
 		//execute
 		List<OrderDTO> result= OrderUtils.getOrderDTOList((List<Order>) query.execute(user));
