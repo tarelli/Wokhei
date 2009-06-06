@@ -58,7 +58,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 	private final Label _logoTextLabel = new Label(Messages.LOGO_NAME_LBL.getString()); //$NON-NLS-1$
 	private final Label _logoHintLabel = new Label(Messages.LOGO_NAME_EG_LBL.getString()); //$NON-NLS-1$
 	private final Label _logoErrorLabel = new Label(); 
-	private final Image _logoOkImage = new Image();
+	private final Image _logoOkImage = new Image("");
 
 	//COLOURS
 	private final VerticalPanel _colorPanel = new VerticalPanel();

@@ -146,7 +146,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 				if(	_addAdminTextBox.getText() != "" 
 					&& !_addAdminTextBox.getText().contains(" ") 
 					&& !(_addAdminTextBox.getText() == Messages.ADMIN_ADD_ADMIN_DEFAULT_TXT.getString())
-					&& _addAdminTextBox.getText().contains("@wokhei.com"))
+					&& _addAdminTextBox.getText().endsWith("@wokhei.com"))
 				{
 					_adminService.addAdmin(_addAdminTextBox.getText(), _addAdminCallback);
 				}
