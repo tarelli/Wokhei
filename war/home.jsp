@@ -61,7 +61,6 @@
 	<div id="okImagesPanel" class="okImagesPanel"></div>
 	<div id="ordersBrowser" class="orders"></div>
 	<div id="orderSubmitter" class="submitOrder"></div>
-	<div id="helpImagesPanel" class="helpImagesPanel"></div>
 </div>
 
 <div class="bodytile">

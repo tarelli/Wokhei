@@ -16,6 +16,7 @@ div#preloaded-images {
 	width: 1px;
 }
 
+
 @font-face {
 	font-family: "Arial Rounded MT Bold";
 	src: url(../fonts/ArialRoundedBold.ttf);
@@ -48,7 +49,7 @@ div#page-wrap {
 	position: absolute;
 	left: 480px;
 	top: 55px;
-	font-family: "Trebuchet MS";
+	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 	font-size: 10pt;
 }
 
@@ -96,7 +97,7 @@ div#page-wrap {
 
 h1 {
 	color: #bf007e;
-	font-family: "Arial Rounded MT Bold";
+	font-family: "Arial Rounded MT Bold","Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 	font-size: 17pt;
 	font-weight: 600;
 	text-align: left;
@@ -104,7 +105,7 @@ h1 {
 
 .h2 {
 	color: #bf007e;
-	font-family: "Arial Rounded MT Bold";
+	font-family: "Arial Rounded MT Bold","Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 	font-size: 8pt;
 	font-weight: 600;
 	text-align: left;
@@ -112,7 +113,7 @@ h1 {
 
 .h3 {
 	color: #000000;
-	font-family: "Arial Rounded MT Bold";
+	font-family: "Arial Rounded MT Bold","Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 	font-weight: bold;
 	font-size: 12pt;
 }
@@ -131,7 +132,7 @@ a1:hover {
 
 a2 {
 	color: #bf007e;
-	font-family: "Arial Rounded MT Bold";
+	font-family: "Arial Rounded MT Bold","Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 	font-size: 18px;
 	font-weight: 600;
 	text-align: left;
@@ -143,13 +144,13 @@ a2:hover {
 
 .label {
 	color: #bf007e;
-	font-family: "Arial Rounded MT Bold";
+	font-family: "Arial Rounded MT Bold","Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 	font-size: 11pt;
 }
 
 .hintLabel {
 	color: #000000;
-	font-family: "Arial Rounded MT Bold";
+	font-family: "Arial Rounded MT Bold","Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 	font-size: 7pt;
 }
 
@@ -261,13 +262,6 @@ input,select {
 /* HOME LOGGED*/ /* DOOR */
 .okImagesPanel {
 	position: absolute;
-	left: 0px;
-	top: 0px;
-}
-
-.helpImagesPanel
-{
-	position: absolute;
 	left: 400px;
 	top: 70px;
 }
@@ -340,16 +334,18 @@ input,select {
 
 .helpPopup {
 	z-index: 4;
-	background-color: #eec3dd;
+	background-color: #f2bc4a;
 	border: solid 2px;
-	border-color: #eb078f;
+	border-color: #f69000;
 	font-family: "Trebuchet MS";
 	font-size: 9pt;
+	padding: 5px;
+	color: #000000;
 }
 
 
 .statusTitle {
-	font-family: "Arial Rounded MT Bold";
+	font-family: "Arial Rounded MT Bold","Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 	font-size: 14pt;
 	font-weight: bold;
 }
@@ -377,7 +373,7 @@ input,select {
 	border: 0px;
 	background: URL("../images/joinoff.png");
 	color: #000000;
-	font-family: "Arial Rounded MT Bold";
+	font-family: "Arial Rounded MT Bold","Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 	font-size: 18pt;
 	font-weight: bold;
 	text-align: center;
@@ -413,8 +409,8 @@ input,select {
 .infoButton {
 	background: URL("../images/info.png");
 	border: 0px;
-	width: 34px;
-	height: 34px;
+	width: 16px;
+	height: 16px;
 }
 
 .infoButton:hover {
@@ -424,8 +420,8 @@ input,select {
 .infoButtonClicked {
 	background: URL("../images/infoOn.png");
 	border: 0px;
-	width: 34px;
-	height: 34px;
+	width: 16px;
+	height: 16px;
 }
 
 .infoButtonClicked:hover {
@@ -434,7 +430,7 @@ input,select {
 
 .waitLabel {
 	color: #bf007e;
-	font-family: "Arial Rounded MT Bold";
+	font-family: "Arial Rounded MT Bold","Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 	font-size: 30pt;
 	font-weight: bold;
 	left: 50px;
@@ -457,12 +453,12 @@ input,select {
 
 .textBox {
 	color: #000000;
-	font-family: "Arial Rounded MT Bold";
+	font-family: "Arial Rounded MT Bold","Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 	font-size: 11pt;
 }
 
 .errorLabel {
-	color: #bf007e;
+	color: #FF0000;
 	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 	font-size: 8pt;
 	height: 12px;
@@ -471,7 +467,7 @@ input,select {
 
 .logoNameLabel {
 	color: #000000;
-	font-family: "Arial Rounded MT Bold";
+	font-family: "Arial Rounded MT Bold","Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 	font-weight: bold;
 	font-size: 10pt;
 }
@@ -508,7 +504,7 @@ input,select {
 
 .gwt-SuggestBoxPopup .item {
 	z-index: 3;
-	font-family: "Trebuchet MS";
+	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif
 	color:#bf007e;
 	font-size: 9pt;
 }

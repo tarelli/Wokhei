@@ -56,6 +56,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 	private final Label _logoTextHelpLabel = new Label(Messages.LOGO_NAME_HELP_MESSAGE.getString());
 	private final PopupPanel _logoTextHelpPopup = new PopupPanel(true);
 	private final Label _logoTextLabel = new Label(Messages.LOGO_NAME_LBL.getString()); //$NON-NLS-1$
+	private final HorizontalPanel _logoTextLabelPanel = new HorizontalPanel();
 	private final Label _logoHintLabel = new Label(Messages.LOGO_NAME_EG_LBL.getString()); //$NON-NLS-1$
 	private final Label _logoErrorLabel = new Label(); 
 	private final Image _logoOkImage = new Image();
@@ -66,6 +67,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 	private final Label _logoColourHelpLabel = new Label(Messages.LOGO_COLOUR_HELP_MESSAGE.getString());
 	private final PopupPanel _logoColourHelpPopup = new PopupPanel(true);
 	private final Label _colourLabel = new Label(Messages.LOGO_COLOUR_LBL.getString()); //$NON-NLS-1$
+	private final HorizontalPanel _colourLabelPanel = new HorizontalPanel();
 	private final Label _colorHintLabel = new Label(Messages.LOGO_COLOUR_EG_LBL.getString()); //$NON-NLS-1$
 	private final Label _colourErrorLabel = new Label();
 	private final Image _colourOkImage = new Image();
@@ -89,6 +91,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 	private final Label _logoTagsHelpLabel = new Label(Messages.LOGO_TAGS_HELP_MESSAGE.getString());
 	private final PopupPanel _logoTagsHelpPopup = new PopupPanel(true);
 	private final Label _logoTagsLabel = new Label(Messages.LOGO_TAGS_LBL.getString()); //$NON-NLS-1$
+	private final HorizontalPanel _logoTagsLabelPanel = new HorizontalPanel();
 	private final Label _tagsHintLabel = new Label(Messages.LOGO_TAGS_EG_LBL.getString()); //$NON-NLS-1$
 	private final Label _tagsErrorLabel = new Label(); 
 	private final Image _tagsOkImage = new Image();
@@ -96,7 +99,6 @@ public class OrderSubmitterModulePart extends AModulePart {
 	// a pretty self-explanatory submit button
 	private final Button _submitOrderButton = new Button(Messages.SEND_REQUEST.getString()); //$NON-NLS-1$
 	private final AbsolutePanel _okImagesPanel = new AbsolutePanel();
-	private final AbsolutePanel _helpImagesPanel=new AbsolutePanel();
 
 	// these panels are the place olders for the drink images
 	private final VerticalPanel _alternateRootPanelBody= new VerticalPanel();
@@ -170,7 +172,11 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 			// prepare my motherfuckin' logoText vertical panel
 			_logoTextPanel.setSpacing(1);
-			_logoTextPanel.add(_logoTextLabel);
+
+			_logoTextLabelPanel.add(_logoTextHelpMark);
+			_logoTextLabelPanel.add(getNewWhiteSpace());
+			_logoTextLabelPanel.add(_logoTextLabel);
+			_logoTextPanel.add(_logoTextLabelPanel);
 			_logoTextPanel.add(_logoHintLabel);
 			_logoTextPanel.add(_logoTextBox);
 			_logoTextPanel.add(_logoErrorLabel);
@@ -205,16 +211,17 @@ public class OrderSubmitterModulePart extends AModulePart {
 			_logoTagsPanel.setSpacing(1);
 
 
-			_logoTagsPanel.add(_logoTagsLabel);
+			_logoTagsLabelPanel.add(_logoTagsHelpMark);
+			_logoTagsLabelPanel.add(getNewWhiteSpace());
+			_logoTagsLabelPanel.add(_logoTagsLabel);
+
+			_logoTagsPanel.add(_logoTagsLabelPanel);
 			_logoTagsPanel.add(_tagsHintLabel);
 			_logoTagsPanel.add(_logoTagsBox);
 			_logoTagsPanel.add(_tagsErrorLabel);
 
 			//setup the help popup for the tags
 
-			_helpImagesPanel.add(_logoTextHelpMark, 5, 10);
-			_helpImagesPanel.add(_logoTagsHelpMark, 5, 90);
-			_helpImagesPanel.add(_logoColourHelpMark, 5, 180);
 
 			_logoTextHelpPopup.setStyleName("helpPopup");
 			_logoTagsHelpPopup.setStyleName("helpPopup");
@@ -225,21 +232,14 @@ public class OrderSubmitterModulePart extends AModulePart {
 			_logoColourHelpMark.setStyleName("infoButton");
 
 			_logoTextHelpPopup.setWidth("220px");
-			_logoTextHelpPopup.setHeight("120px");
-
 			_logoTagsHelpPopup.setWidth("220px");
-			_logoTagsHelpPopup.setHeight("120px");
-
 			_logoColourHelpPopup.setWidth("220px");
-			_logoColourHelpPopup.setHeight("120px");
-
-
 
 			_logoTextHelpMark.addClickHandler(new ClickHandler(){
 				public void onClick(ClickEvent event) {	
 					if(!_logoTextHelpPopup.isShowing())
 					{
-						_logoTextHelpPopup.showRelativeTo(_logoTextHelpMark);
+						_logoTextHelpPopup.showRelativeTo(_logoTextLabel);
 						_logoTextHelpMark.setStyleName("infoButtonClicked");
 					}
 				}});
@@ -255,7 +255,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 				public void onClick(ClickEvent event) {	
 					if(!_logoTagsHelpPopup.isShowing())
 					{
-						_logoTagsHelpPopup.showRelativeTo(_logoTagsHelpMark);
+						_logoTagsHelpPopup.showRelativeTo(_logoTagsLabel);
 						_logoTagsHelpMark.setStyleName("infoButtonClicked");
 					}
 				}});
@@ -271,7 +271,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 				public void onClick(ClickEvent event) {	
 					if(!_logoColourHelpPopup.isShowing())
 					{
-						_logoColourHelpPopup.showRelativeTo(_logoColourHelpMark);
+						_logoColourHelpPopup.showRelativeTo(_colourLabel);
 						_logoColourHelpMark.setStyleName("infoButtonClicked");
 					}
 				}});
@@ -289,9 +289,14 @@ public class OrderSubmitterModulePart extends AModulePart {
 			_colorHintLabel.setStyleName("hintLabel"); //$NON-NLS-1$
 			_pantoneTextBox.setStyleName("pantoneLabel"); //$NON-NLS-1$
 
+
+			_colourLabelPanel.add(_logoColourHelpMark);
+			_colourLabelPanel.add(getNewWhiteSpace());
+			_colourLabelPanel.add(_colourLabel);
+
 			_colorSubPanel.setVerticalAlignment(HorizontalPanel.ALIGN_BOTTOM);
 			_colorSubPanel.setHorizontalAlignment(HorizontalPanel.ALIGN_LEFT);
-			_colorSubPanel.add(_colourLabel);
+			_colorSubPanel.add(_colourLabelPanel);
 			_colorSubPanel.add(getNewWhiteSpace());
 			_colorSubPanel.add(_pantoneTextBox);
 			_colorSubPanel.setHeight("15px"); //$NON-NLS-1$
@@ -301,8 +306,6 @@ public class OrderSubmitterModulePart extends AModulePart {
 			_colorPanel.add(_colourErrorLabel);
 
 			configureColoursPanels();
-
-			//_pantoneTextBox.setWidth("180px"); //$NON-NLS-1$
 
 
 			_colorPanel.setWidth("300px"); //$NON-NLS-1$
@@ -323,12 +326,10 @@ public class OrderSubmitterModulePart extends AModulePart {
 			_submitOrderButton.addStyleName("submitRequest"); //$NON-NLS-1$
 
 			_okImagesPanel.setHeight("600px");
-			_okImagesPanel.setWidth("500px");
-			_helpImagesPanel.setHeight("600px");
-			_helpImagesPanel.setWidth("100px");
-			_okImagesPanel.add(_logoOkImage,  60,52);
-			_okImagesPanel.add(_tagsOkImage, 60,132);
-			_okImagesPanel.add(_colourOkImage, 60,212);
+			_okImagesPanel.setWidth("100px");
+			_okImagesPanel.add(_logoOkImage,  5,20);
+			_okImagesPanel.add(_tagsOkImage, 5,100);
+			_okImagesPanel.add(_colourOkImage, 5,150);
 			// Fill up that son of a bitch of a mainPanel
 
 			_mainPanel.add(_logoTextPanel);
@@ -381,8 +382,6 @@ public class OrderSubmitterModulePart extends AModulePart {
 			});
 
 			RootPanel.get("okImagesPanel").add(_okImagesPanel);
-
-			RootPanel.get("helpImagesPanel").add(_helpImagesPanel);
 
 			RootPanel.get("orderSubmitter").add(getOrderSubmitPanel(),90,15); //$NON-NLS-1$
 
@@ -657,14 +656,12 @@ public class OrderSubmitterModulePart extends AModulePart {
 			// Associate the feckin' Main panel with the HTML element on the host page.
 			_mainPanel.setVisible(true);
 			_okImagesPanel.setVisible(true);
-			_helpImagesPanel.setVisible(true);
 			showAlternatePanels(false);
 		}
 		else
 		{
 			_mainPanel.setVisible(false);
 			_okImagesPanel.setVisible(false);
-			_helpImagesPanel.setVisible(false);
 			showAlternatePanels(true);	
 		}
 	}

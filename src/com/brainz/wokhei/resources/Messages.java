@@ -26,7 +26,7 @@ public enum Messages {
 	ACCEPTED_WAITMSG("Your logo is getting ready, do you fancy a drink meanwhile?"),
 	ERROR_WAITMSG("An error occurred while sending your request. Please do complain!"),
 	INCOMING_WAITMSG("Your request has been sent to the kitchen, enjoy the apetizers!"),
-
+	COPYRIGHT("Copyright\u00a9 2009 WOKHEI"),
 
 	INCOMING_TITLE("Pending request..."),
 	INCOMING_TEXT("Your request has been registered. In a short time our chef Tony will approve it or reject it. Just give him a moment, he might be on his coffee break!"),
@@ -52,7 +52,7 @@ public enum Messages {
 	ADMIN_USER_FILTER_LABEL("Pick User"),
 	ADMIN_USER_FILTER_BOX("User Email Here"),
 	ADMIN_DATE_FILTER_LABEL("Pick Date Range"),
-	ADMIN_ADD_ADMIN_DEFAULT_TXT("Insert new admin email"),
+	ADMIN_ADD_ADMIN_DEFAULT_TXT("Insert new admin email"), 
 	;
 
 	private String _text;
