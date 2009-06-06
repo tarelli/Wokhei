@@ -19,6 +19,8 @@ import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
@@ -26,6 +28,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -46,9 +49,12 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 	private final VerticalPanel _mainPanel = new VerticalPanel();
 
-	// logotext controls
+	//NAME
 	private final VerticalPanel _logoTextPanel = new VerticalPanel();
 	private final TextBox _logoTextBox = new TextBox();
+	private final Label _logoTextHelpMark = new Label();
+	private final Label _logoTextHelpLabel = new Label(Messages.LOGO_NAME_HELP_MESSAGE.getString());
+	private final PopupPanel _logoTextHelpPopup = new PopupPanel(true);
 	private final Label _logoTextLabel = new Label(Messages.LOGO_NAME_LBL.getString()); //$NON-NLS-1$
 	private final Label _logoHintLabel = new Label(Messages.LOGO_NAME_EG_LBL.getString()); //$NON-NLS-1$
 	private final Label _logoErrorLabel = new Label(); 
@@ -56,6 +62,9 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 	//COLOURS
 	private final VerticalPanel _colorPanel = new VerticalPanel();
+	private final Label _logoColourHelpMark = new Label();
+	private final Label _logoColourHelpLabel = new Label(Messages.LOGO_COLOUR_HELP_MESSAGE.getString());
+	private final PopupPanel _logoColourHelpPopup = new PopupPanel(true);
 	private final Label _colourLabel = new Label(Messages.LOGO_COLOUR_LBL.getString()); //$NON-NLS-1$
 	private final Label _colorHintLabel = new Label(Messages.LOGO_COLOUR_EG_LBL.getString()); //$NON-NLS-1$
 	private final Label _colourErrorLabel = new Label();
@@ -72,10 +81,13 @@ public class OrderSubmitterModulePart extends AModulePart {
 	private Colour _selectedColour;
 	private Label _selectedColourButton=null;
 
-	// logotags controls
+	//TAGS
 	private final VerticalPanel _logoTagsPanel = new VerticalPanel();
 	private final MultiWordSuggestOracle _logoTagsOracle = new MultiWordSuggestOracle();  
 	private final SuggestBox _logoTagsBox = new SuggestBox(_logoTagsOracle,new MultipleTextBox());
+	private final Label _logoTagsHelpMark = new Label();
+	private final Label _logoTagsHelpLabel = new Label(Messages.LOGO_TAGS_HELP_MESSAGE.getString());
+	private final PopupPanel _logoTagsHelpPopup = new PopupPanel(true);
 	private final Label _logoTagsLabel = new Label(Messages.LOGO_TAGS_LBL.getString()); //$NON-NLS-1$
 	private final Label _tagsHintLabel = new Label(Messages.LOGO_TAGS_EG_LBL.getString()); //$NON-NLS-1$
 	private final Label _tagsErrorLabel = new Label(); 
@@ -84,6 +96,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 	// a pretty self-explanatory submit button
 	private final Button _submitOrderButton = new Button(Messages.SEND_REQUEST.getString()); //$NON-NLS-1$
 	private final AbsolutePanel _okImagesPanel = new AbsolutePanel();
+	private final AbsolutePanel _helpImagesPanel=new AbsolutePanel();
 
 	// these panels are the place olders for the drink images
 	private final VerticalPanel _alternateRootPanelBody= new VerticalPanel();
@@ -103,13 +116,14 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 	private final Label _requestLabel = new Label(Messages.REQUEST_LOGO_LBL.getString()); //$NON-NLS-1$
 
-	private final Label _whiteSpace=new Label();
 
 	private AsyncCallback<List<OrderDTO>> _getOrdersCallback = null;
 
 	private AsyncCallback<Boolean> _submitOrderCallback =null;
 
 	private OrderDTO _submittedOrder = null;
+
+
 
 	@Override
 	public void initModulePart(OrderServiceAsync orderService, UtilityServiceAsync utilityService) {
@@ -125,6 +139,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 			hookUpCallbacks();
 
 			_mainPanel.setSpacing(10);
+			_okImagesPanel.setVisible(false);
 
 			_requestLabel.addStyleName("h3"); //$NON-NLS-1$
 			_mainPanel.add(_requestLabel );
@@ -188,19 +203,96 @@ public class OrderSubmitterModulePart extends AModulePart {
 			});
 
 			_logoTagsPanel.setSpacing(1);
+
+
 			_logoTagsPanel.add(_logoTagsLabel);
 			_logoTagsPanel.add(_tagsHintLabel);
 			_logoTagsPanel.add(_logoTagsBox);
 			_logoTagsPanel.add(_tagsErrorLabel);
 
+			//setup the help popup for the tags
+
+			_helpImagesPanel.add(_logoTextHelpMark, 5, 10);
+			_helpImagesPanel.add(_logoTagsHelpMark, 5, 90);
+			_helpImagesPanel.add(_logoColourHelpMark, 5, 180);
+
+			_logoTextHelpPopup.setStyleName("helpPopup");
+			_logoTagsHelpPopup.setStyleName("helpPopup");
+			_logoColourHelpPopup.setStyleName("helpPopup");
+
+			_logoTextHelpMark.setStyleName("infoButton");
+			_logoTagsHelpMark.setStyleName("infoButton");
+			_logoColourHelpMark.setStyleName("infoButton");
+
+			_logoTextHelpPopup.setWidth("220px");
+			_logoTextHelpPopup.setHeight("120px");
+
+			_logoTagsHelpPopup.setWidth("220px");
+			_logoTagsHelpPopup.setHeight("120px");
+
+			_logoColourHelpPopup.setWidth("220px");
+			_logoColourHelpPopup.setHeight("120px");
+
+
+
+			_logoTextHelpMark.addClickHandler(new ClickHandler(){
+				public void onClick(ClickEvent event) {	
+					if(!_logoTextHelpPopup.isShowing())
+					{
+						_logoTextHelpPopup.showRelativeTo(_logoTextHelpMark);
+						_logoTextHelpMark.setStyleName("infoButtonClicked");
+					}
+				}});
+
+			_logoTextHelpPopup.addCloseHandler(new CloseHandler<PopupPanel>(){
+				public void onClose(CloseEvent<PopupPanel> event) {
+					_logoTextHelpMark.setStyleName("infoButton");
+				}});
+
+			_logoTextHelpPopup.setWidget(_logoTextHelpLabel);
+
+			_logoTagsHelpMark.addClickHandler(new ClickHandler(){
+				public void onClick(ClickEvent event) {	
+					if(!_logoTagsHelpPopup.isShowing())
+					{
+						_logoTagsHelpPopup.showRelativeTo(_logoTagsHelpMark);
+						_logoTagsHelpMark.setStyleName("infoButtonClicked");
+					}
+				}});
+
+			_logoTagsHelpPopup.addCloseHandler(new CloseHandler<PopupPanel>(){
+				public void onClose(CloseEvent<PopupPanel> event) {
+					_logoTagsHelpMark.setStyleName("infoButton");
+				}});
+
+			_logoTagsHelpPopup.setWidget(_logoTagsHelpLabel);
+
+			_logoColourHelpMark.addClickHandler(new ClickHandler(){
+				public void onClick(ClickEvent event) {	
+					if(!_logoColourHelpPopup.isShowing())
+					{
+						_logoColourHelpPopup.showRelativeTo(_logoColourHelpMark);
+						_logoColourHelpMark.setStyleName("infoButtonClicked");
+					}
+				}});
+
+			_logoColourHelpPopup.addCloseHandler(new CloseHandler<PopupPanel>(){
+				public void onClose(CloseEvent<PopupPanel> event) {
+					_logoColourHelpMark.setStyleName("infoButton");
+				}});
+
+
+			_logoColourHelpPopup.setWidget(_logoColourHelpLabel);
+
+
 			_colourLabel.setStyleName("label"); //$NON-NLS-1$
 			_colorHintLabel.setStyleName("hintLabel"); //$NON-NLS-1$
 			_pantoneTextBox.setStyleName("pantoneLabel"); //$NON-NLS-1$
-			_whiteSpace.setWidth("5px");
+
 			_colorSubPanel.setVerticalAlignment(HorizontalPanel.ALIGN_BOTTOM);
 			_colorSubPanel.setHorizontalAlignment(HorizontalPanel.ALIGN_LEFT);
 			_colorSubPanel.add(_colourLabel);
-			_colorSubPanel.add(_whiteSpace);
+			_colorSubPanel.add(getNewWhiteSpace());
 			_colorSubPanel.add(_pantoneTextBox);
 			_colorSubPanel.setHeight("15px"); //$NON-NLS-1$
 
@@ -232,6 +324,8 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 			_okImagesPanel.setHeight("600px");
 			_okImagesPanel.setWidth("500px");
+			_helpImagesPanel.setHeight("600px");
+			_helpImagesPanel.setWidth("100px");
 			_okImagesPanel.add(_logoOkImage,  60,52);
 			_okImagesPanel.add(_tagsOkImage, 60,132);
 			_okImagesPanel.add(_colourOkImage, 60,212);
@@ -288,6 +382,8 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 			RootPanel.get("okImagesPanel").add(_okImagesPanel);
 
+			RootPanel.get("helpImagesPanel").add(_helpImagesPanel);
+
 			RootPanel.get("orderSubmitter").add(getOrderSubmitPanel(),90,15); //$NON-NLS-1$
 
 			RootPanel.get("orderSubmitterAlternateBody").add(getOrderSubmitAlternateBodyPanel()); //$NON-NLS-1$
@@ -295,8 +391,20 @@ public class OrderSubmitterModulePart extends AModulePart {
 			RootPanel.get("orderSubmitterAlternateBodytile").add(getOrderSubmitAlternateBodytilePanel()); //$NON-NLS-1$
 
 			RootPanel.get("orderSubmitterAlternateFooter").add(getOrderSubmitAlternateFooterPanel()); //$NON-NLS-1$
+
+
 		}
 
+	}
+
+	/**
+	 * @return
+	 */
+	private Widget getNewWhiteSpace() 
+	{
+		Label whiteSpace=new Label();
+		whiteSpace.setWidth("5px");
+		return whiteSpace;
 	}
 
 	/**
@@ -426,6 +534,9 @@ public class OrderSubmitterModulePart extends AModulePart {
 	 */
 	private boolean checkErrors() 
 	{
+		if(!_okImagesPanel.isVisible());
+		_okImagesPanel.setVisible(true);
+
 		addHashToTags();
 
 		Validator.TagsErrors tagsError=Validator.validateTags(((MultipleTextBox)_logoTagsBox.getTextBox()).getWholeText());
@@ -546,12 +657,14 @@ public class OrderSubmitterModulePart extends AModulePart {
 			// Associate the feckin' Main panel with the HTML element on the host page.
 			_mainPanel.setVisible(true);
 			_okImagesPanel.setVisible(true);
+			_helpImagesPanel.setVisible(true);
 			showAlternatePanels(false);
 		}
 		else
 		{
 			_mainPanel.setVisible(false);
 			_okImagesPanel.setVisible(false);
+			_helpImagesPanel.setVisible(false);
 			showAlternatePanels(true);	
 		}
 	}

@@ -265,6 +265,13 @@ input,select {
 	top: 0px;
 }
 
+.helpImagesPanel
+{
+	position: absolute;
+	left: 400px;
+	top: 70px;
+}
+
 .headerDoor {
 	position: relative;
 	min-height: 149px;
@@ -330,6 +337,17 @@ input,select {
 }
 
 /* OTHERS */
+
+.helpPopup {
+	z-index: 4;
+	background-color: #eec3dd;
+	border: solid 2px;
+	border-color: #eb078f;
+	font-family: "Trebuchet MS";
+	font-size: 9pt;
+}
+
+
 .statusTitle {
 	font-family: "Arial Rounded MT Bold";
 	font-size: 14pt;
