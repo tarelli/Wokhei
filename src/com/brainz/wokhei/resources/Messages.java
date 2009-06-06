@@ -48,7 +48,10 @@ public enum Messages {
 	ARCHIVED_TEXT("You didn't purchase this logo. You can still use it under licence for non-commercial purposes. We will appreciate if you'll notify Wokhei whenever you'll decide to use this logo - so don't be shy!"), 
 
 
-	ADMIN_STATUS_FILTER_LABEL("Pick Status"), 
+	ADMIN_STATUS_FILTER_LABEL("Pick Status"),
+	ADMIN_USER_FILTER_LABEL("Pick User"),
+	ADMIN_USER_FILTER_BOX("User Email Here"),
+	ADMIN_DATE_FILTER_LABEL("Pick Date Range"),
 	;
 
 	private String _text;

@@ -1,6 +1,7 @@
 package com.brainz.wokhei.client;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.gwtwidgets.client.ui.pagination.Column;
@@ -24,7 +25,9 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.datepicker.client.DateBox;
 
 /**
  * @author John_Idol
@@ -68,11 +71,19 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 	// contains all the different filters needed
 	private final HorizontalPanel _filteringPanel = new HorizontalPanel();
-	// filter controls
+	// status filter controls
 	private final VerticalPanel _statusFilter = new VerticalPanel();
 	private final ListBox _statusFilterBox = new ListBox();
+	//user filter controls
+	private final VerticalPanel _userFilter = new VerticalPanel();
+	private final TextBox _userFilterBox = new TextBox();
+	// date filter controls
+	private final VerticalPanel _dateRangeFilter = new VerticalPanel();
+	private final HorizontalPanel _dateBoxesPanel = new HorizontalPanel();
+	private final DateBox _startDateBox = new DateBox();
+	private final DateBox _endDateBox = new DateBox();
+	// filter button
 	private final Button _filterButton = new Button("Filter!");
-
 
 	private AsyncCallback<Boolean> _setOrderStatusCallback = null;
 
@@ -119,6 +130,8 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	private void setFilters() {
 
 		setStatusFilter();
+		setUserFilter();
+		setDateRangeFilter();
 
 		_filterButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -129,13 +142,42 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 		// add stuff to filtering panel
 		_filteringPanel.add(_statusFilter);
+		_filteringPanel.add(_userFilter);
+		_filteringPanel.add(_dateRangeFilter);
 		_filteringPanel.add(_filterButton);
+	}
+
+	private void setUserFilter() {
+		Label userFilterLbl = new Label(Messages.ADMIN_USER_FILTER_LABEL.getString());
+
+		_userFilterBox.setText(Messages.ADMIN_USER_FILTER_BOX.getString());
+
+		_userFilter.add(userFilterLbl);
+		_userFilter.add(_userFilterBox);
+	}
+
+	private void setDateRangeFilter() {
+		Label dateFilterLbl = new Label(Messages.ADMIN_DATE_FILTER_LABEL.getString());
+
+		//initialize datePickers
+		// Set the value in the text box when the user selects a date
+		_startDateBox.setTitle("Start Date");
+		_startDateBox.getTextBox().setText("Pick Start Date");
+		_endDateBox.setTitle("End Date");
+		_endDateBox.getTextBox().setText("Pick End Date");
+
+		_dateBoxesPanel.add(_startDateBox);
+		_dateBoxesPanel.add(_endDateBox);
+
+		_dateRangeFilter.add(dateFilterLbl);
+		_dateRangeFilter.add(_dateBoxesPanel);
 	}
 
 	private void setStatusFilter() {
 
 		Label statusFilterLbl = new Label(Messages.ADMIN_STATUS_FILTER_LABEL.getString()); 
 		_statusFilterBox.setHeight("30px");
+		_statusFilterBox.addItem("All");
 
 		//retrieve all possible statuses
 		List<Status> Statuses = Arrays.asList(Status.values());
@@ -148,8 +190,8 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 			_statusFilterBox.addItem(statusStr);
 		}
 
-		//set default (accepted --> maybe should be incoming)
-		_statusFilterBox.setItemSelected(1, true);
+		//set default ("All")
+		_statusFilterBox.setItemSelected(0, true);
 
 		//add label and checkbox panel to filterPanel
 		_statusFilter.add(statusFilterLbl);
@@ -160,10 +202,51 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	{
 		String statusAsStr = _statusFilterBox.getItemText(_statusFilterBox.getSelectedIndex());
 
-		Status status = Status.valueOf(statusAsStr.toUpperCase());
+		Status status = null;
 
+		if(!statusAsStr.equals("All"))
+		{
+			status = Status.valueOf(statusAsStr.toUpperCase());
+		}
 
 		return status;
+	}
+
+	private String getUserEmailFilter()
+	{
+		String userEmail = null;
+
+		if(_userFilterBox.getText()!= Messages.ADMIN_USER_FILTER_BOX.getString() && 
+				!_userFilterBox.getText().contains(" "))
+		{
+			userEmail = _userFilterBox.getText();
+		}
+
+		return userEmail;
+	}
+
+	private Date getStartDateFilter()
+	{
+		Date startDate = null;
+
+		if(_startDateBox.getValue()!= null)
+		{
+			startDate = _startDateBox.getValue();
+		}
+
+		return startDate;
+	}
+
+	private Date getEndDateFilter()
+	{
+		Date endDate = null;
+
+		if(_endDateBox.getValue()!= null)
+		{
+			endDate = _endDateBox.getValue();
+		}
+
+		return endDate;
 	}
 
 	/**
@@ -251,14 +334,20 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 			@Override
 			protected DataProvider getDataProvider() {
 				return new DataProvider(){
+					@SuppressWarnings("unchecked")
 					public void update(PaginationParameters parameters,
 							AsyncCallback updateTableCallback) {
 
 						Status status = getStatusFromStatusFilter();
+						String userEmail = getUserEmailFilter();
+						Date startDate = getStartDateFilter();
+						Date endDate = getEndDateFilter();
 
 						_orderService.getOrdersByUserAndStatus(
 								status, 
-								null,
+								userEmail,
+								startDate,
+								endDate,
 								parameters.getOffset(), 
 								parameters.getMaxResults(), 
 								updateTableCallback);
