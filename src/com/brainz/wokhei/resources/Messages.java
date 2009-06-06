@@ -49,6 +49,7 @@ public enum Messages {
 	ADMIN_USER_FILTER_LABEL("Pick User"),
 	ADMIN_USER_FILTER_BOX("User Email Here"),
 	ADMIN_DATE_FILTER_LABEL("Pick Date Range"),
+	ADMIN_ADD_ADMIN_DEFAULT_TXT("Insert new admin email"),
 	;
 
 	private String _text;

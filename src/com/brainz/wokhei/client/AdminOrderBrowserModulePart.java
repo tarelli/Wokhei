@@ -69,6 +69,12 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	private final FlexTable _pagingControlsTable = new FlexTable();
 	private DefaultPaginationBehavior _paginationBehavior;
 
+	// add admin stuff
+	private final HorizontalPanel _addAdminPanel = new HorizontalPanel();
+	private final TextBox _addAdminTextBox = new TextBox();
+	private final Button _addAdminButton = new Button("Add Admin!");
+	private final Label _addAdminMsgLabel = new Label("");
+
 	// contains all the different filters needed
 	private final HorizontalPanel _filteringPanel = new HorizontalPanel();
 	// status filter controls
@@ -86,6 +92,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	private final Button _filterButton = new Button("Filter!");
 
 	private AsyncCallback<Boolean> _setOrderStatusCallback = null;
+	private AsyncCallback<Boolean> _addAdminCallback = null;
 
 	//related with status update chaching during async call
 	private int _rowForClientStatusUpdate;
@@ -95,16 +102,18 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	 * Init module part
 	 */
 	@Override
-	public void initModulePart(OrderServiceAsync orderService, UtilityServiceAsync utilityService) {
+	public void initModulePart(OrderServiceAsync orderService, UtilityServiceAsync utilityService, AdminServiceAsync adminService) {
 		if(RootPanel.get("adminConsole")!=null)
 		{
-			super.initModulePart(orderService,utilityService);
+			super.initModulePart(orderService, utilityService, adminService);
 
 			hookUpCallbacks();
 
 			setFilters();
 
 			setPaginator();
+
+			setupAddAdminPanel();
 
 			//set orders flexTable style - header picks up headeRow style bcs of paginationBehavior
 			_ordersFlexTable.addStyleName("orderList");
@@ -116,12 +125,39 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 			_mainPanel.add(_filteringPanel);
 			_mainPanel.add(_ordersFlexTable);
 			_mainPanel.add(_pagingControlsTable);
+			_mainPanel.add(_addAdminPanel);
+			_mainPanel.add(_addAdminMsgLabel);
 
 			_paginationBehavior.showPage(1,Columns.ID._columnText, true);
 
 			// Associate the Main panel with the HTML host page.
 			RootPanel.get("adminConsole").add(_mainPanel);
 		}
+	}
+
+	private void setupAddAdminPanel() {
+		Label addAdminLbl = new Label("Add Admin");
+
+		_addAdminTextBox.setText(Messages.ADMIN_ADD_ADMIN_DEFAULT_TXT.getString());
+
+		_addAdminButton.addClickHandler(new ClickHandler() {
+			//prepararsi alla porcata mondiale
+			public void onClick(ClickEvent event) {
+				if(	_addAdminTextBox.getText() != "" 
+					&& !_addAdminTextBox.getText().contains(" ") 
+					&& !(_addAdminTextBox.getText() == Messages.ADMIN_ADD_ADMIN_DEFAULT_TXT.getString())
+					&& _addAdminTextBox.getText().contains("@wokhei.com"))
+				{
+					_adminService.addAdmin(_addAdminTextBox.getText(), _addAdminCallback);
+				}
+				else
+					_addAdminMsgLabel.setText("Please insert a valid wokhei.com email");
+			}
+		});
+
+		_addAdminPanel.add(addAdminLbl);
+		_addAdminPanel.add(_addAdminTextBox);
+		_addAdminPanel.add(_addAdminButton);
 	}
 
 	/**
@@ -385,6 +421,29 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 			}
 		};
 
+		_addAdminCallback = new AsyncCallback<Boolean>() {
+
+			public void onSuccess(Boolean result) {
+				//update msgLbl
+				updateAddAdminMessageLbl(result);
+			}
+
+			public void onFailure(Throwable caught) {
+				//TODO - do something in case of failure
+			}
+		};
+
+	}
+
+	protected void updateAddAdminMessageLbl(Boolean result) {
+		if(result)
+		{
+			_addAdminMsgLabel.setText("All good - admin has been added!");	
+		}
+		else
+		{
+			_addAdminMsgLabel.setText("Uh-Oh ... some problem has occured - admin not added!");
+		}
 	}
 
 	protected void updateOrderStatusOnClient(Boolean result) {

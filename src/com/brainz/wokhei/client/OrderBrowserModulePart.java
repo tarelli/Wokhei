@@ -75,11 +75,11 @@ public class OrderBrowserModulePart extends AModulePart{
 
 
 	@Override
-	public void initModulePart(OrderServiceAsync orderService, UtilityServiceAsync utilityService) 
+	public void initModulePart(OrderServiceAsync orderService, UtilityServiceAsync utilityService, AdminServiceAsync adminService) 
 	{
 		if(RootPanel.get("ordersBrowser")!=null)
 		{
-			super.initModulePart(orderService,utilityService);
+			super.initModulePart(orderService,utilityService, adminService);
 
 			hookUpCallbacks();
 

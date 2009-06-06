@@ -13,6 +13,7 @@ import java.util.List;
  */
 public abstract class AModulePart {
 
+	protected AdminServiceAsync _adminService;
 	protected OrderServiceAsync _orderService;
 	protected UtilityServiceAsync _utlityService;
 	private final List<AModulePart> _moduleParts=new ArrayList<AModulePart>();
@@ -21,9 +22,10 @@ public abstract class AModulePart {
 	/**
 	 * Init the panel 
 	 */
-	public void initModulePart(OrderServiceAsync orderService, UtilityServiceAsync utilityService)
+	public void initModulePart(OrderServiceAsync orderService, UtilityServiceAsync utilityService, AdminServiceAsync adminService)
 	{
 		_orderService=orderService;
+		_adminService = adminService;
 		_utlityService=utilityService;
 	}
 

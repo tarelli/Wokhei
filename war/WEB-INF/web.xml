@@ -28,13 +28,21 @@
 		<servlet-name>orderservice</servlet-name>
 		<url-pattern>/wokhei/orderservice</url-pattern>
 	</servlet-mapping>
-		<servlet>
+	<servlet>
 		<servlet-name>utilityservice</servlet-name>
 		<servlet-class>com.brainz.wokhei.server.UtilityServiceImpl</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>utilityservice</servlet-name>
 		<url-pattern>/wokhei/utilityservice</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>adminservice</servlet-name>
+		<servlet-class>com.brainz.wokhei.server.AdminServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>adminservice</servlet-name>
+		<url-pattern>/wokhei/adminservice</url-pattern>
 	</servlet-mapping>
 	
 	<welcome-file-list>

@@ -26,11 +26,11 @@ public class HeaderModulePart extends AModulePart {
 	 */
 	@Override
 	public void initModulePart(OrderServiceAsync orderService,
-			UtilityServiceAsync utilityService) 
+			UtilityServiceAsync utilityService, AdminServiceAsync adminService) 
 	{
 		if(RootPanel.get("headerPanel")!=null)
 		{
-			super.initModulePart(orderService, utilityService);
+			super.initModulePart(orderService, utilityService, adminService);
 
 			hookUpCallbacks();
 			utilityService.getCurrentUsername(_getUsernameCallback);

@@ -112,7 +112,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 	private OrderDTO _submittedOrder = null;
 
 	@Override
-	public void initModulePart(OrderServiceAsync orderService, UtilityServiceAsync utilityService) {
+	public void initModulePart(OrderServiceAsync orderService, UtilityServiceAsync utilityService, AdminServiceAsync adminService) {
 
 		if((RootPanel.get("orderSubmitter")!=null)&&
 				(RootPanel.get("orderSubmitterAlternateBody")!=null)&&
@@ -120,7 +120,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 				(RootPanel.get("orderSubmitterAlternateFooter")!=null))
 		{
 
-			super.initModulePart(orderService,utilityService);
+			super.initModulePart(orderService,utilityService, adminService);
 
 			hookUpCallbacks();
 

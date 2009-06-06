@@ -21,6 +21,7 @@ public class HomeModule implements EntryPoint {
 		//Initialize Order Service
 		OrderServiceAsync orderService = GWT.create(OrderService.class);
 		UtilityServiceAsync utilityService = GWT.create(UtilityService.class);
+		AdminServiceAsync adminService = GWT.create(AdminService.class);
 
 		//Create the module parts
 		HeaderModulePart headerModulePart = new HeaderModulePart();
@@ -30,9 +31,9 @@ public class HomeModule implements EntryPoint {
 		//Initialize the module parts
 		orderSubmitterModulePart.addModulePartListener(orderBrowserModulePart);
 
-		orderBrowserModulePart.initModulePart(orderService, utilityService);
-		orderSubmitterModulePart.initModulePart(orderService, utilityService);
-		headerModulePart.initModulePart(orderService, utilityService);
+		orderBrowserModulePart.initModulePart(orderService, utilityService, adminService);
+		orderSubmitterModulePart.initModulePart(orderService, utilityService, adminService);
+		headerModulePart.initModulePart(orderService, utilityService, adminService);
 	}
 
 }
