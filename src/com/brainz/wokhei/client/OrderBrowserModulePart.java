@@ -155,7 +155,7 @@ public class OrderBrowserModulePart extends AModulePart{
 			mainPanel.add(nextOrderButton,720,150);
 			mainPanel.add(statusDescription,470,250);
 			mainPanel.add(statusTitle,470,220);
-			mainPanel.add(infoButton,425,220);
+			mainPanel.add(infoButton,445,223);
 			mainPanel.add(ordersPanel,660,43);
 			mainPanel.add(infos,490,20);
 
@@ -199,7 +199,7 @@ public class OrderBrowserModulePart extends AModulePart{
 			{	
 				//TODO change the fake logo.png with the image that has been uploaded when the logo was made
 				if(_currentOrder.getStatus().equals(Status.READY) || _currentOrder.getStatus().equals(Status.VIEWED))
-					slideShow.showSingleImage("./images/logo.png", "Copyright\u00a9 2009 WOKHEI");
+					slideShow.showSingleImage("./images/logo.png", Messages.COPYRIGHT.getString());
 			}
 
 		});

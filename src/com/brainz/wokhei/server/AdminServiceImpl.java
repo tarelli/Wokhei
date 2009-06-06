@@ -21,7 +21,6 @@ public class AdminServiceImpl extends RemoteServiceServlet implements AdminServi
 
 	private static final Logger log = Logger.getLogger(AdminServiceImpl.class.getName());
 
-	@Override
 	public Boolean addAdmin(String adminEmail) {
 
 		boolean returnValue;
