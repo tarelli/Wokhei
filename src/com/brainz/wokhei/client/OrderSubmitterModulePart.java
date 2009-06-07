@@ -141,7 +141,9 @@ public class OrderSubmitterModulePart extends AModulePart {
 			hookUpCallbacks();
 
 			_mainPanel.setSpacing(10);
-			_okImagesPanel.setVisible(false);
+
+			// set ok images to invisible
+			setOkImagesVisibility(false);
 
 			_requestLabel.addStyleName("h3"); //$NON-NLS-1$
 			_mainPanel.add(_requestLabel );
@@ -396,6 +398,18 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 	}
 
+	private void setOkImagesVisibility(boolean visible)
+	{
+		_tagsOkImage.setVisible(visible);
+		_logoOkImage.setVisible(visible);
+		_colourOkImage.setVisible(visible);
+	}
+
+	private boolean areOkImagesVisibile()
+	{
+		return _tagsOkImage.isVisible() && _logoOkImage.isVisible() && _colourOkImage.isVisible();
+	}
+
 	/**
 	 * @return
 	 */
@@ -533,8 +547,10 @@ public class OrderSubmitterModulePart extends AModulePart {
 	 */
 	private boolean checkErrors() 
 	{
-		if(!_okImagesPanel.isVisible());
-		_okImagesPanel.setVisible(true);
+		if(!areOkImagesVisibile())
+		{
+			setOkImagesVisibility(true);
+		}
 
 		addHashToTags();
 

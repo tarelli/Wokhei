@@ -5,22 +5,6 @@
 
 <web-app xmlns="http://java.sun.com/xml/ns/javaee" version="2.5">
 	<servlet>
-		<servlet-name>addadmin</servlet-name>
-		<servlet-class>com.brainz.wokhei.servlets.AddAdminServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>addadmin</servlet-name>
-		<url-pattern>/addadmin</url-pattern>
-	</servlet-mapping>
-	<servlet>
-	<servlet-name>rejectOrder</servlet-name>
-		<servlet-class>com.brainz.wokhei.servlets.RejectOrderServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>rejectOrder</servlet-name>
-		<url-pattern>/rejectOrder</url-pattern>
-	</servlet-mapping>
-	<servlet>
 		<servlet-name>orderservice</servlet-name>
 		<servlet-class>com.brainz.wokhei.server.OrderServiceImpl</servlet-class>
 	</servlet>
@@ -44,7 +28,16 @@
 		<servlet-name>adminservice</servlet-name>
 		<url-pattern>/wokhei/adminservice</url-pattern>
 	</servlet-mapping>
-	
+
+	<security-constraint>
+		<web-resource-collection>
+			<url-pattern>/jobs/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>admin</role-name>
+		</auth-constraint>
+	</security-constraint>
+
 	<welcome-file-list>
 		<welcome-file>home.jsp</welcome-file>
 	</welcome-file-list>
