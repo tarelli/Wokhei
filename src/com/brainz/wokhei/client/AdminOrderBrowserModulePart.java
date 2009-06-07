@@ -11,22 +11,27 @@ import org.gwtwidgets.client.ui.pagination.PaginationBehavior;
 import org.gwtwidgets.client.ui.pagination.PaginationParameters;
 import org.gwtwidgets.client.ui.pagination.RowRenderer;
 
+import com.brainz.wokhei.resources.Images;
 import com.brainz.wokhei.resources.Messages;
 import com.brainz.wokhei.shared.OrderDTO;
 import com.brainz.wokhei.shared.Status;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 
 /**
@@ -39,11 +44,13 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 		ID("ID"),
 		USER("User"),
-		LOGO_TEXT("Logo Text"),
-		TAGS("Tagz"),
+		LOGO_TEXT("Logo name"),
+		TAGS("Tags"),
+		COLOUR("Colour"),
+		DATE("Date"),
 		STATUS("Status"),
 		TIMER("Timer"),
-		ACTIONS("Actions");
+		ACTIONS("");
 
 		String _columnText;
 
@@ -69,15 +76,20 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	private final FlexTable _pagingControlsTable = new FlexTable();
 	private DefaultPaginationBehavior _paginationBehavior;
 
+	private final HorizontalPanel _toolbarPanel = new HorizontalPanel();
 	// add admin stuff
-	private final HorizontalPanel _addAdminPanel = new HorizontalPanel();
+	private final VerticalPanel _addAdminPanel = new VerticalPanel();
+	private final PopupPanel _optionsPopupPanel = new PopupPanel(true);
 	private final TextBox _addAdminTextBox = new TextBox();
 	private final Button _addAdminButton = new Button("Add Admin!");
 	private final Label _addAdminMsgLabel = new Label("");
 
 	// contains all the different filters needed
-	private final HorizontalPanel _filteringPanel = new HorizontalPanel();
+	private final VerticalPanel _filteringPanel = new VerticalPanel();
 	// status filter controls
+	private final Image _filteringImage=new Image(Images.FILTER.getImageURL());
+	private final Image _optionsImage=new Image(Images.OPTIONS.getImageURL());
+	private final PopupPanel _filteringPopupPanel = new PopupPanel(true);
 	private final VerticalPanel _statusFilter = new VerticalPanel();
 	private final ListBox _statusFilterBox = new ListBox();
 	//user filter controls
@@ -97,6 +109,8 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	//related with status update chaching during async call
 	private int _rowForClientStatusUpdate;
 	private Status _statusForClientUpdate;
+	private final Button _clearFiltersButton=new Button(Messages.ADMIN_CLEAR_FILTERS.getString());
+
 
 	/* 
 	 * Init module part
@@ -109,11 +123,9 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 			hookUpCallbacks();
 
-			setFilters();
+			setupToolbarPanel();
 
 			setPaginator();
-
-			setupAddAdminPanel();
 
 			//set orders flexTable style - header picks up headeRow style bcs of paginationBehavior
 			_ordersFlexTable.addStyleName("orderList");
@@ -122,11 +134,9 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 			//set mainPanel Style
 			_mainPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 
-			_mainPanel.add(_filteringPanel);
+			_mainPanel.add(_toolbarPanel);
 			_mainPanel.add(_ordersFlexTable);
 			_mainPanel.add(_pagingControlsTable);
-			_mainPanel.add(_addAdminPanel);
-			_mainPanel.add(_addAdminMsgLabel);
 
 			_paginationBehavior.showPage(1,Columns.ID._columnText, true);
 
@@ -135,8 +145,36 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 		}
 	}
 
+	private void setupToolbarPanel() {
+		setupFiltersPanel();
+		setupAddAdminPanel();
+
+		_filteringPopupPanel.setStyleName("adminPopup");
+		_optionsPopupPanel.setStyleName("adminPopup");
+
+		_filteringPopupPanel.setWidget(_filteringPanel);
+		_optionsPopupPanel.setWidget(_addAdminPanel);
+
+		_filteringImage.addClickHandler(new ClickHandler(){
+
+			public void onClick(ClickEvent event) {
+				_filteringPopupPanel.showRelativeTo(_filteringImage);
+			}});
+
+		_optionsImage.addClickHandler(new ClickHandler(){
+
+			public void onClick(ClickEvent event) {
+				_optionsPopupPanel.showRelativeTo(_optionsImage);
+			}});
+
+		_toolbarPanel.add(_filteringImage);
+		_toolbarPanel.add(_optionsImage);
+
+	}
+
 	private void setupAddAdminPanel() {
 		Label addAdminLbl = new Label("Add Admin");
+		addAdminLbl.setStylePrimaryName("label");
 
 		_addAdminTextBox.setText(Messages.ADMIN_ADD_ADMIN_DEFAULT_TXT.getString());
 
@@ -149,12 +187,14 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 					&& _addAdminTextBox.getText().endsWith("@wokhei.com"))
 				{
 					_adminService.addAdmin(_addAdminTextBox.getText(), _addAdminCallback);
+					_optionsPopupPanel.hide();
 				}
 				else
 					_addAdminMsgLabel.setText("Please insert a valid wokhei.com email");
 			}
 		});
-
+		_addAdminPanel.setSpacing(10);
+		_addAdminPanel.setVerticalAlignment(HorizontalPanel.ALIGN_MIDDLE);
 		_addAdminPanel.add(addAdminLbl);
 		_addAdminPanel.add(_addAdminTextBox);
 		_addAdminPanel.add(_addAdminButton);
@@ -163,29 +203,47 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	/**
 	 * Set the filters
 	 */
-	private void setFilters() {
+	private void setupFiltersPanel() {
 
 		setStatusFilter();
 		setUserFilter();
 		setDateRangeFilter();
 
+
+
+		_clearFiltersButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				_statusFilterBox.setSelectedIndex(0);
+				_userFilterBox.setText("");
+				_startDateBox.setValue(null);
+				_endDateBox.setValue(null);
+				_paginationBehavior.showPage(1,Columns.ID._columnText, true);
+				_filteringPopupPanel.hide();
+			}
+		});
+
 		_filterButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				//--> reload grid!
 				_paginationBehavior.showPage(1,Columns.ID._columnText, true);
+				_filteringPopupPanel.hide();
 			}
 		});
+		_filteringPanel.setVerticalAlignment(VerticalPanel.ALIGN_BOTTOM);
+		_filteringPanel.setSpacing(10);
 
 		// add stuff to filtering panel
+
 		_filteringPanel.add(_statusFilter);
 		_filteringPanel.add(_userFilter);
 		_filteringPanel.add(_dateRangeFilter);
+		_filteringPanel.add(_clearFiltersButton);
 		_filteringPanel.add(_filterButton);
 	}
 
 	private void setUserFilter() {
 		Label userFilterLbl = new Label(Messages.ADMIN_USER_FILTER_LABEL.getString());
-
+		userFilterLbl.setStyleName("label");
 		_userFilterBox.setText(Messages.ADMIN_USER_FILTER_BOX.getString());
 
 		_userFilter.add(userFilterLbl);
@@ -194,7 +252,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 	private void setDateRangeFilter() {
 		Label dateFilterLbl = new Label(Messages.ADMIN_DATE_FILTER_LABEL.getString());
-
+		dateFilterLbl.setStyleName("label");
 		//initialize datePickers
 		// Set the value in the text box when the user selects a date
 		_startDateBox.setTitle("Start Date");
@@ -203,7 +261,10 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 		_endDateBox.getTextBox().setText("Pick End Date");
 
 		_dateBoxesPanel.add(_startDateBox);
+		_dateBoxesPanel.add(getNewWhiteSpace());
+		_dateBoxesPanel.add(getNewWhiteSpace());
 		_dateBoxesPanel.add(_endDateBox);
+
 
 		_dateRangeFilter.add(dateFilterLbl);
 		_dateRangeFilter.add(_dateBoxesPanel);
@@ -212,7 +273,8 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	private void setStatusFilter() {
 
 		Label statusFilterLbl = new Label(Messages.ADMIN_STATUS_FILTER_LABEL.getString()); 
-		_statusFilterBox.setHeight("30px");
+		statusFilterLbl.setStyleName("label");
+		//_statusFilterBox.setHeight("30px");
 		_statusFilterBox.addItem("All");
 
 		//retrieve all possible statuses
@@ -221,7 +283,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 		// loop through items and generate checkboxes for status
 		for (Status status : Statuses)
 		{
-			String statusStr = status.toString().toLowerCase();
+			String statusStr = Messages.valueOf(status.toString()).getString();
 
 			_statusFilterBox.addItem(statusStr);
 		}
@@ -253,7 +315,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 		String userEmail = null;
 
 		if(_userFilterBox.getText()!= Messages.ADMIN_USER_FILTER_BOX.getString() && 
-				!_userFilterBox.getText().contains(" "))
+				!_userFilterBox.getText().contains(" ") && !(_userFilterBox.getText().length()==0))
 		{
 			userEmail = _userFilterBox.getText();
 		}
@@ -286,6 +348,18 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	}
 
 	/**
+	 * @param username
+	 * @return
+	 */
+	private String processUsername(String username)
+	{
+		if(username.contains("@"))
+			return (username.substring(0, username.indexOf('@')));
+		else
+			return username;
+	}
+
+	/**
 	 * Set the paginator
 	 */
 	private void setPaginator() 
@@ -302,10 +376,16 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 						//The header row will be added afterward (apparently, it's 2am we might be wrong)
 						final int frow = row +1 ;
 						_ordersFlexTable.setText(row, Columns.ID.ordinal(), order.getId().toString());
-						_ordersFlexTable.setText(row, Columns.USER.ordinal(), order.getCustomerEmail());
-						_ordersFlexTable.setText(row, Columns.LOGO_TEXT.ordinal(), order.getText());
-						_ordersFlexTable.setText(row, Columns.TAGS.ordinal(), Arrays.asList(order.getTags()).toString());
-						_ordersFlexTable.setText(row, Columns.STATUS.ordinal(), order.getStatus().toString());
+						_ordersFlexTable.setText(row, Columns.USER.ordinal(), processUsername(order.getCustomerEmail()));
+						_ordersFlexTable.setWidget(row,Columns.LOGO_TEXT.ordinal(), getNameLabel( order.getText()));
+						String list=Arrays.asList(order.getTags()).toString().replace(",","");
+						_ordersFlexTable.setWidget(row,Columns.TAGS.ordinal(),  getTagsLabel(list.substring(1, list.length()-1)));
+						_ordersFlexTable.setWidget(row,Columns.COLOUR.ordinal(),  getColourPanel(order.getColour().toString()));
+						DateTimeFormat fmt = DateTimeFormat.getFormat("dd/mm/yy");
+						_ordersFlexTable.setText(row,Columns.DATE.ordinal(),  fmt.format(order.getDate()));
+
+
+						_ordersFlexTable.setWidget(row, Columns.STATUS.ordinal(), getStatusImage(order.getStatus().toString()));
 						_ordersFlexTable.setText(row, Columns.TIMER.ordinal(), "N/A");
 
 						if(order.getStatus()==Status.INCOMING)
@@ -336,7 +416,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 								}
 							});
 
-							HorizontalPanel actionPanel = new HorizontalPanel();
+							VerticalPanel actionPanel = new VerticalPanel();
 							actionPanel.add(acceptOrderButton);
 							actionPanel.add(rejectOrderButton);
 
@@ -358,13 +438,12 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 							_ordersFlexTable.setWidget(row, Columns.ACTIONS.ordinal(), uploadLogoButton);
 						}
-						else
-						{
-							_ordersFlexTable.setText(row, Columns.ACTIONS.ordinal(), "N/A");
-						}
-					}};
 
 
+					}
+
+
+				};
 			}
 
 			@Override
@@ -397,6 +476,8 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 						new Column(Columns.USER.getColumnText()),
 						new Column(Columns.LOGO_TEXT.getColumnText()),
 						new Column(Columns.TAGS.getColumnText()),
+						new Column(Columns.COLOUR.getColumnText()),
+						new Column(Columns.DATE.getColumnText()),
 						new Column(Columns.STATUS.getColumnText()),
 						new Column(Columns.TIMER.getColumnText()),
 						new Column(Columns.ACTIONS.getColumnText())	};
@@ -407,6 +488,70 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 		_paginationBehavior.setPreviousPageText("<< Prev");
 	}
 
+	/**
+	 * @return
+	 */
+	private Widget getNewWhiteSpace() 
+	{
+		Label whiteSpace=new Label();
+		whiteSpace.setWidth("5px");
+		return whiteSpace;
+	}
+
+	/**
+	 * @param substring
+	 * @return
+	 */
+	private Widget getColourPanel(String substring) 
+	{
+		HorizontalPanel cPanel=new HorizontalPanel();
+		Label pantone=new Label(substring.replace("PANTONE",""));
+		Label colour=new Label();
+		colour.setStyleName("colour"+substring);
+		colour.setHeight("20px");
+		colour.setWidth("20px");
+
+		cPanel.add(colour);
+		cPanel.add(getNewWhiteSpace());
+		cPanel.add(pantone);
+		return cPanel;
+	}
+
+	/**
+	 * @param substring
+	 * @return
+	 */
+	private Widget getStatusImage(String substring) 
+	{
+		Image status=new Image(Images.valueOf(substring).getSmallImageURL());
+		return status;
+	}
+
+	/**
+	 * @param substring
+	 * @return
+	 */
+	private Widget getTagsLabel(String substring) 
+	{
+		Label tags=new Label(substring);
+		tags.setStyleName("adminTags");
+		return tags;
+	}
+
+	/**
+	 * @param text
+	 * @return
+	 */
+	private Widget getNameLabel(String text) 
+	{
+		Label tags=new Label(text);
+		tags.setStyleName("adminLogoName");
+		return tags;
+	}
+
+	/**
+	 * 
+	 */
 	private void hookUpCallbacks() 
 	{
 
@@ -435,7 +580,11 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 	}
 
-	protected void updateAddAdminMessageLbl(Boolean result) {
+	/**
+	 * @param result
+	 */
+	protected void updateAddAdminMessageLbl(Boolean result) 
+	{
 		if(result)
 		{
 			_addAdminMsgLabel.setText("All good - admin has been added!");	
@@ -452,7 +601,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 		if(result)
 		{
 			// set new status
-			_ordersFlexTable.setText(_rowForClientStatusUpdate, Columns.STATUS.ordinal(), _statusForClientUpdate.toString());
+			_ordersFlexTable.setWidget(_rowForClientStatusUpdate, Columns.STATUS.ordinal(), getStatusImage(_statusForClientUpdate.toString()));
 			// disable buttons 
 			//TODO --> decision to show or not row according to filters
 			HorizontalPanel actionPanel = ((HorizontalPanel)_ordersFlexTable.getWidget(_rowForClientStatusUpdate, Columns.ACTIONS.ordinal()));
@@ -466,6 +615,11 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 	}	
 
+	/**
+	 * @param row
+	 * @param orderId
+	 * @param status
+	 */
 	private void statusChangedSubHandler(int row, long orderId, Status status)
 	{
 		//set row index - it will be used on callback success (let's be aware this is shit!)
@@ -476,11 +630,12 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 		_orderService.setOrderStatus(orderId, status, _setOrderStatusCallback);
 	}
 
-	/*
-	 * not implemented - this module part doesn't interact with any other
+	/* (non-Javadoc)
+	 * @see com.brainz.wokhei.client.AModulePart#updateModulePart()
 	 */
 	@Override
-	public void updateModulePart() {
+	public void updateModulePart() 
+	{
 		try {
 			throw new Exception("Metti che il VP ci implementa tutto e usa questo metodo ...");
 		} catch (Exception e) {

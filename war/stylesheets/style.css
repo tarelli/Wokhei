@@ -16,7 +16,6 @@ div#preloaded-images {
 	width: 1px;
 }
 
-
 @font-face {
 	font-family: "Arial Rounded MT Bold";
 	src: url(../fonts/ArialRoundedBold.ttf);
@@ -97,7 +96,8 @@ div#page-wrap {
 
 h1 {
 	color: #bf007e;
-	font-family: "Arial Rounded MT Bold","Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	font-family: "Arial Rounded MT Bold", "Trebuchet MS", Verdana, Arial,
+		Helvetica, sans-serif;
 	font-size: 17pt;
 	font-weight: 600;
 	text-align: left;
@@ -105,7 +105,8 @@ h1 {
 
 .h2 {
 	color: #bf007e;
-	font-family: "Arial Rounded MT Bold","Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	font-family: "Arial Rounded MT Bold", "Trebuchet MS", Verdana, Arial,
+		Helvetica, sans-serif;
 	font-size: 8pt;
 	font-weight: 600;
 	text-align: left;
@@ -113,7 +114,8 @@ h1 {
 
 .h3 {
 	color: #000000;
-	font-family: "Arial Rounded MT Bold","Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	font-family: "Arial Rounded MT Bold", "Trebuchet MS", Verdana, Arial,
+		Helvetica, sans-serif;
 	font-weight: bold;
 	font-size: 12pt;
 }
@@ -132,7 +134,8 @@ a1:hover {
 
 a2 {
 	color: #bf007e;
-	font-family: "Arial Rounded MT Bold","Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	font-family: "Arial Rounded MT Bold", "Trebuchet MS", Verdana, Arial,
+		Helvetica, sans-serif;
 	font-size: 18px;
 	font-weight: 600;
 	text-align: left;
@@ -144,17 +147,19 @@ a2:hover {
 
 .label {
 	color: #bf007e;
-	font-family: "Arial Rounded MT Bold","Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	font-family: "Arial Rounded MT Bold", "Trebuchet MS", Verdana, Arial,
+		Helvetica, sans-serif;
 	font-size: 11pt;
 }
 
 .hintLabel {
 	color: #000000;
-	font-family: "Arial Rounded MT Bold","Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	font-family: "Arial Rounded MT Bold", "Trebuchet MS", Verdana, Arial,
+		Helvetica, sans-serif;
 	font-size: 7pt;
 }
 
-input,select {
+input {
 	border: 3px #c60089 solid;
 	margin-top: 0px;
 	margin-right: 0px;
@@ -165,6 +170,18 @@ input,select {
 	padding-bottom: 1px;
 	padding-left: 2px;
 	height: 18px
+}
+
+select {
+	border: 0;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	padding-top: 1px;
+	padding-right: 0px;
+	padding-bottom: 1px;
+	padding-left: 2px;
 }
 
 /* HOME NOT LOGGED*/
@@ -331,7 +348,6 @@ input,select {
 }
 
 /* OTHERS */
-
 .helpPopup {
 	z-index: 4;
 	background-color: #f2bc4a;
@@ -343,9 +359,9 @@ input,select {
 	color: #000000;
 }
 
-
 .statusTitle {
-	font-family: "Arial Rounded MT Bold","Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	font-family: "Arial Rounded MT Bold", "Trebuchet MS", Verdana, Arial,
+		Helvetica, sans-serif;
 	font-size: 14pt;
 	font-weight: bold;
 }
@@ -356,24 +372,14 @@ input,select {
 }
 
 .submitRequest {
-	background: URL("../images/leftarrowOFF.png");
-	border: 0px;
-	width: 34px;
-	height: 29px;
-}
-
-.submitRequest:hover {
-	background: URL("../images/leftarrow.png");
-}
-
-.submitRequest {
 	position: absolute;
 	width: 269px;
 	height: 33px;
 	border: 0px;
 	background: URL("../images/joinoff.png");
 	color: #000000;
-	font-family: "Arial Rounded MT Bold","Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	font-family: "Arial Rounded MT Bold", "Trebuchet MS", Verdana, Arial,
+		Helvetica, sans-serif;
 	font-size: 18pt;
 	font-weight: bold;
 	text-align: center;
@@ -430,7 +436,8 @@ input,select {
 
 .waitLabel {
 	color: #bf007e;
-	font-family: "Arial Rounded MT Bold","Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	font-family: "Arial Rounded MT Bold", "Trebuchet MS", Verdana, Arial,
+		Helvetica, sans-serif;
 	font-size: 30pt;
 	font-weight: bold;
 	left: 50px;
@@ -453,7 +460,8 @@ input,select {
 
 .textBox {
 	color: #000000;
-	font-family: "Arial Rounded MT Bold","Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	font-family: "Arial Rounded MT Bold", "Trebuchet MS", Verdana, Arial,
+		Helvetica, sans-serif;
 	font-size: 11pt;
 }
 
@@ -467,7 +475,8 @@ input,select {
 
 .logoNameLabel {
 	color: #000000;
-	font-family: "Arial Rounded MT Bold","Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	font-family: "Arial Rounded MT Bold", "Trebuchet MS", Verdana, Arial,
+		Helvetica, sans-serif;
 	font-weight: bold;
 	font-size: 10pt;
 }
@@ -494,7 +503,6 @@ input,select {
 
 .gwt-SuggestBox {
 	z-index: 3;
-
 }
 
 .gwt-SuggestBoxPopup {
@@ -504,15 +512,14 @@ input,select {
 
 .gwt-SuggestBoxPopup .item {
 	z-index: 3;
-	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif
-	color:#bf007e;
+	font-family: "Trebuchet MS", Verdana, Arial, Helvetica,sans-serif;
+	 color : #bf007e;
 	font-size: 9pt;
 }
 
 .gwt-SuggestBoxPopup .item-selected {
 	z-index: 3;
 	background-color: #eec3dd;
-
 }
 
 .orders {
@@ -643,13 +650,39 @@ input,select {
 .adminModule {
 	position: absolute;
 	left: 100px;
-	top: 0px;
+	top: 20px;
 }
 
+.adminPopup {
+	z-index: 4;
+	background-color: #f2bc4a;
+	border: solid 2px;
+	border-color: #f69000;
+	font-family: "Trebuchet MS";
+	font-size: 9pt;
+	padding: 5px;
+	color: #000000;
+}
+
+
+.adminTags{
+		font-family: "Arial Rounded MT Bold", "Trebuchet MS", Verdana, Arial,
+		Helvetica, sans-serif;
+	font-size: 11pt;
+	color: #000000;
+	}
+	.adminLogoName{
+		font-family: "Arial Rounded MT Bold", "Trebuchet MS", Verdana, Arial,
+		Helvetica, sans-serif;
+	font-size: 11pt;
+	color: #bf007e;
+	}
+
 .orderList {
-	border: 1px solid #bf007e;
 	padding: 2px;
 	margin-bottom: 6px;
+	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10pt;
 }
 
 /*paginator stuff - shit don't work!*/ /***
@@ -675,99 +708,145 @@ input,select {
    * @author Joe Toth (joetoth@gmail.com)
    * 
    */
-   
-.headerRow { 
-  background-color: #bf007e;
-  color: white;
-  font-style: bold;
+.gwt-Hyperlink {
+	font-family: "Arial Rounded MT Bold", "Trebuchet MS", Verdana, Arial,
+		Helvetica, sans-serif;
+	font-size: 10pt;
+	color: #bf007e;
+}
+
+.gwt-Hyperlink:visited {
+	color: #bf007e;
+	font-style: bold;
+}
+
+.gwt-Button {
+	border: solid 1px;
+	border-color: #bf007e;
+	background-color: #f3d3e6;
+	color:#bf007e;
+	width:80px;
+}
+.headerRow {
+	font-family: "Arial Rounded MT Bold", "Trebuchet MS", Verdana, Arial,
+		Helvetica, sans-serif;
+	font-size: 14pt;
+	color: #bf007e;
+	font-style: bold;
+}
+
+.oddRow {
+	background-color: #f3d3e6;
+}
+
+.evenRow {
+	background-color: #eec3dd;
 }
 
 /*datepicker stuff in admin page*/
 .gwt-DatePicker {
-  border: 1px solid #A2BBDD;
-  cursor: default;
+	border: 1px solid #bf007e;
+	cursor: default;
+	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 }
-.gwt-DatePicker td,
+
+.gwt-DatePicker td,.datePickerMonthSelector td:focus {
+	outline: none
+}
+
 .datePickerMonthSelector td:focus {
-  outline: none
+	outline: none;
+	background-color: #f3d3e6;
 }
-.datePickerMonthSelector td:focus {
-  outline: none
-}
+
 .datePickerDays {
-  width: 100%;
-  background: white;
+	width: 100%;
+	background: white;
 }
-.datePickerDay,
-.datePickerWeekdayLabel,
-.datePickerWeekendLabel {
-  font-size: 75%;
-  text-align: center;
-  padding: 4px;
-  outline: none;
+
+.datePickerDay,.datePickerWeekdayLabel,.datePickerWeekendLabel {
+	font-size: 75%;
+	text-align: center;
+	padding: 4px;
+	outline: none;
 }
-.datePickerWeekdayLabel,
-.datePickerWeekendLabel {
-  background: #C3D9FF;
-  padding: 0px 4px 2px;
-  cursor: default;
+
+.datePickerWeekdayLabel,.datePickerWeekendLabel {
+	background: #f3d3e6;
+	padding: 0px 4px 2px;
+	cursor: default;
 }
+
 .datePickerDay {
-  padding: 4px;
-  cursor: hand;
-  cursor: pointer;
+	padding: 4px;
+	cursor: hand;
+	cursor: pointer;
 }
+
 .datePickerDayIsToday {
-  border: 1px solid black;
-  padding: 3px;
+	border: 1px solid black;
+	padding: 3px;
 }
+
 .datePickerDayIsWeekend {
-  background: #EEEEEE;
+	background: #EEEEEE;
 }
+
 .datePickerDayIsFiller {
-  color: #888888;
+	color: #888888;
 }
+
 .datePickerDayIsValue {
-  background: #aaccee;
+	background: #aaccee;
 }
+
 .datePickerDayIsDisabled {
-  color: #AAAAAA;
-  font-style: italic;
+	color: #AAAAAA;
+	font-style: italic;
 }
+
 .datePickerDayIsHighlighted {
-  background: #F0E68C;
+	background-color: #f3d3e6;
 }
+
 .datePickerDayIsValueAndHighlighted {
-  background: #bbddd9;
+	background: #bbddd9;
 }
+
 .datePickerMonthSelector {
-  background: #C3D9FF;
-  width: 100%;
+	background: #C3D9FF;
+	width: 100%;
 }
-.datePickerPreviousButton,
-.datePickerNextButton {
-  font-size: 120%;
-  line-height: 1em;
-  color: blue;
-  cursor: hand;
-  cursor: pointer;
-  padding: 0px 4px;
+
+.datePickerPreviousButton,.datePickerNextButton {
+	font-size: 120%;
+	line-height: 1em;
+	color: blue;
+	cursor: hand;
+	cursor: pointer;
+	padding: 0px 4px;
 }
+
 td.datePickerMonth {
-  text-align: center;
-  vertical-align: center;
-  white-space: nowrap;
-  font-size: 70%;
-  font-weight: bold;
-  color: blue;
+	color:white;
+	cursor: default;
+	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	text-align: center;
+	vertical-align: center;
+	white-space: nowrap;
+	font-size: 70%;
+	font-weight: bold;
+	color: blue;
 }
+
 .gwt-DateBox input {
-  width: 8em;
+	width: 8em;
 }
+
 .dateBoxFormatError {
-  background: #ffcccc;
+	background: #ffcccc;
 }
 
 .dateBoxPopup {
-	z-index: 3;
-	}
+	z-index: 5;
+}

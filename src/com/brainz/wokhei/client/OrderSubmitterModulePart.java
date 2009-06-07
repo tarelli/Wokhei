@@ -325,6 +325,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 			_tagsErrorLabel.addStyleName("errorLabel"); //$NON-NLS-1$
 			_logoErrorLabel.addStyleName("errorLabel"); //$NON-NLS-1$
 			_colourErrorLabel.addStyleName("errorLabel"); //$NON-NLS-1$
+			_submitOrderButton.removeStyleName("gwt-Button");
 			_submitOrderButton.addStyleName("submitRequest"); //$NON-NLS-1$
 
 			_okImagesPanel.setHeight("600px");
