@@ -2,6 +2,16 @@ package com.brainz.wokhei.resources;
 
 public enum Messages {
 
+	INCOMING("Incoming"),
+	ACCEPTED("Accepted"),
+	REJECTED("Rejected"),
+	IN_PROGRESS("In progress"),
+	QUALITY_GATE("Quality Gate"),
+	READY("Ready"),
+	BOUGHT("Bought"),
+	VIEWED("Viewed"),
+	ARCHIVED("Archived"),
+
 	LOGO_NAME_LBL("Logo name"),
 	LOGO_NAME_HELP_MESSAGE("This is the name of the company, product, service, website, association, etc. that your logo is for. This name will appear in the logo unless you'll specify the #notext tag, in that case the logo will only be a symbolic representation!"),
 	LOGO_NAME_EG_LBL("e.g. Franco Bovale Restaurant"),
@@ -48,10 +58,11 @@ public enum Messages {
 	ARCHIVED_TEXT("You didn't purchase this logo. You can still use it under licence for non-commercial purposes. We will appreciate if you'll notify Wokhei whenever you'll decide to use this logo - so don't be shy!"), 
 
 
-	ADMIN_STATUS_FILTER_LABEL("Pick Status"),
-	ADMIN_USER_FILTER_LABEL("Pick User"),
+	ADMIN_STATUS_FILTER_LABEL("Status"),
+	ADMIN_USER_FILTER_LABEL("User"),
 	ADMIN_USER_FILTER_BOX("User Email Here"),
-	ADMIN_DATE_FILTER_LABEL("Pick Date Range"),
+	ADMIN_DATE_FILTER_LABEL("Date Range"),
+	ADMIN_CLEAR_FILTERS("Clear Filters"), 
 	ADMIN_ADD_ADMIN_DEFAULT_TXT("Insert new admin email"), 
 	;
 
