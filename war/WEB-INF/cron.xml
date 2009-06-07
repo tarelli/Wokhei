@@ -2,7 +2,7 @@
 <cronentries>
   <cron>
     <url>/jobs/updateOrderStatus.jsp</url>
-    <description>Updates Order Statuses every 5 minutes (TEST)</description>
+    <description>Updates Order Statuses every 5 minutes</description>
     <schedule>every 5 minutes</schedule>
   </cron>
 </cronentries>
