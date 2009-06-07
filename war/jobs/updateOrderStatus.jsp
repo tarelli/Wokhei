@@ -22,7 +22,7 @@
 	//TODO --> 0.1. before timeout reload the page so that the job keeps going
 
 	//1.get server date time (just create a date object - this will be executed on the server)
-	Date date = new Date();
+	/*Date date = new Date();
 
 	//TODO --> 2.get everything not incoming or rejected (might need to do some sort of staging)
 	//prepare query
@@ -33,7 +33,7 @@
 	query.declareParameters("com.brainz.wokhei.shared.Status paramStatus1, com.brainz.wokhei.shared.Status paramStatus2");
 	try {
 		//execute
-		List<Order> orders = (List<Order>) query.execute(Status.ACCEPTED, Status.REJECTED);
+		//List<Order> orders = (List<Order>) query.execute(Status.ACCEPTED, Status.REJECTED);
 		
 		//TODO --> 3.foreach order get diff between items and server timestamp
 		//TODO --> 4.depending on the diff update statuses
@@ -44,7 +44,7 @@
 	} finally {
 		//any changes will be persisted here
 		pm.close();
-	}
+	}*/
 	
 	log.info(" --> updateOrderStatus Job END <--");
 %>
