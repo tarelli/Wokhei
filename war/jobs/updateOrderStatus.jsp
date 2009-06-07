@@ -16,7 +16,7 @@
 <title>updateOrderStatus</title>
 </head>
 <%
-	Logger log = Logger.getLogger("JOBS_updateOrderStatus");
+	Logger log = Logger.getLogger(com.brainz.wokhei.Order.class.getName());
 	log.info(" --> updateOrderStatus Job START <--");
 	//TODO --> 0. setup a timer for the timeout
 	//TODO --> 0.1. before timeout reload the page so that the job keeps going
