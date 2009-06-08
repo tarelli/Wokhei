@@ -553,7 +553,10 @@ public class OrderSubmitterModulePart extends AModulePart {
 			setOkImagesVisibility(true);
 		}
 
-		addHashToTags();
+		if(!((MultipleTextBox)_logoTagsBox.getTextBox()).getWholeText().equals(Messages.LOGO_TAGS_TXTBOX.getString()))
+		{
+			addHashToTags();
+		}
 
 		Validator.TagsErrors tagsError=Validator.validateTags(((MultipleTextBox)_logoTagsBox.getTextBox()).getWholeText());
 		Validator.LogoErrors logoError=Validator.validateLogoName(_logoTextBox.getText());

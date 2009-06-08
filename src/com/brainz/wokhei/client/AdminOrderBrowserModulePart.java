@@ -246,6 +246,12 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 		userFilterLbl.setStyleName("label");
 		_userFilterBox.setText(Messages.ADMIN_USER_FILTER_BOX.getString());
 
+		_userFilterBox.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				_userFilterBox.selectAll();
+			}
+		});
+
 		_userFilter.add(userFilterLbl);
 		_userFilter.add(_userFilterBox);
 	}

@@ -82,7 +82,7 @@ div#page-wrap {
 .bodytileAdmin {
 	position: relative;
 	background: URL("../images/bodytile.png");
-	min-height: 500px;
+	min-height: 700px;
 	z-index: 1;
 }
 
