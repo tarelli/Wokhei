@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ page import="java.util.Date"%>
+<%@ page import="java.util.Calendar" %>
 <%@ page import="java.util.List"%>
+<%@ page import="java.util.ArrayList"%>
 <%@ page import="java.util.logging.Level"%>
 <%@ page import="java.util.logging.Logger"%>
 <%@ page import="com.brainz.wokhei.shared.Status"%>
@@ -21,30 +23,73 @@
 	//TODO --> 0. setup a timer for the timeout
 	//TODO --> 0.1. before timeout reload the page so that the job keeps going
 
-	//1.get server date time (just create a date object - this will be executed on the server)
-	/*Date date = new Date();
+	//1.get server date time (create a date object and load it in a calendar)
+	Date date = new Date();
+	Calendar calend = Calendar.getInstance();
+	calend.setTime(date);
 
 	//TODO --> 2.get everything not incoming or rejected (might need to do some sort of staging)
 	//prepare query
 	PersistenceManager pm = PMF.get().getPersistenceManager();
 	String select_query = "select from " + Order.class.getName();
 	Query query = pm.newQuery(select_query);
-	query.setFilter("status != paramStatus1 && status != paramStatus2");
-	query.declareParameters("com.brainz.wokhei.shared.Status paramStatus1, com.brainz.wokhei.shared.Status paramStatus2");
+	
+	//prepare the filters and params - we could use the queryBuilder class to do this once refactored
+	query.setFilter("status == paramStatus1");
+	
+	query.declareParameters("com.brainz.wokhei.shared.Status paramStatus1");
+	
 	try {
 		//execute
-		//List<Order> orders = (List<Order>) query.execute(Status.ACCEPTED, Status.REJECTED);
+		List<Order> acceptedOrders = (List<Order>) query.executeWithArray(Status.ACCEPTED);
+		List<Order> inProgressOrders = (List<Order>) query.executeWithArray(Status.IN_PROGRESS);
+		List<Order> qualityGateOrders = (List<Order>) query.executeWithArray(Status.QUALITY_GATE);
 		
-		//TODO --> 3.foreach order get diff between items and server timestamp
-		//TODO --> 4.depending on the diff update statuses
-		// changes will be persisted when the pm is closed
+		List<Order> orders = new ArrayList<Order>();
+		
+		orders.addAll(acceptedOrders);
+		orders.addAll(inProgressOrders);
+		orders.addAll(qualityGateOrders);
+		
+		//3.foreach order get diff between items and server timestamp
+		for(Order order : orders)
+		{
+			//4.depending on the diff update statuses	
+			Calendar orderCalend = Calendar.getInstance();
+			orderCalend.setTime(order.getDate());
+			
+			//Get the represented dates in milliseconds
+			long servertimeNowMilis = calend.getTimeInMillis();
+			long orderDateMillis = orderCalend.getTimeInMillis();
+			//calculate diff in millisecs
+			long diff = servertimeNowMilis - orderDateMillis;
+			
+			//difference in hours
+			float diffHours = (float)diff / (60f * 60f * 1000f);
+			float diffMinutes = (float)diff / (60f * 1000f);
+			
+			// we need to retrieve only accepted - in progress - quality gate
+			if(diffHours > 4 && diffHours < 16)
+			{
+				order.setStatus(Status.IN_PROGRESS);
+			}
+			else if(diffHours > 16 && diffHours < 24)
+			{
+				order.setStatus(Status.QUALITY_GATE);
+			}
+			else if(diffHours > 24)
+			{
+				// need to put some check here to see if it's really ready 
+				order.setStatus(Status.READY);
+			}	
+		}
 		
 	} catch (Exception ex) {
-		log.log(Level.SEVERE, "update order Status Job failed to retrieve Orders");
+		log.log(Level.SEVERE, "update order Status Job failed to retrieve Orders: " + ex.getMessage());
 	} finally {
 		//any changes will be persisted here
 		pm.close();
-	}*/
+	}
 	
 	log.info(" --> updateOrderStatus Job END <--");
 %>

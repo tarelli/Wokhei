@@ -20,6 +20,7 @@ import com.brainz.wokhei.Order;
 import com.brainz.wokhei.PMF;
 import com.brainz.wokhei.client.OrderService;
 import com.brainz.wokhei.shared.OrderDTO;
+import com.brainz.wokhei.shared.QueryBuilder;
 import com.brainz.wokhei.shared.Status;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
@@ -38,10 +39,6 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 	private static final long serialVersionUID = -5060860293974160016L;
 
 	private static final Logger log = Logger.getLogger(OrderServiceImpl.class.getName());
-
-	private String _filters = "";
-
-	private String _paramDeclarations = "";
 
 	/* (non-Javadoc)
 	 * @see com.brainz.wokhei.client.OrderService#submitOrder(com.brainz.wokhei.shared.OrderDTO)
@@ -93,8 +90,8 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 			String userEmail, Date startDate, Date endDate,int offset, int maxResult) {
 
 		//clean up filter and paramDeclaration for Query
-		_filters = "";
-		_paramDeclarations = "";
+		QueryBuilder._filters = "";
+		QueryBuilder._paramDeclarations = "";
 
 		List<OrderDTO> orderList = null;
 		User user = null;
@@ -114,25 +111,25 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 		//status
 		if (status!=null)
 		{	
-			this.AddObjectToFilterAndParamForQuery(status, "==", "status", "paramStatus", paramList);
+			QueryBuilder.AddObjectToFilterAndParamForQuery(status, "==", "status", "paramStatus", paramList);
 		}
 
 		//User
 		if (user!=null)
 		{	
-			this.AddObjectToFilterAndParamForQuery(user, "==", "customer", "paramUser", paramList);
+			QueryBuilder.AddObjectToFilterAndParamForQuery(user, "==", "customer", "paramUser", paramList);
 		}
 
 		//StartDate
 		if (startDate!=null)
 		{	
-			this.AddObjectToFilterAndParamForQuery(startDate, ">=", "date", "paramStartDate", paramList);
+			QueryBuilder.AddObjectToFilterAndParamForQuery(startDate, ">=", "date", "paramStartDate", paramList);
 		}
 
 		//StartDate
 		if (endDate!=null)
 		{	
-			this.AddObjectToFilterAndParamForQuery(endDate, "<=", "date", "paramEndDate", paramList);
+			QueryBuilder.AddObjectToFilterAndParamForQuery(endDate, "<=", "date", "paramEndDate", paramList);
 		}
 
 		Query query;
@@ -142,8 +139,8 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 			if(user != null || status!=null || startDate!=null || endDate!=null)
 			{
 				// if any of these is not null then invoke execute method on query object with reflection
-				query = pm.newQuery(Order.class, _filters);
-				query.declareParameters(_paramDeclarations);
+				query = pm.newQuery(Order.class, QueryBuilder._filters);
+				query.declareParameters(QueryBuilder._paramDeclarations);
 
 				// now prepare for reflection
 
@@ -184,36 +181,6 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 			partialResult.add(orderList.get(i));
 		}
 		return new Results(orderList.size(),partialResult);
-	}
-
-
-	/**
-	 * Refactor this shit into a class
-	 * @param obj
-	 * @param filterQuery
-	 * @param fieldName
-	 * @param paramQuery
-	 * @param paramName
-	 * @param argList
-	 */
-	private void AddObjectToFilterAndParamForQuery(Object obj, String operator, String fieldName, String paramName, List<Object> argList)
-	{
-		if (_filters!="")
-		{
-			_filters += " && ";
-		}
-
-		if (_paramDeclarations!="")
-		{
-			_paramDeclarations += " , ";
-		}
-
-		//build user filter
-		_filters += " ( " + fieldName + " " + operator + " " + paramName + " ) ";
-		//build status ParamDeclaration
-		_paramDeclarations += " " + obj.getClass().getName() + " " + paramName + " ";
-
-		argList.add(obj);
 	}
 
 	public Boolean setOrderStatus(long orderId, Status newStatus)

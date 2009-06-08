@@ -29,15 +29,6 @@
 		<url-pattern>/wokhei/adminservice</url-pattern>
 	</servlet-mapping>
 
-	<security-constraint>
-		<web-resource-collection>
-			<url-pattern>/jobs/*</url-pattern>
-		</web-resource-collection>
-		<auth-constraint>
-			<role-name>admin</role-name>
-		</auth-constraint>
-	</security-constraint>
-
 	<welcome-file-list>
 		<welcome-file>home.jsp</welcome-file>
 	</welcome-file-list>
