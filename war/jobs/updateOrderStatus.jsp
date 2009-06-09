@@ -85,13 +85,19 @@
 			// we need to retrieve only accepted - in progress - quality gate
 			if(diffHours > 4 && diffHours < 16)
 			{
-				order.setStatus(Status.IN_PROGRESS);
-				updatedOrders.add(order);
+				if(order.getStatus() != Status.IN_PROGRESS)
+				{
+					order.setStatus(Status.IN_PROGRESS);
+					updatedOrders.add(order);
+				}
 			}
 			else if(diffHours > 16 && diffHours < 24)
 			{
-				order.setStatus(Status.QUALITY_GATE);
-				updatedOrders.add(order);
+				if(order.getStatus() != Status.QUALITY_GATE)
+				{
+					order.setStatus(Status.QUALITY_GATE);
+					updatedOrders.add(order);
+				}
 			}
 			else if(diffHours > 24)
 			{
@@ -149,6 +155,6 @@
 	log.info(" --> updateOrderStatus Job END <--");
 %>
 <body>
-UPDATE ORDER STATUS JOB
+UPDATE ORDER STATUS JOB - Updated [<%= updatedOrders.size() %>] Orders
 </body>
 </html>
