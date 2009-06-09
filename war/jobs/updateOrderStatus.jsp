@@ -104,6 +104,8 @@
 				// need to put some check here to see if it's really ready 
 				order.setStatus(Status.READY);
 				updatedOrders.add(order);
+				
+				//send an email with attachment (or link) to the user
 			}	
 		}
 		
@@ -145,9 +147,9 @@
         Transport.send(msg);
 
     } catch (AddressException e) {
-    	log.log(Level.SEVERE, "update order Status Job failed to send email: " + e.getMessage());
+    	log.log(Level.SEVERE, "update order Status Job failed to send admin email: " + e.getMessage());
     } catch (MessagingException e) {
-    	log.log(Level.SEVERE, "update order Status Job failed to send email: " + e.getMessage());
+    	log.log(Level.SEVERE, "update order Status Job failed to send admin email: " + e.getMessage());
     }
 	//-----------------------------------------------------------------------------
 	

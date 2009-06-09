@@ -209,8 +209,6 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 		setUserFilter();
 		setDateRangeFilter();
 
-
-
 		_clearFiltersButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				_statusFilterBox.setSelectedIndex(0);
@@ -402,10 +400,12 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 							rejectOrderButton.addClickHandler(new ClickHandler() {
 								public void onClick(ClickEvent event) {
 
-									//get ID from clicked row
-									long rejectedId = Long.parseLong(_ordersFlexTable.getText(frow, Columns.ID.ordinal()));
-
-									statusChangedSubHandler(frow, rejectedId, Status.REJECTED);
+									if(Window.confirm(Messages.ADMIN_CONFIRM_REJECT_TXT.getString()))
+									{
+										//get ID from clicked row
+										long rejectedId = Long.parseLong(_ordersFlexTable.getText(frow, Columns.ID.ordinal()));
+										statusChangedSubHandler(frow, rejectedId, Status.REJECTED);
+									}
 								}
 							});
 
@@ -415,10 +415,13 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 							acceptOrderButton.addClickHandler(new ClickHandler() {
 								public void onClick(ClickEvent event) {
 
-									//get ID from clicked row
-									long acceptedId = Long.parseLong(_ordersFlexTable.getText(frow, Columns.ID.ordinal()));
+									if(Window.confirm(Messages.ADMIN_CONFIRM_ACCEPT_TXT.getString()))
+									{
+										//get ID from clicked row
+										long acceptedId = Long.parseLong(_ordersFlexTable.getText(frow, Columns.ID.ordinal()));
 
-									statusChangedSubHandler(frow, acceptedId, Status.ACCEPTED);
+										statusChangedSubHandler(frow, acceptedId, Status.ACCEPTED);
+									}
 								}
 							});
 
@@ -610,7 +613,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 			_ordersFlexTable.setWidget(_rowForClientStatusUpdate, Columns.STATUS.ordinal(), getStatusImage(_statusForClientUpdate.toString()));
 			// disable buttons 
 			//TODO --> decision to show or not row according to filters
-			HorizontalPanel actionPanel = ((HorizontalPanel)_ordersFlexTable.getWidget(_rowForClientStatusUpdate, Columns.ACTIONS.ordinal()));
+			VerticalPanel actionPanel = ((VerticalPanel)_ordersFlexTable.getWidget(_rowForClientStatusUpdate, Columns.ACTIONS.ordinal()));
 			((Button)actionPanel.getWidget(0)).setEnabled(false);
 			((Button)actionPanel.getWidget(1)).setEnabled(false);
 		}

@@ -110,22 +110,15 @@ public class OrderSubmitterModulePart extends AModulePart {
 	private final AbsolutePanel _alternateSubPanelBodyTile= new AbsolutePanel();
 	private final AbsolutePanel _alternateSubPanelFooter= new AbsolutePanel();
 
-
 	private final Label _waitLabel = new Label(); //$NON-NLS-1$
 
-	// alternate/main panel switch
-	private boolean _isMainPanelVisible = true;
-
 	private final Label _requestLabel = new Label(Messages.REQUEST_LOGO_LBL.getString()); //$NON-NLS-1$
-
 
 	private AsyncCallback<List<OrderDTO>> _getOrdersCallback = null;
 
 	private AsyncCallback<Boolean> _submitOrderCallback =null;
 
 	private OrderDTO _submittedOrder = null;
-
-
 
 	@Override
 	public void initModulePart(OrderServiceAsync orderService, UtilityServiceAsync utilityService, AdminServiceAsync adminService) {
@@ -142,8 +135,9 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 			_mainPanel.setSpacing(10);
 
-			// set ok images to invisible
+			// set everything to invisible
 			setOkImagesVisibility(false);
+			_mainPanel.setVisible(false);
 
 			_requestLabel.addStyleName("h3"); //$NON-NLS-1$
 			_mainPanel.add(_requestLabel );
@@ -363,10 +357,6 @@ public class OrderSubmitterModulePart extends AModulePart {
 			_alternateRootPanelBodyTile.add(_alternateSubPanelBodyTile);
 			_alternateRootPanelFooter.add(_alternateSubPanelFooter);
 
-			// set default visibility
-			_mainPanel.setVisible(true);
-			showAlternatePanels(false);
-
 			//add main and alternate panel to root panel
 			_rootPanel.add(_mainPanel);
 
@@ -473,7 +463,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 				if(result!=false && _submittedOrder!=null)
 				{
 					updateAlternatePanelMessage(_submittedOrder, result);
-					_isMainPanelVisible = false;
+					_mainPanel.setVisible(false);
 					showHidePanels();
 					notifyChanges();
 				}
@@ -671,16 +661,14 @@ public class OrderSubmitterModulePart extends AModulePart {
 	 */
 	protected void showHidePanels() 
 	{
-		if(_isMainPanelVisible)
+		if(_mainPanel.isVisible())
 		{
 			// Associate the feckin' Main panel with the HTML element on the host page.
-			_mainPanel.setVisible(true);
 			_okImagesPanel.setVisible(true);
 			showAlternatePanels(false);
 		}
 		else
 		{
-			_mainPanel.setVisible(false);
 			_okImagesPanel.setVisible(false);
 			showAlternatePanels(true);	
 		}
@@ -695,11 +683,11 @@ public class OrderSubmitterModulePart extends AModulePart {
 				|| result.getStatus() == Status.BOUGHT 
 				|| result.getStatus() == Status.REJECTED))
 		{
-			_isMainPanelVisible = true;
+			_mainPanel.setVisible(true);
 		}
 		else
 		{
-			_isMainPanelVisible = false;
+			_mainPanel.setVisible(false);
 			updateAlternatePanelMessage(result,false);
 		}
 	}

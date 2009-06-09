@@ -33,9 +33,12 @@ public enum Messages {
 	REQUEST_LOGO_LBL("Request your logo"),
 	SEND_REQUEST("Send request!"),
 
-	ACCEPTED_WAITMSG("Your logo is getting ready, do you fancy a drink meanwhile?"),
+	ACCEPTED_WAITMSG("Your logo is getting ready, fancy a drink meanwhile?"),
 	ERROR_WAITMSG("An error occurred while sending your request. Please do complain!"),
-	INCOMING_WAITMSG("Your request has been sent to the kitchen, enjoy the apetizers!"),
+	INCOMING_WAITMSG("Your request has been sent to the kitchen, enjoy the appetizers!"),
+	IN_PROGRESS_WAITMSG("Your logo is being cooked-up, have some more appetizers!"),
+	QUALITY_GATE_WAITMSG("Your logo quality is being verified, it will be ready soon enough!"),
+	READY_WAITMSG("Your logo is ready, click on the icon and have some!"),
 	COPYRIGHT("Copyright\u00a9 2009 WOKHEI"),
 
 	INCOMING_TITLE("Pending request..."),
@@ -64,6 +67,8 @@ public enum Messages {
 	ADMIN_DATE_FILTER_LABEL("Date Range"),
 	ADMIN_CLEAR_FILTERS("Clear Filters"), 
 	ADMIN_ADD_ADMIN_DEFAULT_TXT("Insert new admin email"), 
+	ADMIN_CONFIRM_ACCEPT_TXT("Are you sure you want to accept this order?"), 
+	ADMIN_CONFIRM_REJECT_TXT("Are you sure you want to reject this order"), 
 	;
 
 	private String _text;
