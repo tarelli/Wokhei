@@ -3,6 +3,6 @@
   <cron>
     <url>/jobs/updateOrderStatus.jsp</url>
     <description>Updates Order Status</description>
-    <schedule>every 4 hours</schedule>
+    <schedule>every 30 minutes</schedule>
   </cron>
 </cronentries>
