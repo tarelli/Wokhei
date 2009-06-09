@@ -142,7 +142,7 @@
                 new InternetAddress("matteo.cantarelli@wokhei.com"));
 		msg.addRecipient(Message.RecipientType.TO,
        		 	new InternetAddress("giovanni.idili@wokhei.com"));
-        msg.setSubject("updateOrderStatus job");
+        msg.setSubject("updateOrderStatus Job - " + date.toString());
         msg.setText(msgBody);
         Transport.send(msg);
 
@@ -157,6 +157,6 @@
 	log.info(" --> updateOrderStatus Job END <--");
 %>
 <body>
-UPDATE ORDER STATUS JOB - Updated [<%= updatedOrders.size() %>] Orders
+UPDATE ORDER STATUS JOB - Updated [<%= updatedOrders.size() %>] Orders - <%= date.toString() %>
 </body>
 </html>
