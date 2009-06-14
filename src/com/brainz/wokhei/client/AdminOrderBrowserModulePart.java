@@ -21,6 +21,7 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -77,6 +78,10 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	private DefaultPaginationBehavior _paginationBehavior;
 
 	private final HorizontalPanel _toolbarPanel = new HorizontalPanel();
+
+	//upload stuff
+	private final PopupPanel _uploadPopupPanel=new PopupPanel(true);
+
 	// add admin stuff
 	private final VerticalPanel _addAdminPanel = new VerticalPanel();
 	private final PopupPanel _optionsPopupPanel = new PopupPanel(true);
@@ -126,6 +131,8 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 			setupToolbarPanel();
 
 			setPaginator();
+
+			setupUploadPanel();
 
 			//set orders flexTable style - header picks up headeRow style bcs of paginationBehavior
 			_ordersFlexTable.addStyleName("orderList");
@@ -440,9 +447,12 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 								public void onClick(ClickEvent event) {
 									//get ID from clicked row
 									//long orderId = Long.parseLong(ordersFlexTable.getText(frow, Columns.ID.ordinal()));
-
-									Window.alert("This feature is not implemented yet - stay tuned for good!");
+									updateUploadPanel();
+									_uploadPopupPanel.center();
+									_uploadPopupPanel.show();
 								}
+
+
 							});
 
 							_ordersFlexTable.setWidget(row, Columns.ACTIONS.ordinal(), uploadLogoButton);
@@ -495,6 +505,49 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 		_paginationBehavior.setNextPageText("Next >>");
 		_paginationBehavior.setPreviousPageText("<< Prev");
+	}
+
+	/**
+	 * 
+	 */
+	private void setupUploadPanel() 
+	{
+		_uploadPopupPanel.setStyleName("adminPopup");
+		VerticalPanel uploadPanel=new VerticalPanel();
+
+		HorizontalPanel rasterizedPanel=new HorizontalPanel();
+		rasterizedPanel.setVerticalAlignment(HorizontalPanel.ALIGN_MIDDLE);
+		rasterizedPanel.setSpacing(10);
+		Label rasterizedLbl=new Label(Messages.RASTERIZED_LBL.getString());
+		FileUpload rasterizedUpload=new FileUpload();
+		Button rasterizedUploadBtn=new Button(Messages.UPLOAD.getString());
+		rasterizedPanel.add(rasterizedLbl);
+		rasterizedPanel.add(rasterizedUpload);
+		rasterizedPanel.add(rasterizedUploadBtn);
+
+		HorizontalPanel vectorialPanel=new HorizontalPanel();
+		vectorialPanel.setVerticalAlignment(HorizontalPanel.ALIGN_MIDDLE);
+		vectorialPanel.setSpacing(10);
+		Label vectorialLbl=new Label(Messages.VECTORIAL_LBL.getString());
+		FileUpload vectorialUpload=new FileUpload();
+
+		Button vectorialUploadBtn=new Button(Messages.UPLOAD.getString());
+		vectorialPanel.add(vectorialLbl);
+		vectorialPanel.add(vectorialUpload);
+		vectorialPanel.add(vectorialUploadBtn);
+
+		uploadPanel.add(rasterizedPanel);
+		uploadPanel.add(vectorialPanel);
+		_uploadPopupPanel.add(uploadPanel);
+	}
+
+	/**
+	 * 
+	 */
+	private void updateUploadPanel() 
+	{
+		// TODO Auto-generated method stub
+
 	}
 
 	/**

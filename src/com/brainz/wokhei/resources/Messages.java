@@ -69,6 +69,10 @@ public enum Messages {
 	ADMIN_ADD_ADMIN_DEFAULT_TXT("Insert new admin email"), 
 	ADMIN_CONFIRM_ACCEPT_TXT("Are you sure you want to accept this order?"), 
 	ADMIN_CONFIRM_REJECT_TXT("Are you sure you want to reject this order"), 
+	RASTERIZED_LBL("Rasterized PNG"),
+	VECTORIAL_LBL("Vectorial PDF"), 
+	BROWSE("Browse..."), 
+	UPLOAD("Upload!"),
 	;
 
 	private String _text;

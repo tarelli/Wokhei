@@ -159,19 +159,6 @@ a2:hover {
 	font-size: 7pt;
 }
 
-input {
-	border: 3px #c60089 solid;
-	margin-top: 0px;
-	margin-right: 0px;
-	margin-bottom: 0px;
-	margin-left: 0px;
-	padding-top: 1px;
-	padding-right: 0px;
-	padding-bottom: 1px;
-	padding-left: 2px;
-	height: 18px
-}
-
 select {
 	border: 0;
 	margin-top: 0px;
@@ -459,6 +446,16 @@ select {
 }
 
 .textBox {
+		border: 3px #c60089 solid;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	padding-top: 1px;
+	padding-right: 0px;
+	padding-bottom: 1px;
+	padding-left: 2px;
+	height: 18px
 	color: #000000;
 	font-family: "Arial Rounded MT Bold", "Trebuchet MS", Verdana, Arial,
 		Helvetica, sans-serif;
@@ -727,6 +724,12 @@ select {
 	color:#bf007e;
 	width:80px;
 }
+
+gwt-FileUpload
+	{
+	border: none;
+	}
+	
 .headerRow {
 	font-family: "Arial Rounded MT Bold", "Trebuchet MS", Verdana, Arial,
 		Helvetica, sans-serif;
