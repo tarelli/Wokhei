@@ -8,6 +8,7 @@
 <%@ page import="java.util.logging.Level"%>
 <%@ page import="java.util.logging.Logger"%>
 <%@ page import="com.brainz.wokhei.shared.Status"%>
+<%@ page import="com.brainz.wokhei.shared.DateDifferenceCalculator"%>
 <%@ page import="javax.jdo.PersistenceManager"%>
 <%@ page import="javax.jdo.*"%>
 <%@ page import="javax.mail.internet.AddressException"%>
@@ -38,9 +39,7 @@
 	List<Order> updatedOrders = new ArrayList<Order>();
 
 	//1.get server date time (create a date object and load it in a calendar)
-	Date date = new Date();
-	Calendar calend = Calendar.getInstance();
-	calend.setTime(date);
+	Date serverDate = new Date();
 
 	//TODO --> 2.get everything not incoming or rejected (might need to do some sort of staging)
 	//prepare query
@@ -69,18 +68,7 @@
 		for(Order order : orders)
 		{
 			//4.depending on the diff update statuses	
-			Calendar orderCalend = Calendar.getInstance();
-			orderCalend.setTime(order.getDate());
-			
-			//Get the represented dates in milliseconds
-			long servertimeNowMilis = calend.getTimeInMillis();
-			long orderDateMillis = orderCalend.getTimeInMillis();
-			//calculate diff in millisecs
-			long diff = servertimeNowMilis - orderDateMillis;
-			
-			//difference in hours
-			float diffHours = (float)diff / (60f * 60f * 1000f);
-			float diffMinutes = (float)diff / (60f * 1000f);
+			float diffHours = DateDifferenceCalculator.getDifferenceInHours(order.getDate(), serverDate);
 			
 			// we need to retrieve only accepted - in progress - quality gate
 			if(diffHours > 4 && diffHours < 16)
@@ -142,7 +130,7 @@
                 new InternetAddress("matteo.cantarelli@wokhei.com"));
 		msg.addRecipient(Message.RecipientType.TO,
        		 	new InternetAddress("giovanni.idili@wokhei.com"));
-        msg.setSubject("updateOrderStatus Job - " + date.toString());
+        msg.setSubject("updateOrderStatus Job - " + serverDate.toString());
         msg.setText(msgBody);
         Transport.send(msg);
 
@@ -157,6 +145,6 @@
 	log.info(" --> updateOrderStatus Job END <--");
 %>
 <body>
-UPDATE ORDER STATUS JOB - Updated [<%= updatedOrders.size() %>] Orders - <%= date.toString() %>
+UPDATE ORDER STATUS JOB - Updated [<%= updatedOrders.size() %>] Orders - <%= serverDate.toString() %>
 </body>
 </html>
