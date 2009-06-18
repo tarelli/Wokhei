@@ -19,6 +19,7 @@ import org.gwtwidgets.client.ui.pagination.Results;
 import com.brainz.wokhei.Order;
 import com.brainz.wokhei.PMF;
 import com.brainz.wokhei.client.OrderService;
+import com.brainz.wokhei.shared.FilesToUpload;
 import com.brainz.wokhei.shared.OrderDTO;
 import com.brainz.wokhei.shared.QueryBuilder;
 import com.brainz.wokhei.shared.Status;
@@ -183,9 +184,9 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 		return new Results(orderList.size(),partialResult);
 	}
 
-	public Boolean setOrderStatus(long orderId, Status newStatus)
+	public Long setOrderStatus(long orderId, Status newStatus)
 	{
-		Boolean returnValue = false;
+		Long returnValue = null;
 
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
@@ -208,7 +209,7 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 				//persist change
 				pm.makePersistent(order);
 
-				returnValue = true;
+				returnValue = orderId;
 
 				if (user != null) 
 				{
@@ -251,6 +252,38 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 		pm.close();
 
 		return result;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see com.brainz.wokhei.client.OrderService#hasFileUploaded(long, com.brainz.wokhei.shared.FilesToUpload)
+	 */
+	public Boolean hasFileUploaded(long orderID, FilesToUpload file) 
+	{
+		Boolean isFileUploaded=false;
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		String select_query = "select from " + Order.class.getName();
+		Query query = pm.newQuery(select_query);
+		query.setFilter("id == paramId");
+		query.declareParameters("java.lang.Long paramId");
+		//execute
+		List<Order> orders = (List<Order>) query.execute(orderID);
+
+		if (!orders.isEmpty()) {
+			//should be only one - safety check here
+			Order order = orders.get(0);
+			switch(file)
+			{
+			case PDF_VECTORIAL_LOGO:
+				isFileUploaded=order.getLogo()!=null;
+			case PNG_LOGO:
+			case PNG_LOGO_PRESENTATION:
+			}
+
+			pm.close();
+
+		} 
+		return isFileUploaded;
 	}
 
 }
