@@ -30,7 +30,7 @@
 	</servlet-mapping>
 	<servlet>
 		<servlet-name>uploadfileservlet</servlet-name>
-		<servlet-class>com.brainz.wokhei.servlet.FileUploaderServlet</servlet-class>
+		<servlet-class>com.brainz.wokhei.servlet.UploadFileServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>uploadfileservlet</servlet-name>
@@ -38,12 +38,12 @@
 	</servlet-mapping>
 
 	<servlet>
-		<servlet-name>getlogoservlet</servlet-name>
-		<servlet-class>com.brainz.wokhei.servlet.GetImageServlet</servlet-class>
+		<servlet-name>getfileservlet</servlet-name>
+		<servlet-class>com.brainz.wokhei.servlet.GetFileServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>getlogoservlet</servlet-name>
-		<url-pattern>/wokhei/getlogo</url-pattern>
+		<servlet-name>getfileservlet</servlet-name>
+		<url-pattern>/wokhei/getfile</url-pattern>
 	</servlet-mapping>
 
 	<welcome-file-list>

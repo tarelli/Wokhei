@@ -16,10 +16,11 @@ import javax.jdo.Query;
 
 import org.gwtwidgets.client.ui.pagination.Results;
 
+import com.brainz.wokhei.File;
 import com.brainz.wokhei.Order;
 import com.brainz.wokhei.PMF;
 import com.brainz.wokhei.client.OrderService;
-import com.brainz.wokhei.shared.FilesToUpload;
+import com.brainz.wokhei.shared.FileType;
 import com.brainz.wokhei.shared.OrderDTO;
 import com.brainz.wokhei.shared.QueryBuilder;
 import com.brainz.wokhei.shared.Status;
@@ -258,31 +259,19 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 	/* (non-Javadoc)
 	 * @see com.brainz.wokhei.client.OrderService#hasFileUploaded(long, com.brainz.wokhei.shared.FilesToUpload)
 	 */
-	public Boolean hasFileUploaded(long orderID, FilesToUpload file) 
+	public synchronized Boolean hasFileUploaded(long orderID, FileType fileType) 
 	{
 		Boolean isFileUploaded=false;
 		PersistenceManager pm = PMF.get().getPersistenceManager();
-		String select_query = "select from " + Order.class.getName();
-		Query query = pm.newQuery(select_query);
-		query.setFilter("id == paramId");
-		query.declareParameters("java.lang.Long paramId");
+		String fileSelectQuery = "select from " + File.class.getName();
+		Query fileQuery = pm.newQuery(fileSelectQuery);
+		fileQuery.setFilter("orderid == paramId  &&  type == paramType");
+		fileQuery.declareParameters("java.lang.Long paramId , com.brainz.wokhei.shared.FileType paramType");
 		//execute
-		List<Order> orders = (List<Order>) query.execute(orderID);
+		List<File> files = (List<File>) fileQuery.execute(orderID,fileType);
+		//execute
 
-		if (!orders.isEmpty()) {
-			//should be only one - safety check here
-			Order order = orders.get(0);
-			switch(file)
-			{
-			case PDF_VECTORIAL_LOGO:
-				isFileUploaded=order.getLogo()!=null;
-			case PNG_LOGO:
-			case PNG_LOGO_PRESENTATION:
-			}
-
-			pm.close();
-
-		} 
+		isFileUploaded=!files.isEmpty();
 		return isFileUploaded;
 	}
 

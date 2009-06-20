@@ -11,7 +11,6 @@ import javax.jdo.annotations.PrimaryKey;
 
 import com.brainz.wokhei.shared.Colour;
 import com.brainz.wokhei.shared.Status;
-import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.users.User;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
@@ -41,8 +40,6 @@ public class Order implements IsSerializable{
 	@Persistent
 	private Colour colour;
 
-	@Persistent
-	private Blob logo;
 
 	public Order(User author, String text, List<String> tags, Colour colour, Date date) {
 		this.customer = author;
@@ -77,11 +74,6 @@ public class Order implements IsSerializable{
 		return date;
 	}
 
-	public Blob getLogo()
-	{
-		return logo;
-	}
-
 	public void setCustomer(User author) {
 		this.customer = author;
 	}
@@ -104,11 +96,6 @@ public class Order implements IsSerializable{
 
 	public Status getStatus() {
 		return status;
-	}
-
-	public void setLogo(Blob logoBlob)
-	{
-		this.logo=logoBlob;
 	}
 
 	public void setStatus(Status status) {

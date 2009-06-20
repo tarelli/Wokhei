@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.gwtwidgets.client.ui.pagination.Results;
 
-import com.brainz.wokhei.shared.FilesToUpload;
+import com.brainz.wokhei.shared.FileType;
 import com.brainz.wokhei.shared.OrderDTO;
 import com.brainz.wokhei.shared.Status;
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -29,5 +29,5 @@ public interface OrderService extends RemoteService {
 
 	Long setOrderStatus(long orderID, Status newStatus);
 
-	Boolean hasFileUploaded(long orderID, FilesToUpload file);
+	Boolean hasFileUploaded(long orderID, FileType fileType); 
 }

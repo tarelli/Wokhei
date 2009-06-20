@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.gwtwidgets.client.ui.pagination.Results;
 
-import com.brainz.wokhei.shared.FilesToUpload;
+import com.brainz.wokhei.shared.FileType;
 import com.brainz.wokhei.shared.OrderDTO;
 import com.brainz.wokhei.shared.Status;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -27,6 +27,6 @@ public interface OrderServiceAsync {
 
 	void setOrderStatus(long orderId, Status newStatus, AsyncCallback<Long> callback);
 
-	void hasLogo(long orderID, FilesToUpload file, AsyncCallback<Boolean> callback);
+	void hasFileUploaded(long orderID, FileType fileType, AsyncCallback<Boolean> callback);
 
 }

@@ -13,6 +13,7 @@ import org.gwtwidgets.client.ui.pagination.RowRenderer;
 
 import com.brainz.wokhei.resources.Images;
 import com.brainz.wokhei.resources.Messages;
+import com.brainz.wokhei.shared.FileType;
 import com.brainz.wokhei.shared.OrderDTO;
 import com.brainz.wokhei.shared.Status;
 import com.codelathe.gwt.client.SlideShow;
@@ -116,8 +117,6 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 	private AsyncCallback<Long> _setOrderStatusCallback = null;
 	private AsyncCallback<Boolean> _addAdminCallback = null;
-	private AsyncCallback<Boolean> _setLogoCallback=null;
-	private AsyncCallback<Boolean> _hasImageCallBack=null;
 
 	//related with status update chaching during async call
 	private int _rowForClientStatusUpdate;
@@ -126,9 +125,16 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 	//the order id when click to the upload button
 	private final FormPanel _rasterizedForm = new FormPanel();
+	private final FormPanel _presentationForm = new FormPanel();
 	private final FormPanel _vectorialForm = new FormPanel();
 
 	private final SlideShow slideShow = new SlideShow();
+	private final Image _isRasterizedImageUploaded=new Image(Images.NOK.getImageURL());
+	private final Image _isPresentationImageUploaded=new Image(Images.NOK.getImageURL());
+	private final Image _isVectorialImageUploaded=new Image(Images.NOK.getImageURL());
+	private long _uploadPanelOrderId=-1;
+	private final Label _uploadLogoName=new Label();
+	private final Label _uploadTags=new Label();
 
 
 
@@ -462,7 +468,9 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 							uploadLogoButton.addClickHandler(new ClickHandler() {
 								public void onClick(ClickEvent event) {
 									//get ID from clicked row
-									updateUploadPanel(Long.parseLong(_ordersFlexTable.getText(frow, Columns.ID.ordinal())));
+									updateUploadPanel(Long.parseLong(_ordersFlexTable.getText(frow, Columns.ID.ordinal())),
+											_ordersFlexTable.getText(frow, Columns.LOGO_TEXT.ordinal()),
+											_ordersFlexTable.getText(frow, Columns.TAGS.ordinal()));
 									_uploadPopupPanel.center();
 									_uploadPopupPanel.show();
 								}
@@ -533,6 +541,15 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 		_rasterizedForm.setEncoding(FormPanel.ENCODING_MULTIPART);
 		_rasterizedForm.setMethod(FormPanel.METHOD_POST);
 
+		HorizontalPanel titlePanel=new HorizontalPanel();
+		titlePanel.setSpacing(10);
+		titlePanel.setVerticalAlignment(HorizontalPanel.ALIGN_MIDDLE);
+		titlePanel.setHorizontalAlignment(HorizontalPanel.ALIGN_CENTER);
+		_uploadLogoName.setStyleName("adminLogoName");
+		_uploadTags.setStyleName("adminTags");
+		titlePanel.add(_uploadLogoName);
+		titlePanel.add(_uploadTags);
+
 		HorizontalPanel rasterizedPanel=new HorizontalPanel();
 		rasterizedPanel.setVerticalAlignment(HorizontalPanel.ALIGN_MIDDLE);
 		rasterizedPanel.setSpacing(10);
@@ -540,6 +557,16 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 		FileUpload rasterizedUpload=new FileUpload();
 		rasterizedUpload.setName("uploadFormElement");
 		Button rasterizedUploadBtn=new Button(Messages.UPLOAD.getString());
+		_isRasterizedImageUploaded.addClickHandler(new ClickHandler(){
+
+			public void onClick(ClickEvent event) {
+				if(_isRasterizedImageUploaded.getUrl().endsWith(Images.OK.getImageURL().substring(1)))
+				{
+					slideShow.showSingleImage("\\wokhei\\getfile?fileType="+FileType.PNG_LOGO.toString()+"&orderid="+_uploadPanelOrderId, Messages.COPYRIGHT.getString());
+				}
+
+			}});
+		rasterizedPanel.add(_isRasterizedImageUploaded);
 		rasterizedPanel.add(rasterizedLbl);
 		rasterizedPanel.add(rasterizedUpload);
 		rasterizedPanel.add(rasterizedUploadBtn);
@@ -557,7 +584,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 			public void onSubmitComplete(SubmitCompleteEvent event)
 			{
-				//UPDATE
+				updateUploadPanel(_uploadPanelOrderId, null, null);
 
 			}
 		});
@@ -568,6 +595,58 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 			public void onClick(ClickEvent event) 
 			{
 				_rasterizedForm.submit();
+			}
+		});
+
+
+		_presentationForm.setEncoding(FormPanel.ENCODING_MULTIPART);
+		_presentationForm.setMethod(FormPanel.METHOD_POST);
+
+		HorizontalPanel presentationPanel=new HorizontalPanel();
+		presentationPanel.setVerticalAlignment(HorizontalPanel.ALIGN_MIDDLE);
+		presentationPanel.setSpacing(10);
+		Label presentationLbl=new Label(Messages.PRESENTATION_LBL.getString());
+		FileUpload presentationUpload=new FileUpload();
+		presentationUpload.setName("uploadFormElement");
+		Button presentationUploadBtn=new Button(Messages.UPLOAD.getString());
+		_isPresentationImageUploaded.addClickHandler(new ClickHandler(){
+
+			public void onClick(ClickEvent event) {
+				if(_isPresentationImageUploaded.getUrl().endsWith(Images.OK.getImageURL().substring(1)))
+				{
+					slideShow.showSingleImage("\\wokhei\\getfile?fileType="+FileType.PNG_LOGO_PRESENTATION.toString()+"&orderid="+_uploadPanelOrderId, Messages.COPYRIGHT.getString());
+				}
+
+			}});
+		presentationPanel.add(_isPresentationImageUploaded);
+		presentationPanel.add(presentationLbl);
+		presentationPanel.add(presentationUpload);
+		presentationPanel.add(presentationUploadBtn);
+
+
+		_presentationForm.addSubmitHandler(new SubmitHandler(){
+
+			public void onSubmit(SubmitEvent event) {
+				//VALIDATION
+
+			}
+		});
+
+		_presentationForm.addSubmitCompleteHandler(new SubmitCompleteHandler() {
+
+			public void onSubmitComplete(SubmitCompleteEvent event)
+			{
+				//UPDATE
+				updateUploadPanel(_uploadPanelOrderId, null, null);
+			}
+		});
+
+
+		presentationUploadBtn.addClickHandler(new ClickHandler(){
+
+			public void onClick(ClickEvent event) 
+			{
+				_presentationForm.submit();
 			}
 		});
 
@@ -589,7 +668,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 			public void onSubmitComplete(SubmitCompleteEvent event)
 			{
 				//UPDATE
-
+				updateUploadPanel(_uploadPanelOrderId, null, null);
 			}
 		});
 
@@ -608,29 +687,93 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 				_vectorialForm.submit();
 			}
 		});
+		_isVectorialImageUploaded.addClickHandler(new ClickHandler(){
 
+			public void onClick(ClickEvent event) {
+				if(_isVectorialImageUploaded.getUrl().endsWith(Images.OK.getImageURL().substring(1)))
+				{
+					Window.open("\\wokhei\\getfile?fileType="+FileType.PDF_VECTORIAL_LOGO.toString()+"&orderid="+_uploadPanelOrderId, "_blank", "");
+				}
+
+			}});
+		vectorialPanel.add(_isVectorialImageUploaded);
 		vectorialPanel.add(vectorialLbl);
 		vectorialPanel.add(vectorialUpload);
 		vectorialPanel.add(vectorialUploadBtn);
 
 		_rasterizedForm.setWidget(rasterizedPanel);
 		_vectorialForm.setWidget(vectorialPanel);
+		_presentationForm.setWidget(presentationPanel);
 
+		uploadPanel.add(titlePanel);
 		uploadPanel.add(_rasterizedForm);
+		uploadPanel.add(_presentationForm);
 		uploadPanel.add(_vectorialForm);
 		_uploadPopupPanel.add(uploadPanel);
 	}
 
 	/**
 	 * @param orderId 
+	 * @param Tags 
+	 * @param logoName 
 	 * 
 	 */
-	private void updateUploadPanel(long orderId) 
+	private void updateUploadPanel(long orderId, String logoName, String tags) 
 	{
-		_rasterizedForm.setAction("/wokhei/uploadfile?file=1&orderid="+orderId);
-		_vectorialForm.setAction("/wokhei/uploadfile?file=2&orderid="+orderId);
+		_uploadPanelOrderId=orderId;
+		_rasterizedForm.setAction("/wokhei/uploadfile?fileType="+FileType.PNG_LOGO.toString()+"&orderid="+orderId);
+		_vectorialForm.setAction("/wokhei/uploadfile?fileType="+FileType.PDF_VECTORIAL_LOGO.toString()+"&orderid="+orderId);
+		_presentationForm.setAction("/wokhei/uploadfile?fileType="+FileType.PNG_LOGO_PRESENTATION.toString()+"&orderid="+orderId);
+
+		if(logoName!=null)
+			_uploadLogoName.setText(logoName);
+		if(tags!=null)
+			_uploadTags.setText(tags);
+
+		_orderService.hasFileUploaded(orderId, FileType.PNG_LOGO, new AsyncCallback<Boolean>(){
+
+			public void onFailure(Throwable caught) {
+				_isRasterizedImageUploaded.setUrl(Images.NOK.getImageURL());
+			}
+
+			public void onSuccess(Boolean result) {
+				_isRasterizedImageUploaded.setUrl(getImageUrl(result));
+			}});
+
+		_orderService.hasFileUploaded(orderId, FileType.PDF_VECTORIAL_LOGO, new AsyncCallback<Boolean>(){
+
+			public void onFailure(Throwable caught) {
+				_isVectorialImageUploaded.setUrl(Images.NOK.getImageURL());
+			}
+
+			public void onSuccess(Boolean result) {
+				_isVectorialImageUploaded.setUrl(getImageUrl(result));
+			}});
+
+		_orderService.hasFileUploaded(orderId, FileType.PNG_LOGO_PRESENTATION, new AsyncCallback<Boolean>(){
+
+			public void onFailure(Throwable caught) {
+				_isPresentationImageUploaded.setUrl(Images.NOK.getImageURL());
+			}
+
+			public void onSuccess(Boolean result) {
+				_isPresentationImageUploaded.setUrl(getImageUrl(result));
+			}
+
+		});
 	}
 
+	/**
+	 * @param result
+	 * @return
+	 */
+	private String getImageUrl(Boolean result) 
+	{
+		if(result)
+			return Images.OK.getImageURL();
+		else
+			return Images.NOK.getImageURL();
+	}
 	/**
 	 * @return
 	 */
@@ -679,7 +822,18 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 				case IN_PROGRESS:
 				case QUALITY_GATE:
 				case READY:
-					slideShow.showSingleImage("\\wokhei\\getlogo?orderid="+orderId, Messages.COPYRIGHT.getString());
+					_orderService.hasFileUploaded(orderId, FileType.PNG_LOGO, new AsyncCallback<Boolean>(){
+						public void onFailure(Throwable caught) 
+						{
+						}
+
+						public void onSuccess(Boolean result) {
+							if(result)
+							{
+								slideShow.showSingleImage("\\wokhei\\getfile?fileType="+FileType.PNG_LOGO.toString()+"&orderid="+orderId, Messages.COPYRIGHT.getString());
+							}
+						}});
+
 					break;
 				case REJECTED:
 				case INCOMING:
@@ -716,22 +870,6 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	 */
 	private void hookUpCallbacks() 
 	{
-
-		_setLogoCallback= new AsyncCallback<Boolean>()
-		{
-
-			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-
-			}
-
-			public void onSuccess(Boolean result) {
-				// TODO Auto-generated method stub
-
-			}
-
-		};
-
 		_setOrderStatusCallback = new AsyncCallback<Long>() {
 
 			public void onSuccess(Long result) {
@@ -753,21 +891,6 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 			public void onFailure(Throwable caught) {
 				//TODO - do something in case of failure
 			}
-		};
-
-		_hasImageCallBack = new AsyncCallback<Boolean>()
-		{
-
-			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-
-			}
-
-			public void onSuccess(Boolean result) {
-				// TODO Auto-generated method stub
-
-			}
-
 		};
 
 	}
