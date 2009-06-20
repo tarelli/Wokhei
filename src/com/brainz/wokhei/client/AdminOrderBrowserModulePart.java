@@ -13,8 +13,8 @@ import org.gwtwidgets.client.ui.pagination.RowRenderer;
 
 import com.brainz.wokhei.resources.Images;
 import com.brainz.wokhei.resources.Messages;
-import com.brainz.wokhei.shared.FileType;
 import com.brainz.wokhei.shared.DateDifferenceCalculator;
+import com.brainz.wokhei.shared.FileType;
 import com.brainz.wokhei.shared.OrderDTO;
 import com.brainz.wokhei.shared.Status;
 import com.codelathe.gwt.client.SlideShow;
@@ -125,6 +125,19 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	private Status _statusForClientUpdate;
 	private final Button _clearFiltersButton=new Button(Messages.ADMIN_CLEAR_FILTERS.getString());
 
+	//the order id when click to the upload button
+	private final FormPanel _rasterizedForm = new FormPanel();
+	private final FormPanel _presentationForm = new FormPanel();
+	private final FormPanel _vectorialForm = new FormPanel();
+
+	private final SlideShow slideShow = new SlideShow();
+	private final Image _isRasterizedImageUploaded=new Image(Images.NOK.getImageURL());
+	private final Image _isPresentationImageUploaded=new Image(Images.NOK.getImageURL());
+	private final Image _isVectorialImageUploaded=new Image(Images.NOK.getImageURL());
+	private long _uploadPanelOrderId=-1;
+	private final Label _uploadLogoName=new Label();
+	private final Label _uploadTags=new Label();
+
 	private Date _serverTimeStamp = null;
 
 
@@ -142,8 +155,6 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 			getServerTimeStamp();
 
 			setupToolbarPanel();
-
-			setupUploadPanel();
 
 			// the rest of the stuff is in initModulePartCore
 			// callled from the callback result of getServertimeStamp (the page depends on that)
@@ -425,7 +436,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 						_ordersFlexTable.setWidget(row,Columns.COLOUR.ordinal(),  getColourPanel(order.getColour().toString()));
 						DateTimeFormat fmt = DateTimeFormat.getFormat("dd.MM.yy");
 						_ordersFlexTable.setText(row,Columns.DATE.ordinal(),  fmt.format(order.getDate()));
-						_ordersFlexTable.setWidget(row, Columns.STATUS.ordinal(), getStatusImage(order.getStatus().toString()));
+						_ordersFlexTable.setWidget(row, Columns.STATUS.ordinal(), getStatusImage(order.getStatus().toString(),order.getId()));
 
 						String timerStr = "N/A";
 						if(missingTime>0 && missingTime<=24f)

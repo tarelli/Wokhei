@@ -22,8 +22,8 @@ import com.brainz.wokhei.File;
 import com.brainz.wokhei.Order;
 import com.brainz.wokhei.PMF;
 import com.brainz.wokhei.client.OrderService;
-import com.brainz.wokhei.shared.FileType;
 import com.brainz.wokhei.resources.Messages;
+import com.brainz.wokhei.shared.FileType;
 import com.brainz.wokhei.shared.OrderDTO;
 import com.brainz.wokhei.shared.QueryBuilder;
 import com.brainz.wokhei.shared.Status;
@@ -213,7 +213,7 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 				//persist change
 				pm.makePersistent(order);
 
-				returnValue = true;
+				returnValue = order.getId();
 
 				// if order is rejected or accepted sen email to user
 				if(newStatus == Status.REJECTED || newStatus == Status.ACCEPTED)
