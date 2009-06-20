@@ -20,6 +20,8 @@
 <%@ page import="javax.mail.Transport"%>
 <%@ page import="com.brainz.wokhei.Order"%>
 <%@ page import="com.brainz.wokhei.PMF"%>
+<%@ page import="com.brainz.wokhei.server.EmailSender"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -123,23 +125,11 @@
     				updatedOrder.getDate().toString() + "\n";
     }
 
-    try {
-        Message msg = new MimeMessage(sessionX);
-        msg.setFrom(new InternetAddress("yourlogo@wokhei.com"));
-        msg.addRecipient(Message.RecipientType.TO,
-                new InternetAddress("matteo.cantarelli@wokhei.com"));
-		msg.addRecipient(Message.RecipientType.TO,
-       		 	new InternetAddress("giovanni.idili@wokhei.com"));
-        msg.setSubject("updateOrderStatus Job - " + serverDate.toString());
-        msg.setText(msgBody);
-        Transport.send(msg);
-
-    } catch (AddressException e) {
-    	log.log(Level.SEVERE, "update order Status Job failed to send admin email: " + e.getMessage());
-    } catch (MessagingException e) {
-    	log.log(Level.SEVERE, "update order Status Job failed to send admin email: " + e.getMessage());
-    }
-	//-----------------------------------------------------------------------------
+    List<String> recipients = new ArrayList<String>();
+    recipients.add("matteo.cantarelli@wokhei.com");
+    recipients.add("giovanni.idili@wokhei.com");
+    
+    EmailSender.sendEmail("yourlogo@wokhei.com", recipients, "updateOrderStatus Job - " + serverDate.toString(), msgBody);
 	
     // log end of job
 	log.info(" --> updateOrderStatus Job END <--");

@@ -418,14 +418,17 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 						_ordersFlexTable.setText(row,Columns.DATE.ordinal(),  fmt.format(order.getDate()));
 						_ordersFlexTable.setWidget(row, Columns.STATUS.ordinal(), getStatusImage(order.getStatus().toString()));
 
+						String timerStr = "N/A";
 						if(missingTime>0 && missingTime<=24f)
 						{
-							_ordersFlexTable.setText(row, Columns.TIMER.ordinal(), "-" + String.valueOf(missingTime) + " hrs");
+							timerStr = "-" + String.valueOf(missingTime) + " hrs";
 						}
-						else
+						else if (order.getStatus() != Status.REJECTED)
 						{
-							_ordersFlexTable.setText(row, Columns.TIMER.ordinal(), "Expired");
+							timerStr = "Expired";
 						}
+
+						_ordersFlexTable.setText(row, Columns.TIMER.ordinal(), timerStr);
 
 						if(order.getStatus()==Status.INCOMING)
 						{

@@ -73,6 +73,9 @@ public enum Messages {
 	VECTORIAL_LBL("Vectorial PDF"), 
 	BROWSE("Browse..."), 
 	UPLOAD("Upload!"),
+
+	EMAIL_ORDER_ACCEPTED("Your recent Logo Order has been ACCEPTED by Wokhei - it will be ready in 24h:/n"),
+	EMAIL_ORDER_REJECTED("Your recent Logo Order has been REJECTED by Wokhei:/n"),
 	;
 
 	private String _text;
