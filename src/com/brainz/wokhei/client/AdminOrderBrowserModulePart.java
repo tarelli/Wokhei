@@ -14,6 +14,7 @@ import org.gwtwidgets.client.ui.pagination.RowRenderer;
 import com.brainz.wokhei.resources.Images;
 import com.brainz.wokhei.resources.Messages;
 import com.brainz.wokhei.shared.FileType;
+import com.brainz.wokhei.shared.DateDifferenceCalculator;
 import com.brainz.wokhei.shared.OrderDTO;
 import com.brainz.wokhei.shared.Status;
 import com.codelathe.gwt.client.SlideShow;
@@ -117,26 +118,14 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 	private AsyncCallback<Long> _setOrderStatusCallback = null;
 	private AsyncCallback<Boolean> _addAdminCallback = null;
+	private AsyncCallback<Date> _getServerTimestampCallback = null;
 
 	//related with status update chaching during async call
 	private int _rowForClientStatusUpdate;
 	private Status _statusForClientUpdate;
 	private final Button _clearFiltersButton=new Button(Messages.ADMIN_CLEAR_FILTERS.getString());
 
-	//the order id when click to the upload button
-	private final FormPanel _rasterizedForm = new FormPanel();
-	private final FormPanel _presentationForm = new FormPanel();
-	private final FormPanel _vectorialForm = new FormPanel();
-
-	private final SlideShow slideShow = new SlideShow();
-	private final Image _isRasterizedImageUploaded=new Image(Images.NOK.getImageURL());
-	private final Image _isPresentationImageUploaded=new Image(Images.NOK.getImageURL());
-	private final Image _isVectorialImageUploaded=new Image(Images.NOK.getImageURL());
-	private long _uploadPanelOrderId=-1;
-	private final Label _uploadLogoName=new Label();
-	private final Label _uploadTags=new Label();
-
-
+	private Date _serverTimeStamp = null;
 
 
 	/* 
@@ -150,28 +139,45 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 			hookUpCallbacks();
 
-			setupToolbarPanel();
+			getServerTimeStamp();
 
-			setPaginator();
+			setupToolbarPanel();
 
 			setupUploadPanel();
 
-			//set orders flexTable style - header picks up headeRow style bcs of paginationBehavior
-			_ordersFlexTable.addStyleName("orderList");
-			_ordersFlexTable.setWidth("800px");
-
-			//set mainPanel Style
-			_mainPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-
-			_mainPanel.add(_toolbarPanel);
-			_mainPanel.add(_ordersFlexTable);
-			_mainPanel.add(_pagingControlsTable);
-
-			_paginationBehavior.showPage(1,Columns.ID._columnText, true);
-
-			// Associate the Main panel with the HTML host page.
-			RootPanel.get("adminConsole").add(_mainPanel);
+			// the rest of the stuff is in initModulePartCore
+			// callled from the callback result of getServertimeStamp (the page depends on that)
+			// anche noto come METODO PUERCIS
 		}
+	}
+
+	// bienvenuti nel apese dei puerca
+	private void initModulePartCore()
+	{
+		setPaginator();
+
+		setupUploadPanel();
+
+		//set orders flexTable style - header picks up headeRow style bcs of paginationBehavior
+		_ordersFlexTable.addStyleName("orderList");
+		_ordersFlexTable.setWidth("800px");
+
+		//set mainPanel Style
+		_mainPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+
+		_mainPanel.add(_toolbarPanel);
+		_mainPanel.add(_ordersFlexTable);
+		_mainPanel.add(_pagingControlsTable);
+
+		_paginationBehavior.showPage(1,Columns.ID._columnText, true);
+
+		// Associate the Main panel with the HTML host page.
+		RootPanel.get("adminConsole").add(_mainPanel);
+	}
+
+	private void getServerTimeStamp() {
+		//get server time stamp - sets variable for populating timer field
+		_utilityService.getServerTimestamp(_getServerTimestampCallback);
 	}
 
 	private void setupToolbarPanel() {
@@ -406,6 +412,9 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 					public void populateRow(PaginationBehavior pagination, int row,
 							Object object) {
 						OrderDTO order=(OrderDTO)object;
+						float diffHours = DateDifferenceCalculator.getDifferenceInHours(order.getDate(), _serverTimeStamp);
+						int missingTime = (int)(24f - diffHours);
+
 						//The header row will be added afterward (apparently, it's 2am we might be wrong)
 						final int frow = row +1 ;
 						_ordersFlexTable.setText(row, Columns.ID.ordinal(), order.getId().toString());
@@ -414,12 +423,21 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 						String list=Arrays.asList(order.getTags()).toString().replace(",","");
 						_ordersFlexTable.setWidget(row,Columns.TAGS.ordinal(),  getTagsLabel(list.substring(1, list.length()-1)));
 						_ordersFlexTable.setWidget(row,Columns.COLOUR.ordinal(),  getColourPanel(order.getColour().toString()));
-						DateTimeFormat fmt = DateTimeFormat.getFormat("dd/mm/yy");
+						DateTimeFormat fmt = DateTimeFormat.getFormat("dd.MM.yy");
 						_ordersFlexTable.setText(row,Columns.DATE.ordinal(),  fmt.format(order.getDate()));
+						_ordersFlexTable.setWidget(row, Columns.STATUS.ordinal(), getStatusImage(order.getStatus().toString()));
 
+						String timerStr = "N/A";
+						if(missingTime>0 && missingTime<=24f)
+						{
+							timerStr = "-" + String.valueOf(missingTime) + " hrs";
+						}
+						else if (order.getStatus() != Status.REJECTED)
+						{
+							timerStr = "Expired";
+						}
 
-						_ordersFlexTable.setWidget(row, Columns.STATUS.ordinal(), getStatusImage(order.getStatus().toString(),order.getId()));
-						_ordersFlexTable.setText(row, Columns.TIMER.ordinal(), "N/A");
+						_ordersFlexTable.setText(row, Columns.TIMER.ordinal(), timerStr);
 
 						if(order.getStatus()==Status.INCOMING)
 						{
@@ -893,6 +911,20 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 			}
 		};
 
+		_getServerTimestampCallback = new AsyncCallback<Date>() {
+			public void onSuccess(Date result) {
+				//set server time stamp
+				_serverTimeStamp = result;
+
+				initModulePartCore();
+			}
+
+			public void onFailure(Throwable caught) {
+				//TODO - do something in case of failure
+				//need to load the rest of the page anyway
+				initModulePartCore();
+			}
+		};
 	}
 
 	/**

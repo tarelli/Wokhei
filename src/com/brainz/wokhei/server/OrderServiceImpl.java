@@ -8,11 +8,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
+import javax.mail.Session;
 
 import org.gwtwidgets.client.ui.pagination.Results;
 
@@ -21,6 +23,7 @@ import com.brainz.wokhei.Order;
 import com.brainz.wokhei.PMF;
 import com.brainz.wokhei.client.OrderService;
 import com.brainz.wokhei.shared.FileType;
+import com.brainz.wokhei.resources.Messages;
 import com.brainz.wokhei.shared.OrderDTO;
 import com.brainz.wokhei.shared.QueryBuilder;
 import com.brainz.wokhei.shared.Status;
@@ -210,7 +213,34 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 				//persist change
 				pm.makePersistent(order);
 
-				returnValue = orderId;
+				returnValue = true;
+
+				// if order is rejected or accepted sen email to user
+				if(newStatus == Status.REJECTED || newStatus == Status.ACCEPTED)
+				{
+					//-----------------------------------------------------------------------------
+					// send email to user
+					Properties props = new Properties();
+					Session sessionX = Session.getDefaultInstance(props, null);
+
+					String msgBody = "";
+
+					if(newStatus==Status.REJECTED)
+					{
+						//rejected message
+						msgBody = Messages.EMAIL_ORDER_REJECTED.getString() + "/n" + order.getText() + "/n" + order.getTags().toString();
+					}
+					else
+					{
+						//accepted message
+						msgBody = Messages.EMAIL_ORDER_ACCEPTED.getString() + "/n" + order.getText() + "/n" + order.getTags().toString();
+					}
+
+					List<String> recipients = new ArrayList<String>();
+					recipients.add(order.getCustomer().getEmail());
+
+					EmailSender.sendEmail("yourlogo@wokhei.com", recipients, "Order Status Notification - " + new Date().toString(), msgBody);
+				}
 
 				if (user != null) 
 				{

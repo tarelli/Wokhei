@@ -15,7 +15,7 @@ public abstract class AModulePart {
 
 	protected AdminServiceAsync _adminService;
 	protected OrderServiceAsync _orderService;
-	protected UtilityServiceAsync _utlityService;
+	protected UtilityServiceAsync _utilityService;
 	private final List<AModulePart> _moduleParts=new ArrayList<AModulePart>();
 
 
@@ -26,7 +26,7 @@ public abstract class AModulePart {
 	{
 		_orderService=orderService;
 		_adminService = adminService;
-		_utlityService=utilityService;
+		_utilityService=utilityService;
 	}
 
 
