@@ -40,6 +40,7 @@ public class Order implements IsSerializable{
 	@Persistent
 	private Colour colour;
 
+
 	public Order(User author, String text, List<String> tags, Colour colour, Date date) {
 		this.customer = author;
 		this.text=text;

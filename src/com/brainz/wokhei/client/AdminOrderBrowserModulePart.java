@@ -14,8 +14,10 @@ import org.gwtwidgets.client.ui.pagination.RowRenderer;
 import com.brainz.wokhei.resources.Images;
 import com.brainz.wokhei.resources.Messages;
 import com.brainz.wokhei.shared.DateDifferenceCalculator;
+import com.brainz.wokhei.shared.FileType;
 import com.brainz.wokhei.shared.OrderDTO;
 import com.brainz.wokhei.shared.Status;
+import com.codelathe.gwt.client.SlideShow;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -24,6 +26,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -34,6 +37,10 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
+import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteHandler;
+import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
+import com.google.gwt.user.client.ui.FormPanel.SubmitHandler;
 import com.google.gwt.user.datepicker.client.DateBox;
 
 /**
@@ -109,7 +116,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	// filter button
 	private final Button _filterButton = new Button("Filter!");
 
-	private AsyncCallback<Boolean> _setOrderStatusCallback = null;
+	private AsyncCallback<Long> _setOrderStatusCallback = null;
 	private AsyncCallback<Boolean> _addAdminCallback = null;
 	private AsyncCallback<Date> _getServerTimestampCallback = null;
 
@@ -117,6 +124,19 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	private int _rowForClientStatusUpdate;
 	private Status _statusForClientUpdate;
 	private final Button _clearFiltersButton=new Button(Messages.ADMIN_CLEAR_FILTERS.getString());
+
+	//the order id when click to the upload button
+	private final FormPanel _rasterizedForm = new FormPanel();
+	private final FormPanel _presentationForm = new FormPanel();
+	private final FormPanel _vectorialForm = new FormPanel();
+
+	private final SlideShow slideShow = new SlideShow();
+	private final Image _isRasterizedImageUploaded=new Image(Images.NOK.getImageURL());
+	private final Image _isPresentationImageUploaded=new Image(Images.NOK.getImageURL());
+	private final Image _isVectorialImageUploaded=new Image(Images.NOK.getImageURL());
+	private long _uploadPanelOrderId=-1;
+	private final Label _uploadLogoName=new Label();
+	private final Label _uploadTags=new Label();
 
 	private Date _serverTimeStamp = null;
 
@@ -416,7 +436,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 						_ordersFlexTable.setWidget(row,Columns.COLOUR.ordinal(),  getColourPanel(order.getColour().toString()));
 						DateTimeFormat fmt = DateTimeFormat.getFormat("dd.MM.yy");
 						_ordersFlexTable.setText(row,Columns.DATE.ordinal(),  fmt.format(order.getDate()));
-						_ordersFlexTable.setWidget(row, Columns.STATUS.ordinal(), getStatusImage(order.getStatus().toString()));
+						_ordersFlexTable.setWidget(row, Columns.STATUS.ordinal(), getStatusImage(order.getStatus().toString(),order.getId()));
 
 						String timerStr = "N/A";
 						if(missingTime>0 && missingTime<=24f)
@@ -477,8 +497,9 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 							uploadLogoButton.addClickHandler(new ClickHandler() {
 								public void onClick(ClickEvent event) {
 									//get ID from clicked row
-									//long orderId = Long.parseLong(ordersFlexTable.getText(frow, Columns.ID.ordinal()));
-									updateUploadPanel();
+									updateUploadPanel(Long.parseLong(_ordersFlexTable.getText(frow, Columns.ID.ordinal())),
+											_ordersFlexTable.getText(frow, Columns.LOGO_TEXT.ordinal()),
+											_ordersFlexTable.getText(frow, Columns.TAGS.ordinal()));
 									_uploadPopupPanel.center();
 									_uploadPopupPanel.show();
 								}
@@ -546,41 +567,242 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 		_uploadPopupPanel.setStyleName("adminPopup");
 		VerticalPanel uploadPanel=new VerticalPanel();
 
+		_rasterizedForm.setEncoding(FormPanel.ENCODING_MULTIPART);
+		_rasterizedForm.setMethod(FormPanel.METHOD_POST);
+
+		HorizontalPanel titlePanel=new HorizontalPanel();
+		titlePanel.setSpacing(10);
+		titlePanel.setVerticalAlignment(HorizontalPanel.ALIGN_MIDDLE);
+		titlePanel.setHorizontalAlignment(HorizontalPanel.ALIGN_CENTER);
+		_uploadLogoName.setStyleName("adminLogoName");
+		_uploadTags.setStyleName("adminTags");
+		titlePanel.add(_uploadLogoName);
+		titlePanel.add(_uploadTags);
+
 		HorizontalPanel rasterizedPanel=new HorizontalPanel();
 		rasterizedPanel.setVerticalAlignment(HorizontalPanel.ALIGN_MIDDLE);
 		rasterizedPanel.setSpacing(10);
 		Label rasterizedLbl=new Label(Messages.RASTERIZED_LBL.getString());
 		FileUpload rasterizedUpload=new FileUpload();
+		rasterizedUpload.setName("uploadFormElement");
 		Button rasterizedUploadBtn=new Button(Messages.UPLOAD.getString());
+		_isRasterizedImageUploaded.addClickHandler(new ClickHandler(){
+
+			public void onClick(ClickEvent event) {
+				if(_isRasterizedImageUploaded.getUrl().endsWith(Images.OK.getImageURL().substring(1)))
+				{
+					slideShow.showSingleImage("\\wokhei\\getfile?fileType="+FileType.PNG_LOGO.toString()+"&orderid="+_uploadPanelOrderId, Messages.COPYRIGHT.getString());
+				}
+
+			}});
+		rasterizedPanel.add(_isRasterizedImageUploaded);
 		rasterizedPanel.add(rasterizedLbl);
 		rasterizedPanel.add(rasterizedUpload);
 		rasterizedPanel.add(rasterizedUploadBtn);
+
+
+		_rasterizedForm.addSubmitHandler(new SubmitHandler(){
+
+			public void onSubmit(SubmitEvent event) {
+				//VALIDATION
+
+			}
+		});
+
+		_rasterizedForm.addSubmitCompleteHandler(new SubmitCompleteHandler() {
+
+			public void onSubmitComplete(SubmitCompleteEvent event)
+			{
+				updateUploadPanel(_uploadPanelOrderId, null, null);
+
+			}
+		});
+
+
+		rasterizedUploadBtn.addClickHandler(new ClickHandler(){
+
+			public void onClick(ClickEvent event) 
+			{
+				_rasterizedForm.submit();
+			}
+		});
+
+
+		_presentationForm.setEncoding(FormPanel.ENCODING_MULTIPART);
+		_presentationForm.setMethod(FormPanel.METHOD_POST);
+
+		HorizontalPanel presentationPanel=new HorizontalPanel();
+		presentationPanel.setVerticalAlignment(HorizontalPanel.ALIGN_MIDDLE);
+		presentationPanel.setSpacing(10);
+		Label presentationLbl=new Label(Messages.PRESENTATION_LBL.getString());
+		FileUpload presentationUpload=new FileUpload();
+		presentationUpload.setName("uploadFormElement");
+		Button presentationUploadBtn=new Button(Messages.UPLOAD.getString());
+		_isPresentationImageUploaded.addClickHandler(new ClickHandler(){
+
+			public void onClick(ClickEvent event) {
+				if(_isPresentationImageUploaded.getUrl().endsWith(Images.OK.getImageURL().substring(1)))
+				{
+					slideShow.showSingleImage("\\wokhei\\getfile?fileType="+FileType.PNG_LOGO_PRESENTATION.toString()+"&orderid="+_uploadPanelOrderId, Messages.COPYRIGHT.getString());
+				}
+
+			}});
+		presentationPanel.add(_isPresentationImageUploaded);
+		presentationPanel.add(presentationLbl);
+		presentationPanel.add(presentationUpload);
+		presentationPanel.add(presentationUploadBtn);
+
+
+		_presentationForm.addSubmitHandler(new SubmitHandler(){
+
+			public void onSubmit(SubmitEvent event) {
+				//VALIDATION
+
+			}
+		});
+
+		_presentationForm.addSubmitCompleteHandler(new SubmitCompleteHandler() {
+
+			public void onSubmitComplete(SubmitCompleteEvent event)
+			{
+				//UPDATE
+				updateUploadPanel(_uploadPanelOrderId, null, null);
+			}
+		});
+
+
+		presentationUploadBtn.addClickHandler(new ClickHandler(){
+
+			public void onClick(ClickEvent event) 
+			{
+				_presentationForm.submit();
+			}
+		});
+
+
+		_vectorialForm.setAction("/wokhei/uploadfile");
+		_vectorialForm.setEncoding(FormPanel.ENCODING_MULTIPART);
+		_vectorialForm.setMethod(FormPanel.METHOD_POST);
+
+		_vectorialForm.addSubmitHandler(new SubmitHandler(){
+
+			public void onSubmit(SubmitEvent event) {
+				//VALIDATION
+
+			}
+		});
+
+		_vectorialForm.addSubmitCompleteHandler(new SubmitCompleteHandler() {
+
+			public void onSubmitComplete(SubmitCompleteEvent event)
+			{
+				//UPDATE
+				updateUploadPanel(_uploadPanelOrderId, null, null);
+			}
+		});
 
 		HorizontalPanel vectorialPanel=new HorizontalPanel();
 		vectorialPanel.setVerticalAlignment(HorizontalPanel.ALIGN_MIDDLE);
 		vectorialPanel.setSpacing(10);
 		Label vectorialLbl=new Label(Messages.VECTORIAL_LBL.getString());
 		FileUpload vectorialUpload=new FileUpload();
-
+		vectorialUpload.setName("uploadFormElement");
 		Button vectorialUploadBtn=new Button(Messages.UPLOAD.getString());
+
+		vectorialUploadBtn.addClickHandler(new ClickHandler(){
+
+			public void onClick(ClickEvent event) 
+			{
+				_vectorialForm.submit();
+			}
+		});
+		_isVectorialImageUploaded.addClickHandler(new ClickHandler(){
+
+			public void onClick(ClickEvent event) {
+				if(_isVectorialImageUploaded.getUrl().endsWith(Images.OK.getImageURL().substring(1)))
+				{
+					Window.open("\\wokhei\\getfile?fileType="+FileType.PDF_VECTORIAL_LOGO.toString()+"&orderid="+_uploadPanelOrderId, "_blank", "");
+				}
+
+			}});
+		vectorialPanel.add(_isVectorialImageUploaded);
 		vectorialPanel.add(vectorialLbl);
 		vectorialPanel.add(vectorialUpload);
 		vectorialPanel.add(vectorialUploadBtn);
 
-		uploadPanel.add(rasterizedPanel);
-		uploadPanel.add(vectorialPanel);
+		_rasterizedForm.setWidget(rasterizedPanel);
+		_vectorialForm.setWidget(vectorialPanel);
+		_presentationForm.setWidget(presentationPanel);
+
+		uploadPanel.add(titlePanel);
+		uploadPanel.add(_rasterizedForm);
+		uploadPanel.add(_presentationForm);
+		uploadPanel.add(_vectorialForm);
 		_uploadPopupPanel.add(uploadPanel);
 	}
 
 	/**
+	 * @param orderId 
+	 * @param Tags 
+	 * @param logoName 
 	 * 
 	 */
-	private void updateUploadPanel() 
+	private void updateUploadPanel(long orderId, String logoName, String tags) 
 	{
-		// TODO Auto-generated method stub
+		_uploadPanelOrderId=orderId;
+		_rasterizedForm.setAction("/wokhei/uploadfile?fileType="+FileType.PNG_LOGO.toString()+"&orderid="+orderId);
+		_vectorialForm.setAction("/wokhei/uploadfile?fileType="+FileType.PDF_VECTORIAL_LOGO.toString()+"&orderid="+orderId);
+		_presentationForm.setAction("/wokhei/uploadfile?fileType="+FileType.PNG_LOGO_PRESENTATION.toString()+"&orderid="+orderId);
 
+		if(logoName!=null)
+			_uploadLogoName.setText(logoName);
+		if(tags!=null)
+			_uploadTags.setText(tags);
+
+		_orderService.hasFileUploaded(orderId, FileType.PNG_LOGO, new AsyncCallback<Boolean>(){
+
+			public void onFailure(Throwable caught) {
+				_isRasterizedImageUploaded.setUrl(Images.NOK.getImageURL());
+			}
+
+			public void onSuccess(Boolean result) {
+				_isRasterizedImageUploaded.setUrl(getImageUrl(result));
+			}});
+
+		_orderService.hasFileUploaded(orderId, FileType.PDF_VECTORIAL_LOGO, new AsyncCallback<Boolean>(){
+
+			public void onFailure(Throwable caught) {
+				_isVectorialImageUploaded.setUrl(Images.NOK.getImageURL());
+			}
+
+			public void onSuccess(Boolean result) {
+				_isVectorialImageUploaded.setUrl(getImageUrl(result));
+			}});
+
+		_orderService.hasFileUploaded(orderId, FileType.PNG_LOGO_PRESENTATION, new AsyncCallback<Boolean>(){
+
+			public void onFailure(Throwable caught) {
+				_isPresentationImageUploaded.setUrl(Images.NOK.getImageURL());
+			}
+
+			public void onSuccess(Boolean result) {
+				_isPresentationImageUploaded.setUrl(getImageUrl(result));
+			}
+
+		});
 	}
 
+	/**
+	 * @param result
+	 * @return
+	 */
+	private String getImageUrl(Boolean result) 
+	{
+		if(result)
+			return Images.OK.getImageURL();
+		else
+			return Images.NOK.getImageURL();
+	}
 	/**
 	 * @return
 	 */
@@ -614,10 +836,40 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	 * @param substring
 	 * @return
 	 */
-	private Widget getStatusImage(String substring) 
+	private Widget getStatusImage(final String substring, final Long orderId) 
 	{
-		Image status=new Image(Images.valueOf(substring).getSmallImageURL());
-		return status;
+		final Status status=Status.valueOf(substring);
+		Image statusImage=new Image(Images.valueOf(substring).getSmallImageURL());
+		statusImage.addClickHandler(new ClickHandler(){
+
+			public void onClick(ClickEvent event) {
+				switch(status)
+				{
+				case ACCEPTED:
+				case ARCHIVED:
+				case BOUGHT:
+				case IN_PROGRESS:
+				case QUALITY_GATE:
+				case READY:
+					_orderService.hasFileUploaded(orderId, FileType.PNG_LOGO, new AsyncCallback<Boolean>(){
+						public void onFailure(Throwable caught) 
+						{
+						}
+
+						public void onSuccess(Boolean result) {
+							if(result)
+							{
+								slideShow.showSingleImage("\\wokhei\\getfile?fileType="+FileType.PNG_LOGO.toString()+"&orderid="+orderId, Messages.COPYRIGHT.getString());
+							}
+						}});
+
+					break;
+				case REJECTED:
+				case INCOMING:
+				}
+
+			}});
+		return statusImage;
 	}
 
 	/**
@@ -647,10 +899,9 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	 */
 	private void hookUpCallbacks() 
 	{
+		_setOrderStatusCallback = new AsyncCallback<Long>() {
 
-		_setOrderStatusCallback = new AsyncCallback<Boolean>() {
-
-			public void onSuccess(Boolean result) {
+			public void onSuccess(Long result) {
 				updateOrderStatusOnClient(result);
 			}
 
@@ -702,13 +953,13 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 		}
 	}
 
-	protected void updateOrderStatusOnClient(Boolean result) {
+	protected void updateOrderStatusOnClient(Long orderId) {
 
 		// if successful remove row from orders table
-		if(result)
+		if(orderId!=null)
 		{
 			// set new status
-			_ordersFlexTable.setWidget(_rowForClientStatusUpdate, Columns.STATUS.ordinal(), getStatusImage(_statusForClientUpdate.toString()));
+			_ordersFlexTable.setWidget(_rowForClientStatusUpdate, Columns.STATUS.ordinal(), getStatusImage(_statusForClientUpdate.toString(),orderId));
 			// disable buttons 
 			//TODO --> decision to show or not row according to filters
 			VerticalPanel actionPanel = ((VerticalPanel)_ordersFlexTable.getWidget(_rowForClientStatusUpdate, Columns.ACTIONS.ordinal()));

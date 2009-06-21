@@ -18,10 +18,12 @@ import javax.mail.Session;
 
 import org.gwtwidgets.client.ui.pagination.Results;
 
+import com.brainz.wokhei.File;
 import com.brainz.wokhei.Order;
 import com.brainz.wokhei.PMF;
 import com.brainz.wokhei.client.OrderService;
 import com.brainz.wokhei.resources.Messages;
+import com.brainz.wokhei.shared.FileType;
 import com.brainz.wokhei.shared.OrderDTO;
 import com.brainz.wokhei.shared.QueryBuilder;
 import com.brainz.wokhei.shared.Status;
@@ -186,9 +188,9 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 		return new Results(orderList.size(),partialResult);
 	}
 
-	public Boolean setOrderStatus(long orderId, Status newStatus)
+	public Long setOrderStatus(long orderId, Status newStatus)
 	{
-		Boolean returnValue = false;
+		Long returnValue = null;
 
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
@@ -211,7 +213,7 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 				//persist change
 				pm.makePersistent(order);
 
-				returnValue = true;
+				returnValue = order.getId();
 
 				// if order is rejected or accepted sen email to user
 				if(newStatus == Status.REJECTED || newStatus == Status.ACCEPTED)
@@ -281,6 +283,26 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 		pm.close();
 
 		return result;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see com.brainz.wokhei.client.OrderService#hasFileUploaded(long, com.brainz.wokhei.shared.FilesToUpload)
+	 */
+	public synchronized Boolean hasFileUploaded(long orderID, FileType fileType) 
+	{
+		Boolean isFileUploaded=false;
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		String fileSelectQuery = "select from " + File.class.getName();
+		Query fileQuery = pm.newQuery(fileSelectQuery);
+		fileQuery.setFilter("orderid == paramId  &&  type == paramType");
+		fileQuery.declareParameters("java.lang.Long paramId , com.brainz.wokhei.shared.FileType paramType");
+		//execute
+		List<File> files = (List<File>) fileQuery.execute(orderID,fileType);
+		//execute
+
+		isFileUploaded=!files.isEmpty();
+		return isFileUploaded;
 	}
 
 }

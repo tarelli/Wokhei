@@ -70,6 +70,7 @@ public enum Messages {
 	ADMIN_CONFIRM_ACCEPT_TXT("Are you sure you want to accept this order?"), 
 	ADMIN_CONFIRM_REJECT_TXT("Are you sure you want to reject this order"), 
 	RASTERIZED_LBL("Rasterized PNG"),
+	PRESENTATION_LBL("Presentation PNG"),
 	VECTORIAL_LBL("Vectorial PDF"), 
 	BROWSE("Browse..."), 
 	UPLOAD("Upload!"),

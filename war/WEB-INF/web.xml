@@ -28,6 +28,23 @@
 		<servlet-name>adminservice</servlet-name>
 		<url-pattern>/wokhei/adminservice</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<servlet-name>uploadfileservlet</servlet-name>
+		<servlet-class>com.brainz.wokhei.servlet.UploadFileServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>uploadfileservlet</servlet-name>
+		<url-pattern>/wokhei/uploadfile</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>getfileservlet</servlet-name>
+		<servlet-class>com.brainz.wokhei.servlet.GetFileServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>getfileservlet</servlet-name>
+		<url-pattern>/wokhei/getfile</url-pattern>
+	</servlet-mapping>
 
 	<welcome-file-list>
 		<welcome-file>home.jsp</welcome-file>

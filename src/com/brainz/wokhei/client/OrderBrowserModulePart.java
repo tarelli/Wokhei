@@ -69,7 +69,7 @@ public class OrderBrowserModulePart extends AModulePart{
 
 	private final SlideShow slideShow = new SlideShow();
 
-	private AsyncCallback<Boolean> _setOrderStatusCallback = null;
+	private AsyncCallback<Long> _setOrderStatusCallback = null;
 
 	private AsyncCallback<List<OrderDTO>> _getOrdersCallback = null;
 
@@ -165,10 +165,10 @@ public class OrderBrowserModulePart extends AModulePart{
 
 	private void hookUpCallbacks() 
 	{
-		_setOrderStatusCallback = new AsyncCallback<Boolean>() {
+		_setOrderStatusCallback = new AsyncCallback<Long>() {
 
-			public void onSuccess(Boolean result) {
-				if(result)
+			public void onSuccess(Long result) {
+				if(result!=null)
 					updatePanel();
 			}
 
@@ -199,7 +199,7 @@ public class OrderBrowserModulePart extends AModulePart{
 			{	
 				//TODO change the fake logo.png with the image that has been uploaded when the logo was made
 				if(_currentOrder.getStatus().equals(Status.READY) || _currentOrder.getStatus().equals(Status.VIEWED))
-					slideShow.showSingleImage("./images/logo.png", Messages.COPYRIGHT.getString());
+					slideShow.showSingleImage("\\wokhei\\getlogo?orderid="+_currentOrder.getId(), Messages.COPYRIGHT.getString());
 			}
 
 		});
