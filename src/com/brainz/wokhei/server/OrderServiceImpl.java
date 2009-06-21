@@ -31,7 +31,7 @@ import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
- * @author matteocantarelli
+ * @author matteocantarelli/GiovencaAustralis
  *
  */
 public class OrderServiceImpl extends RemoteServiceServlet implements OrderService {

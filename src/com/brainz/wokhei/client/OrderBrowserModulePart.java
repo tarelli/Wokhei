@@ -255,6 +255,28 @@ public class OrderBrowserModulePart extends AModulePart{
 	private void updatePanel() {
 		if(_currentOrder!=null)
 		{
+			orderImage.setVisible(true);
+
+			//set next arrow visibility
+			if(_orders.indexOf(_currentOrder) == _orders.size() -1)
+			{
+				nextOrderButton.setVisible(false);
+			}
+			else
+			{
+				nextOrderButton.setVisible(true);
+			}
+
+			//set prev arrow visibility
+			if(_orders.indexOf(_currentOrder) == 0)
+			{
+				previousOrderButton.setVisible(false);
+			}
+			else
+			{
+				previousOrderButton.setVisible(true);
+			}
+
 			alwaysInfos(false);
 			orderNameLabel.setText(_currentOrder.getText());
 			String list=Arrays.asList(_currentOrder.getTags()).toString().replace(",","");
@@ -285,6 +307,9 @@ public class OrderBrowserModulePart extends AModulePart{
 		}
 		else
 		{
+			//there's no current order means we have no order - need to set invisible for IE
+			orderImage.setVisible(false);
+
 			alwaysInfos(true);
 		}
 	}
