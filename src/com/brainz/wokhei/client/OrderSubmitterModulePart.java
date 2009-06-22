@@ -126,7 +126,8 @@ public class OrderSubmitterModulePart extends AModulePart {
 		if((RootPanel.get("orderSubmitter")!=null)&&
 				(RootPanel.get("orderSubmitterAlternateBody")!=null)&&
 				(RootPanel.get("orderSubmitterAlternateBodytile")!=null)&&
-				(RootPanel.get("orderSubmitterAlternateFooter")!=null))
+				(RootPanel.get("orderSubmitterAlternateFooter")!=null) &&
+				(RootPanel.get("footerLinks")!=null))
 		{
 
 			super.initModulePart(orderService,utilityService, adminService);
@@ -334,12 +335,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 			_mainPanel.add(_colorPanel);
 			_mainPanel.add(_submitOrderButton);
 
-
-			//prepare alternate panel with timer
-			// TODO : add timer and shit
-			// 1. check difference between timestamp and server time
-			// 2. setup countdown
-			// 3. setup timer to refresh client with updated countdown timer every sec 
+			//alternate panel stuff
 			_waitLabel.addStyleName("waitLabel"); //$NON-NLS-1$
 			_waitLabel.setWidth("350px"); //$NON-NLS-1$
 

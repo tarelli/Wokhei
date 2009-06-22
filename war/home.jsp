@@ -71,6 +71,8 @@
 </div>
 
 <div class="footer">
+
+<div id="footerLinks" ></div>
 <div class="footerDoor">
 <div id="orderSubmitterAlternateFooter" class="orderSubmitterAlternateFooterPanel"></div>
 </div>
