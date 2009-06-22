@@ -27,6 +27,7 @@ public class HomeModule implements EntryPoint {
 		HeaderModulePart headerModulePart = new HeaderModulePart();
 		OrderSubmitterModulePart orderSubmitterModulePart = new OrderSubmitterModulePart();
 		OrderBrowserModulePart orderBrowserModulePart = new OrderBrowserModulePart();
+		FooterModulePart footerModulePart = new FooterModulePart();
 
 		//Initialize the module parts
 		orderSubmitterModulePart.addModulePartListener(orderBrowserModulePart);
@@ -34,6 +35,7 @@ public class HomeModule implements EntryPoint {
 		orderBrowserModulePart.initModulePart(orderService, utilityService, adminService);
 		orderSubmitterModulePart.initModulePart(orderService, utilityService, adminService);
 		headerModulePart.initModulePart(orderService, utilityService, adminService);
+		footerModulePart.initModulePart(orderService, utilityService, adminService);
 	}
 
 }

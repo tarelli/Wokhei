@@ -57,6 +57,8 @@
 <div class="bodytileAdmin" style="z-index: 1;">
 </div>
 <div class="footer" style="z-index: 1;">
+
+<div id="footerPanel" class="footerPanel"></div>
 </div>
 </div>
 

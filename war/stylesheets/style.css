@@ -298,6 +298,20 @@ select {
 	background-repeat: no-repeat;
 }
 
+/* FOOTER_PANEL */
+
+.footerPanel {
+	position: absolute;
+	left: 200px;
+	top: 85px;
+}
+
+.footerLinks {
+	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10pt;
+	colour: white;	
+}
+
 /* DRINK */
 .orderSubmitterAlternateBodyPanel {
 	position: relative;
@@ -332,6 +346,7 @@ select {
 	position: relative;
 	min-height: 159px;
 	background: URL("../images/footerDRINK.png");
+	background-repeat: no-repeat;
 }
 
 /* OTHERS */

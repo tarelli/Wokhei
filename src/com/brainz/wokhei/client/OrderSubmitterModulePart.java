@@ -126,8 +126,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 		if((RootPanel.get("orderSubmitter")!=null)&&
 				(RootPanel.get("orderSubmitterAlternateBody")!=null)&&
 				(RootPanel.get("orderSubmitterAlternateBodytile")!=null)&&
-				(RootPanel.get("orderSubmitterAlternateFooter")!=null) &&
-				(RootPanel.get("footerLinks")!=null))
+				(RootPanel.get("orderSubmitterAlternateFooter")!=null))
 		{
 
 			super.initModulePart(orderService,utilityService, adminService);
