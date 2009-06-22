@@ -14,9 +14,14 @@
 <html>
 <head>
 
-<script type="text/javascript" language="javascript"
-	src="wokhei/wokhei.nocache.js"></script>
-<noscript>Your browser does not support JavaScript - you're fecked!</noscript>
+<script type="text/javascript" language="javascript" src="wokhei/wokhei.nocache.js"></script>
+<script src="/js/cufon-yui.js" type="text/javascript"></script>
+<script src="/js/Arial_Rounded_MT_Bold_400.font.js" type="text/javascript"></script>
+<script type="text/javascript">
+Cufon.replace('label');
+Cufon.replace('waitLabel');
+</script>
+<noscript>Sorry, Javascript is disable in your browser, enable Javascript to use Wokhei.com</noscript>
 
 <link href="/stylesheets/style.css" rel="stylesheet" type="text/css" />
 
