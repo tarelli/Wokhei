@@ -16,9 +16,8 @@ div#preloaded-images {
 	width: 1px;
 }
 
-@font-face {
-	font-family: "Arial Rounded MT Bold";
-	src: url(../fonts/ArialRoundedBold.ttf);
+.fontAR {
+	
 }
 
 A:link {
@@ -46,9 +45,10 @@ div#page-wrap {
 
 .headerPanel {
 	position: absolute;
-	left: 480px;
+	left: 50px;
 	top: 55px;
-	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	width: 873px;
+	font-family: "Trebuchet MS", Gadget, sans-serif;
 	font-size: 10pt;
 }
 
@@ -96,8 +96,6 @@ div#page-wrap {
 
 h1 {
 	color: #bf007e;
-	font-family: "Arial Rounded MT Bold", "Trebuchet MS", Verdana, Arial,
-		Helvetica, sans-serif;
 	font-size: 17pt;
 	font-weight: 600;
 	text-align: left;
@@ -105,8 +103,6 @@ h1 {
 
 .h2 {
 	color: #bf007e;
-	font-family: "Arial Rounded MT Bold", "Trebuchet MS", Verdana, Arial,
-		Helvetica, sans-serif;
 	font-size: 8pt;
 	font-weight: 600;
 	text-align: left;
@@ -114,8 +110,6 @@ h1 {
 
 .h3 {
 	color: #000000;
-	font-family: "Arial Rounded MT Bold", "Trebuchet MS", Verdana, Arial,
-		Helvetica, sans-serif;
 	font-weight: bold;
 	font-size: 12pt;
 }
@@ -129,33 +123,31 @@ a1 {
 }
 
 a1:hover {
-	color: #f9a743
+	color: #f9a743;
 }
 
 a2 {
 	color: #bf007e;
-	font-family: "Arial Rounded MT Bold", "Trebuchet MS", Verdana, Arial,
-		Helvetica, sans-serif;
 	font-size: 18px;
 	font-weight: 600;
 	text-align: left;
 }
 
 a2:hover {
-	color: #ffffff
+	color: #ffffff;
 }
 
 .label {
 	color: #bf007e;
-	font-family: "Arial Rounded MT Bold", "Trebuchet MS", Verdana, Arial,
-		Helvetica, sans-serif;
 	font-size: 11pt;
+}
+
+.labelButton {
+	cursor: pointer;
 }
 
 .hintLabel {
 	color: #000000;
-	font-family: "Arial Rounded MT Bold", "Trebuchet MS", Verdana, Arial,
-		Helvetica, sans-serif;
 	font-size: 7pt;
 }
 
@@ -258,7 +250,7 @@ select {
 .signin {
 	position: absolute;
 	left: 860px;
-	top: 77px;
+	top: 80px;
 	width: 100px;
 	height: 26px;
 }
@@ -267,7 +259,7 @@ select {
 .okImagesPanel {
 	position: absolute;
 	left: 400px;
-	top: 70px;
+	top: 65px;
 }
 
 .headerDoor {
@@ -347,8 +339,6 @@ select {
 }
 
 .statusTitle {
-	font-family: "Arial Rounded MT Bold", "Trebuchet MS", Verdana, Arial,
-		Helvetica, sans-serif;
 	font-size: 14pt;
 	font-weight: bold;
 }
@@ -365,8 +355,6 @@ select {
 	border: 0px;
 	background: URL("../images/joinoff.png");
 	color: #000000;
-	font-family: "Arial Rounded MT Bold", "Trebuchet MS", Verdana, Arial,
-		Helvetica, sans-serif;
 	font-size: 18pt;
 	font-weight: bold;
 	text-align: center;
@@ -423,8 +411,6 @@ select {
 
 .waitLabel {
 	color: #bf007e;
-	font-family: "Arial Rounded MT Bold", "Trebuchet MS", Verdana, Arial,
-		Helvetica, sans-serif;
 	font-size: 30pt;
 	font-weight: bold;
 	left: 50px;
@@ -434,10 +420,11 @@ select {
 .admin {
 	position: absolute;
 	left: 860px;
-	top: 110px;
+	top: 107px;
 	width: 100px;
 	height: 26px;
 }
+
 
 .orderSubmitter {
 	width: 300px;
@@ -446,7 +433,7 @@ select {
 }
 
 .textBox {
-		border: 3px #c60089 solid;
+	border: 3px #c60089 solid;
 	margin-top: 0px;
 	margin-right: 0px;
 	margin-bottom: 0px;
@@ -455,16 +442,13 @@ select {
 	padding-right: 0px;
 	padding-bottom: 1px;
 	padding-left: 2px;
-	height: 18px
-	color: #000000;
-	font-family: "Arial Rounded MT Bold", "Trebuchet MS", Verdana, Arial,
-		Helvetica, sans-serif;
+	height: 18px color :       #000000;
 	font-size: 11pt;
 }
 
 .errorLabel {
 	color: #FF0000;
-	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	font-family: "Trebuchet MS", Verdana, Arial;
 	font-size: 8pt;
 	height: 12px;
 	vertical-align: bottom;
@@ -472,8 +456,6 @@ select {
 
 .logoNameLabel {
 	color: #000000;
-	font-family: "Arial Rounded MT Bold", "Trebuchet MS", Verdana, Arial,
-		Helvetica, sans-serif;
 	font-weight: bold;
 	font-size: 10pt;
 }
@@ -489,7 +471,7 @@ select {
 	position: relative;
 	width: 240px;
 	height: 64px;
-	font: 11pt "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	font: 11pt "Trebuchet MS", Verdana, Arial,
 }
 
 .orderIcon {
@@ -509,8 +491,8 @@ select {
 
 .gwt-SuggestBoxPopup .item {
 	z-index: 3;
-	font-family: "Trebuchet MS", Verdana, Arial, Helvetica,sans-serif;
-	 color : #bf007e;
+	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	color: #bf007e;
 	font-size: 9pt;
 }
 
@@ -661,25 +643,20 @@ select {
 	color: #000000;
 }
 
-
-.adminTags{
-		font-family: "Arial Rounded MT Bold", "Trebuchet MS", Verdana, Arial,
-		Helvetica, sans-serif;
+.adminTags {
 	font-size: 11pt;
 	color: #000000;
-	}
-	.adminLogoName{
-		font-family: "Arial Rounded MT Bold", "Trebuchet MS", Verdana, Arial,
-		Helvetica, sans-serif;
+}
+
+.adminLogoName {
 	font-size: 11pt;
 	color: #bf007e;
-	}
+}
 
 .orderList {
 	padding: 2px;
 	margin-bottom: 6px;
-	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
-	font-size: 10pt;
+	font-family: "Trebuchet MS", Verdana, Arial, font-size :     10pt;
 }
 
 /*paginator stuff - shit don't work!*/ /***
@@ -705,34 +682,41 @@ select {
    * @author Joe Toth (joetoth@gmail.com)
    * 
    */
-.gwt-Hyperlink {
-	font-family: "Arial Rounded MT Bold", "Trebuchet MS", Verdana, Arial,
-		Helvetica, sans-serif;
+.gwt-Hyperlink a{
 	font-size: 10pt;
-	color: #bf007e;
+	color: black;
+	font-family: "Trebuchet MS", Gadget, sans-serif;
+	font-size:  12pt;
+	font-style: bold;
 }
 
-.gwt-Hyperlink:visited {
+.gwt-Hyperlink a:visited {
+	color: black;
+}
+
+.gwt-Hyperlink a:hover {
 	color: #bf007e;
-	font-style: bold;
 }
 
 .gwt-Button {
 	border: solid 1px;
 	border-color: #bf007e;
 	background-color: #f3d3e6;
-	color:#bf007e;
-	width:80px;
+	cursor: pointer; color : #bf007e;
+	width: 80px;
+	color: #bf007e;
 }
 
-gwt-FileUpload
-	{
+.gwt-Button:HOVER {
+	border-color: white;
+	background-color: #f2bc4a;
+}
+
+gwt-FileUpload {
 	border: none;
-	}
-	
+}
+
 .headerRow {
-	font-family: "Arial Rounded MT Bold", "Trebuchet MS", Verdana, Arial,
-		Helvetica, sans-serif;
 	font-size: 14pt;
 	color: #bf007e;
 	font-style: bold;
@@ -740,17 +724,18 @@ gwt-FileUpload
 
 .oddRow {
 	background-color: #f3d3e6;
+	font-size: 10pt;
 }
 
 .evenRow {
 	background-color: #eec3dd;
+	font-size: 10pt;
 }
 
 /*datepicker stuff in admin page*/
 .gwt-DatePicker {
 	border: 1px solid #bf007e;
 	cursor: default;
-	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 }
 
 .gwt-DatePicker td,.datePickerMonthSelector td:focus {
@@ -824,16 +809,14 @@ gwt-FileUpload
 .datePickerPreviousButton,.datePickerNextButton {
 	font-size: 120%;
 	line-height: 1em;
-	color: blue;
 	cursor: hand;
 	cursor: pointer;
 	padding: 0px 4px;
 }
 
 td.datePickerMonth {
-	color:white;
+	color: white;
 	cursor: default;
-	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 	text-align: center;
 	vertical-align: center;
 	white-space: nowrap;

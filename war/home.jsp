@@ -13,13 +13,18 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-
-<script type="text/javascript" language="javascript" src="wokhei/wokhei.nocache.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>  
 <script src="/js/cufon-yui.js" type="text/javascript"></script>
 <script src="/js/Arial_Rounded_MT_Bold_400.font.js" type="text/javascript"></script>
+<script type="text/javascript" language="javascript" src="wokhei/wokhei.nocache.js"></script>
 <script type="text/javascript">
-Cufon.replace('label');
-Cufon.replace('waitLabel');
+function applyCufon()
+{
+Cufon.replace('.fontAR');
+Cufon.replace('.signin, {hover: true}');
+Cufon.replace('.admin, {hover: true}');
+Cufon.replace('a2, {hover: true}');
+}
 </script>
 <noscript>Sorry, Javascript is disable in your browser, enable Javascript to use Wokhei.com</noscript>
 
@@ -32,6 +37,7 @@ Cufon.replace('waitLabel');
 </head>
 
 <body>
+
 <div id="page-wrap">
 <div class="header">
 <div class="headerDoor"></div>
@@ -59,7 +65,6 @@ Cufon.replace('waitLabel');
 </div>
 
 <div class="body">
-
 <div class="bodyDoor">
 	<div id="orderSubmitterAlternateBody" class="orderSubmitterAlternateBodyPanel"></div>
 </div>
@@ -99,5 +104,6 @@ Cufon.replace('waitLabel');
 
 <!-- OPTIONAL: include this if you want history support -->
 <iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1' style="position:absolute;width:0;height:0;border:0"></iframe>
+
 </body>
 </html>

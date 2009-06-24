@@ -3,8 +3,10 @@
  */
 package com.brainz.wokhei.client;
 
+import com.brainz.wokhei.resources.Images;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -18,6 +20,7 @@ public class HeaderModulePart extends AModulePart {
 
 	private final VerticalPanel _mainPanel= new VerticalPanel();
 	private final HorizontalPanel _innerPanel=new HorizontalPanel();
+
 	private final Label _welcomeUserLbl = new Label();
 	private AsyncCallback<String> _getUsernameCallback;
 
@@ -34,7 +37,7 @@ public class HeaderModulePart extends AModulePart {
 
 			hookUpCallbacks();
 			utilityService.getCurrentUsername(_getUsernameCallback);
-			_mainPanel.setWidth("454px");
+			_mainPanel.setWidth("482px");
 			_mainPanel.setHorizontalAlignment(HorizontalPanel.ALIGN_RIGHT);
 			_welcomeUserLbl.setStyleName("username");
 			_innerPanel.setSpacing(5);
@@ -42,7 +45,8 @@ public class HeaderModulePart extends AModulePart {
 			_innerPanel.add(_welcomeUserLbl);
 			_innerPanel.add(new Label("we reserved you the usual table"));
 			_mainPanel.add(_innerPanel);
-			RootPanel.get("headerPanel").add(_mainPanel);
+			RootPanel.get("headerPanel").add(_mainPanel,395,0);
+			RootPanel.get("headerPanel").add(new Image(Images.BETA.getImageURL()), 222, 35);
 		}
 	}
 

@@ -53,7 +53,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 		ID("ID"),
 		USER("User"),
-		LOGO_TEXT("Logo name"),
+		LOGO_TEXT("Name"),
 		TAGS("Tags"),
 		COLOUR("Colour"),
 		DATE("Date"),
@@ -140,12 +140,17 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 	private Date _serverTimeStamp = null;
 
+	public static native void applyCufon() /*-{
+	  $wnd.applyCufon();
+	}-*/;
 
-	/* 
-	 * Init module part
+
+	/* (non-Javadoc)
+	 * @see com.brainz.wokhei.client.AModulePart#initModulePart(com.brainz.wokhei.client.OrderServiceAsync, com.brainz.wokhei.client.UtilityServiceAsync, com.brainz.wokhei.client.AdminServiceAsync)
 	 */
 	@Override
-	public void initModulePart(OrderServiceAsync orderService, UtilityServiceAsync utilityService, AdminServiceAsync adminService) {
+	public void initModulePart(OrderServiceAsync orderService, UtilityServiceAsync utilityService, AdminServiceAsync adminService) 
+	{
 		if(RootPanel.get("adminConsole")!=null)
 		{
 			super.initModulePart(orderService, utilityService, adminService);
@@ -162,7 +167,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 		}
 	}
 
-	// bienvenuti nel apese dei puerca
+	// bienvenuti nel paese dei puerca
 	private void initModulePartCore()
 	{
 		setPaginator();
@@ -184,14 +189,23 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 		// Associate the Main panel with the HTML host page.
 		RootPanel.get("adminConsole").add(_mainPanel);
+
 	}
 
-	private void getServerTimeStamp() {
+	/**
+	 * 
+	 */
+	private void getServerTimeStamp() 
+	{
 		//get server time stamp - sets variable for populating timer field
 		_utilityService.getServerTimestamp(_getServerTimestampCallback);
 	}
 
-	private void setupToolbarPanel() {
+	/**
+	 * 
+	 */
+	private void setupToolbarPanel() 
+	{
 		setupFiltersPanel();
 		setupAddAdminPanel();
 
@@ -200,7 +214,8 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 		_filteringPopupPanel.setWidget(_filteringPanel);
 		_optionsPopupPanel.setWidget(_addAdminPanel);
-
+		_filteringImage.addStyleName("labelButton");
+		_optionsImage.addStyleName("labelButton");
 		_filteringImage.addClickHandler(new ClickHandler(){
 
 			public void onClick(ClickEvent event) {
@@ -218,12 +233,16 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 	}
 
-	private void setupAddAdminPanel() {
+	/**
+	 * 
+	 */
+	private void setupAddAdminPanel() 
+	{
 		Label addAdminLbl = new Label("Add Admin");
 		addAdminLbl.setStylePrimaryName("label");
 
 		_addAdminTextBox.setText(Messages.ADMIN_ADD_ADMIN_DEFAULT_TXT.getString());
-
+		_addAdminButton.addStyleName("fontAR");
 		_addAdminButton.addClickHandler(new ClickHandler() {
 			//prepararsi alla porcata mondiale
 			public void onClick(ClickEvent event) {
@@ -249,8 +268,8 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	/**
 	 * Set the filters
 	 */
-	private void setupFiltersPanel() {
-
+	private void setupFiltersPanel() 
+	{
 		setStatusFilter();
 		setUserFilter();
 		setDateRangeFilter();
@@ -285,7 +304,11 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 		_filteringPanel.add(_filterButton);
 	}
 
-	private void setUserFilter() {
+	/**
+	 * 
+	 */
+	private void setUserFilter() 
+	{
 		Label userFilterLbl = new Label(Messages.ADMIN_USER_FILTER_LABEL.getString());
 		userFilterLbl.setStyleName("label");
 		_userFilterBox.setText(Messages.ADMIN_USER_FILTER_BOX.getString());
@@ -300,7 +323,11 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 		_userFilter.add(_userFilterBox);
 	}
 
-	private void setDateRangeFilter() {
+	/**
+	 * 
+	 */
+	private void setDateRangeFilter() 
+	{
 		Label dateFilterLbl = new Label(Messages.ADMIN_DATE_FILTER_LABEL.getString());
 		dateFilterLbl.setStyleName("label");
 		//initialize datePickers
@@ -415,6 +442,12 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	private void setPaginator() 
 	{
 		_paginationBehavior = new DefaultPaginationBehavior(_pagingControlsTable,_ordersFlexTable,15) {
+
+			@Override
+			protected void onUpdateSuccess(Object result) {
+				super.onUpdateSuccess(result);
+				applyCufon();
+			}
 
 			@Override
 			protected RowRenderer getRowRenderer() {
@@ -586,12 +619,13 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 		FileUpload rasterizedUpload=new FileUpload();
 		rasterizedUpload.setName("uploadFormElement");
 		Button rasterizedUploadBtn=new Button(Messages.UPLOAD.getString());
+		_isRasterizedImageUploaded.addStyleName("labelButton");
 		_isRasterizedImageUploaded.addClickHandler(new ClickHandler(){
 
 			public void onClick(ClickEvent event) {
 				if(_isRasterizedImageUploaded.getUrl().endsWith(Images.OK.getImageURL().substring(1)))
 				{
-					slideShow.showSingleImage("\\wokhei\\getfile?fileType="+FileType.PNG_LOGO.toString()+"&orderid="+_uploadPanelOrderId, Messages.COPYRIGHT.getString());
+					slideShow.showSingleImage("/wokhei/getfile?fileType="+FileType.PNG_LOGO.toString()+"&orderid="+_uploadPanelOrderId, Messages.COPYRIGHT.getString());
 				}
 
 			}});
@@ -638,12 +672,13 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 		FileUpload presentationUpload=new FileUpload();
 		presentationUpload.setName("uploadFormElement");
 		Button presentationUploadBtn=new Button(Messages.UPLOAD.getString());
+		_isPresentationImageUploaded.addStyleName("labelButton");
 		_isPresentationImageUploaded.addClickHandler(new ClickHandler(){
 
 			public void onClick(ClickEvent event) {
 				if(_isPresentationImageUploaded.getUrl().endsWith(Images.OK.getImageURL().substring(1)))
 				{
-					slideShow.showSingleImage("\\wokhei\\getfile?fileType="+FileType.PNG_LOGO_PRESENTATION.toString()+"&orderid="+_uploadPanelOrderId, Messages.COPYRIGHT.getString());
+					slideShow.showSingleImage("/wokhei/getfile?fileType="+FileType.PNG_LOGO_PRESENTATION.toString()+"&orderid="+_uploadPanelOrderId, Messages.COPYRIGHT.getString());
 				}
 
 			}});
@@ -716,12 +751,13 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 				_vectorialForm.submit();
 			}
 		});
+		_isVectorialImageUploaded.addStyleName("labelButton");
 		_isVectorialImageUploaded.addClickHandler(new ClickHandler(){
 
 			public void onClick(ClickEvent event) {
 				if(_isVectorialImageUploaded.getUrl().endsWith(Images.OK.getImageURL().substring(1)))
 				{
-					Window.open("\\wokhei\\getfile?fileType="+FileType.PDF_VECTORIAL_LOGO.toString()+"&orderid="+_uploadPanelOrderId, "_blank", "");
+					Window.open("/wokhei/getfile?fileType="+FileType.PDF_VECTORIAL_LOGO.toString()+"&orderid="+_uploadPanelOrderId, "_blank", "");
 				}
 
 			}});
@@ -839,7 +875,18 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	private Widget getStatusImage(final String substring, final Long orderId) 
 	{
 		final Status status=Status.valueOf(substring);
-		Image statusImage=new Image(Images.valueOf(substring).getSmallImageURL());
+		final Image statusImage=new Image(Images.valueOf(substring).getSmallImageURL());
+		switch(status)
+		{
+		case ACCEPTED:
+		case ARCHIVED:
+		case BOUGHT:
+		case IN_PROGRESS:
+		case QUALITY_GATE:
+		case READY:
+			statusImage.addStyleName("labelButton");
+			break;
+		}
 		statusImage.addClickHandler(new ClickHandler(){
 
 			public void onClick(ClickEvent event) {
@@ -851,6 +898,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 				case IN_PROGRESS:
 				case QUALITY_GATE:
 				case READY:
+
 					_orderService.hasFileUploaded(orderId, FileType.PNG_LOGO, new AsyncCallback<Boolean>(){
 						public void onFailure(Throwable caught) 
 						{
@@ -859,7 +907,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 						public void onSuccess(Boolean result) {
 							if(result)
 							{
-								slideShow.showSingleImage("\\wokhei\\getfile?fileType="+FileType.PNG_LOGO.toString()+"&orderid="+orderId, Messages.COPYRIGHT.getString());
+								slideShow.showSingleImage("/wokhei/getfile?fileType="+FileType.PNG_LOGO.toString()+"&orderid="+orderId, Messages.COPYRIGHT.getString());
 							}
 						}});
 
@@ -880,6 +928,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	{
 		Label tags=new Label(substring);
 		tags.setStyleName("adminTags");
+		tags.addStyleName("fontAR");
 		return tags;
 	}
 
@@ -889,9 +938,10 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	 */
 	private Widget getNameLabel(String text) 
 	{
-		Label tags=new Label(text);
-		tags.setStyleName("adminLogoName");
-		return tags;
+		Label nameLbl=new Label(text);
+		nameLbl.setStyleName("adminLogoName");
+		nameLbl.addStyleName("fontAR");
+		return nameLbl;
 	}
 
 	/**
@@ -928,6 +978,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 				_serverTimeStamp = result;
 
 				initModulePartCore();
+
 			}
 
 			public void onFailure(Throwable caught) {

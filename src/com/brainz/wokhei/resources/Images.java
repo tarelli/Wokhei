@@ -23,7 +23,9 @@ public enum Images {
 	FILTER("./images/filter.png"),
 	OPTIONS("./images/options.png"),
 
-	INFOS("./images/legend.png");
+	INFOS("./images/legend.png"), 
+	BETA("./images/beta.png")
+	;
 
 	String _imageName;
 	String _smallImageName;

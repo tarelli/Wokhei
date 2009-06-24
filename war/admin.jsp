@@ -17,13 +17,22 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>Wokhei - Admin</title>
 <link href="/stylesheets/style.css" rel="stylesheet" type="text/css" />
-<!--                                           -->
-<!-- This script loads your compiled module.   -->
-<!-- If you add any GWT meta tags, they must   -->
-<!-- be added before this line.                -->
-<!--                                           -->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>  
+<script src="/js/cufon-yui.js" type="text/javascript"></script>
+<script src="/js/Arial_Rounded_MT_Bold_400.font.js" type="text/javascript"></script>
 <script type="text/javascript" language="javascript" src="wokhei/wokhei.nocache.js"></script>
-<noscript>Your browser does not support JavaScript - you're fecked!</noscript>
+<script type="text/javascript">
+function applyCufon()
+{
+Cufon.replace('.fontAR');
+Cufon.replace('.oddRow');
+Cufon.replace('.evenRow');
+Cufon.replace('.headerRow');
+Cufon.replace('.signin, {hover: true}');
+Cufon.replace('.admin, {hover: true}');
+}
+</script>
+<noscript>Sorry, Javascript is disable in your browser, enable Javascript to use Wokhei.com</noscript>
 </head>
 
 <body>

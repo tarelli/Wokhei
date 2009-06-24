@@ -103,27 +103,33 @@ public class OrderBrowserModulePart extends AModulePart{
 				}
 			});
 
-
+			infoButton.addStyleName("infoButton");
+			infoButton.addStyleName("labelButton");
 			infoButton.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
 					infos.setVisible(!infos.isVisible());
 					if(infos.isVisible())
 					{
-						infoButton.setStyleName("infoButtonClicked");
+						infoButton.removeStyleName("infoButton");
+						infoButton.addStyleName("infoButtonClicked");
 					}
 					else
 					{
-						infoButton.setStyleName("infoButton");
+						infoButton.removeStyleName("infoButtonClicked");
+						infoButton.addStyleName("infoButton");
 					}
 				}
 			});
 
 			previousOrderButton.setStyleName("leftArrow");
+			previousOrderButton.addStyleName("labelButton");
 			nextOrderButton.setStyleName("rightArrow");
+			nextOrderButton.addStyleName("labelButton");
 			orderNameLabel.setStyleName("logoNameLabel");
+			orderNameLabel.addStyleName("fontAR");
 			orderTagsLabel.setStyleName("logoTagsDateLabel");
 			orderDateLabel.setStyleName("logoTagsDateLabel");
-			infoButton.setStyleName("infoButton");
+
 			infos.setVisible(false);
 			infos.setUrl(Images.INFOS.getImageURL());
 
@@ -135,6 +141,7 @@ public class OrderBrowserModulePart extends AModulePart{
 			statusDescription.setWidth("250px");
 			statusDescription.setStylePrimaryName("statusDescription");
 			statusTitle.setStylePrimaryName("statusTitle");
+			statusTitle.addStyleName("fontAR");
 			colourSpace.setWidth("3px");
 
 			colourLabel.setStyleName("pantoneLabel");
@@ -155,11 +162,13 @@ public class OrderBrowserModulePart extends AModulePart{
 			mainPanel.add(nextOrderButton,720,150);
 			mainPanel.add(statusDescription,470,250);
 			mainPanel.add(statusTitle,470,220);
-			mainPanel.add(infoButton,445,223);
+			mainPanel.add(infoButton,447,221);
 			mainPanel.add(ordersPanel,660,43);
 			mainPanel.add(infos,490,20);
 
 			RootPanel.get("ordersBrowser").add(getPanel());
+
+			applyCufon();
 		}
 	}
 
@@ -197,9 +206,8 @@ public class OrderBrowserModulePart extends AModulePart{
 
 			public void onClick(ClickEvent event) 
 			{	
-				//TODO change the fake logo.png with the image that has been uploaded when the logo was made
 				if(_currentOrder.getStatus().equals(Status.READY) || _currentOrder.getStatus().equals(Status.VIEWED))
-					slideShow.showSingleImage("\\wokhei\\getlogo?orderid="+_currentOrder.getId(), Messages.COPYRIGHT.getString());
+					slideShow.showSingleImage("/wokhei/getlogo?orderid="+_currentOrder.getId(), Messages.COPYRIGHT.getString());
 			}
 
 		});
@@ -249,12 +257,17 @@ public class OrderBrowserModulePart extends AModulePart{
 		_currentOrder=OrderDTOUtils.getPreviousOrder(_orders,_currentOrder);
 	}
 
+	public static native void applyCufon() /*-{
+	  $wnd.applyCufon();
+	}-*/;
+
 	/**
 	 * 
 	 */
 	private void updatePanel() {
 		if(_currentOrder!=null)
 		{
+
 			orderImage.setVisible(true);
 
 			//set next arrow visibility
@@ -296,11 +309,16 @@ public class OrderBrowserModulePart extends AModulePart{
 			case IN_PROGRESS:
 			case QUALITY_GATE:
 			case REJECTED:
+				orderImage.removeStyleName("labelButton");
+				orderImage.setUrl(Images.valueOf(_currentOrder.getStatus().toString()).getImageURL());
+				break;
 			case READY:
+				orderImage.addStyleName("labelButton");
 				orderImage.setUrl(Images.valueOf(_currentOrder.getStatus().toString()).getImageURL());
 				break;
 			case VIEWED:
 				//TODO set the logo image itself
+				orderImage.addStyleName("labelButton");
 				orderImage.setUrl("./images/logo.png");
 				break;
 			}
@@ -312,6 +330,7 @@ public class OrderBrowserModulePart extends AModulePart{
 
 			alwaysInfos(true);
 		}
+		applyCufon();
 	}
 
 	/**

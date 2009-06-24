@@ -12,7 +12,7 @@ public enum Messages {
 	VIEWED("Viewed"),
 	ARCHIVED("Archived"),
 
-	LOGO_NAME_LBL("Product/Service/Company name"),
+	LOGO_NAME_LBL("Product name"),
 	LOGO_NAME_HELP_MESSAGE("This is the name of the company, product, service, website, association, etc. that your logo is for. This name will appear in the logo unless you'll specify the #notext tag, in that case the logo will only be a symbolic representation!"),
 	LOGO_NAME_EG_LBL("e.g. Franco Bovale Restaurant"),
 	LOGO_NAME_TXTBOX("the name of your product"),

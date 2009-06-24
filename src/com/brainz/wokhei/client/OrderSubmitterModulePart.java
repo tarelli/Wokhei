@@ -140,15 +140,19 @@ public class OrderSubmitterModulePart extends AModulePart {
 			_mainPanel.setVisible(false);
 
 			_requestLabel.addStyleName("h3"); //$NON-NLS-1$
+			_requestLabel.addStyleName("fontAR");
 			_mainPanel.add(_requestLabel );
 
 			_logoTextLabel.addStyleName("label"); //$NON-NLS-1$
+			_logoTextLabel.addStyleName("fontAR"); 
 
 			_logoHintLabel.setStyleName("hintLabel"); //$NON-NLS-1$
+			_logoHintLabel.addStyleName("fontAR"); //$NON-NLS-1$
 
 			_logoTextBox.setText(Messages.LOGO_NAME_TXTBOX.getString()); //$NON-NLS-1$
 			_logoTextBox.setWidth("290px"); //$NON-NLS-1$
 			_logoTextBox.setStyleName("textBox"); //$NON-NLS-1$
+			_logoTextBox.addStyleName("fontAR");
 			_logoTextBox.addBlurHandler(new BlurHandler(){
 				public void onBlur(BlurEvent event) {
 					checkErrors();
@@ -164,11 +168,15 @@ public class OrderSubmitterModulePart extends AModulePart {
 				}});
 
 			_logoTagsLabel.addStyleName("label"); //$NON-NLS-1$
+			_logoTagsLabel.addStyleName("fontAR");
+
 			_tagsHintLabel.addStyleName("hintLabel"); //$NON-NLS-1$
+			_tagsHintLabel.addStyleName("fontAR");
 
 			// prepare my motherfuckin' logoText vertical panel
-			_logoTextPanel.setSpacing(1);
+			_logoTextPanel.setSpacing(2);
 
+			_logoTextLabelPanel.setVerticalAlignment(VerticalPanel.ALIGN_TOP);
 			_logoTextLabelPanel.add(_logoTextHelpMark);
 			_logoTextLabelPanel.add(getNewWhiteSpace());
 			_logoTextLabelPanel.add(_logoTextLabel);
@@ -204,7 +212,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 				}
 			});
 
-			_logoTagsPanel.setSpacing(1);
+			_logoTagsPanel.setSpacing(2);
 
 
 			_logoTagsLabelPanel.add(_logoTagsHelpMark);
@@ -223,9 +231,12 @@ public class OrderSubmitterModulePart extends AModulePart {
 			_logoTagsHelpPopup.setStyleName("helpPopup");
 			_logoColourHelpPopup.setStyleName("helpPopup");
 
-			_logoTextHelpMark.setStyleName("infoButton");
-			_logoTagsHelpMark.setStyleName("infoButton");
-			_logoColourHelpMark.setStyleName("infoButton");
+			_logoTextHelpMark.addStyleName("infoButton");
+			_logoTextHelpMark.addStyleName("labelButton");
+			_logoTagsHelpMark.addStyleName("infoButton");
+			_logoTagsHelpMark.addStyleName("labelButton");
+			_logoColourHelpMark.addStyleName("infoButton");
+			_logoColourHelpMark.addStyleName("labelButton");
 
 			_logoTextHelpPopup.setWidth("220px");
 			_logoTagsHelpPopup.setWidth("220px");
@@ -236,13 +247,15 @@ public class OrderSubmitterModulePart extends AModulePart {
 					if(!_logoTextHelpPopup.isShowing())
 					{
 						_logoTextHelpPopup.showRelativeTo(_logoTextLabel);
-						_logoTextHelpMark.setStyleName("infoButtonClicked");
+						_logoTextHelpMark.removeStyleName("infoButton");
+						_logoTextHelpMark.addStyleName("infoButtonClicked");
 					}
 				}});
 
 			_logoTextHelpPopup.addCloseHandler(new CloseHandler<PopupPanel>(){
 				public void onClose(CloseEvent<PopupPanel> event) {
-					_logoTextHelpMark.setStyleName("infoButton");
+					_logoTextHelpMark.addStyleName("infoButton");
+					_logoTextHelpMark.removeStyleName("infoButtonClicked");
 				}});
 
 			_logoTextHelpPopup.setWidget(_logoTextHelpLabel);
@@ -252,13 +265,15 @@ public class OrderSubmitterModulePart extends AModulePart {
 					if(!_logoTagsHelpPopup.isShowing())
 					{
 						_logoTagsHelpPopup.showRelativeTo(_logoTagsLabel);
-						_logoTagsHelpMark.setStyleName("infoButtonClicked");
+						_logoTagsHelpMark.removeStyleName("infoButton");
+						_logoTagsHelpMark.addStyleName("infoButtonClicked");
 					}
 				}});
 
 			_logoTagsHelpPopup.addCloseHandler(new CloseHandler<PopupPanel>(){
 				public void onClose(CloseEvent<PopupPanel> event) {
-					_logoTagsHelpMark.setStyleName("infoButton");
+					_logoTagsHelpMark.addStyleName("infoButton");
+					_logoTagsHelpMark.removeStyleName("infoButtonClicked");
 				}});
 
 			_logoTagsHelpPopup.setWidget(_logoTagsHelpLabel);
@@ -268,23 +283,28 @@ public class OrderSubmitterModulePart extends AModulePart {
 					if(!_logoColourHelpPopup.isShowing())
 					{
 						_logoColourHelpPopup.showRelativeTo(_colourLabel);
-						_logoColourHelpMark.setStyleName("infoButtonClicked");
+						_logoColourHelpMark.removeStyleName("infoButton");
+						_logoColourHelpMark.addStyleName("infoButtonClicked");
 					}
 				}});
 
 			_logoColourHelpPopup.addCloseHandler(new CloseHandler<PopupPanel>(){
 				public void onClose(CloseEvent<PopupPanel> event) {
-					_logoColourHelpMark.setStyleName("infoButton");
+					_logoColourHelpMark.removeStyleName("infoButtonClicked");
+					_logoColourHelpMark.addStyleName("infoButton");
 				}});
 
 
 			_logoColourHelpPopup.setWidget(_logoColourHelpLabel);
 
-
 			_colourLabel.setStyleName("label"); //$NON-NLS-1$
-			_colorHintLabel.setStyleName("hintLabel"); //$NON-NLS-1$
-			_pantoneTextBox.setStyleName("pantoneLabel"); //$NON-NLS-1$
+			_colourLabel.addStyleName("fontAR");
 
+			_colorHintLabel.setStyleName("hintLabel"); //$NON-NLS-1$
+			_colorHintLabel.addStyleName("fontAR");
+
+			_pantoneTextBox.setStyleName("pantoneLabel"); //$NON-NLS-1$
+			_pantoneTextBox.addStyleName("fontAR");
 
 			_colourLabelPanel.add(_logoColourHelpMark);
 			_colourLabelPanel.add(getNewWhiteSpace());
@@ -305,7 +325,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 
 			_colorPanel.setWidth("300px"); //$NON-NLS-1$
-			_colorPanel.setSpacing(0);
+			_colorPanel.setSpacing(2);
 
 			_rows.setSpacing(0);
 			_rows.add(_firstRow);
@@ -314,19 +334,21 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 			_colorPanel.add(_rows);
 
+			_tagsErrorLabel.setStyleName("errorLabel"); //$NON-NLS-1$
 
+			_logoErrorLabel.setStyleName("errorLabel"); //$NON-NLS-1$
 
-			_tagsErrorLabel.addStyleName("errorLabel"); //$NON-NLS-1$
-			_logoErrorLabel.addStyleName("errorLabel"); //$NON-NLS-1$
-			_colourErrorLabel.addStyleName("errorLabel"); //$NON-NLS-1$
+			_colourErrorLabel.setStyleName("errorLabel"); //$NON-NLS-1$
+
 			_submitOrderButton.removeStyleName("gwt-Button");
 			_submitOrderButton.addStyleName("submitRequest"); //$NON-NLS-1$
+			_submitOrderButton.addStyleName("fontAR"); //$NON-NLS-1$
 
 			_okImagesPanel.setHeight("600px");
 			_okImagesPanel.setWidth("100px");
 			_okImagesPanel.add(_logoOkImage,  5,20);
-			_okImagesPanel.add(_tagsOkImage, 5,100);
-			_okImagesPanel.add(_colourOkImage, 5,150);
+			_okImagesPanel.add(_tagsOkImage, 5,105);
+			_okImagesPanel.add(_colourOkImage, 5,155);
 			// Fill up that son of a bitch of a mainPanel
 
 			_mainPanel.add(_logoTextPanel);
@@ -341,6 +363,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 			// 2. setup countdown
 			// 3. setup timer to refresh client with updated countdown timer every sec 
 			_waitLabel.addStyleName("waitLabel"); //$NON-NLS-1$
+			_waitLabel.addStyleName("fontAR");
 			_waitLabel.setWidth("350px"); //$NON-NLS-1$
 
 			_alternateSubPanelBody.addStyleName("orderSubmitterAlternateBody"); //$NON-NLS-1$
@@ -348,7 +371,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 			_alternateSubPanelFooter.addStyleName("orderSubmitterAlternateFooter"); //$NON-NLS-1$
 
 
-			_alternateSubPanelBody.add(_waitLabel,80,20);
+			_alternateSubPanelBody.add(_waitLabel,100,30);
 			_alternateRootPanelBody.setWidth("500px"); //$NON-NLS-1$
 			_alternateRootPanelBodyTile.setWidth("500px"); //$NON-NLS-1$
 			_alternateRootPanelFooter.setWidth("500px"); //$NON-NLS-1$
@@ -385,9 +408,14 @@ public class OrderSubmitterModulePart extends AModulePart {
 			RootPanel.get("orderSubmitterAlternateFooter").add(getOrderSubmitAlternateFooterPanel()); //$NON-NLS-1$
 
 
+			applyCufon();
 		}
 
 	}
+
+	public static native void applyCufon() /*-{
+	  $wnd.applyCufon();
+	}-*/;
 
 	private void setOkImagesVisibility(boolean visible)
 	{
@@ -644,6 +672,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 		{
 			this._waitLabel.setText(Messages.ERROR_WAITMSG.getString()); //$NON-NLS-1$
 		}
+		applyCufon();
 	}
 
 
