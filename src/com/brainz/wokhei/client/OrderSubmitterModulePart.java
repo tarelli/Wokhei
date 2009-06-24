@@ -356,12 +356,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 			_mainPanel.add(_colorPanel);
 			_mainPanel.add(_submitOrderButton);
 
-
-			//prepare alternate panel with timer
-			// TODO : add timer and shit
-			// 1. check difference between timestamp and server time
-			// 2. setup countdown
-			// 3. setup timer to refresh client with updated countdown timer every sec 
+			//alternate panel stuff
 			_waitLabel.addStyleName("waitLabel"); //$NON-NLS-1$
 			_waitLabel.addStyleName("fontAR");
 			_waitLabel.setWidth("350px"); //$NON-NLS-1$

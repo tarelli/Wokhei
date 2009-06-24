@@ -28,6 +28,7 @@ Cufon.replace('a2, {hover: true}');
 </script>
 <noscript>Sorry, Javascript is disable in your browser, enable Javascript to use Wokhei.com</noscript>
 
+
 <link href="/stylesheets/style.css" rel="stylesheet" type="text/css" />
 
 
@@ -61,7 +62,9 @@ Cufon.replace('a2, {hover: true}');
 %>
 
 <div class="signin"><a
-	href="<%= userService.createLogoutURL(request.getRequestURI()) %>"><a2>Logout</a2></a></div>
+	href="<%= userService.createLogoutURL(request.getRequestURI()) %>"><a2>Logout</a2></a>
+</div>
+
 </div>
 
 <div class="body">
@@ -81,10 +84,13 @@ Cufon.replace('a2, {hover: true}');
 </div>
 
 <div class="footer">
+
+
+
 <div class="footerDoor">
 <div id="orderSubmitterAlternateFooter" class="orderSubmitterAlternateFooterPanel"></div>
 </div>
-
+<div id="footerPanel" class="footerPanel"></div>
 </div>
 
 </div>
