@@ -57,17 +57,17 @@ Cufon.replace('.admin, {hover: true}');
 <div class="admin"><a href="home.jsp"><a2>Home</a2></a></div>
 
 </div>
-<div class="body" style="overflow: visible; z-index: 2;">
 
-<!-- gwt adminModule goes here -->
-<div class="adminModule" id="adminConsole"></div>
+<div class="body">
+	<div class="adminModule" id="adminConsole"></div>
+</div>
 
-</div>
-<div class="bodytileAdmin" style="z-index: 1;">
-</div>
-<div class="footer" style="z-index: 1;">
+<div class="bodytileAdmin"></div>
+
+<div class="footer">
 
 <div id="footerPanel" class="footerPanel"></div>
+
 </div>
 </div>
 

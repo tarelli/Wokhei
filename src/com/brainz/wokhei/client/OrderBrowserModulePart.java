@@ -133,7 +133,7 @@ public class OrderBrowserModulePart extends AModulePart{
 			infos.setVisible(false);
 			infos.setUrl(Images.INFOS.getImageURL());
 
-			mainPanel.setHeight("600px");
+			mainPanel.setHeight("450px");
 			mainPanel.setWidth("900px");
 			colour.setHeight("10px");
 			colour.setWidth("10px");

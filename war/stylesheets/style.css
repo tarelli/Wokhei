@@ -294,14 +294,23 @@ select {
 
 .footerPanel {
 	position: absolute;
-	left: 200px;
+	left: 50px;
 	top: 85px;
 }
 
-.footerLinks {
+.separator {
+	color: white;
+}
+
+.footerLinks a{
 	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 	font-size: 10pt;
-	colour: white;	
+	color: white;	
+	cursor:pointer;
+}
+
+.footerLinks a:hover{
+	font-size: 12pt;
 }
 
 /* DRINK */

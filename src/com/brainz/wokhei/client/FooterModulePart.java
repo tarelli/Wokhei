@@ -29,8 +29,8 @@ public class FooterModulePart extends AModulePart {
 
 			setupFooterPanel();
 
-			_mainPanel.setWidth("454px");
-			_mainPanel.setHorizontalAlignment(HorizontalPanel.ALIGN_RIGHT);
+			_mainPanel.setWidth("900px");
+			_mainPanel.setHorizontalAlignment(HorizontalPanel.ALIGN_CENTER);
 			_mainPanel.add(_footerPanel);
 
 			RootPanel.get("footerPanel").add(_mainPanel);
@@ -38,20 +38,34 @@ public class FooterModulePart extends AModulePart {
 	}
 
 	private void setupFooterPanel() {
+		_footerAbout.removeStyleName("gwt-Hyperlink");
 		_footerAbout.setStyleName("footerLinks");
+		_footerContactUs.removeStyleName("gwt-Hyperlink");
 		_footerContactUs.setStyleName("footerLinks");
+		_footerFaqs.removeStyleName("gwt-Hyperlink");
 		_footerFaqs.setStyleName("footerLinks");
+		_footerCareers.removeStyleName("gwt-Hyperlink");
 		_footerCareers.setStyleName("footerLinks");
 
 		_footerPanel.setSpacing(10);
 
 		_footerPanel.add(_footerAbout);
-		_footerPanel.add(new Label("|"));
+		_footerPanel.add(getSeparator());
 		_footerPanel.add(_footerContactUs);
-		_footerPanel.add(new Label("|"));
+		_footerPanel.add(getSeparator());
 		_footerPanel.add(_footerFaqs);
-		_footerPanel.add(new Label("|"));
+		_footerPanel.add(getSeparator());
 		_footerPanel.add(_footerCareers);
+	}
+
+	/**
+	 * @return
+	 */
+	private Label getSeparator() 
+	{
+		Label separator= new Label("|");
+		separator.setStyleName("separator");
+		return separator;
 	}
 
 	@Override

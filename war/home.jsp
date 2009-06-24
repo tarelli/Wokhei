@@ -23,7 +23,6 @@ function applyCufon()
 Cufon.replace('.fontAR');
 Cufon.replace('.signin, {hover: true}');
 Cufon.replace('.admin, {hover: true}');
-Cufon.replace('a2, {hover: true}');
 }
 </script>
 <noscript>Sorry, Javascript is disable in your browser, enable Javascript to use Wokhei.com</noscript>
