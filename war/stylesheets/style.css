@@ -83,7 +83,7 @@ div#page-wrap {
 	position: relative;
 	background: URL("../images/bodytile.png");
 	min-height: 700px;
-	z-index: 1;
+	z-index: 0;
 }
 
 .footer {
@@ -291,7 +291,6 @@ select {
 }
 
 /* FOOTER_PANEL */
-
 .footerPanel {
 	position: absolute;
 	left: 50px;
@@ -302,14 +301,14 @@ select {
 	color: white;
 }
 
-.footerLinks a{
+.footerLinks a {
 	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 	font-size: 10pt;
-	color: white;	
-	cursor:pointer;
+	color: white;
+	cursor: pointer;
 }
 
-.footerLinks a:hover{
+.footerLinks a:hover {
 	font-size: 12pt;
 }
 
@@ -449,7 +448,6 @@ select {
 	height: 26px;
 }
 
-
 .orderSubmitter {
 	width: 300px;
 	height: 350px;
@@ -466,7 +464,7 @@ select {
 	padding-right: 0px;
 	padding-bottom: 1px;
 	padding-left: 2px;
-	height: 18px color :       #000000;
+	height: 18px color :         #000000;
 	font-size: 11pt;
 }
 
@@ -680,7 +678,19 @@ select {
 .orderList {
 	padding: 2px;
 	margin-bottom: 6px;
-	font-family: "Trebuchet MS", Verdana, Arial, font-size :     10pt;
+	font-family: "Trebuchet MS", Verdana, Arial, font-size :       10pt;
+}
+
+.timerGreen {
+	color: green;
+}
+
+.timerOrange {
+	color: orange;
+}
+
+.timerRed {
+	color: red;
 }
 
 /*paginator stuff - shit don't work!*/ /***
@@ -706,12 +716,13 @@ select {
    * @author Joe Toth (joetoth@gmail.com)
    * 
    */
+
 .gwt-Hyperlink a{
-	font-size: 10pt;
-	color: black;
-	font-family: "Trebuchet MS", Gadget, sans-serif;
-	font-size:  12pt;
-	font-style: bold;
+font-size:10pt;
+color:black;
+font-family:"Trebuchet MS",Gadget,sans-serif;
+font-size:12pt;
+font-style:bold;
 }
 
 .gwt-Hyperlink a:visited {
@@ -726,7 +737,8 @@ select {
 	border: solid 1px;
 	border-color: #bf007e;
 	background-color: #f3d3e6;
-	cursor: pointer; color : #bf007e;
+	cursor: pointer;
+	color: #bf007e;
 	width: 80px;
 	color: #bf007e;
 }

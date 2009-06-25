@@ -456,8 +456,9 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 					public void populateRow(PaginationBehavior pagination, int row,
 							Object object) {
 						OrderDTO order=(OrderDTO)object;
-						float diffHours = DateDifferenceCalculator.getDifferenceInHours(order.getDate(), _serverTimeStamp);
-						int missingTime = (int)(24f - diffHours);
+						//FIXME accepted date to be used!
+						float diffHours = DateDifferenceCalculator.getDifferenceInHours(_serverTimeStamp,order.getDate());
+						float missingTime = (24f+diffHours);
 
 						//The header row will be added afterward (apparently, it's 2am we might be wrong)
 						final int frow = row +1 ;
@@ -471,17 +472,11 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 						_ordersFlexTable.setText(row,Columns.DATE.ordinal(),  fmt.format(order.getDate()));
 						_ordersFlexTable.setWidget(row, Columns.STATUS.ordinal(), getStatusImage(order.getStatus().toString(),order.getId()));
 
-						String timerStr = "N/A";
-						if(missingTime>0 && missingTime<=24f)
+						if((order.getStatus() != Status.REJECTED))
 						{
-							timerStr = "-" + String.valueOf(missingTime) + " hrs";
-						}
-						else if (order.getStatus() != Status.REJECTED)
-						{
-							timerStr = "Expired";
+							_ordersFlexTable.setWidget(row, Columns.TIMER.ordinal(), getTimerLabel(Float.valueOf((int)((missingTime*-1+0.005f)*10.0f)/10.0f)));
 						}
 
-						_ordersFlexTable.setText(row, Columns.TIMER.ordinal(), timerStr);
 
 						if(order.getStatus()==Status.INCOMING)
 						{
@@ -826,6 +821,28 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 			}
 
 		});
+	}
+
+	/**
+	 * @param result
+	 * @return
+	 */
+	private Label getTimerLabel(Float value) 
+	{
+		Label timerLabel=new Label(value+ " hrs");
+		if(value<5f)
+		{
+			timerLabel.addStyleName("timerGreen");
+		}
+		else if(value<1f)
+		{
+			timerLabel.addStyleName("timerOrange");
+		}
+		else
+		{
+			timerLabel.addStyleName("timerRed");
+		}
+		return timerLabel;
 	}
 
 	/**
