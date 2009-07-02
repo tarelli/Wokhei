@@ -21,6 +21,8 @@
 <%@ page import="com.brainz.wokhei.Order"%>
 <%@ page import="com.brainz.wokhei.PMF"%>
 <%@ page import="com.brainz.wokhei.server.EmailSender"%>
+<%@ page import="com.brainz.wokhei.server.OrderServiceImpl" %>
+<%@ page import="com.brainz.wokhei.shared.FileType" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -91,11 +93,45 @@
 			}
 			else if(diffHours > 24)
 			{
-				// need to put some check here to see if it's really ready 
+				OrderServiceImpl orderService = new OrderServiceImpl();
+			
+				// check here to see if it's really ready
+				if(orderService.hasFileUploaded(order.getId(), FileType.PDF_VECTORIAL_LOGO) || 
+				   orderService.hasFileUploaded(order.getId(), FileType.PNG_LOGO_PRESENTATION) ||
+				   orderService.hasFileUploaded(order.getId(), FileType.PNG_LOGO))
+				{
+				// update status
 				order.setStatus(Status.READY);
 				updatedOrders.add(order);
 				
+				//-----------------------------------------------------------------------------
 				//send an email with attachment (or link) to the user
+				Properties props = new Properties();
+			    Session sessionX = Session.getDefaultInstance(props, null);
+			
+			    String msgBody = "This is a notification from wokhei.com : your stir fried logo is ready! \n\n";
+			    for(Order updatedOrder :updatedOrders)
+			    {
+			    	//add updated orders to email
+			    	msgBody+= 	"Logo Details: \n" +
+			    				"ID: " + updatedOrder.getId() + "\n" + 
+			    				"Text: " + updatedOrder.getText() + "\n" + 
+			    				"Tags: " + updatedOrder.getTags().toString() + "\n" + 
+			    				"Colour: " + updatedOrder.getColour().toString() + "\n" + 
+			    				updatedOrder.getTags().toString() + "\n" + 
+			    				"\n" +
+			    				"Visit [ http://www.wokhei.com ] to view and download your stir fried logo!";
+			    }
+			
+			    List<String> recipients = new ArrayList<String>();
+			    recipients.add(order.getCustomer().getEmail());
+			    // TODO: remove test emails
+			    recipients.add("matteo.cantarelli@wokhei.com");
+			    recipients.add("giovanni.idili@wokhei.com");
+			    
+			    EmailSender.sendEmail("yourlogo@wokhei.com", recipients, "Your Stir Fried Logo is Ready!", msgBody);
+			    //-----------------------------------------------------------------------------
+				}
 			}	
 		}
 		
@@ -130,7 +166,8 @@
     recipients.add("giovanni.idili@wokhei.com");
     
     EmailSender.sendEmail("yourlogo@wokhei.com", recipients, "updateOrderStatus Job - " + serverDate.toString(), msgBody);
-	
+    //-----------------------------------------------------------------------------
+    
     // log end of job
 	log.info(" --> updateOrderStatus Job END <--");
 %>
