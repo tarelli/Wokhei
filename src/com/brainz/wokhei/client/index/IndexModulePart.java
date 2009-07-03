@@ -3,10 +3,7 @@
  */
 package com.brainz.wokhei.client.index;
 
-import pl.rmalinowski.gwt2swf.client.ui.SWFWidget;
-
 import com.brainz.wokhei.client.common.AModulePart;
-import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.RootPanel;
 
 /**
@@ -23,13 +20,13 @@ public class IndexModulePart extends AModulePart {
 	{
 		if(RootPanel.get("indexBodyPart")!=null)
 		{
-			AbsolutePanel mainPanel= new AbsolutePanel();
-			SWFWidget swfWidget = new SWFWidget("./videos/Wokhei.m4v");
-			swfWidget.setWidth("100%");
-			swfWidget.setHeight("100%");
-			RootPanel.get("indexBodyPart").add(swfWidget);
-
-			applyCufon();
+			//			AbsolutePanel mainPanel= new AbsolutePanel();
+			//			SWFWidget swfWidget = new SWFWidget("./videos/Wokhei.m4v");
+			//			swfWidget.setWidth("100%");
+			//			swfWidget.setHeight("100%");
+			//			RootPanel.get("indexBodyPart").add(swfWidget);
+			//
+			//			applyCufon();
 
 		}
 		//		<div class="takeTour">Take a tour!</div>
