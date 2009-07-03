@@ -95,11 +95,15 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	private final PopupPanel _uploadPopupPanel=new PopupPanel(true);
 
 	// add admin stuff
-	private final VerticalPanel _addAdminPanel = new VerticalPanel();
+	private final VerticalPanel _configPanel = new VerticalPanel();
 	private final PopupPanel _optionsPopupPanel = new PopupPanel(true);
 	private final TextBox _addAdminTextBox = new TextBox();
 	private final Button _addAdminButton = new Button("Add Admin!");
 	private final Label _addAdminMsgLabel = new Label("");
+	private final Label _orderKillSwitchLbl = new Label("Order Killswitch");
+	private final Button _orderKillswitchButton = new Button("");
+	private final String ON = new String("OFF-->ON");
+	private final String OFF = new String("ON-->OFF");
 
 	// contains all the different filters needed
 	private final VerticalPanel _filteringPanel = new VerticalPanel();
@@ -120,9 +124,12 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	// filter button
 	private final Button _filterButton = new Button("Filter!");
 
+	// callbacks
 	private AsyncCallback<Long> _setOrderStatusCallback = null;
 	private AsyncCallback<Boolean> _addAdminCallback = null;
 	private AsyncCallback<Date> _getServerTimestampCallback = null;
+	private AsyncCallback<Boolean> _getOrderKillswitchCallback = null;
+	private AsyncCallback<Boolean> _setOrderKillswitchCallback = null;
 
 	//related with status update chaching during async call
 	private int _rowForClientStatusUpdate;
@@ -160,7 +167,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 			// the rest of the stuff is in initModulePartCore
 			// callled from the callback result of getServertimeStamp (the page depends on that)
-			// anche noto come METODO PUERCIS
+			// note: anche noto come METODO PUERCIS
 		}
 	}
 
@@ -204,13 +211,13 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	private void setupToolbarPanel() 
 	{
 		setupFiltersPanel();
-		setupAddAdminPanel();
+		setupConfigPanel();
 
 		_filteringPopupPanel.setStyleName("adminPopup");
 		_optionsPopupPanel.setStyleName("adminPopup");
 
 		_filteringPopupPanel.setWidget(_filteringPanel);
-		_optionsPopupPanel.setWidget(_addAdminPanel);
+		_optionsPopupPanel.setWidget(_configPanel);
 		_filteringImage.addStyleName("labelButton");
 		_optionsImage.addStyleName("labelButton");
 		_filteringImage.addClickHandler(new ClickHandler(){
@@ -233,15 +240,16 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	/**
 	 * 
 	 */
-	private void setupAddAdminPanel() 
+	private void setupConfigPanel() 
 	{
+		// setup add admin stuff
 		Label addAdminLbl = new Label("Add Admin");
 		addAdminLbl.setStylePrimaryName("label");
 
 		_addAdminTextBox.setText(Messages.ADMIN_ADD_ADMIN_DEFAULT_TXT.getString());
 		_addAdminButton.addStyleName("fontAR");
 		_addAdminButton.addClickHandler(new ClickHandler() {
-			//prepararsi alla porcata mondiale
+			// prepararsi alla porcata mondiale
 			public void onClick(ClickEvent event) {
 				if(	_addAdminTextBox.getText() != "" 
 					&& !_addAdminTextBox.getText().contains(" ") 
@@ -255,11 +263,43 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 					_addAdminMsgLabel.setText("Please insert a valid wokhei.com email");
 			}
 		});
-		_addAdminPanel.setSpacing(10);
-		_addAdminPanel.setVerticalAlignment(HorizontalPanel.ALIGN_MIDDLE);
-		_addAdminPanel.add(addAdminLbl);
-		_addAdminPanel.add(_addAdminTextBox);
-		_addAdminPanel.add(_addAdminButton);
+
+		// setup order Killswitch stuff
+		_orderKillSwitchLbl.setStylePrimaryName("label");
+		// the async handler of this will set correct text on the button
+		((OrderServiceAsync) getService(Service.ORDER_SERVICE)).getOrderKillswitch(_getOrderKillswitchCallback);
+		// click handler will call service to set killswitch 
+		_orderKillswitchButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				boolean setToOn;
+
+				// call set orderKillswitch on order service
+				if(_orderKillswitchButton.getText().equals(ON))
+				{
+					// if the button says OFF-->ON it means it's off
+					// so we need to set it to on
+					setToOn = true;
+				}
+				else
+				{
+					setToOn = false;
+				}
+
+				// the async handler of this will then set correct text on the button
+				((OrderServiceAsync) getService(Service.ORDER_SERVICE)).setOrderKillswitch(setToOn, _setOrderKillswitchCallback);
+			}
+		});
+
+
+
+		_configPanel.setSpacing(10);
+		_configPanel.setVerticalAlignment(HorizontalPanel.ALIGN_MIDDLE);
+		_configPanel.add(addAdminLbl);
+		_configPanel.add(_addAdminTextBox);
+		_configPanel.add(_addAdminButton);
+		_configPanel.add(_orderKillSwitchLbl);
+		_configPanel.add(_orderKillswitchButton);
+
 	}
 
 	/**
@@ -1001,6 +1041,57 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 				initModulePartCore();
 			}
 		};
+
+		_getOrderKillswitchCallback = new AsyncCallback<Boolean>() {
+
+			public void onSuccess(Boolean result) {
+				//update killswitch button
+				updateKillswitchButton(result);
+			}
+
+			public void onFailure(Throwable caught) {
+				//TODO - do something in case of failure
+			}
+		};
+
+		_setOrderKillswitchCallback = new AsyncCallback<Boolean>() {
+
+			public void onSuccess(Boolean result) {
+				// in this case the result is indicating if the operation was successful
+				// if operation was successful --> update killswitch button
+				if(result)
+				{
+					boolean textIsOn;
+
+					if(_orderKillswitchButton.getText().equals(ON))
+					{
+						textIsOn = true;
+					}
+					else
+					{
+						textIsOn = false;
+					}
+
+					updateKillswitchButton(textIsOn);
+				}
+			}
+
+			public void onFailure(Throwable caught) {
+				//TODO - do something in case of failure
+			}
+		};
+	}
+
+	protected void updateKillswitchButton(Boolean result) {
+		if(result)
+		{
+			_orderKillswitchButton.setText(OFF);
+		}
+		else
+		{
+			_orderKillswitchButton.setText(ON);
+		}
+
 	}
 
 	/**
@@ -1028,6 +1119,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 			// disable buttons 
 			//TODO --> decision to show or not row according to filters
 			VerticalPanel actionPanel = ((VerticalPanel)_ordersFlexTable.getWidget(_rowForClientStatusUpdate, Columns.ACTIONS.ordinal()));
+			//TODO --> va cabiata al classe css perche' non si capisce piu che se sono disabilitati
 			((Button)actionPanel.getWidget(0)).setEnabled(false);
 			((Button)actionPanel.getWidget(1)).setEnabled(false);
 		}

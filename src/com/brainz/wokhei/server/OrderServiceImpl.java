@@ -316,24 +316,23 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 		try
 		{
 
-			String fileSelectQuery = "select from " + WokheiConfig.class.getName();
-			Query fileQuery = pm.newQuery(fileSelectQuery);
-			fileQuery.setFilter("id == paramId");
-			fileQuery.declareParameters("java.lang.Long paramId");
-
+			String selectQuery = "select from " + WokheiConfig.class.getName();
+			Query query = pm.newQuery(selectQuery);
 			//execute
-			List<WokheiConfig> configOptions = (List<WokheiConfig>) fileQuery.execute(1);
+			List<WokheiConfig> configOptions = (List<WokheiConfig>) query.execute();
 
 			if(configOptions.isEmpty())
 			{
 				// need to create it if not already there
-				WokheiConfig config = new WokheiConfig(1, isOn);
+				WokheiConfig config = new WokheiConfig(isOn);
 				pm.makePersistent(config);
+				log.log(Level.INFO, "Order Killswitch set for the first time: " + isOn);
 			}
 			else
 			{
 				WokheiConfig config = configOptions.get(0);
 				config.setOrderKillswitch(isOn);
+				log.log(Level.INFO, "Order Killswitch set: " + isOn);
 			}
 
 			returnValue = true;
@@ -360,13 +359,11 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 		try
 		{
 
-			String fileSelectQuery = "select from " + WokheiConfig.class.getName();
-			Query fileQuery = pm.newQuery(fileSelectQuery);
-			fileQuery.setFilter("id == paramId");
-			fileQuery.declareParameters("java.lang.Long paramId");
+			String selectQuery = "select from " + WokheiConfig.class.getName();
+			Query query = pm.newQuery(selectQuery);
 
 			//execute
-			List<WokheiConfig> configOptions = (List<WokheiConfig>) fileQuery.execute(1);
+			List<WokheiConfig> configOptions = (List<WokheiConfig>) query.execute();
 
 			if(configOptions.isEmpty())
 			{

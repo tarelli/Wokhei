@@ -30,4 +30,8 @@ public interface OrderService extends RemoteService {
 	Long setOrderStatus(long orderID, Status newStatus);
 
 	Boolean hasFileUploaded(long orderID, FileType fileType); 
+
+	Boolean setOrderKillswitch(boolean isOn);
+
+	Boolean getOrderKillswitch();
 }

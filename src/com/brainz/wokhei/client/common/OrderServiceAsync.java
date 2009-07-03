@@ -29,4 +29,8 @@ public interface OrderServiceAsync extends IServiceAsync {
 
 	void hasFileUploaded(long orderID, FileType fileType, AsyncCallback<Boolean> callback);
 
+	void setOrderKillswitch(boolean isOn, AsyncCallback<Boolean> callback);
+
+	void getOrderKillswitch(AsyncCallback<Boolean> callback);
+
 }

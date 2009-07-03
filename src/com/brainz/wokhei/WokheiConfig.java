@@ -1,5 +1,6 @@
 package com.brainz.wokhei;
 
+import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
@@ -11,15 +12,14 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 public class WokheiConfig implements IsSerializable {
 
 	@PrimaryKey
-	@Persistent
+	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
 	private Long id;
 
 	@Persistent
 	private boolean orderKillswitch;
 
-	public WokheiConfig(long id, boolean orderKillswitch)
+	public WokheiConfig(boolean orderKillswitch)
 	{
-		this.id = id;
 		this.orderKillswitch = orderKillswitch;
 	}
 
