@@ -21,7 +21,7 @@ Cufon.replace('.signin, {hover: true}');
 Cufon.replace('.admin, {hover: true}');
 }
 </script>
-<noscript>Sorry, Javascript is disable in your browser,
+<noscript>Sorry, Javascript is disabled in your browser,
 enable Javascript to use Wokhei.com</noscript>
 
 <link href="/stylesheets/style.css" rel="stylesheet" type="text/css" />

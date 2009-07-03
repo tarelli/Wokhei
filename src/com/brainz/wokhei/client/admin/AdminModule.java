@@ -15,7 +15,7 @@ public class AdminModule implements EntryPoint {
 	 */
 	public void onModuleLoad() 
 	{
-		//Initialize Order Service
+		// Initialize Order Service
 		OrderServiceAsync orderService = GWT.create(OrderService.class);
 		UtilityServiceAsync utilityService = GWT.create(UtilityService.class);
 		AdminServiceAsync adminService = GWT.create(AdminService.class);
@@ -23,7 +23,7 @@ public class AdminModule implements EntryPoint {
 		// declare module parts
 		AdminOrderBrowserModulePart adminOrderBrowserModulePart = new AdminOrderBrowserModulePart();
 
-		//add required services to the module part
+		// add required services to the module part
 		adminOrderBrowserModulePart.addService(Service.ADMIN_SERVICE, adminService);
 		adminOrderBrowserModulePart.addService(Service.ORDER_SERVICE, orderService);
 		adminOrderBrowserModulePart.addService(Service.UTILITY_SERVICE,utilityService);
