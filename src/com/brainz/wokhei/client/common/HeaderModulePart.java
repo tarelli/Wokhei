@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.brainz.wokhei.client;
+package com.brainz.wokhei.client.common;
 
 import com.brainz.wokhei.resources.Images;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -25,18 +25,16 @@ public class HeaderModulePart extends AModulePart {
 	private AsyncCallback<String> _getUsernameCallback;
 
 	/* (non-Javadoc)
-	 * @see com.brainz.wokhei.client.AModulePart#initModulePart(com.brainz.wokhei.client.OrderServiceAsync, com.brainz.wokhei.client.UtilityServiceAsync)
+	 * @see com.brainz.wokhei.client.AModulePart#loadModulePart()
 	 */
 	@Override
-	public void initModulePart(OrderServiceAsync orderService,
-			UtilityServiceAsync utilityService, AdminServiceAsync adminService) 
+	public void loadModulePart() 
 	{
 		if(RootPanel.get("headerPanel")!=null)
 		{
-			super.initModulePart(orderService, utilityService, adminService);
 
 			hookUpCallbacks();
-			utilityService.getCurrentUsername(_getUsernameCallback);
+			((UtilityServiceAsync) getService(Service.UTILITY_SERVICE)).getCurrentUsername(_getUsernameCallback);
 			_mainPanel.setWidth("482px");
 			_mainPanel.setHorizontalAlignment(HorizontalPanel.ALIGN_RIGHT);
 			_welcomeUserLbl.setStyleName("username");

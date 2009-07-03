@@ -22,7 +22,7 @@ import com.brainz.wokhei.File;
 import com.brainz.wokhei.Order;
 import com.brainz.wokhei.PMF;
 import com.brainz.wokhei.WokheiConfig;
-import com.brainz.wokhei.client.OrderService;
+import com.brainz.wokhei.client.common.OrderService;
 import com.brainz.wokhei.resources.Messages;
 import com.brainz.wokhei.shared.FileType;
 import com.brainz.wokhei.shared.OrderDTO;

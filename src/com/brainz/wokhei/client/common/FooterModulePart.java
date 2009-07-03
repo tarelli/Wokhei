@@ -1,4 +1,4 @@
-package com.brainz.wokhei.client;
+package com.brainz.wokhei.client.common;
 
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
@@ -20,13 +20,14 @@ public class FooterModulePart extends AModulePart {
 	private final VerticalPanel _mainPanel = new VerticalPanel();
 	private final HorizontalPanel _footerPanel=new HorizontalPanel();
 
+	/* (non-Javadoc)
+	 * @see com.brainz.wokhei.client.common.AModulePart#loadModulePart()
+	 */
 	@Override
-	public void initModulePart(OrderServiceAsync orderService, UtilityServiceAsync utilityService, AdminServiceAsync adminService) 
+	public void loadModulePart() 
 	{
 		if(RootPanel.get("footerPanel")!=null)
 		{
-			super.initModulePart(orderService, utilityService, adminService);
-
 			setupFooterPanel();
 
 			_mainPanel.setWidth("900px");
@@ -71,6 +72,7 @@ public class FooterModulePart extends AModulePart {
 	@Override
 	public void updateModulePart() {
 		// TODO Auto-generated method stub
+
 	}
 
 }

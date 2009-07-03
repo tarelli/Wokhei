@@ -1,4 +1,4 @@
-package com.brainz.wokhei.client;
+package com.brainz.wokhei.client.admin;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;

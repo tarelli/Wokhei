@@ -1,13 +1,17 @@
 /**
  * 
  */
-package com.brainz.wokhei.client;
+package com.brainz.wokhei.client.home;
 
 import java.util.List;
 
-import com.brainz.wokhei.client.Validator.ColourErrors;
-import com.brainz.wokhei.client.Validator.LogoErrors;
-import com.brainz.wokhei.client.Validator.TagsErrors;
+import com.brainz.wokhei.client.common.AModulePart;
+import com.brainz.wokhei.client.common.MultipleTextBox;
+import com.brainz.wokhei.client.common.OrderServiceAsync;
+import com.brainz.wokhei.client.common.Service;
+import com.brainz.wokhei.client.home.Validator.ColourErrors;
+import com.brainz.wokhei.client.home.Validator.LogoErrors;
+import com.brainz.wokhei.client.home.Validator.TagsErrors;
 import com.brainz.wokhei.resources.Images;
 import com.brainz.wokhei.resources.Messages;
 import com.brainz.wokhei.resources.TagsOracle;
@@ -121,16 +125,13 @@ public class OrderSubmitterModulePart extends AModulePart {
 	private OrderDTO _submittedOrder = null;
 
 	@Override
-	public void initModulePart(OrderServiceAsync orderService, UtilityServiceAsync utilityService, AdminServiceAsync adminService) {
+	public void loadModulePart() {
 
 		if((RootPanel.get("orderSubmitter")!=null)&&
 				(RootPanel.get("orderSubmitterAlternateBody")!=null)&&
 				(RootPanel.get("orderSubmitterAlternateBodytile")!=null)&&
 				(RootPanel.get("orderSubmitterAlternateFooter")!=null))
 		{
-
-			super.initModulePart(orderService,utilityService, adminService);
-
 			hookUpCallbacks();
 
 			_mainPanel.setSpacing(10);
@@ -408,9 +409,6 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 	}
 
-	public static native void applyCufon() /*-{
-	  $wnd.applyCufon();
-	}-*/;
 
 	private void setOkImagesVisibility(boolean visible)
 	{
@@ -552,7 +550,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 			_submittedOrder.setText(_logoTextBox.getText());
 			_submittedOrder.setColour(_selectedColour);
 
-			_orderService.submitOrder(_submittedOrder, _submitOrderCallback);	
+			((OrderServiceAsync) getService(Service.ORDER_SERVICE)).submitOrder(_submittedOrder, _submitOrderCallback);	
 		}
 	}
 
@@ -676,7 +674,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 	 */
 	protected void setViewByLatestOrder() 
 	{
-		_orderService.getOrdersForCurrentUser(_getOrdersCallback);
+		((OrderServiceAsync) getService(Service.ORDER_SERVICE)).getOrdersForCurrentUser(_getOrdersCallback);
 	}
 
 
