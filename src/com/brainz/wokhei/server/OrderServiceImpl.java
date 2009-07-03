@@ -21,6 +21,7 @@ import org.gwtwidgets.client.ui.pagination.Results;
 import com.brainz.wokhei.File;
 import com.brainz.wokhei.Order;
 import com.brainz.wokhei.PMF;
+import com.brainz.wokhei.WokheiConfig;
 import com.brainz.wokhei.client.OrderService;
 import com.brainz.wokhei.resources.Messages;
 import com.brainz.wokhei.shared.FileType;
@@ -303,6 +304,91 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 
 		isFileUploaded=!files.isEmpty();
 		return isFileUploaded;
+	}
+
+	public synchronized Boolean setOrderKillswitch(boolean isOn)
+	{
+		// returnValue shows success of the setting operation
+		Boolean returnValue = false;
+
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+
+		try
+		{
+
+			String fileSelectQuery = "select from " + WokheiConfig.class.getName();
+			Query fileQuery = pm.newQuery(fileSelectQuery);
+			fileQuery.setFilter("id == paramId");
+			fileQuery.declareParameters("java.lang.Long paramId");
+
+			//execute
+			List<WokheiConfig> configOptions = (List<WokheiConfig>) fileQuery.execute(1);
+
+			if(configOptions.isEmpty())
+			{
+				// need to create it if not already there
+				WokheiConfig config = new WokheiConfig(1, isOn);
+				pm.makePersistent(config);
+			}
+			else
+			{
+				WokheiConfig config = configOptions.get(0);
+				config.setOrderKillswitch(isOn);
+			}
+
+			returnValue = true;
+		}
+		catch(Exception e)
+		{
+			log.log(Level.SEVERE, e.toString());
+		}
+		finally
+		{
+			pm.close();
+		}
+
+		return returnValue;
+	}
+
+	public synchronized Boolean getOrderKillswitch()
+	{
+		// returnValue shows success of the setting operation
+		Boolean returnValue = false;
+
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+
+		try
+		{
+
+			String fileSelectQuery = "select from " + WokheiConfig.class.getName();
+			Query fileQuery = pm.newQuery(fileSelectQuery);
+			fileQuery.setFilter("id == paramId");
+			fileQuery.declareParameters("java.lang.Long paramId");
+
+			//execute
+			List<WokheiConfig> configOptions = (List<WokheiConfig>) fileQuery.execute(1);
+
+			if(configOptions.isEmpty())
+			{
+				// if there's nothing there then false (no-one ever set it)
+				returnValue = false;
+			}
+			else
+			{
+				WokheiConfig config = configOptions.get(0);
+				returnValue = config.getOrderKillswitch();
+			}
+		}
+		catch(Exception e)
+		{
+			log.log(Level.SEVERE, e.toString());
+		}
+		finally
+		{
+			pm.close();
+		}
+
+		return returnValue;
 	}
 
 }
