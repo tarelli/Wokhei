@@ -1,11 +1,14 @@
 /**
  * 
  */
-package com.brainz.wokhei.client;
+package com.brainz.wokhei.client.home;
 
 import java.util.Arrays;
 import java.util.List;
 
+import com.brainz.wokhei.client.common.AModulePart;
+import com.brainz.wokhei.client.common.OrderServiceAsync;
+import com.brainz.wokhei.client.common.Service;
 import com.brainz.wokhei.resources.Images;
 import com.brainz.wokhei.resources.Messages;
 import com.brainz.wokhei.shared.OrderDTO;
@@ -75,11 +78,10 @@ public class OrderBrowserModulePart extends AModulePart{
 
 
 	@Override
-	public void initModulePart(OrderServiceAsync orderService, UtilityServiceAsync utilityService, AdminServiceAsync adminService) 
+	public void loadModulePart() 
 	{
 		if(RootPanel.get("ordersBrowser")!=null)
 		{
-			super.initModulePart(orderService,utilityService, adminService);
 
 			hookUpCallbacks();
 
@@ -218,7 +220,7 @@ public class OrderBrowserModulePart extends AModulePart{
 				{
 					if(_setOrderStatusCallback!=null)
 					{
-						_orderService.setOrderStatus(_currentOrder.getId(),Status.VIEWED, _setOrderStatusCallback);
+						((OrderServiceAsync) getService(Service.ORDER_SERVICE)).setOrderStatus(_currentOrder.getId(),Status.VIEWED, _setOrderStatusCallback);
 					}
 				}
 
@@ -238,7 +240,7 @@ public class OrderBrowserModulePart extends AModulePart{
 	 */
 	protected void getOrdersForCurrentCustomer() 
 	{
-		_orderService.getOrdersForCurrentUser(_getOrdersCallback);
+		((OrderServiceAsync) getService(Service.ORDER_SERVICE)).getOrdersForCurrentUser(_getOrdersCallback);
 	}
 
 	/**
@@ -256,10 +258,6 @@ public class OrderBrowserModulePart extends AModulePart{
 	{
 		_currentOrder=OrderDTOUtils.getPreviousOrder(_orders,_currentOrder);
 	}
-
-	public static native void applyCufon() /*-{
-	  $wnd.applyCufon();
-	}-*/;
 
 	/**
 	 * 

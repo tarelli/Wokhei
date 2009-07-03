@@ -1,4 +1,4 @@
-package com.brainz.wokhei.client;
+package com.brainz.wokhei.client.admin;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -11,6 +11,10 @@ import org.gwtwidgets.client.ui.pagination.PaginationBehavior;
 import org.gwtwidgets.client.ui.pagination.PaginationParameters;
 import org.gwtwidgets.client.ui.pagination.RowRenderer;
 
+import com.brainz.wokhei.client.common.AModulePart;
+import com.brainz.wokhei.client.common.OrderServiceAsync;
+import com.brainz.wokhei.client.common.Service;
+import com.brainz.wokhei.client.common.UtilityServiceAsync;
 import com.brainz.wokhei.resources.Images;
 import com.brainz.wokhei.resources.Messages;
 import com.brainz.wokhei.shared.DateDifferenceCalculator;
@@ -140,21 +144,14 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 	private Date _serverTimeStamp = null;
 
-	public static native void applyCufon() /*-{
-	  $wnd.applyCufon();
-	}-*/;
-
-
 	/* (non-Javadoc)
 	 * @see com.brainz.wokhei.client.AModulePart#initModulePart(com.brainz.wokhei.client.OrderServiceAsync, com.brainz.wokhei.client.UtilityServiceAsync, com.brainz.wokhei.client.AdminServiceAsync)
 	 */
 	@Override
-	public void initModulePart(OrderServiceAsync orderService, UtilityServiceAsync utilityService, AdminServiceAsync adminService) 
+	public void loadModulePart() 
 	{
 		if(RootPanel.get("adminConsole")!=null)
 		{
-			super.initModulePart(orderService, utilityService, adminService);
-
 			hookUpCallbacks();
 
 			getServerTimeStamp();
@@ -198,7 +195,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	private void getServerTimeStamp() 
 	{
 		//get server time stamp - sets variable for populating timer field
-		_utilityService.getServerTimestamp(_getServerTimestampCallback);
+		((UtilityServiceAsync) getService(Service.UTILITY_SERVICE)).getServerTimestamp(_getServerTimestampCallback);
 	}
 
 	/**
@@ -251,7 +248,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 					&& !(_addAdminTextBox.getText() == Messages.ADMIN_ADD_ADMIN_DEFAULT_TXT.getString())
 					&& _addAdminTextBox.getText().endsWith("@wokhei.com"))
 				{
-					_adminService.addAdmin(_addAdminTextBox.getText(), _addAdminCallback);
+					((AdminServiceAsync) getService(Service.ADMIN_SERVICE)).addAdmin(_addAdminTextBox.getText(), _addAdminCallback);
 					_optionsPopupPanel.hide();
 				}
 				else
@@ -557,7 +554,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 						Date startDate = getStartDateFilter();
 						Date endDate = getEndDateFilter();
 
-						_orderService.getOrdersByUserAndStatus(
+						((OrderServiceAsync) getService(Service.ORDER_SERVICE)).getOrdersByUserAndStatus(
 								status, 
 								userEmail,
 								startDate,
@@ -790,7 +787,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 		if(tags!=null)
 			_uploadTags.setText(tags);
 
-		_orderService.hasFileUploaded(orderId, FileType.PNG_LOGO, new AsyncCallback<Boolean>(){
+		((OrderServiceAsync) getService(Service.ORDER_SERVICE)).hasFileUploaded(orderId, FileType.PNG_LOGO, new AsyncCallback<Boolean>(){
 
 			public void onFailure(Throwable caught) {
 				_isRasterizedImageUploaded.setUrl(Images.NOK.getImageURL());
@@ -800,7 +797,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 				_isRasterizedImageUploaded.setUrl(getImageUrl(result));
 			}});
 
-		_orderService.hasFileUploaded(orderId, FileType.PDF_VECTORIAL_LOGO, new AsyncCallback<Boolean>(){
+		((OrderServiceAsync) getService(Service.ORDER_SERVICE)).hasFileUploaded(orderId, FileType.PDF_VECTORIAL_LOGO, new AsyncCallback<Boolean>(){
 
 			public void onFailure(Throwable caught) {
 				_isVectorialImageUploaded.setUrl(Images.NOK.getImageURL());
@@ -810,7 +807,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 				_isVectorialImageUploaded.setUrl(getImageUrl(result));
 			}});
 
-		_orderService.hasFileUploaded(orderId, FileType.PNG_LOGO_PRESENTATION, new AsyncCallback<Boolean>(){
+		((OrderServiceAsync) getService(Service.ORDER_SERVICE)).hasFileUploaded(orderId, FileType.PNG_LOGO_PRESENTATION, new AsyncCallback<Boolean>(){
 
 			public void onFailure(Throwable caught) {
 				_isPresentationImageUploaded.setUrl(Images.NOK.getImageURL());
@@ -916,7 +913,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 				case QUALITY_GATE:
 				case READY:
 
-					_orderService.hasFileUploaded(orderId, FileType.PNG_LOGO, new AsyncCallback<Boolean>(){
+					((OrderServiceAsync) getService(Service.ORDER_SERVICE)).hasFileUploaded(orderId, FileType.PNG_LOGO, new AsyncCallback<Boolean>(){
 						public void onFailure(Throwable caught) 
 						{
 						}
@@ -1053,7 +1050,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 		_statusForClientUpdate = status;
 
 		//call setOrderStatus callback
-		_orderService.setOrderStatus(orderId, status, _setOrderStatusCallback);
+		((OrderServiceAsync) getService(Service.ORDER_SERVICE)).setOrderStatus(orderId, status, _setOrderStatusCallback);
 	}
 
 	/* (non-Javadoc)

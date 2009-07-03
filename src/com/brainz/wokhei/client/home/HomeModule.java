@@ -1,8 +1,15 @@
 /**
  * 
  */
-package com.brainz.wokhei.client;
+package com.brainz.wokhei.client.home;
 
+import com.brainz.wokhei.client.common.FooterModulePart;
+import com.brainz.wokhei.client.common.HeaderModulePart;
+import com.brainz.wokhei.client.common.OrderService;
+import com.brainz.wokhei.client.common.OrderServiceAsync;
+import com.brainz.wokhei.client.common.Service;
+import com.brainz.wokhei.client.common.UtilityService;
+import com.brainz.wokhei.client.common.UtilityServiceAsync;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 
@@ -21,7 +28,7 @@ public class HomeModule implements EntryPoint {
 		//Initialize Order Service
 		OrderServiceAsync orderService = GWT.create(OrderService.class);
 		UtilityServiceAsync utilityService = GWT.create(UtilityService.class);
-		AdminServiceAsync adminService = GWT.create(AdminService.class);
+
 
 		//Create the module parts
 		HeaderModulePart headerModulePart = new HeaderModulePart();
@@ -32,10 +39,15 @@ public class HomeModule implements EntryPoint {
 		//Initialize the module parts
 		orderSubmitterModulePart.addModulePartListener(orderBrowserModulePart);
 
-		orderBrowserModulePart.initModulePart(orderService, utilityService, adminService);
-		orderSubmitterModulePart.initModulePart(orderService, utilityService, adminService);
-		headerModulePart.initModulePart(orderService, utilityService, adminService);
-		footerModulePart.initModulePart(orderService, utilityService, adminService);
+		//Add the services used in each module part
+		orderSubmitterModulePart.addService(Service.ORDER_SERVICE, orderService);
+		orderBrowserModulePart.addService(Service.ORDER_SERVICE, orderService);
+		headerModulePart.addService(Service.UTILITY_SERVICE,utilityService);
+
+		orderBrowserModulePart.initModulePart();
+		orderSubmitterModulePart.initModulePart();
+		headerModulePart.initModulePart();
+		footerModulePart.initModulePart();
 	}
 
 }

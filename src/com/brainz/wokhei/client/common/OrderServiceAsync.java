@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.brainz.wokhei.client;
+package com.brainz.wokhei.client.common;
 
 import java.util.Date;
 import java.util.List;
@@ -17,7 +17,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * @author matteocantarelli
  *
  */
-public interface OrderServiceAsync {
+public interface OrderServiceAsync extends IServiceAsync {
 
 	void getOrdersForCurrentUser(AsyncCallback<List<OrderDTO>> callback);
 

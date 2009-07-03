@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.brainz.wokhei.client;
+package com.brainz.wokhei.client.home;
 
 import com.brainz.wokhei.shared.Colour;
 

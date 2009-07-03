@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.brainz.wokhei.client;
+package com.brainz.wokhei.client.common;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;

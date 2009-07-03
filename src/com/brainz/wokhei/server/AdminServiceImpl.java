@@ -7,7 +7,7 @@ import javax.jdo.PersistenceManager;
 
 import com.brainz.wokhei.Admin;
 import com.brainz.wokhei.PMF;
-import com.brainz.wokhei.client.AdminService;
+import com.brainz.wokhei.client.admin.AdminService;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;

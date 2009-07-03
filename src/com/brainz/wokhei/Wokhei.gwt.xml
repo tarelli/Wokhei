@@ -4,7 +4,8 @@
   <!-- Inherit the core Web Toolkit stuff.                        -->
   <inherits name='com.google.gwt.user.User'/>
   <inherits name='com.codelathe.gwt.ss'/>
-  <inherits name='org.gwtwidgets.WidgetLibrary'/> 
+  <inherits name='org.gwtwidgets.WidgetLibrary'/>
+  <inherits name='pl.rmalinowski.gwt2swf.GWT2SWF'/> 
   <source path="shared"/>
   <source path="client"/>
   <source path="resources"/>
@@ -20,6 +21,12 @@
   <!-- Other module inherits                                      -->
 
   <!-- Specify the app entry point class.                         -->
-  	<entry-point class='com.brainz.wokhei.client.HomeModule'/>
-  	<entry-point class='com.brainz.wokhei.client.AdminModule'/>
+  	<entry-point class='com.brainz.wokhei.client.home.HomeModule'/>
+  	<entry-point class='com.brainz.wokhei.client.admin.AdminModule'/>
+  	<entry-point class='com.brainz.wokhei.client.index.IndexModule'/>
+  	<entry-point class='com.brainz.wokhei.client.about.AboutModule'/>
+  	<entry-point class='com.brainz.wokhei.client.careers.CareersModule'/>
+  	<entry-point class='com.brainz.wokhei.client.faq.FaqModule'/>
+
+
 </module>

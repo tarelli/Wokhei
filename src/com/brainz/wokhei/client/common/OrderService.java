@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.brainz.wokhei.client;
+package com.brainz.wokhei.client.common;
 
 import java.util.Date;
 import java.util.List;
