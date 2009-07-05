@@ -76,7 +76,12 @@ public enum Messages {
 	UPLOAD("Upload!"),
 
 	EMAIL_ORDER_ACCEPTED("Your recent Logo Order has been ACCEPTED by Wokhei - it will be ready in 24h:/n"),
-	EMAIL_ORDER_REJECTED("Your recent Logo Order has been REJECTED by Wokhei:/n"),
+	EMAIL_ORDER_REJECTED("Your recent Logo Order has been REJECTED by Wokhei:/n"), 
+
+	//INDEX
+	WATCH_A_VIDEO("Watch a video"),
+	HIDE_VIDEO("Hide video"), 
+	LOGIN("Login")
 	;
 
 	private String _text;

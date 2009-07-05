@@ -43,12 +43,16 @@ enable Javascript to use Wokhei.com</noscript>
 
 <div id="page-wrap">
 
-<div class="header"></div>
+<div class="header">
+<div id="indexHeaderPanel" class="indexHeaderPanel"></div>
+</div>
 <div class="body">
 <div id="indexBodyPart" class="indexBodyPart"></div>
 </div>
-<div class="bodytile"></div>
-<div class="footer"></div>
+<div class="bodytileIndex"></div>
+<div class="footer">
+<div id="footerPanel" class="footerPanel"></div>
+</div>
 
 </div>
 

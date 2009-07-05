@@ -24,7 +24,8 @@ public enum Images {
 	OPTIONS("./images/options.png"),
 
 	INFOS("./images/legend.png"), 
-	BETA("./images/beta.png")
+	BETA("./images/beta.png"), 
+	TWITTER("./images/twitter.png"),
 	;
 
 	String _imageName;
