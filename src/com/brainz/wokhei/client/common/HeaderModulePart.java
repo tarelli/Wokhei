@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * @author matteocantarelli
@@ -61,6 +62,7 @@ public class HeaderModulePart extends AModulePart {
 				logout.addStyleName("labelLink");
 				logout.addStyleName("fontAR");
 				_mainPanel.add(logout);
+				_mainPanel.add(getNewWhiteSpace());
 
 			}
 			else
@@ -116,6 +118,8 @@ public class HeaderModulePart extends AModulePart {
 			RootPanel.get("headerPanel").add(wokheiHover,10,10);
 
 			RootPanel.get("headerPanel").add(new Image(Images.BETA.getImageURL()), 222, 35);
+
+			applyCufon();
 		}
 	}
 
@@ -127,6 +131,17 @@ public class HeaderModulePart extends AModulePart {
 		_welcomeUserLbl.setText(processUsername(username));
 	}
 
+
+	/**
+	 * @return
+	 */
+	private Widget getNewWhiteSpace() 
+	{
+		Label whiteSpace=new Label();
+		whiteSpace.setWidth("5px");
+		whiteSpace.setHeight("5px");
+		return whiteSpace;
+	}
 
 	/**
 	 * @param username
