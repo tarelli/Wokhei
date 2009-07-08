@@ -1,7 +1,9 @@
 package com.brainz.wokhei.client.common;
 
+import com.brainz.wokhei.resources.Images;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -34,11 +36,12 @@ public class FooterModulePart extends AModulePart {
 			_mainPanel.setHorizontalAlignment(HorizontalPanel.ALIGN_CENTER);
 			_mainPanel.add(_footerPanel);
 
-			RootPanel.get("footerPanel").add(_mainPanel);
+			RootPanel.get("footerPanel").add(_mainPanel,0,70);
 		}
 	}
 
 	private void setupFooterPanel() {
+
 		_footerAbout.removeStyleName("gwt-Hyperlink");
 		_footerAbout.setStyleName("footerLinks");
 		_footerContactUs.removeStyleName("gwt-Hyperlink");
@@ -49,10 +52,17 @@ public class FooterModulePart extends AModulePart {
 		_footerCareers.setStyleName("footerLinks");
 
 		_footerPanel.setSpacing(10);
+		_footerPanel.setVerticalAlignment(HorizontalPanel.ALIGN_MIDDLE);
+		Image twitter=new Image(Images.TWITTER.getImageURL());
+		twitter.setStyleName("twitter");
+		twitter.setWidth("107px");
 
+		_footerPanel.add(twitter);
 		_footerPanel.add(_footerAbout);
 		_footerPanel.add(getSeparator());
 		_footerPanel.add(_footerContactUs);
+		_footerPanel.add(getSeparator());
+		_footerPanel.add(twitter);
 		_footerPanel.add(getSeparator());
 		_footerPanel.add(_footerFaqs);
 		_footerPanel.add(getSeparator());

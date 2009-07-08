@@ -81,7 +81,16 @@ public enum Messages {
 	//INDEX
 	WATCH_A_VIDEO("Watch a video"),
 	HIDE_VIDEO("Hide video"), 
-	LOGIN("Login")
+	LOGIN("Login to Wokhei"), 
+	LOGIN_TIP("Click here if you don't have a Google Account"),
+	FIRST_STEP_TITLE("Request your logo"),
+	SECOND_STEP_TITLE("Wait 24hrs"),
+	THIRD_STEP_TITLE("Your logo is ready!"),
+	FIRST_STEP("You want a logo for your prdoduct, company, service? Tell us its name, up to five tags that describe what the logo is for and your preference for the main colour, as easy as that!"),
+	SECOND_STEP("Your request gets accepted and assigned to one of the graphic designers in the Wokhei network with expertise in your product area. He will design your logo in 24hrs."),
+	THIRD_STEP("You have the exclusive to buy the logo for 24hrs since the first time you view it to be sure that noone but you will use it and to be free to use the logo with the Wokhei Commercial Licence. Or you can use it for free under the Wokhei Limited Licence."), 
+	THE_BIG_PURPLE("Give it the Wokhei touch!"),
+	INDEX_COPYRIGHT("\u00a9 2009 Wokhei");
 	;
 
 	private String _text;
