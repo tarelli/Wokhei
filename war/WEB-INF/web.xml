@@ -5,6 +5,14 @@
 
 <web-app xmlns="http://java.sun.com/xml/ns/javaee" version="2.5">
 	<servlet>
+		<servlet-name>loginService</servlet-name>
+		<servlet-class>com.brainz.wokhei.server.LoginServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>loginService</servlet-name>
+		<url-pattern>/wokhei/login</url-pattern>
+	</servlet-mapping>
+	<servlet>
 		<servlet-name>orderservice</servlet-name>
 		<servlet-class>com.brainz.wokhei.server.OrderServiceImpl</servlet-class>
 	</servlet>

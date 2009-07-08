@@ -3,6 +3,7 @@
  */
 package com.brainz.wokhei.client.home;
 
+import com.brainz.wokhei.client.common.AModule;
 import com.brainz.wokhei.client.common.FooterModulePart;
 import com.brainz.wokhei.client.common.HeaderModulePart;
 import com.brainz.wokhei.client.common.OrderService;
@@ -10,14 +11,15 @@ import com.brainz.wokhei.client.common.OrderServiceAsync;
 import com.brainz.wokhei.client.common.Service;
 import com.brainz.wokhei.client.common.UtilityService;
 import com.brainz.wokhei.client.common.UtilityServiceAsync;
-import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.RootPanel;
 
 /**
  * @author matteocantarelli
  *
  */
-public class HomeModule implements EntryPoint {
+public class HomeModule extends AModule{
 
 
 	/* (non-Javadoc)
@@ -25,6 +27,31 @@ public class HomeModule implements EntryPoint {
 	 */
 	public void onModuleLoad() 
 	{
+		if(RootPanel.get("home")!=null)
+		{
+			initModule();
+
+		}
+
+	}
+
+
+	/* (non-Javadoc)
+	 * @see com.brainz.wokhei.client.common.AModule#loadModule()
+	 */
+	@Override
+	public void loadModule() 
+	{
+		if(getLoginInfo().isLoggedIn()) {
+			loadHome();
+		} else 
+		{
+			Window.open(GWT.getHostPageBaseURL()+"index.jsp", "_self", "");				
+		}
+	}
+
+
+	private void loadHome() {
 		//Initialize Order Service
 		OrderServiceAsync orderService = GWT.create(OrderService.class);
 		UtilityServiceAsync utilityService = GWT.create(UtilityService.class);
@@ -44,10 +71,10 @@ public class HomeModule implements EntryPoint {
 		orderBrowserModulePart.addService(Service.ORDER_SERVICE, orderService);
 		headerModulePart.addService(Service.UTILITY_SERVICE,utilityService);
 
-		orderBrowserModulePart.initModulePart();
-		orderSubmitterModulePart.initModulePart();
-		headerModulePart.initModulePart();
-		footerModulePart.initModulePart();
+		orderBrowserModulePart.initModulePart(this);
+		orderSubmitterModulePart.initModulePart(this);
+		headerModulePart.initModulePart(this);
+		footerModulePart.initModulePart(this);
 	}
 
 }

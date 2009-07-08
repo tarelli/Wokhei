@@ -17,7 +17,7 @@ public class AboutModulePart extends AModulePart {
 	@Override
 	public void loadModulePart() 
 	{
-
+		applyCufon();
 	}
 
 	/* (non-Javadoc)

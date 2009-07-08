@@ -17,13 +17,14 @@ public abstract class AModulePart {
 
 	protected Map<Service, IServiceAsync> _services=new HashMap<Service, IServiceAsync>();
 	private final List<AModulePart> _moduleParts=new ArrayList<AModulePart>();
-
+	protected AModule _parentModule;
 
 	/**
 	 * Init the panel 
 	 */
-	public void initModulePart()
+	public void initModulePart(AModule parentModule)
 	{
+		_parentModule=parentModule;
 		loadModulePart();
 	}
 
@@ -86,6 +87,14 @@ public abstract class AModulePart {
 	public void addModulePartListener(AModulePart modulePart)
 	{
 		_moduleParts.add(modulePart);
+	}
+
+	/**
+	 * @return
+	 */
+	public AModule getModule()
+	{
+		return _parentModule;
 	}
 
 }

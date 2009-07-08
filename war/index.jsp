@@ -30,22 +30,15 @@ enable Javascript to use Wokhei.com</noscript>
 
 </head>
 
-<%
-	UserService userService = UserServiceFactory.getUserService();
-	User user = userService.getCurrentUser();
-	if (user == null) {
-		response.sendRedirect(userService.createLoginURL(request
-				.getRequestURI()));
-	}
-%>
-
 <body>
 
+<div id="index"></div>
 <div id="page-wrap">
 
 <div class="header">
 <div id="indexHeaderPanel" class="indexHeaderPanel"></div>
 </div>
+
 <div class="body">
 <div id="indexBodyPart" class="indexBodyPart"></div>
 </div>
@@ -55,6 +48,11 @@ enable Javascript to use Wokhei.com</noscript>
 </div>
 
 </div>
+
+<div id="preloaded-images"><img src="/images/cloud.png" width="1"
+	height="1" alt="" /> <img src="/images/taketouroff.png" width="1"
+	height="1" alt="" /> <img src="/images/joinon.png" width="1"
+	height="1" alt="" /></div>
 
 <!-- OPTIONAL: include this if you want history support -->
 <iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1'

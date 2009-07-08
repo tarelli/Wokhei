@@ -17,7 +17,7 @@ public class FaqModulePart extends AModulePart {
 	@Override
 	public void loadModulePart() 
 	{
-
+		applyCufon();
 	}
 
 	/* (non-Javadoc)

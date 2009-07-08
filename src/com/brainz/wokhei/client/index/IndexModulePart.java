@@ -10,9 +10,9 @@ import com.brainz.wokhei.resources.Images;
 import com.brainz.wokhei.resources.Messages;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -23,20 +23,34 @@ import com.google.gwt.user.client.ui.RootPanel;
  */
 public class IndexModulePart extends AModulePart {
 
+
+
 	/* (non-Javadoc)
 	 * @see com.brainz.wokhei.client.common.AModulePart#loadModulePart()
 	 */
 	@Override
 	public void loadModulePart() 
 	{
+		loadIndex();
+
+
+	}
+
+	private void loadIndex() {
 		if(RootPanel.get("indexBodyPart")!=null)
 		{
 			AbsolutePanel mainPanel= new AbsolutePanel();
-			mainPanel.setSize("900px", "500px");
+			mainPanel.setSize("900px", "450px");
 
 			final Button watchVideo=new Button(Messages.WATCH_A_VIDEO.getString());
+
 			Button loginWokhei=new Button(Messages.LOGIN.getString());
-			Hyperlink loginTip= new Hyperlink(Messages.LOGIN_TIP.getString(),"https://www.google.com/accounts/NewAccount");
+			Label loginTip= new Label(Messages.LOGIN_TIP.getString());
+			loginTip.addClickHandler(new ClickHandler(){
+				public void onClick(ClickEvent event) {
+					Window.open("https://www.google.com/accounts/NewAccount", "_new", "");
+				}});
+
 			Label theBigPurple = new Label(Messages.THE_BIG_PURPLE.getString());
 			Label cloud = new Label();
 			Label firstStep = new Label();
@@ -78,7 +92,6 @@ public class IndexModulePart extends AModulePart {
 					}
 				}});
 
-			loginTip.removeStyleName("gwt-Hyperlink");
 			loginTip.setStyleName("loginTip");
 
 			theBigPurple.setStyleName("bigPurple");
@@ -88,8 +101,21 @@ public class IndexModulePart extends AModulePart {
 			loginWokhei.removeStyleName("gwt-Button");
 			loginWokhei.setStyleName("watchVideo");
 			loginWokhei.addStyleName("fontAR");
+			loginWokhei.addClickHandler(new ClickHandler(){
+
+				public void onClick(ClickEvent event) {
+					Window.open(getModule().getLoginInfo().getLoginUrl(), "_self", "");
+
+				}});
 
 			cloud.setStyleName("cloud");
+			cloud.addClickHandler(new ClickHandler(){
+
+				public void onClick(ClickEvent event) {
+					Window.open("careers.jsp", "_self", "");
+
+				}});
+
 			screen.setStyleName("screen");
 			screenLogos.setStyleName("screenLogos");
 			logos.setStyleName("logos");

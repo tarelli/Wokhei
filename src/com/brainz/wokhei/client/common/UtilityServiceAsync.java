@@ -13,5 +13,11 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public interface UtilityServiceAsync extends IServiceAsync{
 
 	void getServerTimestamp(AsyncCallback<Date> result);
+
+	/**
+	 * Use LoginInfo instead
+	 * @param result
+	 */
+	@Deprecated 
 	void getCurrentUsername(AsyncCallback<String> result);
 }

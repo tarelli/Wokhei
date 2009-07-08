@@ -21,8 +21,6 @@
 function applyCufon()
 {
 Cufon.replace('.fontAR');
-Cufon.replace('.signin, {hover: true}');
-Cufon.replace('.admin, {hover: true}');
 }
 </script>
 <noscript>Sorry, Javascript is disable in your browser, enable Javascript to use Wokhei.com</noscript>
@@ -37,32 +35,11 @@ Cufon.replace('.admin, {hover: true}');
 </head>
 
 <body>
-
+<div id="home"></div>
 <div id="page-wrap">
 <div class="header">
 <div class="headerDoor"></div>
 <div id="headerPanel" class="headerPanel"></div>
-<%
-    UserService userService = UserServiceFactory.getUserService();
-    User user = userService.getCurrentUser();
-    if (user == null) 
-    {
-    	response.sendRedirect("index.jsp");
-    }
-    else
-    {
-  		if(user.getEmail().equals("matteo.cantarelli@wokhei.com") || AdminAuthenticator.isAdmin(user))
-		{
-%>
-<div class="admin"><a href="/admin.jsp"><a2>Admin<a2></a></div>
-<%
-		}
-    }
-%>
-
-<div class="signin"><a
-	href="<%= userService.createLogoutURL(request.getRequestURI()) %>"><a2>Logout</a2></a>
-</div>
 
 </div>
 

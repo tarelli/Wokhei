@@ -1,0 +1,1 @@
+package com.brainz.wokhei.client.common;import com.google.gwt.user.client.rpc.AsyncCallback;/** * @author matteocantarelli * */public interface LoginServiceAsync {	public void login(String requestUri, AsyncCallback<LoginInfo> async);}

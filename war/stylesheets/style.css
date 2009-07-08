@@ -142,14 +142,14 @@ a1:hover {
 	color: #f9a743;
 }
 
-a2 {
+.labelLink {
 	color: #bf007e;
 	font-size: 18px;
 	font-weight: 600;
 	text-align: left;
 }
 
-a2:hover {
+.labelLink:hover {
 	color: #ffffff;
 }
 
@@ -218,18 +218,15 @@ select {
 	background: URL("../images/joinon.png");
 }
 
-.loginTip a {
+.loginTip{
 	font-size: 9pt;
 	color: black;
 	font-family: "Trebuchet MS", Gadget, sans-serif;
 	font-style: bold;
+	cursor:pointer;
 }
 
-.loginTip a:visited {
-	color: black;
-}
-
-.loginTip a:hover {
+.loginTip:hover {
 	color: #bf007e;
 }
 
@@ -399,14 +396,14 @@ select {
 	color: white;
 }
 
-.footerLinks a {
+.footerLinks{
 	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 	font-size: 10pt;
 	color: white;
 	cursor: pointer;
 }
 
-.footerLinks a:hover {
+.footerLinks:hover {
 	font-size: 12pt;
 }
 
@@ -539,13 +536,7 @@ select {
 	top: 20px;
 }
 
-.admin {
-	position: absolute;
-	left: 860px;
-	top: 107px;
-	width: 100px;
-	height: 26px;
-}
+
 
 .orderSubmitter {
 	width: 300px;

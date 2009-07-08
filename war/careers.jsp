@@ -17,8 +17,6 @@
 function applyCufon()
 {
 Cufon.replace('.fontAR');
-Cufon.replace('.signin, {hover: true}');
-Cufon.replace('.admin, {hover: true}');
 }
 </script>
 <noscript>Sorry, Javascript is disable in your browser,
@@ -30,25 +28,17 @@ enable Javascript to use Wokhei.com</noscript>
 
 </head>
 
-<%
-	UserService userService = UserServiceFactory.getUserService();
-	User user = userService.getCurrentUser();
-	if (user == null) {
-		response.sendRedirect(userService.createLoginURL(request
-				.getRequestURI()));
-	}
-%>
-
 <body>
 
+<div id="careers"></div>
 <div id="page-wrap">
 
-<div class="header"></div>
+<div class="header"><div id="headerPanel" class="headerPanel"></div></div>
 <div class="body">
-<div id="indexBodyPart" class="indexBodyPart"></div>
+<div id="careersBodyPart" class="indexBodyPart"></div>
 </div>
 <div class="bodytile"></div>
-<div class="footer"></div>
+<div class="footer"><div id="footerPanel" class="footerPanel"></div>
 
 </div>
 

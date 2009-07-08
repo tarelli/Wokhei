@@ -3,13 +3,16 @@
  */
 package com.brainz.wokhei.client.about;
 
-import com.google.gwt.core.client.EntryPoint;
+import com.brainz.wokhei.client.common.AModule;
+import com.brainz.wokhei.client.common.FooterModulePart;
+import com.brainz.wokhei.client.common.HeaderModulePart;
+import com.google.gwt.user.client.ui.RootPanel;
 
 /**
  * @author matteocantarelli
  *
  */
-public class AboutModule implements EntryPoint {
+public class AboutModule extends AModule {
 
 
 	/* (non-Javadoc)
@@ -17,11 +20,23 @@ public class AboutModule implements EntryPoint {
 	 */
 	public void onModuleLoad() 
 	{
+		if(RootPanel.get("about")!=null)
+		{
+			initModule();
+		}
+	}
+
+	@Override
+	public void loadModule() {
 		//Create the module parts
-		AboutModulePart indexModulePart = new AboutModulePart();
+		AboutModulePart aboutModulePart = new AboutModulePart();
+		FooterModulePart footerModulePart = new FooterModulePart();
+		HeaderModulePart headerModulePart = new HeaderModulePart();
 
 		//Initialize the module parts
-		indexModulePart.initModulePart();
+		aboutModulePart.initModulePart(this);
+		footerModulePart.initModulePart(this);
+		headerModulePart.initModulePart(this);
 	}
 
 }

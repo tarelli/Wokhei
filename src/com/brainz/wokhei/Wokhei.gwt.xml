@@ -21,9 +21,9 @@
   <!-- Other module inherits                                      -->
 
   <!-- Specify the app entry point class.                         -->
-  	<entry-point class='com.brainz.wokhei.client.home.HomeModule'/>
-  	<entry-point class='com.brainz.wokhei.client.admin.AdminModule'/>
   	<entry-point class='com.brainz.wokhei.client.index.IndexModule'/>
+  	<entry-point class='com.brainz.wokhei.client.home.HomeModule'/>
+  	<entry-point class='com.brainz.wokhei.client.admin.AdminModule'/>  	
   	<entry-point class='com.brainz.wokhei.client.about.AboutModule'/>
   	<entry-point class='com.brainz.wokhei.client.careers.CareersModule'/>
   	<entry-point class='com.brainz.wokhei.client.faq.FaqModule'/>

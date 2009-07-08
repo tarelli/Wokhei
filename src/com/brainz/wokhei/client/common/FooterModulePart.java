@@ -1,8 +1,10 @@
 package com.brainz.wokhei.client.common;
 
 import com.brainz.wokhei.resources.Images;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -14,10 +16,10 @@ public class FooterModulePart extends AModulePart {
 
 
 	//footer stuff
-	private final Hyperlink _footerAbout = new Hyperlink(" About ", "/about.jsp");
-	private final Hyperlink _footerContactUs = new Hyperlink(" Contact Us ", "/contactus.jsp");
-	private final Hyperlink _footerFaqs = new Hyperlink(" FAQs ", "/fags.jsp");
-	private final Hyperlink _footerCareers = new Hyperlink(" Careers ", "/careers.jsp");
+	private final Label _footerAbout = new Label(" About ");
+	//	private final Label _footerContactUs = new Label(" Contact Us ");
+	private final Label _footerFaqs = new Label(" FAQs ");
+	private final Label _footerCareers = new Label(" Careers ");
 
 	private final VerticalPanel _mainPanel = new VerticalPanel();
 	private final HorizontalPanel _footerPanel=new HorizontalPanel();
@@ -42,26 +44,54 @@ public class FooterModulePart extends AModulePart {
 
 	private void setupFooterPanel() {
 
-		_footerAbout.removeStyleName("gwt-Hyperlink");
+
 		_footerAbout.setStyleName("footerLinks");
-		_footerContactUs.removeStyleName("gwt-Hyperlink");
-		_footerContactUs.setStyleName("footerLinks");
-		_footerFaqs.removeStyleName("gwt-Hyperlink");
+		_footerAbout.addClickHandler(new ClickHandler(){
+
+			public void onClick(ClickEvent event) {
+				Window.open("about.jsp", "_self", "");
+
+			}});
+		//		_footerContactUs.setStyleName("footerLinks");
+		//		_footerContactUs.addClickHandler(new ClickHandler(){
+		//
+		//			public void onClick(ClickEvent event) {
+		//				Window.open("contactus.jsp", "_self", "");
+		//
+		//			}});
 		_footerFaqs.setStyleName("footerLinks");
-		_footerCareers.removeStyleName("gwt-Hyperlink");
+		_footerFaqs.addClickHandler(new ClickHandler(){
+
+			public void onClick(ClickEvent event) {
+				Window.open("faq.jsp", "_self", "");
+
+			}});
 		_footerCareers.setStyleName("footerLinks");
+		_footerCareers.addClickHandler(new ClickHandler(){
+
+			public void onClick(ClickEvent event) {
+				Window.open("careers.jsp", "_self", "");
+
+			}});
 
 		_footerPanel.setSpacing(10);
 		_footerPanel.setVerticalAlignment(HorizontalPanel.ALIGN_MIDDLE);
 		Image twitter=new Image(Images.TWITTER.getImageURL());
+
 		twitter.setStyleName("twitter");
 		twitter.setWidth("107px");
+		twitter.addClickHandler(new ClickHandler(){
+
+			public void onClick(ClickEvent event) {
+				Window.open("http://twitter.com/wokhei", "_new", "");
+
+			}});
 
 		_footerPanel.add(twitter);
 		_footerPanel.add(_footerAbout);
 		_footerPanel.add(getSeparator());
-		_footerPanel.add(_footerContactUs);
-		_footerPanel.add(getSeparator());
+		//		_footerPanel.add(_footerContactUs);
+		//		_footerPanel.add(getSeparator());
 		_footerPanel.add(twitter);
 		_footerPanel.add(getSeparator());
 		_footerPanel.add(_footerFaqs);
