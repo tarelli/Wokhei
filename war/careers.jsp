@@ -35,9 +35,9 @@ enable Javascript to use Wokhei.com</noscript>
 
 <div class="header"><div id="headerPanel" class="headerPanel"></div></div>
 <div class="body">
-<div id="careersBodyPart" class="indexBodyPart"></div>
+<div id="careersBodyPart" class="pageBodyPart"></div>
 </div>
-<div class="bodytile"></div>
+<div class="bodytileCareers"></div>
 <div class="footer"><div id="footerPanel" class="footerPanel"></div>
 
 </div>

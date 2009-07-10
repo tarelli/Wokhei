@@ -34,7 +34,7 @@ enable Javascript to use Wokhei.com</noscript>
 
 <div class="header"><div id="headerPanel" class="headerPanel"></div></div>
 <div class="body">
-<div id="faqBodyPart" class="faqBodyPart"></div>
+<div id="faqBodyPart" class="pageBodyPart"></div>
 </div>
 <div class="bodytile"></div>
 <div class="footer"><div id="footerPanel" class="footerPanel"></div>

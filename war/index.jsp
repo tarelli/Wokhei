@@ -42,7 +42,7 @@ enable Javascript to use Wokhei.com</noscript>
 <div class="body">
 <div id="indexBodyPart" class="indexBodyPart"></div>
 </div>
-<div class="bodytileIndex"></div>
+<div class="bodytile"></div>
 <div class="footer">
 <div id="footerPanel" class="footerPanel"></div>
 </div>

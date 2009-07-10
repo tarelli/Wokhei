@@ -114,7 +114,7 @@ public class HeaderModulePart extends AModulePart {
 				}});
 
 
-			RootPanel.get("headerPanel").add(_mainPanel,395,0);
+			RootPanel.get("headerPanel").add(_mainPanel,395,10);
 			RootPanel.get("headerPanel").add(wokheiHover,10,10);
 
 			RootPanel.get("headerPanel").add(new Image(Images.BETA.getImageURL()), 222, 35);

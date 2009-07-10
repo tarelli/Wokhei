@@ -95,10 +95,10 @@ div#page-wrap {
 	z-index: 0;
 }
 
-.bodytileIndex {
+.bodytileCareers {
 	position: relative;
 	background: URL("../images/bodytile.png");
-	min-height: 1px;
+	min-height: 200px;
 	z-index: 0;
 }
 
@@ -218,21 +218,17 @@ select {
 	background: URL("../images/joinon.png");
 }
 
-.loginTip{
+.loginTip {
 	font-size: 9pt;
 	color: black;
 	font-family: "Trebuchet MS", Gadget, sans-serif;
 	font-style: bold;
-	cursor:pointer;
+	cursor: pointer;
 }
 
 .loginTip:hover {
 	color: #bf007e;
 }
-
-
-
-
 
 .bigPurple {
 	color: #bf007e;
@@ -301,8 +297,6 @@ select {
 	height: 182px;
 	background: URL("../images/logos.gif");
 }
-
-
 
 .clock {
 	position: absolute;
@@ -396,7 +390,7 @@ select {
 	color: white;
 }
 
-.footerLinks{
+.footerLinks {
 	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 	font-size: 10pt;
 	color: white;
@@ -536,11 +530,9 @@ select {
 	top: 20px;
 }
 
-
-
 .orderSubmitter {
 	width: 300px;
-	height: 350px;
+	height: 300px;
 	overflow: visible;
 }
 
@@ -554,7 +546,7 @@ select {
 	padding-right: 0px;
 	padding-bottom: 1px;
 	padding-left: 2px;
-	height: 18px color :                     #000000;
+	height: 18px color :                       #000000;
 	font-size: 11pt;
 }
 
@@ -623,6 +615,63 @@ select {
 	position: absolute;
 	left: 60px;
 	top: 0px;
+}
+
+.pageBodyPart {
+	position: absolute;
+	left: 77px;
+	top: 30px;
+}
+
+.pageTitle {
+	color: #bf007e;
+	font-size: 25pt;
+	font-weight: bold;
+}
+
+.sectionTitle {
+	color: #bf007e;
+	font-size: 18pt;
+	font-weight: bold;
+}
+
+.sectionText {
+	color: black;
+	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11pt;
+}
+
+.sectionTinyText {
+	color: black;
+	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	font-size: 9pt;
+}
+
+.mailLink {
+	color: black;
+	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11pt;
+}
+
+.mailLink:hover {
+	color: #bf007e;
+}
+
+.sectionHeader {
+	color: black;
+	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11pt;
+	font-weight: bold;
+	}
+
+.menuItem {
+	color: black;
+	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11pt;
+}
+
+.menuItem:hover {
+	color: #bf007e;
 }
 
 .pantoneLabel {
@@ -775,7 +824,7 @@ select {
 	padding: 2px;
 	margin-bottom: 6px;
 	font-family: "Trebuchet MS", Verdana, Arial,
-		font-size :                   10pt;
+		font-size :                     10pt;
 }
 
 .timerGreen {

@@ -345,7 +345,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 			_submitOrderButton.addStyleName("submitRequest"); //$NON-NLS-1$
 			_submitOrderButton.addStyleName("fontAR"); //$NON-NLS-1$
 
-			_okImagesPanel.setHeight("600px");
+			_okImagesPanel.setHeight("300px");
 			_okImagesPanel.setWidth("100px");
 			_okImagesPanel.add(_logoOkImage,  5,20);
 			_okImagesPanel.add(_tagsOkImage, 5,105);

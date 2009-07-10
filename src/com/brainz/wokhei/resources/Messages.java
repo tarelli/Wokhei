@@ -90,7 +90,55 @@ public enum Messages {
 	SECOND_STEP("Your request gets accepted and assigned to one of the graphic designers in the Wokhei network with expertise in your product area. He will design your logo in 24hrs."),
 	THIRD_STEP("You have the exclusive to buy the logo for 24hrs since the first time you view it to be sure that noone but you will use it and to be free to use the logo with the Wokhei Commercial Licence. Or you can use it for free under the Wokhei Limited Licence."), 
 	THE_BIG_PURPLE("Give it the Wokhei touch!"),
-	INDEX_COPYRIGHT("\u00a9 2009 Wokhei");
+	INDEX_COPYRIGHT("\u00a9 2009 Wokhei"), 
+
+	//ABOUT
+	ABOUT_TITLE("About Wokhei"),
+	ABOUT_MENU_ABOUT_US("About us"),
+	ABOUT_MENU_WHATWOKHEI("What is Wokhei?"),
+	ABOUT_MENU_DIFFERENTWOKHEI("What is different about Wokhei?"),
+	ABOUT_MENU_RESTAURANT("Why Wokhei looks like a restaurant?"),
+	ABOUT_MENU_GRAPHICSNETWORK("Who is part of the Wokhei network?"),
+	ABOUT_MENU_CONTACTUS("Contact us"),
+	ABOUT_MENU_LOGO("Download our logo"),
+
+	ABOUT_MENU_ABOUT_US_TEXT("Wokhei is a privately funded startup which started in February 2009 with one simple goal: gather talented graphic designers from all around the world and make them part of a unique network to offer a unique service. In countries all around the world Wokhei is used every day from Companies, Associations and individuals to create their logos with just few clicks. The structure of Wokhei is completely distributed. In our idea art is not something that you can force, art doesn't evolve constrained within the white walls of an office. Because of its very essence art emerges out of different cultures and traditions, art can't be serialized. Wokhei truly believes in this and that is where its real essence comes from. Wokhei is constantly building a network of the most talented graphic designers from all around the world. All of the Wokhei graphics work from their chosen environment, a sunny beach, a rainy forest or most commonly their bedroom or studio. Wokhei is simply the vehicle of their creativity."),
+	ABOUT_MENU_WHATWOKHEI_TEXT("Wokhei (wok hei) is a term in referring to the flavour, tastes, and ''essence'' imparted by a hot wok on the food. The word ''hei'' is equivalent to ''qi'' . The term is sometimes rendered as ''wok chi'' in Western cookbooks. When cooked correctly, the essence of the food comes through the flavour and the dish is said to 'have wok hei'. To impart ''wok hei'', the food must be cooked in a wok over a high flame while being stirred and tossed quickly. In practical terms, the flavour imparted by chemical compounds results from caramelization, Maillard reactions, and the partial combustion of oil that come from charring and searing of the food at very high heat in excess of 200C . Stir fry technique does not require as much fat as typical western dishes because of a combination of the metal type and the constant shifting of the food during cook time. As diners usually elect their food with chopsticks from a shared serving bowl, any excess oil remains in the bottom of the serving dish rather than being eaten."),
+	ABOUT_MENU_DIFFERENTWOKHEI_TEXT("What is different about Wokhei?"),
+	ABOUT_MENU_RESTAURANT_TEXT("Why Wokhei looks like a restaurant?"),
+	ABOUT_MENU_GRAPHICSNETWORK_TEXT("Who is part of the Wokhei network?"),
+	ABOUT_MENU_CONTACTUS_TEXT("Contact us"),
+	ABOUT_MENU_LOGO_TEXT("Download our logo"),
+
+
+	//FAQ
+	FAQ_TITLE("Frequently Asked Questions"),
+	FAQ_1("Question 1?"),
+	FAQ_1_ANSWER("Answer 1"),
+	FAQ_2("Question 2?"),
+	FAQ_2_ANSWER("Answer 2"),
+	FAQ_3("Question 3?"),
+	FAQ_3_ANSWER("Answer 3"),
+	FAQ_4("Question 4?"),
+	FAQ_4_ANSWER("Answer 4"),
+	FAQ_5("Question 5?"),
+	FAQ_5_ANSWER("Answer 5"),
+	FAQ_6("Question 6?"),
+	FAQ_6_ANSWER("Answer 6"),
+	FAQ_7("Question 7?"),
+	FAQ_7_ANSWER("Answer 7"),
+	FAQ_8("Question 8?"),
+	FAQ_8_ANSWER("Answer 8"),
+	FAQ_9("Question 9?"),
+	FAQ_9_ANSWER("Answer 9"),
+	FAQ_10("Question 10?"),
+	FAQ_10_ANSWER("Answer 10"),
+
+	//CAREEERS
+	CAREERS_TITLE("Careers"), 
+	CAREERS_GRAPHIC_TITLE("Logo graphic designer"),
+	CAREERS_GRAPHIC_TEXT("Do you have what it takes?"),
+
 	;
 
 	private String _text;
