@@ -1,15 +1,4 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
-<%@ page import="java.util.List"%>
-<%@ page import="javax.jdo.PersistenceManager"%>
-<%@ page import="javax.jdo.*"%>
-<%@ page import="com.google.appengine.api.users.User"%>
-<%@ page import="com.google.appengine.api.users.UserService"%>
-<%@ page import="com.google.appengine.api.users.UserServiceFactory"%>
-<%@ page import="com.brainz.wokhei.Admin"%>
-<%@ page import="com.brainz.wokhei.AdminAuthenticator"%>
-<%@ page import="com.brainz.wokhei.Order"%>
-<%@ page import="com.brainz.wokhei.shared.Status"%>
-<%@ page import="com.brainz.wokhei.PMF"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
