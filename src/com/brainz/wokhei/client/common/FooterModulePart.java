@@ -1,6 +1,7 @@
 package com.brainz.wokhei.client.common;
 
 import com.brainz.wokhei.resources.Images;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
@@ -17,7 +18,6 @@ public class FooterModulePart extends AModulePart {
 
 	//footer stuff
 	private final Label _footerAbout = new Label(" About ");
-	//	private final Label _footerContactUs = new Label(" Contact Us ");
 	private final Label _footerFaqs = new Label(" FAQs ");
 	private final Label _footerCareers = new Label(" Careers ");
 
@@ -49,28 +49,23 @@ public class FooterModulePart extends AModulePart {
 		_footerAbout.addClickHandler(new ClickHandler(){
 
 			public void onClick(ClickEvent event) {
-				Window.open("about.jsp", "_self", "");
+				Window.open(GWT.getHostPageBaseURL()+"about.jsp", "_self", "");
 
 			}});
-		//		_footerContactUs.setStyleName("footerLinks");
-		//		_footerContactUs.addClickHandler(new ClickHandler(){
-		//
-		//			public void onClick(ClickEvent event) {
-		//				Window.open("contactus.jsp", "_self", "");
-		//
-		//			}});
+
+
 		_footerFaqs.setStyleName("footerLinks");
 		_footerFaqs.addClickHandler(new ClickHandler(){
 
 			public void onClick(ClickEvent event) {
-				Window.open("faq.jsp", "_self", "");
+				Window.open(GWT.getHostPageBaseURL()+"faq.jsp", "_self", "");
 
 			}});
 		_footerCareers.setStyleName("footerLinks");
 		_footerCareers.addClickHandler(new ClickHandler(){
 
 			public void onClick(ClickEvent event) {
-				Window.open("careers.jsp", "_self", "");
+				Window.open(GWT.getHostPageBaseURL()+"careers.jsp", "_self", "");
 
 			}});
 
@@ -90,8 +85,6 @@ public class FooterModulePart extends AModulePart {
 		_footerPanel.add(twitter);
 		_footerPanel.add(_footerAbout);
 		_footerPanel.add(getSeparator());
-		//		_footerPanel.add(_footerContactUs);
-		//		_footerPanel.add(getSeparator());
 		_footerPanel.add(twitter);
 		_footerPanel.add(getSeparator());
 		_footerPanel.add(_footerFaqs);

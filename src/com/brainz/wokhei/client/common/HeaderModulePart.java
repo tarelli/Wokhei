@@ -5,6 +5,7 @@ package com.brainz.wokhei.client.common;
 
 import com.brainz.wokhei.client.admin.AdminModule;
 import com.brainz.wokhei.resources.Images;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
@@ -109,7 +110,7 @@ public class HeaderModulePart extends AModulePart {
 			wokheiHover.addClickHandler(new ClickHandler(){
 
 				public void onClick(ClickEvent event) {
-					Window.open("index.jsp", "_self", "");
+					Window.open(GWT.getHostPageBaseURL()+"index.jsp", "_self", "");
 
 				}});
 

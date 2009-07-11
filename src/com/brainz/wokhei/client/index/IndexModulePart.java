@@ -8,6 +8,7 @@ import pl.rmalinowski.gwt2swf.client.ui.SWFWidget;
 import com.brainz.wokhei.client.common.AModulePart;
 import com.brainz.wokhei.resources.Images;
 import com.brainz.wokhei.resources.Messages;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
@@ -112,7 +113,7 @@ public class IndexModulePart extends AModulePart {
 			cloud.addClickHandler(new ClickHandler(){
 
 				public void onClick(ClickEvent event) {
-					Window.open("careers.jsp", "_self", "");
+					Window.open(GWT.getHostPageBaseURL()+"careers.jsp", "_self", "");
 
 				}});
 
