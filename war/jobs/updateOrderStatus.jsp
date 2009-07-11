@@ -23,6 +23,7 @@
 <%@ page import="com.brainz.wokhei.server.EmailSender"%>
 <%@ page import="com.brainz.wokhei.server.OrderServiceImpl" %>
 <%@ page import="com.brainz.wokhei.shared.FileType" %>
+<%@ page import="com.brainz.wokhei.resources.Messages" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -109,7 +110,8 @@
 				Properties props = new Properties();
 			    Session sessionX = Session.getDefaultInstance(props, null);
 			
-			    String msgBody = "This is a notification from wokhei.com : your stir fried logo is ready! \n\n";
+			    String msgBody = Messages.EMAIL_ORDER_READY.getString() + "\n\n";
+			    
 			    for(Order updatedOrder :updatedOrders)
 			    {
 			    	//add updated orders to email
@@ -119,7 +121,7 @@
 			    				"Tags: " + updatedOrder.getTags().toString() + "\n" + 
 			    				"Colour: " + updatedOrder.getColour().toString() + "\n" + 
 			    				updatedOrder.getTags().toString() + "\n" + 
-			    				"\n" +
+			    				"\n\n" +
 			    				"Visit [ http://www.wokhei.com ] to view and download your stir fried logo!";
 			    }
 			

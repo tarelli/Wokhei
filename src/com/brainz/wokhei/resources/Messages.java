@@ -76,8 +76,9 @@ public enum Messages {
 	BROWSE("Browse..."), 
 	UPLOAD("Upload!"),
 
-	EMAIL_ORDER_ACCEPTED("Your recent Logo Order has been ACCEPTED by Wokhei - it will be ready in 24h:/n"),
-	EMAIL_ORDER_REJECTED("Your recent Logo Order has been REJECTED by Wokhei:/n"), 
+	EMAIL_ORDER_ACCEPTED("Your recent Logo Order has been ACCEPTED by Wokhei - it will be ready in 24h:"),
+	EMAIL_ORDER_REJECTED("Your recent Logo Order has been REJECTED by Wokhei:"), 
+	EMAIL_ORDER_READY("This is a notification from wokhei.com : your stir fried logo is ready!"),
 
 	//INDEX
 	WATCH_A_VIDEO("Watch a video"),
