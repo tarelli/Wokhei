@@ -121,27 +121,26 @@ public class CareersModulePart extends AModulePart {
 	private Panel getGraphicPanel() 
 	{
 		VerticalPanel panel=new VerticalPanel();
-		//panel.setWidth("450px");
 
-		panel.add(getSectionText("Wokhei's network is looking for yet another extraordinary graphic designer with strong concepting skills who has proven experience in creating logos for industry. The ideal candidate should have an awareness of current trends in marketing, web communication, and new media.","sectionText"));
+		panel.add(getSectionText("Wokhei is looking for yet another extraordinary graphic designer with strong concepting skills and professional experience in creating logos. The ideal candidate should have an awareness of current trends in marketing, web communication, and new media.","sectionText"));
 		panel.add(getWhiteSpace(15));
 		panel.add(getSectionText("Responsibilities", "sectionHeader"));
 		panel.add(getWhiteSpace(10));
-		panel.add(getSectionText("Design, contribute to, and oversee logos", "sectionText"));
+		panel.add(getSectionText("Design logo and occasionally oversee logo creation", "sectionText"));
 		panel.add(getWhiteSpace(10));
-		panel.add(getSectionText("Creative involvement with logos from beginning to end", "sectionText"));
+		panel.add(getSectionText("Creative involvement with logos from beginning to end of the design lifecycle", "sectionText"));
 		panel.add(getWhiteSpace(15));
 		panel.add(getSectionText("Requirements", "sectionHeader"));
 		panel.add(getWhiteSpace(10));
 		panel.add(getSectionText("Comprehensive understanding of design principles and typography", "sectionText"));
 		panel.add(getWhiteSpace(10));
-		panel.add(getSectionText("Strong conceptual design skills and the ability to execute designs efficiently and at a high level of quality", "sectionText"));
+		panel.add(getSectionText("Superior conceptual design skills and ability to execute designs efficiently at a high level of quality", "sectionText"));
 		panel.add(getWhiteSpace(10));		
-		panel.add(getSectionText("Expert-level knowledge of Photoshop, Illustrator, InDesign, and other graphic design tools", "sectionText"));
+		panel.add(getSectionText("Expert-level knowledge of Photoshop, Illustrator, InDesign, or other graphic design tools", "sectionText"));
 		panel.add(getWhiteSpace(10));		
-		panel.add(getSectionText("Ability to work well under the 24hrs Wokhei turnaround", "sectionText"));
+		panel.add(getSectionText("Ability to work within the 24hrs Wokhei turnaround model", "sectionText"));
 		panel.add(getWhiteSpace(10));		
-		panel.add(getSectionText("Share the Wokhei view and strong culture.", "sectionText"));
+		panel.add(getSectionText("Share the Wokhei view and culture", "sectionText"));
 		panel.add(getWhiteSpace(15));		
 		panel.add(getSectionText("Please send a cover letter, resume, and portfolio to:","sectionText"));
 		panel.add(getWhiteSpace(5));
@@ -149,7 +148,7 @@ public class CareersModulePart extends AModulePart {
 		mail.setStyleName("mailLink");
 		panel.add(mail);
 		panel.add(getWhiteSpace(5));
-		panel.add(getSectionText("with art samples attached or a link to an online portfolio in the body of the email. A portfolio of relevant work is required for your application. Please list this job and your name in the subject line.", "sectionText"));
+		panel.add(getSectionText("with art samples attached or a link to an online portfolio in the body of the email. A portfolio of relevant work is required for your application. Please list the position and your name in the subject line.", "sectionText"));
 		panel.add(getWhiteSpace(15));
 		panel.add(getSectionText("No calls or follow-up emails, please. This is a freelance position.", "sectionText"));
 
