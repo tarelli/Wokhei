@@ -118,9 +118,12 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 	private final Label _requestLabel = new Label(Messages.REQUEST_LOGO_LBL.getString()); //$NON-NLS-1$
 
+	// callbacks
 	private AsyncCallback<List<OrderDTO>> _getOrdersCallback = null;
+	private AsyncCallback<Boolean> _submitOrderCallback = null;
+	private AsyncCallback<Boolean> _getOrderKillswitchCallback = null;
 
-	private AsyncCallback<Boolean> _submitOrderCallback =null;
+	private boolean _orderKillswitch = false;
 
 	private OrderDTO _submittedOrder = null;
 
@@ -133,6 +136,9 @@ public class OrderSubmitterModulePart extends AModulePart {
 				(RootPanel.get("orderSubmitterAlternateFooter")!=null))
 		{
 			hookUpCallbacks();
+
+			// get order kill-switch value
+			getOrderKillSwitchValue();
 
 			_mainPanel.setSpacing(10);
 
@@ -336,9 +342,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 			_colorPanel.add(_rows);
 
 			_tagsErrorLabel.setStyleName("errorLabel"); //$NON-NLS-1$
-
 			_logoErrorLabel.setStyleName("errorLabel"); //$NON-NLS-1$
-
 			_colourErrorLabel.setStyleName("errorLabel"); //$NON-NLS-1$
 
 			_submitOrderButton.removeStyleName("gwt-Button");
@@ -394,19 +398,19 @@ public class OrderSubmitterModulePart extends AModulePart {
 			});
 
 			RootPanel.get("okImagesPanel").add(_okImagesPanel);
-
 			RootPanel.get("orderSubmitter").add(getOrderSubmitPanel(),90,15); //$NON-NLS-1$
-
 			RootPanel.get("orderSubmitterAlternateBody").add(getOrderSubmitAlternateBodyPanel()); //$NON-NLS-1$
-
 			RootPanel.get("orderSubmitterAlternateBodytile").add(getOrderSubmitAlternateBodytilePanel()); //$NON-NLS-1$
-
 			RootPanel.get("orderSubmitterAlternateFooter").add(getOrderSubmitAlternateFooterPanel()); //$NON-NLS-1$
-
 
 			applyCufon();
 		}
 
+	}
+
+
+	private void getOrderKillSwitchValue() {
+		((OrderServiceAsync) getService(Service.ORDER_SERVICE)).getOrderKillswitch(_getOrderKillswitchCallback);
 	}
 
 
@@ -484,10 +488,23 @@ public class OrderSubmitterModulePart extends AModulePart {
 				if(result!=false && _submittedOrder!=null)
 				{
 					updateAlternatePanelMessage(_submittedOrder, result);
+
 					_mainPanel.setVisible(false);
+
 					showHidePanels();
 					notifyChanges();
 				}
+			}
+		};
+
+		_getOrderKillswitchCallback  = new AsyncCallback<Boolean>() {
+
+			public void onSuccess(Boolean result) {
+				_orderKillswitch = result;
+			}
+
+			public void onFailure(Throwable caught) {
+				//TODO - do something in case of failure
 			}
 		};
 	}
@@ -660,11 +677,13 @@ public class OrderSubmitterModulePart extends AModulePart {
 		if(error!=null)
 		{
 			this._waitLabel.setText(Messages.valueOf(order.getStatus().toString()+"_WAITMSG").getString()); //$NON-NLS-1$
+
 		}
 		else
 		{
 			this._waitLabel.setText(Messages.ERROR_WAITMSG.getString()); //$NON-NLS-1$
 		}
+
 		applyCufon();
 	}
 
@@ -705,7 +724,19 @@ public class OrderSubmitterModulePart extends AModulePart {
 				|| result.getStatus() == Status.BOUGHT 
 				|| result.getStatus() == Status.REJECTED))
 		{
-			_mainPanel.setVisible(true);
+			if(!_orderKillswitch)
+			{
+				_mainPanel.setVisible(true);
+			}
+			else
+			{
+				this._waitLabel.setText(Messages.valueOf("KILLSWITCH_ON_WAITMSG").getString());
+
+				//TODO: set killswitch image to visible as well
+
+				//apply cufon for nice fonts
+				applyCufon();
+			}
 		}
 		else
 		{
