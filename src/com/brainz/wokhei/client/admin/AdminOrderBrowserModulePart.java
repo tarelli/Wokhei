@@ -1120,8 +1120,8 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 			//TODO --> decision to show or not row according to filters
 			VerticalPanel actionPanel = ((VerticalPanel)_ordersFlexTable.getWidget(_rowForClientStatusUpdate, Columns.ACTIONS.ordinal()));
 			//TODO --> va cabiata al classe css perche' non si capisce piu che se sono disabilitati
-			((Button)actionPanel.getWidget(0)).setEnabled(false);
-			((Button)actionPanel.getWidget(1)).setEnabled(false);
+			((Button)actionPanel.getWidget(0)).setVisible(false);
+			((Button)actionPanel.getWidget(1)).setVisible(false);
 		}
 		else
 		{
