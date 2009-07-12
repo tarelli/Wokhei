@@ -46,7 +46,7 @@ public class HomeModule extends AModule{
 			loadHome();
 		} else 
 		{
-			Window.open(GWT.getHostPageBaseURL()+"index.jsp", "_self", "");				
+			Window.open(GWT.getHostPageBaseURL()+"index.html", "_self", "");				
 		}
 	}
 

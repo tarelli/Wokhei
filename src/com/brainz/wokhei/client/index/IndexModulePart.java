@@ -113,7 +113,7 @@ public class IndexModulePart extends AModulePart {
 			cloud.addClickHandler(new ClickHandler(){
 
 				public void onClick(ClickEvent event) {
-					Window.open(GWT.getHostPageBaseURL()+"careers.jsp", "_self", "");
+					Window.open(GWT.getHostPageBaseURL()+"careers.html", "_self", "");
 
 				}});
 

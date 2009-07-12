@@ -49,7 +49,7 @@ public class FooterModulePart extends AModulePart {
 		_footerAbout.addClickHandler(new ClickHandler(){
 
 			public void onClick(ClickEvent event) {
-				Window.open(GWT.getHostPageBaseURL()+"about.jsp", "_self", "");
+				Window.open(GWT.getHostPageBaseURL()+"about.html", "_self", "");
 
 			}});
 
@@ -58,14 +58,14 @@ public class FooterModulePart extends AModulePart {
 		_footerFaqs.addClickHandler(new ClickHandler(){
 
 			public void onClick(ClickEvent event) {
-				Window.open(GWT.getHostPageBaseURL()+"faq.jsp", "_self", "");
+				Window.open(GWT.getHostPageBaseURL()+"faq.html", "_self", "");
 
 			}});
 		_footerCareers.setStyleName("footerLinks");
 		_footerCareers.addClickHandler(new ClickHandler(){
 
 			public void onClick(ClickEvent event) {
-				Window.open(GWT.getHostPageBaseURL()+"careers.jsp", "_self", "");
+				Window.open(GWT.getHostPageBaseURL()+"careers.html", "_self", "");
 
 			}});
 

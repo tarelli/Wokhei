@@ -85,7 +85,7 @@ public class HeaderModulePart extends AModulePart {
 					if(getModule() instanceof AdminModule)
 					{
 						Anchor home=new Anchor("Home");
-						home.setHref("home.jsp");
+						home.setHref("home.html");
 						home.setStyleName("labelButton");
 						home.addStyleName("labelLink");
 						home.addStyleName("fontAR");
@@ -94,7 +94,7 @@ public class HeaderModulePart extends AModulePart {
 					else
 					{
 						Anchor admin=new Anchor("Admin");
-						admin.setHref("admin.jsp");
+						admin.setHref("admin.html");
 						admin.setStyleName("labelButton");
 						admin.addStyleName("labelLink");
 						admin.addStyleName("fontAR");
@@ -110,7 +110,7 @@ public class HeaderModulePart extends AModulePart {
 			wokheiHover.addClickHandler(new ClickHandler(){
 
 				public void onClick(ClickEvent event) {
-					Window.open(GWT.getHostPageBaseURL()+"index.jsp", "_self", "");
+					Window.open(GWT.getHostPageBaseURL()+"index.html", "_self", "");
 
 				}});
 

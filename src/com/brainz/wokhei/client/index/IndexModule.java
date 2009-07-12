@@ -37,7 +37,7 @@ public class IndexModule extends AModule implements EntryPoint {
 	{
 		if(getLoginInfo().isLoggedIn()) {
 			//redirect to home
-			Window.open(GWT.getHostPageBaseURL()+"home.jsp", "_self", "");
+			Window.open(GWT.getHostPageBaseURL()+"home.html", "_self", "");
 		} else {
 			//Create the module parts
 			IndexModulePart indexModulePart = new IndexModulePart();
