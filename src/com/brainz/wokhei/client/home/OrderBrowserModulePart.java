@@ -184,6 +184,7 @@ public class OrderBrowserModulePart extends AModulePart{
 			}
 
 			public void onFailure(Throwable caught) {
+				//TODO give feedback to the user that something went wrong!
 			}
 		};
 
@@ -318,6 +319,8 @@ public class OrderBrowserModulePart extends AModulePart{
 				//TODO set the logo image itself
 				orderImage.addStyleName("labelButton");
 				orderImage.setUrl("./images/logo.png");
+
+				//TODO setup Buy Now Panel
 				break;
 			}
 		}
