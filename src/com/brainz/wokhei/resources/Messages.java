@@ -139,7 +139,6 @@ public enum Messages {
 	//CAREEERS
 	CAREERS_TITLE("Careers"), 
 	CAREERS_GRAPHIC_TITLE("Logo graphic designer"),
-	CAREERS_GRAPHIC_TEXT("Do you have what it takes?"),
 
 	;
 

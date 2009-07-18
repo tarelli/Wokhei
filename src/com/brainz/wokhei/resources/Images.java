@@ -26,6 +26,8 @@ public enum Images {
 	INFOS("./images/legend.png"), 
 	BETA("./images/beta.png"), 
 	TWITTER("./images/twitter.png"),
+	LOGO("./images/logo.png"),
+	PAID("./images/paid.png"),
 	;
 
 	String _imageName;

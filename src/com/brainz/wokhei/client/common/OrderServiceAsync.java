@@ -23,6 +23,8 @@ public interface OrderServiceAsync extends IServiceAsync {
 
 	void submitOrder(OrderDTO orderDTO, AsyncCallback<Boolean> callback);
 
+	void attachInvoice(long orderID, AsyncCallback<Integer> callback);
+
 	void getOrdersByUserAndStatus(Status status, String userEmail, Date startDate, Date endDate, int offset, int maxResult, AsyncCallback<Results> callback);
 
 	void setOrderStatus(long orderId, Status newStatus, AsyncCallback<Long> callback);
