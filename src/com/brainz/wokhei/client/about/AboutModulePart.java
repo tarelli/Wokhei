@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.brainz.wokhei.client.common.AModulePart;
+import com.brainz.wokhei.resources.Mails;
 import com.brainz.wokhei.resources.Messages;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -99,11 +100,11 @@ public class AboutModulePart extends AModulePart {
 		VerticalPanel panel=new VerticalPanel();
 		panel.add(getSectionText("For ongoing information about Wokhei, please follow us on Twitter. Also, feel free to contact us with service questions, partnership proposals, or media inquiries.","sectionText"));
 		panel.add(getWhiteSpace(15));
-		Anchor mail=new Anchor("Partnership inquires","mailto:partner@wokhei.com");
+		Anchor mail=new Anchor("Partnership inquires","mailto:"+Mails.PARTNER.getMailAddress());
 		mail.setStyleName("mailLink");
-		Anchor mail2=new Anchor("Customer support","mailto:support@wokhei.com");
+		Anchor mail2=new Anchor("Customer support","mailto:"+Mails.SUPPORT.getMailAddress());
 		mail2.setStyleName("mailLink");
-		Anchor mail3=new Anchor("Press inquiries","mailto:press@wokhei.com");
+		Anchor mail3=new Anchor("Press inquiries","mailto:"+Mails.PRESS.getMailAddress());
 		mail3.setStyleName("mailLink");
 		panel.add(mail);
 		panel.add(getWhiteSpace(5));

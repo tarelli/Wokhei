@@ -127,7 +127,7 @@ public enum Messages {
 	FAQ_5_ANSWER("If you decide not to buy you can download your logo 24hrs after you view it for the first time.\n\nIn case you buy you can download it right after the payment."),
 	FAQ_6("Why should I buy the logo if I can use it for free?"),
 	FAQ_6_ANSWER("Fair enough question!\n\nThe fair enough answer is that if you don't buy your logo someone else can pick it up and use it for their own non-commercial purposes for free ... or decide to buy it.\nIn case someone else buys the logo you ordered you won't be able to use it for free anymore (unless they let you)!"),
-	FAQ_7("Question 7?"),
+	FAQ_7("How do I pay for my logo?"),
 	FAQ_7_ANSWER("Answer 7"),
 	FAQ_8("Question 8?"),
 	FAQ_8_ANSWER("Answer 8"),

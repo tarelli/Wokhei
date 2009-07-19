@@ -63,7 +63,7 @@ public class EmailSender {
 	 * @param msgBody
 	 * @param attachmentData
 	 */
-	public static void sendEmailWithInvoice(String sender, String recipient, String subject, String msgBody, byte[] attachmentData)
+	public static void sendEmailWithAttachments(String sender, List<String> recipients, String subject, String msgBody, List<Attachment> attachments)
 	{
 		//-----------------------------------------------------------------------------
 		// send email
@@ -74,8 +74,12 @@ public class EmailSender {
 			Message msg = new MimeMessage(sessionX);
 			msg.setFrom(new InternetAddress(sender));
 
-			msg.addRecipient(Message.RecipientType.TO,
-					new InternetAddress(recipient));
+			for(String recipient : recipients)
+			{
+				msg.addRecipient(Message.RecipientType.TO,
+						new InternetAddress(recipient));
+			}
+
 			msg.setSubject(subject);
 			msg.setText(msgBody);
 
@@ -83,15 +87,17 @@ public class EmailSender {
 
 			MimeBodyPart htmlPart = new MimeBodyPart();
 			htmlPart.setContent(msgBody, "text/html");
-
-			MimeBodyPart attachment = new MimeBodyPart();
-			DataSource src = new ByteArrayDataSource (attachmentData, "application/pdf"); 
-			attachment.setFileName("invoiceWokhei.pdf"); 
-			attachment.setDataHandler(new DataHandler (src)); 
-
-			//put the parts together into a multipart 
 			mp.addBodyPart(htmlPart); 
-			mp.addBodyPart(attachment); 
+
+			for(Attachment attachment : attachments)
+			{
+				MimeBodyPart attachmentPart = new MimeBodyPart();
+				DataSource src = new ByteArrayDataSource (attachment.getData(), attachment.getContentType()); 
+				attachmentPart.setFileName(attachment.getFilename()); 
+				attachmentPart.setDataHandler(new DataHandler (src)); 
+				mp.addBodyPart(attachmentPart); 
+			}
+
 			msg.setContent(mp);
 
 			Transport.send(msg);

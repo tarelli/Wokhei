@@ -13,32 +13,26 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.Arrays;
 
 import javax.servlet.ServletContext;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.brainz.wokhei.resources.Images;
+import com.brainz.wokhei.resources.Mails;
+import com.brainz.wokhei.server.Attachment;
 import com.brainz.wokhei.server.EmailSender;
-import com.lowagie.text.BadElementException;
-import com.lowagie.text.Cell;
 import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
-import com.lowagie.text.Element;
 import com.lowagie.text.Font;
 import com.lowagie.text.HeaderFooter;
 import com.lowagie.text.Image;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
-import com.lowagie.text.Table;
 import com.lowagie.text.pdf.PdfWriter;
 import com.lowagie.text.pdf.draw.LineSeparator;
 import com.lowagie.text.pdf.draw.VerticalPositionMark;
@@ -48,7 +42,7 @@ import com.lowagie.text.pdf.draw.VerticalPositionMark;
  * @author matteocantarelli
  *
  */
-public class PDFInvoiceServlet extends HttpServlet
+public class SendInvoiceServlet extends HttpServlet
 {
 	/**
 	 * 
@@ -59,7 +53,7 @@ public class PDFInvoiceServlet extends HttpServlet
 	 * 
 	 * 
 	 */
-	public PDFInvoiceServlet()
+	public SendInvoiceServlet()
 	{
 		super();
 	}
@@ -86,39 +80,12 @@ public class PDFInvoiceServlet extends HttpServlet
 		{
 			baosPDF = generatePDFDocumentBytes(req, this.getServletContext());
 
-			String sbFilename = "invoiceWokhei.pdf";
+			String sbFilename = "wokheiInvoice"+req.getParameter("invoiceNumber")+"Wokhei.pdf";
+			String contentType="application/pdf";
 
-			////////////////////////////////////////////////////////
-			// Note: 
-			//
-			// It is important to set the HTTP response headers 
-			// before writing data to the servlet's OutputStream 
-			//
-			////////////////////////////////////////////////////////
-			//
-			//
-			// Read the HTTP 1.1 specification for full details
-			// about the Cache-Control header
-			//
 			resp.setHeader("Cache-Control", "max-age=30");
+			resp.setContentType(contentType);
 
-			resp.setContentType("application/pdf");
-
-			//
-			//
-			// The Content-disposition header is explained
-			// in RFC 2183
-			//
-			//    http://www.ietf.org/rfc/rfc2183.txt
-			//
-			// The Content-disposition value will be in one of 
-			// two forms:
-			//
-			//   1)  inline; filename=foobar.pdf
-			//   2)  attachment; filename=foobar.pdf
-			//
-			// In this servlet, we use "inline"
-			//
 			StringBuffer sbContentDispValue = new StringBuffer();
 			sbContentDispValue.append("inline");
 			sbContentDispValue.append("; filename=");
@@ -130,15 +97,28 @@ public class PDFInvoiceServlet extends HttpServlet
 
 			resp.setContentLength(baosPDF.size());
 
-			ServletOutputStream sos;
+			//			ServletOutputStream sos;
+			//
+			//			sos = resp.getOutputStream();
+			//
+			//			baosPDF.writeTo(sos);
 
-			sos = resp.getOutputStream();
+			String[] recipientsAccountancy={Mails.INVOICES.getMailAddress()};
+			String titleCustomer="Wokhei payment receipt";
+			String bodyCustomer="In attachment you can find the invoice for the purchase of your Stir Fried Logo.\nWokhei\nwww.wokhei.com";
+			String titleAccountancy="Wokhei Invoice number "+ req.getParameter("invoiceNumber")+" issued";
+			String bodyAccountancy=req.getParameter("mail")+" has completed the payment for his logo. Invoice "+req.getParameter("invoiceNumber")+" has been automatically issued and sent to him.";
 
-			baosPDF.writeTo(sos);
+			String[] recipientsCustomer={req.getParameter("mail")};
 
-			EmailSender.sendEmailWithInvoice("yourLogo@wokhei.com", "matteo.cantarelli@gmail.com", "Invoice", "In attachment your invoice", baosPDF.toByteArray());
+			Attachment[] attachments={new Attachment(baosPDF.toByteArray(),sbFilename,contentType)};
 
-			sos.flush();
+			EmailSender.sendEmailWithAttachments(Mails.YOURLOGO.getMailAddress(), Arrays.asList(recipientsAccountancy), titleAccountancy, bodyAccountancy, Arrays.asList(attachments));
+			EmailSender.sendEmailWithAttachments(Mails.YOURLOGO.getMailAddress(), Arrays.asList(recipientsCustomer), titleCustomer, bodyCustomer, Arrays.asList(attachments));
+
+			resp.sendRedirect("/home.html");
+
+			//			sos.flush();
 		}
 		catch (DocumentException dex)
 		{
@@ -238,6 +218,7 @@ public class PDFInvoiceServlet extends HttpServlet
 					"Issued on: "
 					+ new java.util.Date()));
 
+			doc.add(Chunk.NEWLINE);
 
 			String nickName=req.getParameter("nick");
 			String email=req.getParameter("mail");
@@ -258,14 +239,43 @@ public class PDFInvoiceServlet extends HttpServlet
 			doc.add(payPalP);
 
 			doc.add(Chunk.NEWLINE);
-
-			doc.add( makeGeneralRequestDetailsElement(req) );
-
 			doc.add(Chunk.NEWLINE);
-
 
 			VerticalPositionMark separator = new LineSeparator(); 
 			doc.add(separator);
+			Phrase logoType =
+				new Phrase("Logo Type: ",
+						new Font(Font.HELVETICA, 11, Font.BOLD));
+
+			Phrase logoTypeName =
+				new Phrase("Stir Fried Logo 24h",
+						new Font(Font.HELVETICA, 11, Font.NORMAL));
+
+			Paragraph logoTypeP=new Paragraph();
+			logoTypeP.setAlignment(Paragraph.ALIGN_LEFT);
+			logoTypeP.add(logoType);
+			logoTypeP.add(logoTypeName);
+			doc.add(logoTypeP);
+
+			Phrase price =
+				new Phrase("Price: ",
+						new Font(Font.HELVETICA, 11, Font.BOLD));
+
+			Phrase priceName =
+				new Phrase("EUR Û49*",
+						new Font(Font.HELVETICA, 11, Font.NORMAL));
+
+			Paragraph priceP=new Paragraph();
+			priceP.setAlignment(Paragraph.ALIGN_LEFT);
+			priceP.add(price);
+			priceP.add(priceName);
+			doc.add(priceP);
+
+			doc.add(Chunk.NEWLINE);
+
+			VerticalPositionMark separator2 = new LineSeparator(); 
+			doc.add(separator2);
+			doc.add(Chunk.NEWLINE);
 			doc.add(new Paragraph("Printhouse S.r.l."));
 			doc.add(new Paragraph("Via della Pineta 88/a"));
 			doc.add(new Paragraph("09126 Cagliari"));
@@ -314,152 +324,6 @@ public class PDFInvoiceServlet extends HttpServlet
 		return baosPDF;
 	}
 
-	/**
-	 * 
-	 * @param req HTTP request object
-	 * @return an iText Element object
-	 * 
-	 */
-	protected Element makeHTTPHeaderInfoElement(final HttpServletRequest req)
-	{
-		Map mapHeaders = new java.util.TreeMap();
 
-		Enumeration enumHeaderNames = req.getHeaderNames();
-		while (enumHeaderNames.hasMoreElements())
-		{
-			String strHeaderName = (String) enumHeaderNames.nextElement();
-			String strHeaderValue = req.getHeader(strHeaderName);
-
-			if (strHeaderValue == null)
-			{
-				strHeaderValue = "";
-			}
-			mapHeaders.put(strHeaderName, strHeaderValue);
-		}
-
-		Table tab = makeTableFromMap(
-				"HTTP header name",
-				"HTTP header value",
-				mapHeaders);
-
-		return tab;
-	}
-
-	/**
-	 *  
-	 * @param req HTTP request object 
-	 * @return an iText Element object
-	 * 
-	 */
-	protected Element makeGeneralRequestDetailsElement(
-			final HttpServletRequest req)
-	{
-		Map<String,String> mapRequestDetails = new TreeMap<String,String>();
-
-		mapRequestDetails.put("Stir Fried Logo 24h", "EUR Û49*");
-
-		Table tab = null;
-
-		tab = makeTableFromMap(
-				"Logo Type", 
-				"Price",
-				mapRequestDetails);
-
-		return tab;
-	}
-
-	/**
-	 * 
-	 * 
-	 * @param req HTTP request object
-	 * @return an iText Element object
-	 * 
-	 */
-	protected Element makeHTTPParameterInfoElement(
-			final HttpServletRequest req)
-	{
-		Map mapParameters = null;
-
-		mapParameters = new java.util.TreeMap(req.getParameterMap());
-
-		Table tab = null;
-
-		tab = makeTableFromMap(
-				"HTTP parameter name",
-				"HTTP parameter value",
-				mapParameters);
-
-		return tab;
-	}
-
-	/**
-	 *
-	 * @param firstColumnTitle
-	 * @param secondColumnTitle
-	 * @param m map containing the data for column 1 and column 2
-	 * 
-	 * @return an iText Table
-	 * 
-	 */
-	private static Table makeTableFromMap(
-			final String firstColumnTitle,
-			final String secondColumnTitle,
-			final java.util.Map m)
-	{
-		Table tab = null;
-
-		try
-		{
-			tab = new Table(2 /* columns */);
-		}
-		catch (BadElementException ex)
-		{
-			throw new RuntimeException(ex);
-		}
-
-		tab.setBorderWidth(2.0f);
-		tab.setPadding(4);
-		//		tab.setSpacing(5);
-
-		tab.addCell(new Cell(firstColumnTitle));
-		tab.addCell(new Cell(secondColumnTitle));
-
-		tab.endHeaders();
-
-		if (m.keySet().size() == 0)
-		{
-			Cell c = new Cell("none");
-			c.setColspan(tab.getColumns());
-			tab.addCell(c);
-		}
-		else
-		{
-			Iterator iter = m.keySet().iterator();
-			while (iter.hasNext())
-			{
-				String strName = (String) iter.next();
-				Object value = m.get(strName);
-				String strValue = null;
-				if (value == null)
-				{
-					strValue = "";
-				}
-				else if (value instanceof String[])
-				{
-					String[] aValues = (String[]) value;   
-					strValue = aValues[0];
-				}
-				else
-				{
-					strValue = value.toString();
-				}
-
-				tab.addCell(new Cell(strName));
-				tab.addCell(new Cell(strValue));
-			}
-		}
-
-		return tab;
-	}
 
 }

@@ -55,12 +55,12 @@
 	</servlet-mapping>
 
 	<servlet>
-		<servlet-name>pdfInvoiceServlet</servlet-name>
-		<servlet-class>com.brainz.wokhei.servlet.PDFInvoiceServlet</servlet-class>
+		<servlet-name>sendInvoiceServlet</servlet-name>
+		<servlet-class>com.brainz.wokhei.servlet.SendInvoiceServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>pdfInvoiceServlet</servlet-name>
-		<url-pattern>/wokhei/getInvoice</url-pattern>
+		<servlet-name>sendInvoiceServlet</servlet-name>
+		<url-pattern>/wokhei/sendInvoice</url-pattern>
 	</servlet-mapping>
 
 	<servlet>

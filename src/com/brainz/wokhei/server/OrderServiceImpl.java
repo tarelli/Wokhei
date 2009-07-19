@@ -24,6 +24,7 @@ import com.brainz.wokhei.Order;
 import com.brainz.wokhei.PMF;
 import com.brainz.wokhei.WokheiConfig;
 import com.brainz.wokhei.client.common.OrderService;
+import com.brainz.wokhei.resources.Mails;
 import com.brainz.wokhei.resources.Messages;
 import com.brainz.wokhei.shared.FileType;
 import com.brainz.wokhei.shared.InvoiceDTO;
@@ -242,7 +243,7 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 					List<String> recipients = new ArrayList<String>();
 					recipients.add(order.getCustomer().getEmail());
 
-					EmailSender.sendEmail("yourlogo@wokhei.com", recipients, "Order Status Notification - " + new Date().toString(), msgBody);
+					EmailSender.sendEmail(Mails.YOURLOGO.getMailAddress(), recipients, "Order Status Notification - " + new Date().toString(), msgBody);
 				}
 
 				if (user != null) 

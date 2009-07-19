@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.brainz.wokhei.server.OrderServiceImpl;
 import com.brainz.wokhei.shared.InvoiceDTO;
+import com.brainz.wokhei.shared.Status;
 
 
 /**
@@ -35,11 +36,14 @@ public class PaymentDoneServlet extends HttpServlet {
 		Long orderId = Long.parseLong(req.getParameter("orderid"));
 
 		OrderServiceImpl orderService=new OrderServiceImpl();
+
 		InvoiceDTO invoiceDTO = orderService.attachInvoice(orderId);
+
+		orderService.setOrderStatus(orderId, Status.BOUGHT);
 
 		if(invoiceDTO!=null)
 		{
-			res.sendRedirect("getInvoice?invoiceNumber="+invoiceDTO.getInvoiceNumber()+"&nick="+invoiceDTO.getNick()+"&mail="+invoiceDTO.getEmail());
+			res.sendRedirect("sendInvoice?invoiceNumber="+invoiceDTO.getInvoiceNumber()+"&nick="+invoiceDTO.getNick()+"&mail="+invoiceDTO.getEmail());
 		}
 		else
 		{

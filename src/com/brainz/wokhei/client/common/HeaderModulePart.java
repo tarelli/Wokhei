@@ -5,6 +5,7 @@ package com.brainz.wokhei.client.common;
 
 import com.brainz.wokhei.client.admin.AdminModule;
 import com.brainz.wokhei.resources.Images;
+import com.brainz.wokhei.resources.Mails;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -76,11 +77,11 @@ public class HeaderModulePart extends AModulePart {
 				_mainPanel.add(login);
 			}
 
-
-
 			if(getModule().getLoginInfo().isLoggedIn())
 			{
-				if((getModule().getLoginInfo().getEmailAddress().equals("matteo.cantarelli@wokhei.com")) || (getModule().getLoginInfo().isAdmin()))
+				if((getModule().getLoginInfo().getEmailAddress().equals(Mails.MATTEO.getMailAddress())) ||
+						(getModule().getLoginInfo().getEmailAddress().equals(Mails.GIOVANNI.getMailAddress())) || 
+						(getModule().getLoginInfo().isAdmin()))
 				{
 					if(getModule() instanceof AdminModule)
 					{
