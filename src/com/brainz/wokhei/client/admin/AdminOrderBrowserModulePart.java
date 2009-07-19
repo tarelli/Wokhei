@@ -493,11 +493,17 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 					public void populateRow(PaginationBehavior pagination, int row,
 							Object object) {
 						OrderDTO order=(OrderDTO)object;
-						//FIXME accepted date to be used!
-						float diffHours = DateDifferenceCalculator.getDifferenceInHours(_serverTimeStamp,order.getDate());
-						float missingTime = (24f+diffHours);
 
-						//The header row will be added afterward (apparently, it's 2am we might be wrong)
+						// accepted date to be used!
+						float missingTime = 0f;
+
+						if(order.getAcceptedDate() != null)
+						{
+							float diffHours = DateDifferenceCalculator.getDifferenceInHours(_serverTimeStamp,order.getAcceptedDate());
+							missingTime = (24f+diffHours);
+						}
+
+						//The header row will be added afterwards (apparently, it's 2am we might be wrong)
 						final int frow = row +1 ;
 						_ordersFlexTable.setText(row, Columns.ID.ordinal(), order.getId().toString());
 						_ordersFlexTable.setText(row, Columns.USER.ordinal(), processUsername(order.getCustomerEmail()));
@@ -509,7 +515,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 						_ordersFlexTable.setText(row,Columns.DATE.ordinal(),  fmt.format(order.getDate()));
 						_ordersFlexTable.setWidget(row, Columns.STATUS.ordinal(), getStatusImage(order.getStatus().toString(),order.getId()));
 
-						if((order.getStatus() != Status.REJECTED))
+						if((order.getStatus() != Status.REJECTED) && (order.getStatus() != Status.INCOMING))
 						{
 							_ordersFlexTable.setWidget(row, Columns.TIMER.ordinal(), getTimerLabel(Float.valueOf((int)((missingTime*-1+0.005f)*10.0f)/10.0f)));
 						}

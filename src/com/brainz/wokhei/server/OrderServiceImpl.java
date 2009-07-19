@@ -179,7 +179,8 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 			pm.close();
 		}
 
-		//TODO Fai una query che prende solo quelli che servono! --> stucazzo! --> misa che fa male senza cagare cazzi con cosa di range
+		//TODO Fai una query che prende solo quelli che servono! --> stucazzo! 
+		//--> misa che fa male senza cagare cazzi con cosa di getRange
 		List<OrderDTO> partialResult=new ArrayList<OrderDTO>();
 		int maxNumber=Math.min(offset+maxResult,orderList.size());
 		for(int i=offset;i<maxNumber;i++)
@@ -210,7 +211,13 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 
 			try {
 
+				//set new status and accepted date if newStatus == Accepted
 				order.setStatus(newStatus);
+				if(newStatus == Status.ACCEPTED)
+				{
+					order.setAcceptedDate(new Date());
+				}
+
 				//persist change
 				pm.makePersistent(order);
 
@@ -218,7 +225,7 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 
 				// if order is rejected or accepted sen email to user
 				if(newStatus == Status.REJECTED || newStatus == Status.ACCEPTED)
-				{
+				{	
 					//-----------------------------------------------------------------------------
 					// send email to user
 					Properties props = new Properties();

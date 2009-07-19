@@ -21,12 +21,21 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.FormPanel;
+import com.google.gwt.user.client.ui.Hidden;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
+import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteHandler;
+import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
+import com.google.gwt.user.client.ui.FormPanel.SubmitHandler;
 
 /**
  * @author matteocantarelli
@@ -71,6 +80,15 @@ public class OrderBrowserModulePart extends AModulePart{
 	private final Label colourSpace = new Label();
 
 	private final SlideShow slideShow = new SlideShow();
+
+	// will load-up the panel with license + paypal 
+	private final Image _buyNowImage = new Image();
+	private final PopupPanel _buyNowPopUpPanel = new PopupPanel(true);
+	private final VerticalPanel _buyNowPanel = new VerticalPanel();
+	private final TextArea _licenceText = new TextArea();
+	private final CheckBox _acceptLicenseCheckBox = new CheckBox("I accept the terms and conditions");
+	private final Label _feedBackLabel = new Label("");
+	private final FormPanel _paypalForm = new FormPanel();
 
 	private AsyncCallback<Long> _setOrderStatusCallback = null;
 
@@ -168,6 +186,9 @@ public class OrderBrowserModulePart extends AModulePart{
 			mainPanel.add(ordersPanel,660,43);
 			mainPanel.add(infos,490,20);
 
+			//add Buy Now Icon
+			mainPanel.add(_buyNowImage, 720, 380);
+
 			RootPanel.get("ordersBrowser").add(getPanel());
 
 			applyCufon();
@@ -209,7 +230,11 @@ public class OrderBrowserModulePart extends AModulePart{
 
 			public void onClick(ClickEvent event) 
 			{	
-				if(_currentOrder.getStatus().equals(Status.READY) || _currentOrder.getStatus().equals(Status.VIEWED))
+				if(_currentOrder.getStatus().equals(Status.READY) 
+						|| _currentOrder.getStatus().equals(Status.VIEWED) 
+						|| _currentOrder.getStatus().equals(Status.BOUGHT) 
+						|| _currentOrder.getStatus().equals(Status.ARCHIVED))
+
 					slideShow.showSingleImage("/wokhei/getlogo?orderid="+_currentOrder.getId(), Messages.COPYRIGHT.getString());
 			}
 
@@ -264,6 +289,12 @@ public class OrderBrowserModulePart extends AModulePart{
 	 * 
 	 */
 	private void updatePanel() {
+		//buy now false by default
+		_buyNowImage.setVisible(false);
+
+		//TODO: remove - this is here just for testing
+		//setupBuyNowStuff();
+
 		if(_currentOrder!=null)
 		{
 
@@ -316,11 +347,11 @@ public class OrderBrowserModulePart extends AModulePart{
 				orderImage.setUrl(Images.valueOf(_currentOrder.getStatus().toString()).getImageURL());
 				break;
 			case VIEWED:
-				//TODO set the logo image itself
 				orderImage.addStyleName("labelButton");
-				orderImage.setUrl("./images/logo.png");
+				orderImage.setUrl(Images.valueOf(_currentOrder.getStatus().toString()).getImageURL()); 
 
-				//TODO setup Buy Now Panel
+				setupBuyNowStuff();
+
 				break;
 			}
 		}
@@ -332,6 +363,125 @@ public class OrderBrowserModulePart extends AModulePart{
 			alwaysInfos(true);
 		}
 		applyCufon();
+	}
+
+	private void setupBuyNowStuff() {
+		// fill-up buy now pop-up panel
+		setupBuyNowPopup();
+
+		// setup BuyNow image click handler
+		_buyNowImage.addClickHandler(new ClickHandler(){
+
+			public void onClick(ClickEvent event) 
+			{	
+				// setup style and show
+				_buyNowPopUpPanel.setStyleName("genericPopup");
+				_buyNowPopUpPanel.center();
+				_buyNowPopUpPanel.show();
+			}
+
+		});
+
+		// setup BuyNow Icon if needed then make it visible.
+		_buyNowImage.addStyleName("labelButton");
+		_buyNowImage.setUrl(Images.BOUGHT.getImageURL());
+		_buyNowImage.setVisible(true);
+	}
+
+	private void setupBuyNowPopup() {
+		setupPayPalForm(); 
+
+		_buyNowPanel.setHorizontalAlignment(VerticalPanel.ALIGN_CENTER);
+
+		//TODO: set and format license in a disabled multi-line text box --> _license Label
+		_licenceText.setWidth("340px");
+		_licenceText.setHeight("300px");
+		_licenceText.setReadOnly(true);
+		_licenceText.setText("--> LICENSE HERE <--");
+
+		_buyNowPanel.add(_licenceText);
+		_buyNowPanel.add(_acceptLicenseCheckBox);
+		_buyNowPanel.add(_paypalForm);
+		_buyNowPanel.add(_feedBackLabel);
+
+		_buyNowPopUpPanel.setWidth("350px");
+		_buyNowPopUpPanel.add(_buyNowPanel);
+	}
+
+	private void setupPayPalForm()
+	{
+		//fill-up paypal form
+		_paypalForm.setAction("https://www.paypal.com/cgi-bin/webscr");
+		_paypalForm.setMethod(FormPanel.METHOD_POST);
+
+		VerticalPanel formPlaceHolder = new VerticalPanel();
+
+		//setup input element for seller
+		Hidden sellerInfo = new Hidden();
+
+		sellerInfo.setName("business");
+		sellerInfo.setValue("seller_1247276806_biz@gmail.com");
+
+		formPlaceHolder.add(sellerInfo);
+		//specify buy now button
+		Hidden cmdInfo = new Hidden();
+
+		cmdInfo.setName("cmd");
+		cmdInfo.setValue("_xclick");
+
+		formPlaceHolder.add(cmdInfo);
+		//specify purchase details
+		Hidden itemNameInfo = new Hidden();
+		Hidden amountInfo = new Hidden();
+		Hidden currencyInfo = new Hidden();
+
+		itemNameInfo.setName("item_name");
+		itemNameInfo.setValue("Wokhei Stir Fried Logo");
+		formPlaceHolder.add(itemNameInfo);
+
+		amountInfo.setName("amount");
+		amountInfo.setValue("49.9");
+		formPlaceHolder.add(amountInfo);
+
+		currencyInfo.setName("currency_code");
+		currencyInfo.setValue("USD");
+		formPlaceHolder.add(currencyInfo);
+		//setup submit button
+		Image buyNowButton = new Image();
+		buyNowButton.setStyleName("labelButton");
+		buyNowButton.setUrl(Images.PAYPAL_BUTTON.getImageURL());
+
+		buyNowButton.addClickHandler(new ClickHandler(){
+
+			public void onClick(ClickEvent event) 
+			{
+				_paypalForm.submit();
+			}
+		});
+		formPlaceHolder.add(buyNowButton);
+
+		_paypalForm.add(formPlaceHolder);
+
+		//setup submit handlers
+		_paypalForm.addSubmitHandler(new SubmitHandler(){
+			public void onSubmit(SubmitEvent event) {
+				//cancel if license has not been accepted
+				if (! _acceptLicenseCheckBox.getValue())
+				{
+					_feedBackLabel.setText("You need to accept terms and conditions first!");
+					event.cancel();
+				}
+			}
+		});
+
+		_paypalForm.addSubmitCompleteHandler(new SubmitCompleteHandler() {
+
+			public void onSubmitComplete(SubmitCompleteEvent event)
+			{
+				//nothing to handle? whoo-yeah! AVP sucks dick
+			}
+		});
+
 	}
 
 	/**

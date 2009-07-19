@@ -37,8 +37,8 @@
 	// log start of job
 	log.info(" --> updateOrderStatus Job START <--");
 	
-	//TODO --> 0. setup a timer for the timeout
-	//TODO --> 0.1. before timeout reload the page so that the job keeps going
+	// --> 0. setup a timer for the timeout
+	// --> 0.1. before timeout reload the page so that the job keeps going
 	
 	// declare list of updated orders (to be included in the email to admin)
 	List<Order> updatedOrders = new ArrayList<Order>();
@@ -46,7 +46,7 @@
 	//1.get server date time (create a date object and load it in a calendar)
 	Date serverDate = new Date();
 
-	//TODO --> 2.get everything not incoming or rejected (might need to do some sort of staging)
+	// --> 2.get everything not incoming or rejected (might need to do some sort of staging)
 	//prepare query
 	PersistenceManager pm = PMF.get().getPersistenceManager();
 	String select_query = "select from " + Order.class.getName();
@@ -73,7 +73,7 @@
 		for(Order order : orders)
 		{
 			//4.depending on the diff update statuses	
-			float diffHours = DateDifferenceCalculator.getDifferenceInHours(order.getDate(), serverDate);
+			float diffHours = DateDifferenceCalculator.getDifferenceInHours(order.getAcceptedDate(), serverDate);
 			
 			// we need to retrieve only accepted - in progress - quality gate
 			if(diffHours > 4 && diffHours < 16)

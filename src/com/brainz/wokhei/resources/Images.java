@@ -26,6 +26,7 @@ public enum Images {
 	INFOS("./images/legend.png"), 
 	BETA("./images/beta.png"), 
 	TWITTER("./images/twitter.png"),
+	PAYPAL_BUTTON("https://www.paypal.com/en_US/i/btn/btn_buynow_LG.gif"),
 	;
 
 	String _imageName;

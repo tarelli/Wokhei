@@ -1018,3 +1018,14 @@ td.datePickerMonth {
 .dateBoxPopup {
 	z-index: 5;
 }
+
+.genericPopup {
+	z-index: 4;
+	background-color: #f2bc4a;
+	border: solid 2px;
+	border-color: #f69000;
+	font-family: "Trebuchet MS";
+	font-size: 12px;
+	padding: 5px;
+	color: #000000;
+}

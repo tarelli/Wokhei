@@ -13,6 +13,8 @@ public class OrderDTO implements Serializable{
 
 	private Date _date;
 
+	private Date _acceptedDate;
+
 	private Status _status;
 
 	private String _customerEmail;
@@ -37,7 +39,7 @@ public class OrderDTO implements Serializable{
 	 * @param colour
 	 * @param customerEmail
 	 */
-	public OrderDTO(Long id, String text, String[] tags, Date date,
+	public OrderDTO(Long id, String text, String[] tags, Date date, Date acceptedDate,
 			Status status, Colour colour, String customerEmail) 
 	{
 		super();
@@ -45,8 +47,9 @@ public class OrderDTO implements Serializable{
 		_text = text;
 		_tags = tags;
 		_date = date;
+		_acceptedDate = acceptedDate;
 		_status = status;
-		_colour=colour;
+		_colour = colour;
 		_customerEmail = customerEmail;
 	}
 
@@ -140,11 +143,27 @@ public class OrderDTO implements Serializable{
 	}
 
 	/**
+	 * @return
+	 */
+	public Date getAcceptedDate() 
+	{
+		return _acceptedDate;
+	}
+
+	/**
 	 * @param date
 	 */
 	public void setDate(Date date) 
 	{
 		_date = date;
+	}
+
+	/**
+	 * @param date
+	 */
+	public void setAcceptedDate(Date date) 
+	{
+		_acceptedDate = date;
 	}
 
 	/**
