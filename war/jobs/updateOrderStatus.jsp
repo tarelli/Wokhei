@@ -24,6 +24,7 @@
 <%@ page import="com.brainz.wokhei.server.OrderServiceImpl" %>
 <%@ page import="com.brainz.wokhei.shared.FileType" %>
 <%@ page import="com.brainz.wokhei.resources.Messages" %>
+<%@ page import="com.brainz.wokhei.resources.Mails" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -127,11 +128,8 @@
 			
 			    List<String> recipients = new ArrayList<String>();
 			    recipients.add(order.getCustomer().getEmail());
-			    // TODO: remove test emails
-			    recipients.add("matteo.cantarelli@wokhei.com");
-			    recipients.add("giovanni.idili@wokhei.com");
-			    
-			    EmailSender.sendEmail("yourlogo@wokhei.com", recipients, "Your Stir Fried Logo is Ready!", msgBody);
+		    
+			    EmailSender.sendEmail(Mails.YOURLOGO.getMailAddress(), recipients, "Your Stir Fried Logo is Ready!", msgBody);
 			    //-----------------------------------------------------------------------------
 				}
 			}	
@@ -164,10 +162,7 @@
     }
 
     List<String> recipients = new ArrayList<String>();
-    recipients.add("matteo.cantarelli@wokhei.com");
-    recipients.add("giovanni.idili@wokhei.com");
-    
-    EmailSender.sendEmail("yourlogo@wokhei.com", recipients, "updateOrderStatus Job - " + serverDate.toString(), msgBody);
+    EmailSender.sendEmail(Mails.YOURLOGO.getMailAddress(), recipients, "updateOrderStatus Job - " + serverDate.toString(), msgBody);
     //-----------------------------------------------------------------------------
     
     // log end of job

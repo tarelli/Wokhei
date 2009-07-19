@@ -619,6 +619,17 @@ select {
 	top: 0px;
 }
 
+.fakeBodyPart {
+	position: absolute;
+	left: 60px;
+	top: 150px;
+	width:900px;
+	text-align: center;
+	color: #bf007e;
+	font-size: 50px;
+	font-weight: bold;
+}
+
 .pageBodyPart {
 	position: absolute;
 	left: 77px;

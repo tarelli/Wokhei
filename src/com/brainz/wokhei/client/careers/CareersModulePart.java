@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.brainz.wokhei.client.common.AModulePart;
+import com.brainz.wokhei.resources.Mails;
 import com.brainz.wokhei.resources.Messages;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -144,7 +145,7 @@ public class CareersModulePart extends AModulePart {
 		panel.add(getWhiteSpace(15));		
 		panel.add(getSectionText("Please send a cover letter, resume, and portfolio to:","sectionText"));
 		panel.add(getWhiteSpace(5));
-		Anchor mail=new Anchor("resumes@wokhei.com","mailto:resumes@wokhei.com");
+		Anchor mail=new Anchor(Mails.RESUMES.getMailAddress(),"mailto:"+Mails.RESUMES.getMailAddress());
 		mail.setStyleName("mailLink");
 		panel.add(mail);
 		panel.add(getWhiteSpace(5));

@@ -19,12 +19,15 @@ import javax.mail.Session;
 import org.gwtwidgets.client.ui.pagination.Results;
 
 import com.brainz.wokhei.File;
+import com.brainz.wokhei.Invoice;
 import com.brainz.wokhei.Order;
 import com.brainz.wokhei.PMF;
 import com.brainz.wokhei.WokheiConfig;
 import com.brainz.wokhei.client.common.OrderService;
+import com.brainz.wokhei.resources.Mails;
 import com.brainz.wokhei.resources.Messages;
 import com.brainz.wokhei.shared.FileType;
+import com.brainz.wokhei.shared.InvoiceDTO;
 import com.brainz.wokhei.shared.OrderDTO;
 import com.brainz.wokhei.shared.QueryBuilder;
 import com.brainz.wokhei.shared.Status;
@@ -247,7 +250,7 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 					List<String> recipients = new ArrayList<String>();
 					recipients.add(order.getCustomer().getEmail());
 
-					EmailSender.sendEmail("yourlogo@wokhei.com", recipients, "Order Status Notification - " + new Date().toString(), msgBody);
+					EmailSender.sendEmail(Mails.YOURLOGO.getMailAddress(), recipients, "Order Status Notification - " + new Date().toString(), msgBody);
 				}
 
 				if (user != null) 
@@ -393,6 +396,52 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 		}
 
 		return returnValue;
+	}
+
+	public InvoiceDTO attachInvoice(long orderID) {
+		Integer newNumber=0; 
+		//get current user
+		UserService userService = UserServiceFactory.getUserService();
+		User user = userService.getCurrentUser();
+
+		if(user!=null)
+		{
+			//prepare query
+
+			PersistenceManager pm = PMF.get().getPersistenceManager();
+
+			String select_query = "select from " + Invoice.class.getName() + " order by invoiceNumber desc range 0,1";
+			Query query = pm.newQuery(select_query); 
+
+			List<Invoice> results = (List<Invoice>)query.execute();
+
+			if(!results.isEmpty())
+			{
+				newNumber=results.get(0).getInvoiceNumber();
+			}
+			newNumber++;
+
+			//TODO check if the user for that order and the current
+			Invoice newInvoice=new Invoice(user,new Date(), newNumber, orderID);
+
+			try {
+				pm.makePersistent(newInvoice);
+
+			} 
+			catch(Exception ex)
+			{
+			}
+			finally {
+				pm.close();
+			}
+
+			return new InvoiceDTO(newInvoice.getId(),newInvoice.getDate(),newNumber,newInvoice.getCustomer().getEmail(),newInvoice.getCustomer().getNickname());
+		}
+		else
+		{
+			log.log(Level.SEVERE,"Attach invoice requested but not user is logged!");
+			return null;
+		}
 	}
 
 }

@@ -9,6 +9,7 @@ import java.util.List;
 import org.gwtwidgets.client.ui.pagination.Results;
 
 import com.brainz.wokhei.shared.FileType;
+import com.brainz.wokhei.shared.InvoiceDTO;
 import com.brainz.wokhei.shared.OrderDTO;
 import com.brainz.wokhei.shared.Status;
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -24,6 +25,8 @@ public interface OrderService extends RemoteService {
 	Boolean submitOrder(OrderDTO orderDTO);
 
 	Results getOrdersByUserAndStatus(Status status, String userEmail, Date startDate, Date endDate, int offset, int maxResult);
+
+	InvoiceDTO attachInvoice(long orderID);
 
 	List<OrderDTO> getOrdersForCurrentUser();
 
