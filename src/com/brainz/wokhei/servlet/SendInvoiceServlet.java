@@ -80,7 +80,7 @@ public class SendInvoiceServlet extends HttpServlet
 		{
 			baosPDF = generatePDFDocumentBytes(req, this.getServletContext());
 
-			String sbFilename = "wokheiInvoice"+req.getParameter("invoiceNumber")+"Wokhei.pdf";
+			String sbFilename = "wokheiInvoice"+req.getParameter("invoiceNumber")+".pdf";
 			String contentType="application/pdf";
 
 			resp.setHeader("Cache-Control", "max-age=30");
