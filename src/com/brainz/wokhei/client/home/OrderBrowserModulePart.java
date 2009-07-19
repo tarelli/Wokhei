@@ -11,6 +11,7 @@ import com.brainz.wokhei.client.common.OrderServiceAsync;
 import com.brainz.wokhei.client.common.Service;
 import com.brainz.wokhei.resources.Images;
 import com.brainz.wokhei.resources.Messages;
+import com.brainz.wokhei.resources.PayPalStrings;
 import com.brainz.wokhei.shared.OrderDTO;
 import com.brainz.wokhei.shared.OrderDTOUtils;
 import com.brainz.wokhei.shared.Status;
@@ -88,7 +89,7 @@ public class OrderBrowserModulePart extends AModulePart{
 	private final TextArea _licenceText = new TextArea();
 	private final CheckBox _acceptLicenseCheckBox = new CheckBox("I accept the terms and conditions");
 	private final Label _feedBackLabel = new Label("");
-	private final FormPanel _paypalForm = new FormPanel();
+	private final FormPanel _paypalForm = new FormPanel("");
 
 	private AsyncCallback<Long> _setOrderStatusCallback = null;
 
@@ -100,7 +101,6 @@ public class OrderBrowserModulePart extends AModulePart{
 	{
 		if(RootPanel.get("ordersBrowser")!=null)
 		{
-
 			hookUpCallbacks();
 
 			getOrdersForCurrentCustomer();
@@ -411,7 +411,8 @@ public class OrderBrowserModulePart extends AModulePart{
 	private void setupPayPalForm()
 	{
 		//fill-up paypal form
-		_paypalForm.setAction("https://www.paypal.com/cgi-bin/webscr");
+		_paypalForm.setAction(PayPalStrings.PAYPAL_SANDBOX_ACTION.getString());
+		_paypalForm.setEncoding(FormPanel.ENCODING_MULTIPART);
 		_paypalForm.setMethod(FormPanel.METHOD_POST);
 
 		VerticalPanel formPlaceHolder = new VerticalPanel();
@@ -419,15 +420,15 @@ public class OrderBrowserModulePart extends AModulePart{
 		//setup input element for seller
 		Hidden sellerInfo = new Hidden();
 
-		sellerInfo.setName("business");
-		sellerInfo.setValue("seller_1247276806_biz@gmail.com");
+		sellerInfo.setName(PayPalStrings.PAYPAL_BUSINESS_NAME.getString());
+		sellerInfo.setValue(PayPalStrings.PAYPAL_SANDBOX_BUSINESS_VALUE.getString());
 
 		formPlaceHolder.add(sellerInfo);
 		//specify buy now button
 		Hidden cmdInfo = new Hidden();
 
-		cmdInfo.setName("cmd");
-		cmdInfo.setValue("_xclick");
+		cmdInfo.setName(PayPalStrings.PAYPAL_CMD_NAME.getString());
+		cmdInfo.setValue(PayPalStrings.PAYPAL_CMD_VALUE.getString());
 
 		formPlaceHolder.add(cmdInfo);
 		//specify purchase details
@@ -435,16 +436,16 @@ public class OrderBrowserModulePart extends AModulePart{
 		Hidden amountInfo = new Hidden();
 		Hidden currencyInfo = new Hidden();
 
-		itemNameInfo.setName("item_name");
-		itemNameInfo.setValue("Wokhei Stir Fried Logo");
+		itemNameInfo.setName(PayPalStrings.PAYPAL_ITEMNAME_NAME.getString());
+		itemNameInfo.setValue(PayPalStrings.PAYPAL_ITEMNAME_VALUE.getString());
 		formPlaceHolder.add(itemNameInfo);
 
-		amountInfo.setName("amount");
-		amountInfo.setValue("49.9");
+		amountInfo.setName(PayPalStrings.PAYPAL_AMOUNT_NAME.getString());
+		amountInfo.setValue(PayPalStrings.PAYPAL_AMOUNT_VALUE.getString());
 		formPlaceHolder.add(amountInfo);
 
-		currencyInfo.setName("currency_code");
-		currencyInfo.setValue("USD");
+		currencyInfo.setName(PayPalStrings.PAYPAL_CURRENCY_NAME.getString());
+		currencyInfo.setValue(PayPalStrings.PAYPAL_CURRENCY_VALUE.getString());
 		formPlaceHolder.add(currencyInfo);
 		//setup submit button
 		Image buyNowButton = new Image();
