@@ -13,6 +13,8 @@ public enum PayPalStrings {
 	PAYPAL_AMOUNT_VALUE("49.9"),
 	PAYPAL_CURRENCY_NAME("currency_code"),
 	PAYPAL_CURRENCY_VALUE("EUR"),
+	PAYPAL_NOTIFY_URL_NAME("notify_url"),
+	PAYPAL_NOTIFY_URL_VALUE("http://www.wokhei.com/wokhei/paymentDone?orderid="),
 	;
 
 	private String _text;
