@@ -44,8 +44,11 @@ public class IndexModulePart extends AModulePart {
 			mainPanel.setSize("900px", "450px");
 
 			final Button watchVideo=new Button(Messages.WATCH_A_VIDEO.getString());
+			watchVideo.setText(Messages.WATCH_A_VIDEO.getString());
 
 			Button loginWokhei=new Button(Messages.LOGIN.getString());
+			loginWokhei.setText(Messages.LOGIN.getString());
+
 			Label loginTip= new Label(Messages.LOGIN_TIP.getString());
 			loginTip.addClickHandler(new ClickHandler(){
 				public void onClick(ClickEvent event) {

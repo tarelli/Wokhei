@@ -12,6 +12,7 @@ import com.brainz.wokhei.client.common.Service;
 import com.brainz.wokhei.resources.Images;
 import com.brainz.wokhei.resources.Messages;
 import com.brainz.wokhei.resources.PayPalStrings;
+import com.brainz.wokhei.shared.FileType;
 import com.brainz.wokhei.shared.OrderDTO;
 import com.brainz.wokhei.shared.OrderDTOUtils;
 import com.brainz.wokhei.shared.Status;
@@ -234,8 +235,7 @@ public class OrderBrowserModulePart extends AModulePart{
 						|| _currentOrder.getStatus().equals(Status.VIEWED) 
 						|| _currentOrder.getStatus().equals(Status.BOUGHT) 
 						|| _currentOrder.getStatus().equals(Status.ARCHIVED))
-
-					slideShow.showSingleImage("/wokhei/getlogo?orderid="+_currentOrder.getId(), Messages.COPYRIGHT.getString());
+					slideShow.showSingleImage("/wokhei/getfile?fileType="+FileType.PNG_LOGO.toString()+"&orderid="+_currentOrder.getId(), Messages.COPYRIGHT.getString());
 			}
 
 		});
