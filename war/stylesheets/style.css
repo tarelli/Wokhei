@@ -530,24 +530,19 @@ select {
 	top: 20px;
 }
 
-.buyNowLabel{
-	color: black;
-	font-family: "Trebuchet MS", Verdana, Arial;
-	font-size: 17px;
-}
 
 .buyNowLabel:hover {
 	color:#bf007e;
 }
 
 .buyNowButton {
-	width: 64px;
-	height: 64px;
-	background: URL("../images/status/boughtOn.png");
+	width: 250px;
+	height: 84px;
+	background: URL("../images/makeitOFF.png");
 }
 
 .buyNowButton:hover {
-	background: URL("../images/status/bought.png");
+	background: URL("../images/makeitON.png");
 }
 
 .orderSubmitter {
