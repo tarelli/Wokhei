@@ -436,6 +436,8 @@ public class OrderBrowserModulePart extends AModulePart{
 		Hidden amountInfo = new Hidden();
 		Hidden currencyInfo = new Hidden();
 		Hidden notifyInfo = new Hidden();
+		Hidden returnInfo = new Hidden();
+		Hidden custom = new Hidden();
 
 		itemNameInfo.setName(PayPalStrings.PAYPAL_ITEMNAME_NAME.getString());
 		itemNameInfo.setValue(PayPalStrings.PAYPAL_ITEMNAME_VALUE.getString());
@@ -450,8 +452,15 @@ public class OrderBrowserModulePart extends AModulePart{
 		formPlaceHolder.add(currencyInfo);
 
 		notifyInfo.setName(PayPalStrings.PAYPAL_NOTIFY_URL_NAME.getString());
-		notifyInfo.setValue(PayPalStrings.PAYPAL_NOTIFY_URL_VALUE.getString() + _currentOrder.getId());
+		notifyInfo.setValue(PayPalStrings.PAYPAL_NOTIFY_URL_VALUE.getString());
 		formPlaceHolder.add(notifyInfo);
+
+		returnInfo.setName(PayPalStrings.PAYPAL_RETURN_NAME.getString());
+		returnInfo.setValue(PayPalStrings.PAYPAL_RETURN_VALUE.getString());
+
+		custom.setName(PayPalStrings.PAYPAL_CUSTOM_NAME.getString());
+		custom.setValue(_currentOrder.getId().toString());
+		formPlaceHolder.add(custom);
 
 		//setup submit button
 		Image buyNowButton = new Image();

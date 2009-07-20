@@ -7,6 +7,7 @@ public enum PayPalStrings {
 	PAYPAL_SANDBOX_BUSINESS_VALUE("seller_1247276806_biz@gmail.com"),
 	PAYPAL_CMD_NAME("cmd"),
 	PAYPAL_CMD_VALUE("_xclick"),
+	PAYPAL_CMD_NOTIFY_VALIDATE("cmd=_notify-validate"),
 	PAYPAL_ITEMNAME_NAME("item_name"),
 	PAYPAL_ITEMNAME_VALUE("Stir Fried Logo 24h"),
 	PAYPAL_AMOUNT_NAME("amount"),
@@ -14,7 +15,10 @@ public enum PayPalStrings {
 	PAYPAL_CURRENCY_NAME("currency_code"),
 	PAYPAL_CURRENCY_VALUE("EUR"),
 	PAYPAL_NOTIFY_URL_NAME("notify_url"),
-	PAYPAL_NOTIFY_URL_VALUE("http://www.wokhei.com/wokhei/paymentDone?orderid="),
+	PAYPAL_NOTIFY_URL_VALUE("http://www.wokhei.com/wokhei/paymentDone"),
+	PAYPAL_CUSTOM_NAME("custom"),
+	PAYPAL_RETURN_NAME("return"),
+	PAYPAL_RETURN_VALUE("http://www.wokhei.com/home.html"),
 	;
 
 	private String _text;
