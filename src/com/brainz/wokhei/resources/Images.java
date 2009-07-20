@@ -3,7 +3,7 @@ package com.brainz.wokhei.resources;
 public enum Images {
 
 	INCOMING("./images/status/incoming.png","./images/status/incomingSmall.png"),
-	READY("./images/status/ready.png","./images/status/readySmall.png"),
+	READY("./images/status/ready.gif","./images/status/readySmall.png"),
 	ARCHIVED("./images/status/archived.png","./images/status/archivedSmall.png"),
 	IN_PROGRESS("./images/status/inprogress.png","./images/status/inprogressSmall.png"),
 	TASTING("./images/status/tasting.png","./images/status/tastingSmall.png"),
@@ -11,7 +11,7 @@ public enum Images {
 	REJECTED("./images/status/rejected.png","./images/status/rejectedSmall.png"),
 	ACCEPTED("./images/status/accepted.png","./images/status/acceptedSmall.png"),
 	QUALITY_GATE("./images/status/qualitygate.png","./images/status/qualitygateSmall.png"),
-	VIEWED("./images/status/ready.png","./images/status/readySmall.png"),
+	VIEWED("./images/status/ready.gif","./images/status/readySmall.png"),
 
 	DRINKBODY("./images/bodydrink.png"),
 	DRINKBODYTILE("./images/bodytiledrink.png"),

@@ -530,6 +530,21 @@ select {
 	top: 20px;
 }
 
+
+.buyNowLabel:hover {
+	color:#bf007e;
+}
+
+.buyNowButton {
+	width: 250px;
+	height: 84px;
+	background: URL("../images/makeitOFF.png");
+}
+
+.buyNowButton:hover {
+	background: URL("../images/makeitON.png");
+}
+
 .orderSubmitter {
 	width: 300px;
 	height: 300px;
@@ -546,8 +561,8 @@ select {
 	padding-right: 0px;
 	padding-bottom: 1px;
 	padding-left: 2px;
-	height: 18px; 
-	color : #000000;
+	height: 18px;
+	color: #000000;
 	font-size: 13px;
 	color: #000000;
 }
@@ -623,7 +638,7 @@ select {
 	position: absolute;
 	left: 60px;
 	top: 150px;
-	width:900px;
+	width: 900px;
 	text-align: center;
 	color: #bf007e;
 	font-size: 50px;
