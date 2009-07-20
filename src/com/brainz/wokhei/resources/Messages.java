@@ -38,7 +38,8 @@ public enum Messages {
 	INCOMING_WAITMSG("Your request has been sent to the kitchen, enjoy the appetizers!"),
 	IN_PROGRESS_WAITMSG("Your logo is being cooked-up, have some more appetizers!"),
 	QUALITY_GATE_WAITMSG("Your logo is being reviewed by our quality assurance experts, it will be ready soon enough!"),
-	READY_WAITMSG("Your logo is ready, click on the icon and have some!"),
+	READY_WAITMSG("Your logo is ready, click on the wok on the right and have some!"),
+	VIEWED_WAITMSG("We know you loved it. You have hrs left to buy it! Hurry up :)"),
 	KILLSWITCH_ON_WAITMSG("Sorry, we are fully booked at the moment, come back later!"),
 	COPYRIGHT("Copyright\u00a9 2009 WOKHEI"),
 
@@ -55,12 +56,11 @@ public enum Messages {
 	READY_TITLE("It's ready"),
 	READY_TEXT("Your logo is finally ready - check it out clicking on the icon above and flood your senses with Wokhei goodness!"),
 	VIEWED_TITLE("Don't make it go cold!"),
-	VIEWED_TEXT("We hope you like your logo. You have 24hrs to buy it: in case you decide to show us the money you will be able to use the logo for commercial purposes."),
+	VIEWED_TEXT("You have 24hrs to buy the logo to use it for commercial purposes and exclusively!"),
 	BOUGHT_TITLE("You purchased this logo"),
-	BOUGHT_TEXT("This logo is yours, just make anything you want with it!"),
+	BOUGHT_TEXT("You can use this logo according to the Wokhei Commercial License! Now it's your turn to make the money!"),
 	ARCHIVED_TITLE("This logo is archived"),
-	ARCHIVED_TEXT("You didn't purchase this logo. You can still use it under licence for non-commercial purposes. We would appreciate if you could notify Wokhei if you decide to use this logo - so don't be shy, we won't sue you!"), 
-
+	ARCHIVED_TEXT("You didn't purchase this logo. You can use it under the Wokhei Limited Licence. Please don't forget to advertise Wokhei when you use this logo, we trust you!"), 
 
 	ADMIN_STATUS_FILTER_LABEL("Status"),
 	ADMIN_USER_FILTER_LABEL("User"),
@@ -138,7 +138,7 @@ public enum Messages {
 
 	//CAREEERS
 	CAREERS_TITLE("Careers"), 
-	CAREERS_GRAPHIC_TITLE("Logo graphic designer"),
+	CAREERS_GRAPHIC_TITLE("Logo graphic designer"), 
 
 	;
 

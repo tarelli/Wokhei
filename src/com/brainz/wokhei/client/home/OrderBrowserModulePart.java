@@ -16,7 +16,6 @@ import com.brainz.wokhei.shared.FileType;
 import com.brainz.wokhei.shared.OrderDTO;
 import com.brainz.wokhei.shared.OrderDTOUtils;
 import com.brainz.wokhei.shared.Status;
-import com.codelathe.gwt.client.Callback;
 import com.codelathe.gwt.client.SlideShow;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -84,7 +83,7 @@ public class OrderBrowserModulePart extends AModulePart{
 	private final SlideShow slideShow = new SlideShow();
 
 	// will load-up the panel with license + paypal 
-	private final Image _buyNowImage = new Image();
+	private final Label _buyNowImage = new Label();
 	private final PopupPanel _buyNowPopUpPanel = new PopupPanel(true);
 	private final VerticalPanel _buyNowPanel = new VerticalPanel();
 	private final TextArea _licenceText = new TextArea();
@@ -95,7 +94,6 @@ public class OrderBrowserModulePart extends AModulePart{
 	private AsyncCallback<Long> _setOrderStatusCallback = null;
 
 	private AsyncCallback<List<OrderDTO>> _getOrdersCallback = null;
-
 
 	@Override
 	public void loadModulePart() 
@@ -188,7 +186,7 @@ public class OrderBrowserModulePart extends AModulePart{
 			mainPanel.add(infos,490,20);
 
 			//add Buy Now Icon
-			mainPanel.add(_buyNowImage, 720, 380);
+			mainPanel.add(_buyNowImage, 650, 320);
 
 			RootPanel.get("ordersBrowser").add(getPanel());
 
@@ -236,12 +234,6 @@ public class OrderBrowserModulePart extends AModulePart{
 						|| _currentOrder.getStatus().equals(Status.BOUGHT) 
 						|| _currentOrder.getStatus().equals(Status.ARCHIVED))
 					slideShow.showSingleImage("/wokhei/getfile?fileType="+FileType.PNG_LOGO.toString()+"&orderid="+_currentOrder.getId(), Messages.COPYRIGHT.getString());
-			}
-
-		});
-
-		slideShow.onFinish(new Callback(){
-			public void execute() {
 				if(_currentOrder.getStatus().equals(Status.READY))
 				{
 					if(_setOrderStatusCallback!=null)
@@ -249,8 +241,10 @@ public class OrderBrowserModulePart extends AModulePart{
 						((OrderServiceAsync) getService(Service.ORDER_SERVICE)).setOrderStatus(_currentOrder.getId(),Status.VIEWED, _setOrderStatusCallback);
 					}
 				}
+			}
 
-			}});
+		});
+
 	}
 
 	/**
@@ -370,7 +364,8 @@ public class OrderBrowserModulePart extends AModulePart{
 		setupBuyNowPopup();
 
 		// setup BuyNow image click handler
-		_buyNowImage.addClickHandler(new ClickHandler(){
+
+		ClickHandler buyNowClickHandler=new ClickHandler(){
 
 			public void onClick(ClickEvent event) 
 			{	
@@ -380,11 +375,13 @@ public class OrderBrowserModulePart extends AModulePart{
 				_buyNowPopUpPanel.show();
 			}
 
-		});
+		};
+
+		_buyNowImage.addClickHandler(buyNowClickHandler);
 
 		// setup BuyNow Icon if needed then make it visible.
 		_buyNowImage.addStyleName("labelButton");
-		_buyNowImage.setUrl(Images.BOUGHT.getImageURL());
+		_buyNowImage.addStyleName("buyNowButton");
 		_buyNowImage.setVisible(true);
 	}
 
