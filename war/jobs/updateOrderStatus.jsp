@@ -162,6 +162,12 @@
     }
 
     List<String> recipients = new ArrayList<String>();
+    
+    // quasi tutti gli apostoli ed evangelisti mali
+    recipients.add(Mails.GIOVANNI.getMailAddress());
+    recipients.add(Mails.MATTEO.getMailAddress());
+    recipients.add(Mails.SIMONE.getMailAddress());
+    
     EmailSender.sendEmail(Mails.YOURLOGO.getMailAddress(), recipients, "updateOrderStatus Job - " + serverDate.toString(), msgBody);
     //-----------------------------------------------------------------------------
     
