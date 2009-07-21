@@ -39,7 +39,7 @@ public class PaymentDoneServlet extends HttpServlet {
 	private static final Logger log = Logger.getLogger(PaymentDoneServlet.class.getName());
 
 	@Override
-	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException 
+	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException 
 	{
 		log.log(Level.INFO,"-->PaymentDone - IPN Handler Start<--");
 
