@@ -41,6 +41,8 @@ public class PaymentDoneServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException 
 	{
+		log.log(Level.INFO,"-->PaymentDone - IPN Handler Start<--");
+
 		// read post from PayPal system and add 'cmd'
 		Enumeration en = req.getParameterNames();
 		String str = PayPalStrings.PAYPAL_CMD_NOTIFY_VALIDATE.getString();
@@ -99,6 +101,7 @@ public class PaymentDoneServlet extends HttpServlet {
 				if(invoiceDTO!=null)
 				{
 					res.sendRedirect("sendInvoice?invoiceNumber="+invoiceDTO.getInvoiceNumber()+"&nick="+invoiceDTO.getNick()+"&mail="+invoiceDTO.getEmail());
+					log.log(Level.INFO,"Payment completed successfully for order: " + orderId + " | invoiceDetails: #" + invoiceDTO.getInvoiceNumber() + " - " + invoiceDTO.getEmail());
 				}
 				else
 				{
@@ -126,5 +129,6 @@ public class PaymentDoneServlet extends HttpServlet {
 			log.log(Level.SEVERE, "Payal IPN returned unexpected value ["+ resX +"] - WTF!");
 		}
 
+		log.log(Level.INFO,"-->PaymentDone - IPN Handler End<--");
 	}
 }
