@@ -54,14 +54,6 @@
 		<url-pattern>/wokhei/getfile</url-pattern>
 	</servlet-mapping>
 
-	<servlet>
-		<servlet-name>sendInvoiceServlet</servlet-name>
-		<servlet-class>com.brainz.wokhei.servlet.SendInvoiceServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>sendInvoiceServlet</servlet-name>
-		<url-pattern>/wokhei/sendInvoice</url-pattern>
-	</servlet-mapping>
 
 	<servlet>
 		<servlet-name>paymentDoneServlet</servlet-name>

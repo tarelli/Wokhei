@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.brainz.wokhei.resources.PayPalStrings;
+import com.brainz.wokhei.server.InvoiceSender;
 import com.brainz.wokhei.server.OrderServiceImpl;
 import com.brainz.wokhei.shared.InvoiceDTO;
 import com.brainz.wokhei.shared.Status;
@@ -87,7 +88,7 @@ public class PaymentDoneServlet extends HttpServlet {
 			//TODO: check that txnId has not been previously processed
 			// check that receiverEmail is your Primary PayPal email
 			// check that paymentAmount/paymentCurrency are correct
-			if(paymentStatus.equalsIgnoreCase("pending") 
+			if((paymentStatus.equalsIgnoreCase("pending")||paymentStatus.equalsIgnoreCase("complete")) 
 					&& receiverEmail.equalsIgnoreCase(PayPalStrings.PAYPAL_SANDBOX_BUSINESS_VALUE.getString())
 					&& paymentAmount.equalsIgnoreCase(PayPalStrings.PAYPAL_AMOUNT_VALUE.getString())
 					&& paymentCurrency.equalsIgnoreCase(PayPalStrings.PAYPAL_CURRENCY_VALUE.getString()))
@@ -100,13 +101,14 @@ public class PaymentDoneServlet extends HttpServlet {
 
 				if(invoiceDTO!=null)
 				{
-					res.sendRedirect("sendInvoice?invoiceNumber="+invoiceDTO.getInvoiceNumber()+"&nick="+invoiceDTO.getNick()+"&mail="+invoiceDTO.getEmail());
+					InvoiceSender.sendInvoice(invoiceDTO);
 					log.log(Level.INFO,"Payment completed successfully for order: " + orderId + " | invoiceDetails: #" + invoiceDTO.getInvoiceNumber() + " - " + invoiceDTO.getEmail());
 				}
 				else
 				{
 					log.log(Level.SEVERE,"Payment completed request but there was an error generating the invoice (most likely no user logged)");
 				}
+
 			}
 			else
 			{
