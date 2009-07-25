@@ -741,8 +741,6 @@ public class OrderSubmitterModulePart extends AModulePart {
 			{
 				this._waitLabel.setText(Messages.valueOf("KILLSWITCH_ON_WAITMSG").getString());
 
-				//TODO: set killswitch image to visible as well
-
 				//apply cufon for nice fonts
 				applyCufon();
 			}

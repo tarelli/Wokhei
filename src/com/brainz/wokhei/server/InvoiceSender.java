@@ -77,7 +77,7 @@ public class InvoiceSender extends HttpServlet
 			doc.setPageSize(PageSize.A4);
 
 			HeaderFooter footer = new HeaderFooter(
-					new Phrase("*EU customers: prices exclude VAT"),
+					new Phrase("Printhouse S.r.l.- Via della Pineta 88/a - 09126 Cagliari(CA) - Italy - VAT no. 01510980921"),
 					false);
 
 			doc.setFooter(footer);
@@ -156,29 +156,49 @@ public class InvoiceSender extends HttpServlet
 			doc.add(logoTypeP);
 
 			Phrase price =
-				new Phrase("Price: ",
+				new Phrase("Net Price ",
 						new Font(Font.HELVETICA, 11, Font.BOLD));
 
 			Phrase priceName =
-				new Phrase("EUR Û49*",
+				new Phrase("EUR Û49.90",
+						new Font(Font.HELVETICA, 11, Font.NORMAL));
+
+			Phrase vat =
+				new Phrase("V.A.T. ",
+						new Font(Font.HELVETICA, 11, Font.BOLD));
+
+			Phrase vatName =
+				new Phrase("EUR Û9.98*",
+						new Font(Font.HELVETICA, 11, Font.NORMAL));
+
+			Phrase total =
+				new Phrase("Gross ",
+						new Font(Font.HELVETICA, 11, Font.BOLD));
+
+			Phrase totalName =
+				new Phrase("EUR Û59.88",
 						new Font(Font.HELVETICA, 11, Font.NORMAL));
 
 			Paragraph priceP=new Paragraph();
-			priceP.setAlignment(Paragraph.ALIGN_LEFT);
+			priceP.setAlignment(Paragraph.ALIGN_RIGHT);
 			priceP.add(price);
 			priceP.add(priceName);
 			doc.add(priceP);
 
+			Paragraph vatP=new Paragraph();
+			vatP.setAlignment(Paragraph.ALIGN_RIGHT);
+			vatP.add(vat);
+			vatP.add(vatName);
+			doc.add(vatP);
+
+			Paragraph totalP=new Paragraph();
+			totalP.setAlignment(Paragraph.ALIGN_RIGHT);
+			totalP.add(total);
+			totalP.add(totalName);
+			doc.add(totalP);
+
 			doc.add(Chunk.NEWLINE);
 
-			VerticalPositionMark separator2 = new LineSeparator(); 
-			doc.add(separator2);
-			doc.add(Chunk.NEWLINE);
-			doc.add(new Paragraph("Printhouse S.r.l."));
-			doc.add(new Paragraph("Via della Pineta 88/a"));
-			doc.add(new Paragraph("09126 Cagliari"));
-			doc.add(new Paragraph("Italy"));
-			doc.add(new Paragraph("VAT number: 01510980921"));
 
 			try {
 				Image image = Image.getInstance(Images.PAID.getImageURL());

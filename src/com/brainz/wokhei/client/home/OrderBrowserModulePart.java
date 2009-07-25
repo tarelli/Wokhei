@@ -82,6 +82,10 @@ public class OrderBrowserModulePart extends AModulePart{
 
 	private final HorizontalPanel colourPanel = new HorizontalPanel();
 
+	private VerticalPanel downloadPanel=null;
+
+	private final VerticalPanel downloadPanelContainer=new VerticalPanel();
+
 	private final Label colourSpace = new Label();
 
 	private final SlideShow slideShow = new SlideShow();
@@ -188,6 +192,7 @@ public class OrderBrowserModulePart extends AModulePart{
 			mainPanel.add(infoButton,447,221);
 			mainPanel.add(ordersPanel,660,43);
 			mainPanel.add(_buyNowImage, 500, 310);
+			mainPanel.add(downloadPanelContainer,465,310);
 			mainPanel.add(infos,490,20);
 
 			RootPanel.get("ordersBrowser").add(getPanel());
@@ -287,7 +292,10 @@ public class OrderBrowserModulePart extends AModulePart{
 	private void updatePanel() {
 		//buy now false by default
 		_buyNowImage.setVisible(false);
-
+		if(downloadPanel!=null)
+		{
+			downloadPanelContainer.remove(downloadPanel);
+		}
 		//TODO: remove - this is here just for testing
 		//setupBuyNowStuff();
 
@@ -339,6 +347,7 @@ public class OrderBrowserModulePart extends AModulePart{
 			case READY:
 				orderImage.addStyleName("labelButton");
 				orderImage.setUrl(Images.valueOf(_currentOrder.getStatus().toString()).getImageURL());
+				break;
 			case VIEWED:
 				orderImage.addStyleName("labelButton");
 				orderImage.setUrl(Images.valueOf(_currentOrder.getStatus().toString()).getImageURL()); 
@@ -364,7 +373,7 @@ public class OrderBrowserModulePart extends AModulePart{
 	}
 
 	private void setupDownloadStuff(Status status) {
-		VerticalPanel downloadPanel=new VerticalPanel();
+		downloadPanel=new VerticalPanel();
 		downloadPanel.setSpacing(5);
 		Label downloadPng=new Label(Messages.DOWNLOAD_RASTERIZED.getString());
 		downloadPng.setStyleName("labelButton");
@@ -390,8 +399,9 @@ public class OrderBrowserModulePart extends AModulePart{
 
 			downloadPanel.add(downloadPdf);
 		}
-		mainPanel.add(downloadPanel,465,310);
+		downloadPanelContainer.add(downloadPanel);
 	}
+
 
 	private void setupBuyNowStuff() {
 		// fill-up buy now pop-up panel
