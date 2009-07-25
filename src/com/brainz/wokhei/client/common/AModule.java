@@ -45,13 +45,11 @@ public abstract class AModule implements EntryPoint {
 		UtilityServiceAsync utilityService =  GWT.create(UtilityService.class);
 		utilityService.getServerTimestamp(new AsyncCallback<Date>(){
 
-			@Override
 			public void onFailure(Throwable caught) {
 				// TODO Auto-generated method stub
 
 			}
 
-			@Override
 			public void onSuccess(Date result) {
 				_timeStamp=result;
 
@@ -89,6 +87,7 @@ public abstract class AModule implements EntryPoint {
 	public Date getServerTimeStamp() {
 		return _timeStamp;
 	}
+
 	public abstract void loadModule();
 
 }
