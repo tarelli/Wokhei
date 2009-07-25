@@ -370,7 +370,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 			_alternateSubPanelFooter.addStyleName("orderSubmitterAlternateFooter"); //$NON-NLS-1$
 
 
-			_alternateSubPanelBody.add(_waitLabel,100,30);
+			_alternateSubPanelBody.add(_waitLabel,85,30);
 			_alternateRootPanelBody.setWidth("500px"); //$NON-NLS-1$
 			_alternateRootPanelBodyTile.setWidth("500px"); //$NON-NLS-1$
 			_alternateRootPanelFooter.setWidth("500px"); //$NON-NLS-1$

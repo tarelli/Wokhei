@@ -63,6 +63,9 @@ public enum Messages {
 	ARCHIVED_TITLE("This logo is archived"),
 	ARCHIVED_TEXT("You didn't purchase this logo. You can still use it under the Wokhei Limited Licence. Please notify Wokhei if you decide to do so. Don't be shy, we won't sue you!"), 
 
+	DOWNLOAD_RASTERIZED("Download Logo (Rasterized PNG)"),
+	DOWNLOAD_VECTORIAL("Download Logo (Vectorial PDF)"),
+
 	ADMIN_STATUS_FILTER_LABEL("Status"),
 	ADMIN_USER_FILTER_LABEL("User"),
 	ADMIN_USER_FILTER_BOX("User Email Here"),
@@ -139,7 +142,7 @@ public enum Messages {
 
 	//CAREEERS
 	CAREERS_TITLE("Careers"), 
-	CAREERS_GRAPHIC_TITLE("Logo graphic designer"), 
+	CAREERS_GRAPHIC_TITLE("Logo graphic designer"),  
 
 	//EXTRA
 	EXTRAORDINARY_NOTIFICATION("Urgent notification from Wokhei"),

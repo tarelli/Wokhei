@@ -9,6 +9,7 @@ import java.util.List;
 import com.brainz.wokhei.client.common.AModulePart;
 import com.brainz.wokhei.client.common.OrderServiceAsync;
 import com.brainz.wokhei.client.common.Service;
+import com.brainz.wokhei.resources.HtmlLicenses;
 import com.brainz.wokhei.resources.Images;
 import com.brainz.wokhei.resources.Messages;
 import com.brainz.wokhei.resources.PayPalStrings;
@@ -17,20 +18,23 @@ import com.brainz.wokhei.shared.OrderDTO;
 import com.brainz.wokhei.shared.OrderDTOUtils;
 import com.brainz.wokhei.shared.Status;
 import com.codelathe.gwt.client.SlideShow;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FormPanel;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Hidden;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
@@ -86,7 +90,7 @@ public class OrderBrowserModulePart extends AModulePart{
 	private final Label _buyNowImage = new Label();
 	private final PopupPanel _buyNowPopUpPanel = new PopupPanel(true);
 	private final VerticalPanel _buyNowPanel = new VerticalPanel();
-	private final TextArea _licenceText = new TextArea();
+	private final HTMLPanel _licenseText = new HTMLPanel(HtmlLicenses.COMMERCIAL_LICENSE.getString());
 	private final CheckBox _acceptLicenseCheckBox = new CheckBox("I accept the terms and conditions");
 	private final Label _feedBackLabel = new Label("");
 	private final FormPanel _paypalForm = new FormPanel("");
@@ -326,8 +330,6 @@ public class OrderBrowserModulePart extends AModulePart{
 			{
 			case INCOMING:
 			case ACCEPTED:
-			case ARCHIVED:
-			case BOUGHT:
 			case IN_PROGRESS:
 			case QUALITY_GATE:
 			case REJECTED:
@@ -337,14 +339,18 @@ public class OrderBrowserModulePart extends AModulePart{
 			case READY:
 				orderImage.addStyleName("labelButton");
 				orderImage.setUrl(Images.valueOf(_currentOrder.getStatus().toString()).getImageURL());
-				break;
 			case VIEWED:
 				orderImage.addStyleName("labelButton");
 				orderImage.setUrl(Images.valueOf(_currentOrder.getStatus().toString()).getImageURL()); 
-
 				setupBuyNowStuff();
-
 				break;
+			case BOUGHT:
+			case ARCHIVED:
+				orderImage.addStyleName("labelButton");
+				orderImage.setUrl(Images.valueOf(_currentOrder.getStatus().toString()).getImageURL()); 
+				setupDownloadStuff(_currentOrder.getStatus());
+				break;
+
 			}
 		}
 		else
@@ -355,6 +361,36 @@ public class OrderBrowserModulePart extends AModulePart{
 			alwaysInfos(true);
 		}
 		applyCufon();
+	}
+
+	private void setupDownloadStuff(Status status) {
+		VerticalPanel downloadPanel=new VerticalPanel();
+		downloadPanel.setSpacing(5);
+		Label downloadPng=new Label(Messages.DOWNLOAD_RASTERIZED.getString());
+		downloadPng.setStyleName("labelButton");
+		downloadPng.addStyleName("downloadLabelLink");
+		downloadPng.addClickHandler(new ClickHandler(){
+
+			public void onClick(ClickEvent event) {
+				Window.open(GWT.getHostPageBaseURL()+"wokhei/getfile?orderid="+_currentOrder.getId()+"&fileType="+FileType.PNG_LOGO, "_new", "");
+			}});
+
+		downloadPanel.add(downloadPng);
+
+		if(status.equals(Status.BOUGHT))
+		{
+			Label downloadPdf=new Label(Messages.DOWNLOAD_VECTORIAL.getString());
+			downloadPdf.setStyleName("labelButton");
+			downloadPdf.addStyleName("downloadLabelLink");
+			downloadPdf.addClickHandler(new ClickHandler(){
+
+				public void onClick(ClickEvent event) {
+					Window.open(GWT.getHostPageBaseURL()+"wokhei/getfile?orderid="+_currentOrder.getId()+"&fileType="+FileType.PDF_VECTORIAL_LOGO, "_new", "");
+				}});
+
+			downloadPanel.add(downloadPdf);
+		}
+		mainPanel.add(downloadPanel,465,310);
 	}
 
 	private void setupBuyNowStuff() {
@@ -387,20 +423,23 @@ public class OrderBrowserModulePart extends AModulePart{
 		setupPayPalForm(); 
 
 		_buyNowPanel.setHorizontalAlignment(VerticalPanel.ALIGN_CENTER);
+		_buyNowPanel.setSpacing(10);
 
-		//TODO: set and format license in a disabled multi-line text box --> _license Label
-		_licenceText.setWidth("340px");
-		_licenceText.setHeight("300px");
-		_licenceText.setReadOnly(true);
-		_licenceText.setText("--> LICENSE HERE <--");
+		ScrollPanel sp=new ScrollPanel();
+		_licenseText.setWidth("340px");
+		_licenseText.setHeight("300px");
+		_licenseText.setStyleName("license");
+		sp.setStyleName("licensePanel");
 
-		_buyNowPanel.add(_licenceText);
+		sp.add(_licenseText);
+		_buyNowPanel.add(sp);
 		_buyNowPanel.add(_acceptLicenseCheckBox);
 		_buyNowPanel.add(_paypalForm);
 		_buyNowPanel.add(_feedBackLabel);
 
-		_buyNowPopUpPanel.setWidth("350px");
+		_buyNowPopUpPanel.setWidth("390px");
 		_buyNowPopUpPanel.add(_buyNowPanel);
+
 	}
 
 	private void setupPayPalForm()

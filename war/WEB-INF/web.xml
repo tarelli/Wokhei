@@ -64,6 +64,15 @@
 		<url-pattern>/wokhei/paymentDone</url-pattern>
 	</servlet-mapping>
 
+	<servlet>
+		<servlet-name>changeStatusServlet</servlet-name>
+		<servlet-class>com.brainz.wokhei.servlet.ChangeStatusServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>changeStatusServlet</servlet-name>
+		<url-pattern>/wokhei/changeStatus</url-pattern>
+	</servlet-mapping>
+	
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
