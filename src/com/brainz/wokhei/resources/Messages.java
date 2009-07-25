@@ -39,8 +39,8 @@ public enum Messages {
 	IN_PROGRESS_WAITMSG("Your logo is being cooked-up, have some more appetizers!"),
 	QUALITY_GATE_WAITMSG("Your logo is being reviewed by our quality assurance experts, it will be ready soon enough!"),
 	READY_WAITMSG("Your logo is ready, click on the wok on the right and have some!"),
-	VIEWED_WAITMSG_1("We hope you liked your logo - You have "),
-	VIEWED_WAITMSG_2("hrs left to buy - Hurry up!"),
+	VIEWED_WAITMSG_1("Enjoy your tasty Stir Fried Logo! You have "),
+	VIEWED_WAITMSG_2("hrs left to buy. Hurry up!"),
 	KILLSWITCH_ON_WAITMSG("Sorry, we are fully booked at the moment, come back later!"),
 	COPYRIGHT("Copyright\u00a9 2009 WOKHEI"),
 
@@ -87,7 +87,7 @@ public enum Messages {
 	//INDEX
 	WATCH_A_VIDEO("Watch a video"),
 	HIDE_VIDEO("Hide video"), 
-	LOGIN("Login to Wokhei (with Google Account)"), 
+	LOGIN("Login with Google"), 
 	LOGIN_TIP("Click HERE if you don't have a Google Account"),
 	FIRST_STEP_TITLE("Request your logo"),
 	SECOND_STEP_TITLE("Wait 24hrs"),
