@@ -9,6 +9,7 @@ import java.util.List;
 import com.brainz.wokhei.client.common.AModulePart;
 import com.brainz.wokhei.client.common.OrderServiceAsync;
 import com.brainz.wokhei.client.common.Service;
+import com.brainz.wokhei.resources.HtmlLicenses;
 import com.brainz.wokhei.resources.Images;
 import com.brainz.wokhei.resources.Messages;
 import com.brainz.wokhei.resources.PayPalStrings;
@@ -24,13 +25,14 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FormPanel;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Hidden;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
@@ -86,7 +88,7 @@ public class OrderBrowserModulePart extends AModulePart{
 	private final Label _buyNowImage = new Label();
 	private final PopupPanel _buyNowPopUpPanel = new PopupPanel(true);
 	private final VerticalPanel _buyNowPanel = new VerticalPanel();
-	private final TextArea _licenceText = new TextArea();
+	private final HTMLPanel _licenseText = new HTMLPanel(HtmlLicenses.COMMERCIAL_LICENSE.getString());
 	private final CheckBox _acceptLicenseCheckBox = new CheckBox("I accept the terms and conditions");
 	private final Label _feedBackLabel = new Label("");
 	private final FormPanel _paypalForm = new FormPanel("");
@@ -387,20 +389,23 @@ public class OrderBrowserModulePart extends AModulePart{
 		setupPayPalForm(); 
 
 		_buyNowPanel.setHorizontalAlignment(VerticalPanel.ALIGN_CENTER);
+		_buyNowPanel.setSpacing(10);
 
-		//TODO: set and format license in a disabled multi-line text box --> _license Label
-		_licenceText.setWidth("340px");
-		_licenceText.setHeight("300px");
-		_licenceText.setReadOnly(true);
-		_licenceText.setText("--> LICENSE HERE <--");
+		ScrollPanel sp=new ScrollPanel();
+		_licenseText.setWidth("340px");
+		_licenseText.setHeight("300px");
+		_licenseText.setStyleName("license");
+		sp.setStyleName("licensePanel");
 
-		_buyNowPanel.add(_licenceText);
+		sp.add(_licenseText);
+		_buyNowPanel.add(sp);
 		_buyNowPanel.add(_acceptLicenseCheckBox);
 		_buyNowPanel.add(_paypalForm);
 		_buyNowPanel.add(_feedBackLabel);
 
-		_buyNowPopUpPanel.setWidth("350px");
+		_buyNowPopUpPanel.setWidth("390px");
 		_buyNowPopUpPanel.add(_buyNowPanel);
+
 	}
 
 	private void setupPayPalForm()
