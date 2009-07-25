@@ -213,12 +213,15 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 			Order order = orders.get(0);
 
 			try {
-
-				//set new status and accepted date if newStatus == Accepted
+				//set new status and accepted/viewed date
 				order.setStatus(newStatus);
 				if(newStatus == Status.ACCEPTED)
 				{
 					order.setAcceptedDate(new Date());
+				}
+				else if (newStatus == Status.VIEWED)
+				{
+					order.setViewedDate(new Date());
 				}
 
 				//persist change

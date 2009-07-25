@@ -38,6 +38,9 @@ public class Order implements IsSerializable{
 	private Date acceptedDate; 
 
 	@Persistent
+	private Date viewedDate;
+
+	@Persistent
 	private Status status;
 
 	@Persistent
@@ -53,6 +56,7 @@ public class Order implements IsSerializable{
 
 		//default values when instantiating
 		this.acceptedDate= null;
+		this.viewedDate = null;
 		this.status=Status.INCOMING;
 	}
 
@@ -84,6 +88,10 @@ public class Order implements IsSerializable{
 		return acceptedDate;
 	}
 
+	public Date getViewedDate() {
+		return viewedDate;
+	}
+
 	public void setCustomer(User author) {
 		this.customer = author;
 	}
@@ -98,6 +106,11 @@ public class Order implements IsSerializable{
 
 	public void setAcceptedDate(Date date) {
 		this.acceptedDate = date;
+	}
+
+
+	public void setViewedDate(Date date) {
+		this.viewedDate = date;
 	}
 
 	public void setText(String text) {

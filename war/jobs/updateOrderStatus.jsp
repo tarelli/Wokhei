@@ -63,9 +63,11 @@
 		List<Order> acceptedOrders = (List<Order>) query.executeWithArray(Status.ACCEPTED);
 		List<Order> inProgressOrders = (List<Order>) query.executeWithArray(Status.IN_PROGRESS);
 		List<Order> qualityGateOrders = (List<Order>) query.executeWithArray(Status.QUALITY_GATE);
+		List<Order> viewedOrders = (List<Order>) query.executeWithArray(Status.VIEWED);
 		
 		List<Order> orders = new ArrayList<Order>();
 		
+		//process normal order lifecycle (evevrything except viewed)
 		orders.addAll(acceptedOrders);
 		orders.addAll(inProgressOrders);
 		orders.addAll(qualityGateOrders);
@@ -73,7 +75,7 @@
 		//3.foreach order get diff between items and server timestamp
 		for(Order order : orders)
 		{
-			//4.depending on the diff update statuses	
+			//3.1.depending on the diff update statuses	
 			float diffHours = DateDifferenceCalculator.getDifferenceInHours(order.getAcceptedDate(), serverDate);
 			
 			// we need to retrieve only accepted - in progress - quality gate
@@ -135,7 +137,16 @@
 			}	
 		}
 		
-		
+		// 5.if any loop through VIEWED orders and set to ARCHIVED if more than 24hrs from viewed timestamp
+		for(Order order : viewedOrders)
+		{
+			if(order.getViewedDate() != null)
+			{
+				float diffHours = DateDifferenceCalculator.getDifferenceInHours(order.getViewedDate(), serverDate);
+				if(diffHours > 24)
+				order.setStatus(Status.ARCHIVED);
+			}	
+		}
 		
 	} catch (Exception ex) {
 		log.log(Level.SEVERE, "update order Status Job failed to retrieve Orders: " + ex.getMessage());
