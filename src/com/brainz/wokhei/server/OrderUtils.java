@@ -23,7 +23,7 @@ public class OrderUtils {
 	{
 		String[] strArr = new String[order.getTags().size()];
 		System.arraycopy(order.getTags().toArray(), 0, strArr, 0, order.getTags().size());
-		return new OrderDTO(order.getId(),order.getText(),strArr,order.getDate(),order.getAcceptedDate(),order.getStatus(),order.getColour(), order.getCustomer().getEmail());
+		return new OrderDTO(order.getId(),order.getText(),strArr,order.getDate(),order.getAcceptedDate(),order.getViewedDate(),order.getStatus(),order.getColour(), order.getCustomer().getEmail());
 	}
 
 	/**

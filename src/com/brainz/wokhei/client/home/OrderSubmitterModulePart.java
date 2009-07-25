@@ -3,6 +3,7 @@
  */
 package com.brainz.wokhei.client.home;
 
+import java.util.Date;
 import java.util.List;
 
 import com.brainz.wokhei.client.common.AModulePart;
@@ -16,6 +17,7 @@ import com.brainz.wokhei.resources.Images;
 import com.brainz.wokhei.resources.Messages;
 import com.brainz.wokhei.resources.TagsOracle;
 import com.brainz.wokhei.shared.Colour;
+import com.brainz.wokhei.shared.DateDifferenceCalculator;
 import com.brainz.wokhei.shared.OrderDTO;
 import com.brainz.wokhei.shared.OrderDTOUtils;
 import com.brainz.wokhei.shared.Status;
@@ -232,8 +234,6 @@ public class OrderSubmitterModulePart extends AModulePart {
 			_logoTagsPanel.add(_tagsErrorLabel);
 
 			//setup the help popup for the tags
-
-
 			_logoTextHelpPopup.setStyleName("helpPopup");
 			_logoTagsHelpPopup.setStyleName("helpPopup");
 			_logoColourHelpPopup.setStyleName("helpPopup");
@@ -329,7 +329,6 @@ public class OrderSubmitterModulePart extends AModulePart {
 			_colorPanel.add(_colourErrorLabel);
 
 			configureColoursPanels();
-
 
 			_colorPanel.setWidth("300px"); //$NON-NLS-1$
 			_colorPanel.setSpacing(2);
@@ -676,8 +675,18 @@ public class OrderSubmitterModulePart extends AModulePart {
 	{
 		if(error!=null)
 		{
-			this._waitLabel.setText(Messages.valueOf(order.getStatus().toString()+"_WAITMSG").getString()); //$NON-NLS-1$
+			if(order.getStatus() != Status.VIEWED)
+			{
+				this._waitLabel.setText(Messages.valueOf(order.getStatus().toString()+"_WAITMSG").getString()); //$NON-NLS-1$
+			}
+			else
+			{
+				Date serverTimeStamp = this.getModule().getServerTimeStamp();
+				float diffHours = DateDifferenceCalculator.getDifferenceInHours(serverTimeStamp,order.getViewedDate());
+				int missingTime = (24 + (int)diffHours);
 
+				this._waitLabel.setText(Messages.VIEWED_WAITMSG_1.getString() + missingTime + Messages.VIEWED_WAITMSG_2.getString());
+			}
 		}
 		else
 		{

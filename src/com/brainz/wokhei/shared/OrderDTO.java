@@ -5,6 +5,11 @@ import java.util.Date;
 
 public class OrderDTO implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3810546406756646291L;
+
 	private Long _id;
 
 	private String _text;
@@ -14,6 +19,8 @@ public class OrderDTO implements Serializable{
 	private Date _date;
 
 	private Date _acceptedDate;
+
+	private Date _viewedDate;
 
 	private Status _status;
 
@@ -39,7 +46,7 @@ public class OrderDTO implements Serializable{
 	 * @param colour
 	 * @param customerEmail
 	 */
-	public OrderDTO(Long id, String text, String[] tags, Date date, Date acceptedDate,
+	public OrderDTO(Long id, String text, String[] tags, Date date, Date acceptedDate, Date viewedDate,
 			Status status, Colour colour, String customerEmail) 
 	{
 		super();
@@ -48,6 +55,7 @@ public class OrderDTO implements Serializable{
 		_tags = tags;
 		_date = date;
 		_acceptedDate = acceptedDate;
+		_viewedDate = viewedDate;
 		_status = status;
 		_colour = colour;
 		_customerEmail = customerEmail;
@@ -151,6 +159,14 @@ public class OrderDTO implements Serializable{
 	}
 
 	/**
+	 * @return
+	 */
+	public Date getViewedDate() 
+	{
+		return _viewedDate;
+	}
+
+	/**
 	 * @param date
 	 */
 	public void setDate(Date date) 
@@ -164,6 +180,14 @@ public class OrderDTO implements Serializable{
 	public void setAcceptedDate(Date date) 
 	{
 		_acceptedDate = date;
+	}
+
+	/**
+	 * @param date
+	 */
+	public void setViewedDate(Date date) 
+	{
+		_viewedDate = date;
 	}
 
 	/**

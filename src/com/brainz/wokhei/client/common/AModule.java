@@ -3,6 +3,8 @@
  */
 package com.brainz.wokhei.client.common;
 
+import java.util.Date;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -15,6 +17,11 @@ public abstract class AModule implements EntryPoint {
 
 	private LoginInfo _loginInfo = null;
 
+
+	private Date _timeStamp=null;
+
+
+	private boolean _firstResponseReceived=false;
 
 	/**
 	 * 
@@ -29,11 +36,43 @@ public abstract class AModule implements EntryPoint {
 
 			public void onSuccess(LoginInfo result) {
 				_loginInfo = result;
-				//the module will be loaded only after the response is received
-				loadModule();
+				responseReceived();
+			}
+
+
+		});
+
+		UtilityServiceAsync utilityService =  GWT.create(UtilityService.class);
+		utilityService.getServerTimestamp(new AsyncCallback<Date>(){
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
 
 			}
-		});
+
+			@Override
+			public void onSuccess(Date result) {
+				_timeStamp=result;
+
+				responseReceived();
+			}});		
+	}
+
+	/**
+	 * 
+	 */
+	private synchronized void responseReceived() 
+	{
+		if(_firstResponseReceived)
+		{
+			//the module will be loaded only after both response is received
+			loadModule();
+		}
+		else
+		{
+			_firstResponseReceived=true;
+		}
 	}
 
 	/**
@@ -44,6 +83,12 @@ public abstract class AModule implements EntryPoint {
 		return _loginInfo;
 	}
 
+	/**
+	 * @return the _timeStamp
+	 */
+	public Date getServerTimeStamp() {
+		return _timeStamp;
+	}
 	public abstract void loadModule();
 
 }

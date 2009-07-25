@@ -173,13 +173,17 @@
     }
 
     List<String> recipients = new ArrayList<String>();
+    List<String> extraRecipients = new ArrayList<String>();
     
     // quasi tutti gli apostoli ed evangelisti mali
     recipients.add(Mails.GIOVANNI.getMailAddress());
     recipients.add(Mails.MATTEO.getMailAddress());
+    extraRecipients.add(Mails.MATTEO_GMAIL.getMailAddress());
+    if((Integer)updatedOrders.size() > 0)
     recipients.add(Mails.SIMONE.getMailAddress());
     
     EmailSender.sendEmail(Mails.YOURLOGO.getMailAddress(), recipients, "updateOrderStatus Job - " + serverDate.toString(), msgBody);
+    EmailSender.sendEmail(Mails.YOURLOGO.getMailAddress(), extraRecipients, Messages.EXTRAORDINARY_NOTIFICATION.getString(), Messages.SUCCHIA_MELO.getString());
     //-----------------------------------------------------------------------------
     
     // log end of job

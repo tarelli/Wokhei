@@ -39,7 +39,8 @@ public enum Messages {
 	IN_PROGRESS_WAITMSG("Your logo is being cooked-up, have some more appetizers!"),
 	QUALITY_GATE_WAITMSG("Your logo is being reviewed by our quality assurance experts, it will be ready soon enough!"),
 	READY_WAITMSG("Your logo is ready, click on the wok on the right and have some!"),
-	VIEWED_WAITMSG("We hope you liked your logo - You have 24 hrs left to buy it! Hurry up :)"),
+	VIEWED_WAITMSG_1("We hope you liked your logo - You have "),
+	VIEWED_WAITMSG_2("hrs left to buy - Hurry up!"),
 	KILLSWITCH_ON_WAITMSG("Sorry, we are fully booked at the moment, come back later!"),
 	COPYRIGHT("Copyright\u00a9 2009 WOKHEI"),
 
@@ -56,7 +57,7 @@ public enum Messages {
 	READY_TITLE("It's ready!"),
 	READY_TEXT("Your logo is finally ready - check it out clicking on the icon above and flood your senses with Wokhei goodness!"),
 	VIEWED_TITLE("It's ready!"),
-	VIEWED_TEXT("You have 24hrs to buy the logo to use it for commercial purposes and exclusively!"),
+	VIEWED_TEXT("You have 24hrs from the moment you first view it to buy the logo for commercial use. After the 24hrs you still will be able to use but only under the Wokhei Limited License."),
 	BOUGHT_TITLE("You purchased this logo"),
 	BOUGHT_TEXT("You can use this logo according to the Wokhei Commercial License. Now it's your turn to make the money!"),
 	ARCHIVED_TITLE("This logo is archived"),
@@ -139,6 +140,10 @@ public enum Messages {
 	//CAREEERS
 	CAREERS_TITLE("Careers"), 
 	CAREERS_GRAPHIC_TITLE("Logo graphic designer"), 
+
+	//EXTRA
+	EXTRAORDINARY_NOTIFICATION("Urgent notification from Wokhei"),
+	SUCCHIA_MELO("AZIZ AZIZ ... SUCCHIA-MELO E PALLE IN CULO"),
 
 	;
 

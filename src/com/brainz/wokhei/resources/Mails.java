@@ -3,6 +3,7 @@ package com.brainz.wokhei.resources;
 public enum Mails {
 
 	MATTEO("matteo.cantarelli@wokhei.com"),
+	MATTEO_GMAIL("matteo.cantarellli@gmail.com"),
 	GIOVANNI("giovanni.idili@wokhei.com"),
 	SIMONE("simone.cantarelli@wokhei.com"),
 
