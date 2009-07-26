@@ -474,7 +474,7 @@ public class OrderBrowserModulePart extends AModulePart{
 	private void setupPayPalForm()
 	{
 		//fill-up paypal form
-		_paypalForm.setAction(PayPalStrings.PAYPAL_SANDBOX_ACTION.getString());
+		_paypalForm.setAction(PayPalStrings.PAYPAL_ACTION.getString());
 		_paypalForm.setEncoding(FormPanel.ENCODING_MULTIPART);
 		_paypalForm.setMethod(FormPanel.METHOD_POST);
 
@@ -484,7 +484,7 @@ public class OrderBrowserModulePart extends AModulePart{
 		Hidden sellerInfo = new Hidden();
 
 		sellerInfo.setName(PayPalStrings.PAYPAL_BUSINESS_NAME.getString());
-		sellerInfo.setValue(PayPalStrings.PAYPAL_SANDBOX_BUSINESS_VALUE.getString());
+		sellerInfo.setValue(PayPalStrings.PAYPAL_BUSINESS_VALUE.getString());
 
 		formPlaceHolder.add(sellerInfo);
 		//specify buy now button
