@@ -359,6 +359,24 @@ public class OrderSubmitterModulePart extends AModulePart {
 			_waitLabel.addStyleName("waitLabel"); //$NON-NLS-1$
 			_waitLabel.addStyleName("fontAR");
 			_waitLabel.setWidth("350px"); //$NON-NLS-1$
+			_waitLabel.addStyleName("labelButton");
+			_waitLabel.addClickHandler(new ClickHandler(){
+
+				public void onClick(ClickEvent event) {
+					if(!_waitLabel.getText().equals(Messages.KILLSWITCH_ON_WAITMSG.getString()))
+					{
+						for(AModulePart modulePart:_moduleParts)
+						{
+							if(modulePart instanceof OrderBrowserModulePart)
+							{
+								((OrderBrowserModulePart)modulePart).getLastOrder();
+								notifyChanges();
+								break;
+							}
+						}
+					}
+
+				}});
 
 			_alternateSubPanelBody.addStyleName("orderSubmitterAlternateBody"); //$NON-NLS-1$
 			_alternateSubPanelBodyTile.addStyleName("orderSubmitterAlternateBodytile"); //$NON-NLS-1$

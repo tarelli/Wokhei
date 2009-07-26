@@ -16,7 +16,7 @@ import java.util.Map;
 public abstract class AModulePart {
 
 	protected Map<Service, IServiceAsync> _services=new HashMap<Service, IServiceAsync>();
-	private final List<AModulePart> _moduleParts=new ArrayList<AModulePart>();
+	protected final List<AModulePart> _moduleParts=new ArrayList<AModulePart>();
 	protected AModule _parentModule;
 
 	/**
@@ -73,7 +73,7 @@ public abstract class AModulePart {
 	/**
 	 * 
 	 */
-	public void notifyChanges()
+	protected void notifyChanges()
 	{
 		for(AModulePart modulePart:_moduleParts)
 		{
