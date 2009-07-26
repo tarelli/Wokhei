@@ -55,7 +55,7 @@ public class IndexModulePart extends AModulePart {
 					Window.open("https://www.google.com/accounts/NewAccount", "_new", "");
 				}});
 
-			Label theBigPurple = new Label(Messages.THE_BIG_PURPLE.getString());
+			Image theBigPurple = new Image(Images.THE_BIG_PURPLE.getImageURL());
 			Label cloud = new Label();
 			Label firstStep = new Label();
 			Label secondStep = new Label();
@@ -100,7 +100,6 @@ public class IndexModulePart extends AModulePart {
 
 			theBigPurple.setStyleName("bigPurple");
 			theBigPurple.addStyleName("fontAR");
-			theBigPurple.setWidth("220px");
 
 			loginWokhei.removeStyleName("gwt-Button");
 			loginWokhei.setStyleName("watchVideo");
@@ -159,7 +158,7 @@ public class IndexModulePart extends AModulePart {
 			mainPanel.add(firstStep);
 			mainPanel.add(secondStep);
 			mainPanel.add(thirdStep);
-			mainPanel.add(theBigPurple, 420,0);
+			mainPanel.add(theBigPurple, 400,0);
 			mainPanel.add(firstStepTitle,80, 280);
 			mainPanel.add(secondStepTitle,360, 280);
 			mainPanel.add(thirdStepTitle,620, 280);
