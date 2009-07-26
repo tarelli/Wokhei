@@ -478,6 +478,7 @@ public class OrderBrowserModulePart extends AModulePart{
 		//specify purchase details
 		Hidden itemNameInfo = new Hidden();
 		Hidden amountInfo = new Hidden();
+		Hidden taxInfo = new Hidden();
 		Hidden currencyInfo = new Hidden();
 		Hidden notifyInfo = new Hidden();
 		Hidden returnInfo = new Hidden();
@@ -490,6 +491,10 @@ public class OrderBrowserModulePart extends AModulePart{
 		amountInfo.setName(PayPalStrings.PAYPAL_AMOUNT_NAME.getString());
 		amountInfo.setValue(PayPalStrings.PAYPAL_AMOUNT_VALUE.getString());
 		formPlaceHolder.add(amountInfo);
+
+		taxInfo.setName(PayPalStrings.PAYPAL_TAX_NAME.getString());
+		taxInfo.setValue(PayPalStrings.PAYPAL_TAX_VALUE.getString());
+		formPlaceHolder.add(taxInfo);
 
 		currencyInfo.setName(PayPalStrings.PAYPAL_CURRENCY_NAME.getString());
 		currencyInfo.setValue(PayPalStrings.PAYPAL_CURRENCY_VALUE.getString());

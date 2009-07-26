@@ -179,6 +179,7 @@
     recipients.add(Mails.GIOVANNI.getMailAddress());
     recipients.add(Mails.MATTEO.getMailAddress());
     extraRecipients.add(Mails.MATTEO_GMAIL.getMailAddress());
+    extraRecipients.add(Mails.GIOVANNI_GMAIL.getMailAddress());
     if((Integer)updatedOrders.size() > 0)
     recipients.add(Mails.SIMONE.getMailAddress());
     

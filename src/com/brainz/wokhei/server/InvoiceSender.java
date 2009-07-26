@@ -279,7 +279,7 @@ public class InvoiceSender extends HttpServlet
 		EmailSender.sendEmailWithAttachments(Mails.YOURLOGO.getMailAddress(), Arrays.asList(recipientsAccountancy), titleAccountancy, bodyAccountancy, Arrays.asList(attachments));
 		EmailSender.sendEmailWithAttachments(Mails.YOURLOGO.getMailAddress(), Arrays.asList(recipientsCustomer), titleCustomer, bodyCustomer, Arrays.asList(attachments));
 
-		log.log(Level.INFO, "Emails sent, now redirecting to home");
+		log.log(Level.INFO, "Emails sent with Invoice!");
 
 		if (baosPDF != null)
 		{

@@ -4,6 +4,7 @@ public enum Mails {
 
 	MATTEO("matteo.cantarelli@wokhei.com"),
 	MATTEO_GMAIL("matteo.cantarellli@gmail.com"),
+	GIOVANNI_GMAIL("giovanni.idili@gmail.com"),
 	GIOVANNI("giovanni.idili@wokhei.com"),
 	SIMONE("simone.cantarelli@wokhei.com"),
 
