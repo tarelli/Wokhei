@@ -90,7 +90,7 @@ public class PaymentDoneServlet extends HttpServlet {
 			// check that paymentAmount/paymentCurrency are correct
 			if((paymentStatus.equalsIgnoreCase("pending")||paymentStatus.equalsIgnoreCase("complete")) 
 					&& receiverEmail.equalsIgnoreCase(PayPalStrings.PAYPAL_SANDBOX_BUSINESS_VALUE.getString())
-					&& paymentAmount.equalsIgnoreCase(PayPalStrings.PAYPAL_AMOUNT_VALUE.getString())
+					&& paymentAmount.equalsIgnoreCase(PayPalStrings.PAYPAL_AMOUNT_TOTAL.getString())
 					&& paymentCurrency.equalsIgnoreCase(PayPalStrings.PAYPAL_CURRENCY_VALUE.getString()))
 			{
 				// process payment

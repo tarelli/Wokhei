@@ -21,6 +21,7 @@ public enum PayPalStrings {
 	PAYPAL_CUSTOM_NAME("custom"),
 	PAYPAL_RETURN_NAME("return"),
 	PAYPAL_RETURN_VALUE("http://www.wokhei.com/home.html"),
+	PAYPAL_AMOUNT_TOTAL("59.88"),
 	;
 
 	private String _text;
