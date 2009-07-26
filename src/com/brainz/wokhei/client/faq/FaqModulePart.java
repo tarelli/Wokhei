@@ -7,6 +7,7 @@ import com.brainz.wokhei.client.common.AModulePart;
 import com.brainz.wokhei.resources.Messages;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -22,7 +23,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class FaqModulePart extends AModulePart {
 
 	final Label _title = new Label();
-	final Label _text = new Label();
+	final HTML _text = new HTML();
 
 	/* (non-Javadoc)
 	 * @see com.brainz.wokhei.client.common.AModulePart#loadModulePart()
@@ -50,7 +51,7 @@ public class FaqModulePart extends AModulePart {
 		_title.addStyleName("fontAR");
 		_title.setText(Messages.FAQ_1.getString());
 		_text.setStyleName("sectionText");
-		_text.setText(Messages.FAQ_1_ANSWER.getString());
+		_text.setHTML(Messages.FAQ_1_ANSWER.getString());
 		rightColumnPanel.add(_title);
 		rightColumnPanel.add(getWhiteSpace(20));
 		rightColumnPanel.add(_text);
@@ -72,8 +73,6 @@ public class FaqModulePart extends AModulePart {
 		addMenuItem(menu,Messages.FAQ_7,Messages.FAQ_7_ANSWER);
 		addMenuItem(menu,Messages.FAQ_8,Messages.FAQ_8_ANSWER);
 		addMenuItem(menu,Messages.FAQ_9,Messages.FAQ_9_ANSWER);
-		addMenuItem(menu,Messages.FAQ_10,Messages.FAQ_10_ANSWER);
-
 
 		leftColumnPanel.add(aboutWokhei);
 		leftColumnPanel.add(getWhiteSpace(10));
@@ -110,7 +109,7 @@ public class FaqModulePart extends AModulePart {
 
 			public void onClick(ClickEvent event) {
 				_title.setText(title.getString());
-				_text.setText(text.getString());
+				_text.setHTML(text.getString());
 				applyCufon();
 			}});
 

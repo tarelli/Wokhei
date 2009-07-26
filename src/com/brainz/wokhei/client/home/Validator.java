@@ -11,9 +11,9 @@ import com.brainz.wokhei.shared.Colour;
  */
 public class Validator {
 
-	private static final int MAX_LOGONAME_LENGTH = 20;
+	private static final int MAX_LOGONAME_LENGTH = 30;
 	private static final int MAX_TAGS = 5;
-	private static final int TAG_MAX_LENGTH = 15;
+	private static final int TAG_MAX_LENGTH = 20;
 	private static final int MIN_TAGS = 3;
 
 	public enum TagsErrors

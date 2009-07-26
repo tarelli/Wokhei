@@ -75,6 +75,15 @@ public class CareersModulePart extends AModulePart {
 
 		addMenuItem(menu,Messages.CAREERS_GRAPHIC_TITLE,panel);
 
+		Label menuItem=new Label();
+		menuItem.setStyleName("labelButton");
+		menuItem.addStyleName("menuItem");
+
+		menuItem.setText("Software Engineer (closed)");
+
+
+		menu.add(menuItem);
+
 
 		leftColumnPanel.add(aboutWokhei);
 		leftColumnPanel.add(getWhiteSpace(10));

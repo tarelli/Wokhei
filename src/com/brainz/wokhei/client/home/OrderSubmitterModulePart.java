@@ -74,7 +74,6 @@ public class OrderSubmitterModulePart extends AModulePart {
 	private final PopupPanel _logoColourHelpPopup = new PopupPanel(true);
 	private final Label _colourLabel = new Label(Messages.LOGO_COLOUR_LBL.getString()); //$NON-NLS-1$
 	private final HorizontalPanel _colourLabelPanel = new HorizontalPanel();
-	private final Label _colorHintLabel = new Label(Messages.LOGO_COLOUR_EG_LBL.getString()); //$NON-NLS-1$
 	private final Label _colourErrorLabel = new Label();
 	private final Image _colourOkImage = new Image();
 
@@ -156,7 +155,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 			_logoTextLabel.addStyleName("fontAR"); 
 
 			_logoHintLabel.setStyleName("hintLabel"); //$NON-NLS-1$
-			_logoHintLabel.addStyleName("fontAR"); //$NON-NLS-1$
+			//_logoHintLabel.addStyleName("fontAR"); //$NON-NLS-1$
 
 			_logoTextBox.setText(Messages.LOGO_NAME_TXTBOX.getString()); //$NON-NLS-1$
 			_logoTextBox.setWidth("290px"); //$NON-NLS-1$
@@ -180,7 +179,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 			_logoTagsLabel.addStyleName("fontAR");
 
 			_tagsHintLabel.addStyleName("hintLabel"); //$NON-NLS-1$
-			_tagsHintLabel.addStyleName("fontAR");
+			//_tagsHintLabel.addStyleName("fontAR");
 
 			// prepare my motherfuckin' logoText vertical panel
 			_logoTextPanel.setSpacing(2);
@@ -307,9 +306,6 @@ public class OrderSubmitterModulePart extends AModulePart {
 			_colourLabel.setStyleName("label"); //$NON-NLS-1$
 			_colourLabel.addStyleName("fontAR");
 
-			_colorHintLabel.setStyleName("hintLabel"); //$NON-NLS-1$
-			_colorHintLabel.addStyleName("fontAR");
-
 			_pantoneTextBox.setStyleName("pantoneLabel"); //$NON-NLS-1$
 			_pantoneTextBox.addStyleName("fontAR");
 
@@ -325,7 +321,6 @@ public class OrderSubmitterModulePart extends AModulePart {
 			_colorSubPanel.setHeight("15px"); //$NON-NLS-1$
 
 			_colorPanel.add(_colorSubPanel);
-			_colorPanel.add(_colorHintLabel);
 			_colorPanel.add(_colourErrorLabel);
 
 			configureColoursPanels();

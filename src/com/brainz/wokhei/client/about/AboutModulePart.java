@@ -11,7 +11,9 @@ import com.brainz.wokhei.resources.Mails;
 import com.brainz.wokhei.resources.Messages;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -28,7 +30,7 @@ public class AboutModulePart extends AModulePart {
 
 
 	final Label _title = new Label();
-	final Label _text = new Label();
+	final HTML _text = new HTML();
 	final List<Widget> _panels = new ArrayList<Widget>();
 
 	/* (non-Javadoc)
@@ -46,6 +48,9 @@ public class AboutModulePart extends AModulePart {
 		rightColumnPanel.setWidth("400px");
 		rightColumnPanel.setHorizontalAlignment(VerticalPanel.ALIGN_LEFT);
 
+		DOM.setStyleAttribute(_text.getElement(), "whiteSpace", "pre");
+		_text.setWidth("370px");
+		_text.setWordWrap(true);
 		HorizontalPanel main=new HorizontalPanel();
 		main.add(leftColumnPanel);
 		main.add(new Image("../images/stuff2.png"));
@@ -57,7 +62,7 @@ public class AboutModulePart extends AModulePart {
 		_title.addStyleName("fontAR");
 		_title.setText(Messages.ABOUT_MENU_ABOUT_US.getString());
 		_text.setStyleName("sectionText");
-		_text.setText(Messages.ABOUT_MENU_ABOUT_US_TEXT.getString());
+		_text.setHTML(Messages.ABOUT_MENU_ABOUT_US_TEXT.getString());
 		Panel contactUsPanel=getContactUsPanel();
 		contactUsPanel.setVisible(false);
 		_panels.add(contactUsPanel);
@@ -80,7 +85,6 @@ public class AboutModulePart extends AModulePart {
 		addMenuItem(menu,Messages.ABOUT_MENU_RESTAURANT,Messages.ABOUT_MENU_RESTAURANT_TEXT);
 		addMenuItem(menu,Messages.ABOUT_MENU_GRAPHICSNETWORK,Messages.ABOUT_MENU_GRAPHICSNETWORK_TEXT);
 		addMenuItem(menu,Messages.ABOUT_MENU_CONTACTUS,contactUsPanel);
-		addMenuItem(menu,Messages.ABOUT_MENU_LOGO,Messages.ABOUT_MENU_LOGO_TEXT);
 
 		leftColumnPanel.add(aboutWokhei);
 		leftColumnPanel.add(getWhiteSpace(10));
@@ -184,7 +188,7 @@ public class AboutModulePart extends AModulePart {
 
 			public void onClick(ClickEvent event) {
 				_title.setText(title.getString());
-				_text.setText(text.getString());
+				_text.setHTML(text.getString());
 				hideAllPanels();
 				_text.setVisible(true);
 				applyCufon();

@@ -176,7 +176,9 @@ a1:hover {
 
 .hintLabel {
 	color: #000000;
-	font-size: 9px;
+		font-family: "Trebuchet MS", Gadget, sans-serif;
+		font-weight:bold;
+	font-size: 10px;
 }
 
 select {
@@ -695,6 +697,7 @@ select {
 	color: black;
 	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 	font-size: 14px;
+	text-align: justify; 
 }
 
 .sectionTinyText {
