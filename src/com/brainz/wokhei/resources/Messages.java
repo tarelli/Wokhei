@@ -94,7 +94,7 @@ public enum Messages {
 	THIRD_STEP_TITLE("Your logo is ready!"),
 	FIRST_STEP("Login with your Google Account, insert your product/company/service name, up to 5 tags to describe your logo and pick your preference for the main colour: as easy as that!"),
 	SECOND_STEP("Once your request is accepted it gets assigned to one of the graphic designers in the Wokhei network with expertise in your product area. He will prepare your logo in 24hrs!"),
-	THIRD_STEP("That was quick! Buy the logo within 24hrs from the first time you see it for only 49.90 EUR (VAT excluded) - approx 70 USD - to use it under the Wokhei Commercial Licence. Or ... use it for free under the Wokhei Limited Licence!"), 
+	THIRD_STEP("That was quick! Buy the logo within 24hrs from the first time you see it for only 49.90 EUR (VAT excluded) - approx 70 USD - to use it under the Wokhei Commercial License. Or ... use it for free under the Wokhei Limited License!"), 
 	INDEX_COPYRIGHT("\u00a9 2009 Wokhei"), 
 
 	//ABOUT
@@ -141,7 +141,9 @@ public enum Messages {
 
 	//EXTRA
 	EXTRAORDINARY_NOTIFICATION("Urgent notification from Wokhei"),
-	SUCCHIA_MELO("AZIZ AZIZ ... SUCCHIA-MELO E PALLE IN CULO"),
+	SUCCHIA_MELO("AZIZ AZIZ ... SUCCHIA-MELO E PALLE IN CULO"), 
+	MUST_ACCEPT_LICENSE("You need to accept terms and conditions first!"),
+	ACCEPT_CONDITIONS("I accept the terms and conditions"),
 
 	;
 

@@ -95,13 +95,17 @@ public class OrderBrowserModulePart extends AModulePart{
 	private final PopupPanel _buyNowPopUpPanel = new PopupPanel(true);
 	private final VerticalPanel _buyNowPanel = new VerticalPanel();
 	private final HTMLPanel _licenseText = new HTMLPanel(HtmlLicenses.COMMERCIAL_LICENSE.getString());
-	private final CheckBox _acceptLicenseCheckBox = new CheckBox("I accept the terms and conditions");
+	private final CheckBox _acceptLicenseCheckBox = new CheckBox(Messages.ACCEPT_CONDITIONS.getString());
 	private final Label _feedBackLabel = new Label("");
 	private final FormPanel _paypalForm = new FormPanel("");
 
 	private AsyncCallback<Long> _setOrderStatusCallback = null;
 
 	private AsyncCallback<List<OrderDTO>> _getOrdersCallback = null;
+
+	private final PopupPanel _acceptAgreementPopupPanel= new PopupPanel(true);
+
+	protected FileType _fileToDownload;;
 
 	@Override
 	public void loadModulePart() 
@@ -161,7 +165,7 @@ public class OrderBrowserModulePart extends AModulePart{
 			infos.setUrl(Images.INFOS.getImageURL());
 
 			mainPanel.setHeight("450px");
-			mainPanel.setWidth("900px");
+			mainPanel.setWidth("600px");
 			colour.setHeight("10px");
 			colour.setWidth("10px");
 			statusDescription.setHeight("150px");
@@ -183,6 +187,8 @@ public class OrderBrowserModulePart extends AModulePart{
 			ordersPanel.add(orderTagsLabel);
 			ordersPanel.add(colourPanel);
 			ordersPanel.add(orderDateLabel);
+
+			setupAcceptAgreement();
 
 			mainPanel.add(orderImage, 154, 0);
 			mainPanel.add(previousOrderButton,370,150);
@@ -373,10 +379,14 @@ public class OrderBrowserModulePart extends AModulePart{
 				setupBuyNowStuff();
 				break;
 			case BOUGHT:
-			case ARCHIVED:
 				orderImage.addStyleName("labelButton");
 				orderImage.setUrl(Images.valueOf(_currentOrder.getStatus().toString()).getImageURL()); 
 				setupDownloadStuff(_currentOrder.getStatus());
+				break;
+			case ARCHIVED:
+				orderImage.addStyleName("labelButton");
+				orderImage.setUrl(Images.valueOf(_currentOrder.getStatus().toString()).getImageURL()); 
+				setupDownloadStuff(_currentOrder.getStatus());				
 				break;
 
 			}
@@ -391,7 +401,7 @@ public class OrderBrowserModulePart extends AModulePart{
 		applyCufon();
 	}
 
-	private void setupDownloadStuff(Status status) {
+	private void setupDownloadStuff(final Status status) {
 		downloadPanel=new VerticalPanel();
 		downloadPanel.setSpacing(5);
 		Label downloadPng=new Label(Messages.DOWNLOAD_RASTERIZED.getString());
@@ -400,7 +410,16 @@ public class OrderBrowserModulePart extends AModulePart{
 		downloadPng.addClickHandler(new ClickHandler(){
 
 			public void onClick(ClickEvent event) {
-				Window.open(GWT.getHostPageBaseURL()+"wokhei/getfile?orderid="+_currentOrder.getId()+"&fileType="+FileType.PNG_LOGO, "_new", "");
+				if(status.equals(Status.BOUGHT))
+				{
+					Window.open(GWT.getHostPageBaseURL()+"wokhei/getfile?orderid="+_currentOrder.getId()+"&fileType="+FileType.PNG_LOGO, "_new", "");
+				}
+				else
+				{
+					_acceptAgreementPopupPanel.center();
+					_acceptAgreementPopupPanel.show();
+					applyCufon();
+				}
 			}});
 
 		downloadPanel.add(downloadPng);
@@ -460,6 +479,7 @@ public class OrderBrowserModulePart extends AModulePart{
 		_licenseText.setStyleName("license");
 		sp.setStyleName("licensePanel");
 
+		_feedBackLabel.setStyleName("errorLabel");
 		sp.add(_licenseText);
 		_buyNowPanel.add(sp);
 		_buyNowPanel.add(_acceptLicenseCheckBox);
@@ -469,6 +489,53 @@ public class OrderBrowserModulePart extends AModulePart{
 		_buyNowPopUpPanel.setWidth("390px");
 		_buyNowPopUpPanel.add(_buyNowPanel);
 
+	}
+
+	private void setupAcceptAgreement() {
+
+		HTMLPanel license= new HTMLPanel(HtmlLicenses.LIMITED_LICENSE.getString());	
+		ScrollPanel sp=new ScrollPanel();
+		license.setWidth("340px");
+		license.setHeight("300px");
+		license.setStyleName("license");
+		sp.setStyleName("licensePanel");
+
+		sp.add(license);
+		VerticalPanel acceptAgreementPanel=new VerticalPanel();
+		acceptAgreementPanel.setSpacing(10);
+		acceptAgreementPanel.setHorizontalAlignment(VerticalPanel.ALIGN_CENTER);
+		acceptAgreementPanel.add(sp);
+		final CheckBox acceptLicenseCheckBox=new CheckBox(Messages.ACCEPT_CONDITIONS.getString());
+		acceptAgreementPanel.add(acceptLicenseCheckBox);
+		final Label feedBackLabel=new Label(Messages.MUST_ACCEPT_LICENSE.getString());
+
+		Label downloadButton = new Label(Messages.DOWNLOAD_RASTERIZED.getString());
+		downloadButton.setStyleName("labelButton");
+		//		downloadButton.addStyleName("fontAR");
+		downloadButton.addStyleName("downloadLabelLink");
+		downloadButton.addClickHandler(new ClickHandler(){
+
+			public void onClick(ClickEvent event) {
+				if(acceptLicenseCheckBox.getValue())
+				{
+					Window.open(GWT.getHostPageBaseURL()+"wokhei/getfile?orderid="+_currentOrder.getId()+"&fileType="+FileType.PNG_LOGO, "_new", "");
+					_acceptAgreementPopupPanel.hide();
+				}
+				else
+				{
+					feedBackLabel.setVisible(true);
+				}
+
+			}});
+
+		acceptAgreementPanel.add(downloadButton);
+		feedBackLabel.setVisible(false);
+		feedBackLabel.setStyleName("errorLabel");
+		acceptAgreementPanel.add(feedBackLabel);
+
+		_acceptAgreementPopupPanel.setStyleName("genericPopup");
+		_acceptAgreementPopupPanel.setWidth("390px");
+		_acceptAgreementPopupPanel.add(acceptAgreementPanel);
 	}
 
 	private void setupPayPalForm()
@@ -552,7 +619,7 @@ public class OrderBrowserModulePart extends AModulePart{
 				//cancel if license has not been accepted
 				if (! _acceptLicenseCheckBox.getValue())
 				{
-					_feedBackLabel.setText("You need to accept terms and conditions first!");
+					_feedBackLabel.setText(Messages.MUST_ACCEPT_LICENSE.getString());
 					event.cancel();
 				}
 			}
