@@ -169,14 +169,26 @@ a1:hover {
 	font-size: 14px;
 }
 
+.labelForgot {
+	color: #bf007e;
+	font-family: "Trebuchet MS", Gadget, sans-serif;
+	font-size: 14px;
+}
+
+.labelForgotFeedback {
+	color: white;
+	font-family: "Trebuchet MS", Gadget, sans-serif;
+	font-size: 14px;
+}
+
 .labelButton {
 	cursor: pointer;
 }
 
 .hintLabel {
 	color: #000000;
-		font-family: "Trebuchet MS", Gadget, sans-serif;
-		font-weight:bold;
+	font-family: "Trebuchet MS", Gadget, sans-serif;
+	font-weight: bold;
 	font-size: 10px;
 }
 
@@ -406,7 +418,8 @@ select {
 .footerLinks {
 	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 	font-size: 13px;
-	font-weight: bold; color : white;
+	font-weight: bold;
+	color: white;
 	cursor: pointer;
 	color: white;
 }
@@ -561,7 +574,9 @@ select {
 .license {
 	background-color: white;
 	font-family: "Times New Roman";
-	font-size: 13px; color : black; cursor : default;
+	font-size: 13px;
+	color: black;
+	cursor: default;
 	text-align: left;
 	margin: 5px;
 	cursor: default;
@@ -569,7 +584,7 @@ select {
 }
 
 .licensePanel {
-	background-color:white;
+	background-color: white;
 	border: solid 2px;
 	border-color: #f69000;
 }
@@ -696,7 +711,7 @@ select {
 	color: black;
 	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 	font-size: 14px;
-	text-align: justify; 
+	text-align: justify;
 }
 
 .sectionTinyText {
