@@ -35,4 +35,5 @@ public interface OrderServiceAsync extends IServiceAsync {
 
 	void getOrderKillswitch(AsyncCallback<Boolean> callback);
 
+	void sendEnquiry(OrderDTO order, AsyncCallback<Boolean> callback);
 }

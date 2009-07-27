@@ -450,4 +450,35 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 		}
 	}
 
+	public Boolean sendEnquiry(OrderDTO order)
+	{
+		Boolean returnValue = false;
+
+		try {
+			//send enquiry
+			String msgBody = Messages.ENQUIRY_EMAIL_BODY.getString() + "\n";
+			msgBody += "Order ID: " + order.getId().toString() + "\n";
+			msgBody += "Text: " + order.getText().toString() + "\n";
+			msgBody += "TagZ: " + order.getTags().toString() + "\n";
+			msgBody += "Colour: " + order.getColour().toString() + "\n\n";
+			msgBody += "Let's make some money!";
+
+			List<String> recipients = new ArrayList<String>();
+			recipients.add(Mails.ADMIN.getMailAddress());
+			recipients.add(Mails.GIOVANNI.getMailAddress());
+			recipients.add(Mails.MATTEO.getMailAddress());
+
+			EmailSender.sendEmail(Mails.YOURLOGO.getMailAddress(), recipients, order.getCustomerEmail() + Messages.ENQUIRY_EMAIL_SUBJECT.getString(), msgBody);
+			returnValue = true;
+
+			log.log(Level.INFO, order.getCustomerEmail() + " wants to buy an archived order - email sent!");
+		} 
+		catch(Exception ex)
+		{
+			log.log(Level.SEVERE, "Enquiry for archived logo: something went terribly wrong in the re-enactment of the re-enactment!");
+		}
+
+		return returnValue;
+	}
+
 }

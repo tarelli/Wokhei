@@ -99,9 +99,17 @@ public class OrderBrowserModulePart extends AModulePart{
 	private final Label _feedBackLabel = new Label("");
 	private final FormPanel _paypalForm = new FormPanel("");
 
+	// Enquiry for archived logos
+	private final Label _forgotToBuyLbl = new Label(Messages.ENQUIRY_ARCHIVED_QUESTION.getString());
+	private final Label _sendEnquiryLblBtn = new Label(Messages.ENQUIRY_ARCHIVED_ACTION.getString()); 
+	private final Label _enquiryFeedback = new Label("");
+	private final HorizontalPanel _enquiryPanel = new HorizontalPanel();
+
 	private AsyncCallback<Long> _setOrderStatusCallback = null;
 
 	private AsyncCallback<List<OrderDTO>> _getOrdersCallback = null;
+
+	private AsyncCallback<Boolean> _sendEnquiryCallback = null;
 
 	@Override
 	public void loadModulePart() 
@@ -113,6 +121,8 @@ public class OrderBrowserModulePart extends AModulePart{
 			getOrdersForCurrentCustomer();
 
 			setupLightBox();
+
+			setupEnquiryControls();
 
 			previousOrderButton.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
@@ -195,10 +205,43 @@ public class OrderBrowserModulePart extends AModulePart{
 			mainPanel.add(downloadPanelContainer,465,330);
 			mainPanel.add(infos,490,20);
 
+			_enquiryPanel.add(_forgotToBuyLbl);
+			_enquiryPanel.add(_sendEnquiryLblBtn);	
+			_enquiryPanel.setSpacing(3);
+
+			mainPanel.add(_enquiryPanel, 467, 400);
+			mainPanel.add(_enquiryFeedback, 470, 418);
+
 			RootPanel.get("ordersBrowser").add(getPanel());
 
 			applyCufon();
 		}
+	}
+
+	private void setupEnquiryControls() {
+		setEnquiryControlsVisibility(false);
+
+		_sendEnquiryLblBtn.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				((OrderServiceAsync)getService(Service.ORDER_SERVICE)).sendEnquiry(_currentOrder, _sendEnquiryCallback);
+			}
+		});
+
+		//style
+		_forgotToBuyLbl.setStyleName("labelForgot");
+		_sendEnquiryLblBtn.addStyleName("labelButton");
+		_sendEnquiryLblBtn.addStyleName("labelLink");
+		_sendEnquiryLblBtn.addStyleName("labelForgot");
+		_enquiryFeedback.setStyleName("labelForgotFeedback");
+	}
+
+	private void setEnquiryControlsVisibility(boolean visible)
+	{
+		_enquiryFeedback.setText("");
+
+		_forgotToBuyLbl.setVisible(visible);
+		_sendEnquiryLblBtn.setVisible(visible);
+		_enquiryFeedback.setVisible(visible);
 	}
 
 	private void hookUpCallbacks() 
@@ -228,6 +271,21 @@ public class OrderBrowserModulePart extends AModulePart{
 				_currentOrder=OrderDTOUtils.getMostRecentOrder(result);
 				updatePanel();
 			}
+		};
+
+		_sendEnquiryCallback = new AsyncCallback<Boolean>() {
+
+			public void onSuccess(Boolean result) {
+				if(result)
+					_enquiryFeedback.setText(Messages.ENQUIRY_FEEDBACK_OK.getString());
+				else
+					_enquiryFeedback.setText(Messages.ENQUIRY_FEEDBACK_KO.getString());
+			}
+
+			public void onFailure(Throwable caught) {
+				_enquiryFeedback.setText(Messages.ENQUIRY_FEEDBACK_KO.getString());
+			}
+
 		};
 	}
 
@@ -292,12 +350,13 @@ public class OrderBrowserModulePart extends AModulePart{
 	private void updatePanel() {
 		//buy now false by default
 		_buyNowImage.setVisible(false);
+		//send enquiry visibility false by default
+		setEnquiryControlsVisibility(false);
+
 		if(downloadPanel!=null)
 		{
 			downloadPanelContainer.remove(downloadPanel);
 		}
-		//TODO: remove - this is here just for testing
-		//setupBuyNowStuff();
 
 		if(_currentOrder!=null)
 		{
@@ -354,19 +413,22 @@ public class OrderBrowserModulePart extends AModulePart{
 				setupBuyNowStuff();
 				break;
 			case BOUGHT:
-			case ARCHIVED:
 				orderImage.addStyleName("labelButton");
 				orderImage.setUrl(Images.valueOf(_currentOrder.getStatus().toString()).getImageURL()); 
 				setupDownloadStuff(_currentOrder.getStatus());
 				break;
-
+			case ARCHIVED:
+				orderImage.addStyleName("labelButton");
+				orderImage.setUrl(Images.valueOf(_currentOrder.getStatus().toString()).getImageURL()); 
+				setupDownloadStuff(_currentOrder.getStatus());
+				setEnquiryControlsVisibility(true);
+				break;
 			}
 		}
 		else
 		{
 			//there's no current order means we have no order - need to set invisible for IE
 			orderImage.setVisible(false);
-
 			alwaysInfos(true);
 		}
 		applyCufon();

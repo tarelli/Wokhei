@@ -140,6 +140,15 @@ public enum Messages {
 	CAREERS_TITLE("Careers"), 
 	CAREERS_GRAPHIC_TITLE("Logo graphic designer"),  
 
+	// Enquiry for archived logo
+	ENQUIRY_ARCHIVED_QUESTION("Missed your chance to buy this logo?"),
+	ENQUIRY_ARCHIVED_ACTION("Click HERE!"),
+	ENQUIRY_MADE("Your enquiry has been sent - we'll be in contact soon."),
+	ENQUIRY_EMAIL_SUBJECT(" wants to buy an archived logo"),
+	ENQUIRY_EMAIL_BODY("Happy days! Looks like this guy wants to buy an archived logo:\n"),
+	ENQUIRY_FEEDBACK_OK("Your enquiry was submitted. We'll be in contact soon!"),
+	ENQUIRY_FEEDBACK_KO("Something went terribly wrong and your enquiry was not submitted. Try again!"),
+
 	//EXTRA
 	EXTRAORDINARY_NOTIFICATION("Urgent notification from Wokhei"),
 	SUCCHIA_MELO("AZIZ AZIZ ... SUCCHIA-MELO E PALLE IN CULO"),
