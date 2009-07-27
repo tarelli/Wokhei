@@ -95,7 +95,6 @@ public enum Messages {
 	FIRST_STEP("Login with your Google Account, insert your product/company/service name, up to 5 tags to describe your logo and pick your preference for the main colour: as easy as that!"),
 	SECOND_STEP("Once your request is accepted it gets assigned to one of the graphic designers in the Wokhei network with expertise in your product area. He will prepare your logo in 24hrs!"),
 	THIRD_STEP("That was quick! Buy the logo within 24hrs from the first time you see it for only 49.90 EUR (VAT excluded) - approx 70 USD - to use it under the Wokhei Commercial Licence. Or ... use it for free under the Wokhei Limited Licence!"), 
-	THE_BIG_PURPLE("Get yourself a Stir Fried Logo!"),
 	INDEX_COPYRIGHT("\u00a9 2009 Wokhei"), 
 
 	//ABOUT
@@ -126,7 +125,7 @@ public enum Messages {
 	FAQ_4("What if I want no text in my logo?"),
 	FAQ_4_ANSWER("If you don't want any text to appear in your logo you still have to specify the product name but you can use the #no-text tag in order to receive a graphics only logo."),
 	FAQ_5("When can I download my logo?"),
-	FAQ_5_ANSWER("If you decide not to buy you will be able to download your logo 24hrs after viewing it for the first time.\n\nIn case you buy you can download it right after the payment."),
+	FAQ_5_ANSWER("If you decide not to buy you will be able to download your logo 24hrs after you sees it for the first time.\n\nIn case you buy you can download it right after the payment."),
 	FAQ_6("Why should I buy the logo if I can use it for free?"),
 	FAQ_6_ANSWER("Fair enough question!<br>If you don't buy the logo you can only use it under the Wokhei Limited License, which excludes any commercial use. Also, if you don't buy your logo someone else can pick it up from the gallery (coming soon) and use it!"),
 	FAQ_7("How do I pay for my logo?"),

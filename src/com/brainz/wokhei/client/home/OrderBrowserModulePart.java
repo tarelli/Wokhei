@@ -194,16 +194,16 @@ public class OrderBrowserModulePart extends AModulePart{
 			ordersPanel.add(colourPanel);
 			ordersPanel.add(orderDateLabel);
 
-			mainPanel.add(orderImage, 454, 0);
-			mainPanel.add(previousOrderButton,670,150);
-			mainPanel.add(nextOrderButton,720,150);
-			mainPanel.add(statusDescription,470,250);
-			mainPanel.add(statusTitle,470,220);
-			mainPanel.add(infoButton,447,221);
-			mainPanel.add(ordersPanel,660,43);
-			mainPanel.add(_buyNowImage, 500, 330);
-			mainPanel.add(downloadPanelContainer,465,330);
-			mainPanel.add(infos,490,20);
+			mainPanel.add(orderImage, 154, 0);
+			mainPanel.add(previousOrderButton,370,150);
+			mainPanel.add(nextOrderButton,420,150);
+			mainPanel.add(statusDescription,170,250);
+			mainPanel.add(statusTitle,170,220);
+			mainPanel.add(infoButton,147,221);
+			mainPanel.add(ordersPanel,360,43);
+			mainPanel.add(_buyNowImage, 220, 350);
+			mainPanel.add(downloadPanelContainer,165,330);
+			mainPanel.add(infos,190,20);
 
 			_enquiryPanel.add(_forgotToBuyLbl);
 			_enquiryPanel.add(_sendEnquiryLblBtn);	
@@ -249,8 +249,15 @@ public class OrderBrowserModulePart extends AModulePart{
 		_setOrderStatusCallback = new AsyncCallback<Long>() {
 
 			public void onSuccess(Long result) {
-				if(result!=null)
+				if(_currentOrder.getStatus().equals(Status.READY))
+				{
+					//This is la porcata definitiva.
+					//Assuming -as it is at the moment- that status callback gets called only for the Ready->Viewed transition
+					_currentOrder.setStatus(Status.VIEWED);
 					updatePanel();
+					notifyChanges();
+					slideShow.showSingleImage("/wokhei/getfile?fileType="+FileType.PNG_LOGO_PRESENTATION.toString()+"&orderid="+_currentOrder.getId(), Messages.COPYRIGHT.getString());
+				}
 			}
 
 			public void onFailure(Throwable caught) {
@@ -294,18 +301,21 @@ public class OrderBrowserModulePart extends AModulePart{
 
 			public void onClick(ClickEvent event) 
 			{	
-				if(_currentOrder.getStatus().equals(Status.READY) 
-						|| _currentOrder.getStatus().equals(Status.VIEWED) 
-						|| _currentOrder.getStatus().equals(Status.BOUGHT) 
-						|| _currentOrder.getStatus().equals(Status.ARCHIVED))
-					slideShow.showSingleImage("/wokhei/getfile?fileType="+FileType.PNG_LOGO.toString()+"&orderid="+_currentOrder.getId(), Messages.COPYRIGHT.getString());
-				if(_currentOrder.getStatus().equals(Status.READY))
+				switch (_currentOrder.getStatus())
 				{
+				case READY:
 					if(_setOrderStatusCallback!=null)
 					{
-						((OrderServiceAsync) getService(Service.ORDER_SERVICE)).setOrderStatus(_currentOrder.getId(),Status.VIEWED, _setOrderStatusCallback);
+						((OrderServiceAsync) getService(Service.ORDER_SERVICE)).setOrderStatus(_currentOrder.getId(),Status.VIEWED, _setOrderStatusCallback);						
 					}
+					break;
+				case VIEWED:
+				case BOUGHT:
+				case ARCHIVED:
+					slideShow.showSingleImage("/wokhei/getfile?fileType="+FileType.PNG_LOGO_PRESENTATION.toString()+"&orderid="+_currentOrder.getId(), Messages.COPYRIGHT.getString());
+					break;
 				}
+
 			}
 
 		});
@@ -343,6 +353,15 @@ public class OrderBrowserModulePart extends AModulePart{
 	{
 		_currentOrder=OrderDTOUtils.getPreviousOrder(_orders,_currentOrder);
 	}
+
+	/**
+	 * 
+	 */
+	public void getLastOrder() 
+	{
+		_currentOrder=OrderDTOUtils.getMostRecentOrder(_orders);
+	}
+
 
 	/**
 	 * 

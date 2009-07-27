@@ -28,7 +28,8 @@ public enum Images {
 	TWITTER("./images/twitter.png"),
 	PAYPAL_BUTTON("https://www.paypal.com/en_US/i/btn/btn_buynow_LG.gif"),
 	LOGO("./images/logo.png"),
-	PAID("./images/paid.png"),
+	PAID("./images/paid.png"), 
+	THE_BIG_PURPLE("./images/bigPurple.png"),
 	;
 
 	String _imageName;
