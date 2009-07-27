@@ -170,15 +170,15 @@ a1:hover {
 }
 
 .labelForgot {
-	color: #bf007e;
+	color: black;
 	font-family: "Trebuchet MS", Gadget, sans-serif;
-	font-size: 14px;
+	font-size: 12px;
 }
 
 .labelForgotFeedback {
-	color: white;
+	color: #bf007e;
 	font-family: "Trebuchet MS", Gadget, sans-serif;
-	font-size: 14px;
+	font-size: 12px;
 }
 
 .labelButton {

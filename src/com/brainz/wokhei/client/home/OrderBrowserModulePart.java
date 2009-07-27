@@ -112,6 +112,8 @@ public class OrderBrowserModulePart extends AModulePart{
 
 	private AsyncCallback<Boolean> _sendEnquiryCallback = null;
 
+	private boolean _buyNowLoaded=false;
+
 	@Override
 	public void loadModulePart() 
 	{
@@ -124,6 +126,8 @@ public class OrderBrowserModulePart extends AModulePart{
 			setupLightBox();
 
 			setupEnquiryControls();
+
+			setupAcceptAgreement();		
 
 			previousOrderButton.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
@@ -193,9 +197,11 @@ public class OrderBrowserModulePart extends AModulePart{
 			ordersPanel.add(orderNameLabel);
 			ordersPanel.add(orderTagsLabel);
 			ordersPanel.add(colourPanel);
-			ordersPanel.add(orderDateLabel);
+			ordersPanel.add(orderDateLabel);			
 
-			setupAcceptAgreement();
+			_enquiryPanel.add(_forgotToBuyLbl);
+			_enquiryPanel.add(_sendEnquiryLblBtn);	
+			_enquiryPanel.setSpacing(5);
 
 			mainPanel.add(orderImage, 154, 0);
 			mainPanel.add(previousOrderButton,370,150);
@@ -204,16 +210,11 @@ public class OrderBrowserModulePart extends AModulePart{
 			mainPanel.add(statusTitle,170,220);
 			mainPanel.add(infoButton,147,221);
 			mainPanel.add(ordersPanel,360,43);
-			mainPanel.add(_buyNowImage, 220, 350);
+			mainPanel.add(_buyNowImage, 220, 370);
 			mainPanel.add(downloadPanelContainer,165,330);
+			mainPanel.add(_enquiryPanel, 165, 380);
+			mainPanel.add(_enquiryFeedback, 170, 400);
 			mainPanel.add(infos,190,20);
-
-			_enquiryPanel.add(_forgotToBuyLbl);
-			_enquiryPanel.add(_sendEnquiryLblBtn);	
-			_enquiryPanel.setSpacing(3);
-
-			mainPanel.add(_enquiryPanel, 467, 400);
-			mainPanel.add(_enquiryFeedback, 470, 418);
 
 			RootPanel.get("ordersBrowser").add(getPanel());
 
@@ -496,29 +497,37 @@ public class OrderBrowserModulePart extends AModulePart{
 
 
 	private void setupBuyNowStuff() {
-		// fill-up buy now pop-up panel
-		setupBuyNowPopup();
+		if(!_buyNowLoaded)
+		{
+			_buyNowLoaded=true;
+			// fill-up buy now pop-up panel
+			setupBuyNowPopup();
 
-		// setup BuyNow image click handler
+			// setup BuyNow image click handler
 
-		ClickHandler buyNowClickHandler=new ClickHandler(){
+			ClickHandler buyNowClickHandler=new ClickHandler(){
 
-			public void onClick(ClickEvent event) 
-			{	
-				// setup style and show
-				_buyNowPopUpPanel.setStyleName("genericPopup");
-				_buyNowPopUpPanel.center();
-				_buyNowPopUpPanel.show();
-			}
+				public void onClick(ClickEvent event) 
+				{	
+					// setup style and show
+					_buyNowPopUpPanel.setStyleName("genericPopup");
+					_buyNowPopUpPanel.center();
+					_buyNowPopUpPanel.show();
+				}
 
-		};
+			};
 
-		_buyNowImage.addClickHandler(buyNowClickHandler);
+			_buyNowImage.addClickHandler(buyNowClickHandler);
 
-		// setup BuyNow Icon if needed then make it visible.
-		_buyNowImage.addStyleName("labelButton");
-		_buyNowImage.addStyleName("buyNowButton");
-		_buyNowImage.setVisible(true);
+			// setup BuyNow Icon if needed then make it visible.
+			_buyNowImage.addStyleName("labelButton");
+			_buyNowImage.addStyleName("buyNowButton");
+			_buyNowImage.setVisible(true);
+		}
+		else
+		{
+			_buyNowImage.setVisible(true);
+		}
 	}
 
 	private void setupBuyNowPopup() {
