@@ -74,6 +74,22 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 
 				returnValue = true;
 
+				//notify via email cool people
+				List<String> recipients = new ArrayList<String>();
+				recipients.add(Mails.GIOVANNI.getMailAddress());
+				recipients.add(Mails.MATTEO.getMailAddress());
+				recipients.add(Mails.SIMONE.getMailAddress());
+				recipients.add(Mails.ADMIN.getMailAddress());
+				//subject
+				String subj = Messages.NOTIFY_SUBMITTED_SUBJ.getString() + order.getCustomer().getEmail() + "!";
+				//msgbody
+				String msgBody = Messages.NOTIFY_SUBMITTED_BODY.getString() + order.getCustomer().getEmail() + ":\n\n";
+				msgBody += "OrderID: " + order.getId() + "\n";
+				msgBody += "Text: " + order.getText() + "\n";
+				msgBody += "TagZ: " + order.getTags().toString() + "\n";
+				msgBody += "Colour: " + order.getColour().toString() + "\n";
+				EmailSender.sendEmail(Mails.YOURLOGO.getMailAddress(), recipients, subj, msgBody);
+
 				// log - this is fucked-up - if no user set there's something wrong
 				log.info("order submitted by user " + order.getCustomer().getNickname() + ": " + order.getText() + " - " + order.getTags().toString() + " COLOUR:" + order.getColour().getName());
 			} 

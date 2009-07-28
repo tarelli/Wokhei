@@ -154,6 +154,10 @@ public enum Messages {
 	MUST_ACCEPT_LICENSE("You need to accept terms and conditions first!"),
 	ACCEPT_CONDITIONS("I accept the terms and conditions"),
 
+	//NOTIFY EMAILS WHEN LOGO ORDER IS SUBMITTED
+	NOTIFY_SUBMITTED_SUBJ("New Incoming Order from "),
+	NOTIFY_SUBMITTED_BODY("A new order is been submitted by "),
+
 	;
 
 	private String _text;
