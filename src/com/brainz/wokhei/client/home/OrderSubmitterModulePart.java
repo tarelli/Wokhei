@@ -128,6 +128,8 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 	private OrderDTO _submittedOrder = null;
 
+	private AsyncCallback<Long> _setOrderStatusCallback;
+
 	@Override
 	public void loadModulePart() {
 
@@ -519,6 +521,18 @@ public class OrderSubmitterModulePart extends AModulePart {
 				//TODO - do something in case of failure
 			}
 		};
+
+		_setOrderStatusCallback = new AsyncCallback<Long>() {
+
+			public void onSuccess(Long result) {
+				setViewByLatestOrder();
+				notifyChanges();
+			}
+
+			public void onFailure(Throwable caught) {
+				//TODO give feedback to the user that something went wrong!
+			}
+		};
 	}
 
 
@@ -696,9 +710,22 @@ public class OrderSubmitterModulePart extends AModulePart {
 			{
 				Date serverTimeStamp = this.getModule().getServerTimeStamp();
 				float diffHours = DateDifferenceCalculator.getDifferenceInHours(serverTimeStamp,order.getViewedDate());
-				int missingTime = (24 + (int)diffHours);
+				Integer missingTime=(24 + (int)diffHours);
+				String missingTimeString = missingTime.toString();
 
-				this._waitLabel.setText(Messages.VIEWED_WAITMSG_1.getString() + missingTime + Messages.VIEWED_WAITMSG_2.getString());
+				if(missingTime>=0)
+				{
+					if(missingTime<1)
+					{
+						missingTimeString=Messages.LESS_THAN_HOUR.getString();
+					}
+					this._waitLabel.setText(Messages.VIEWED_WAITMSG_1.getString() + missingTimeString + Messages.VIEWED_WAITMSG_2.getString());
+				}
+				else
+				{
+					((OrderServiceAsync)getService(Service.ORDER_SERVICE)).setOrderStatus(order.getId(), Status.ARCHIVED, _setOrderStatusCallback);
+				}
+
 			}
 		}
 		else

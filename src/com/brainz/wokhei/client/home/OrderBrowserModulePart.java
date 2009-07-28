@@ -386,25 +386,8 @@ public class OrderBrowserModulePart extends AModulePart{
 
 			orderImage.setVisible(true);
 
-			//set next arrow visibility
-			if(_orders.indexOf(_currentOrder) == _orders.size() -1)
-			{
-				nextOrderButton.setVisible(false);
-			}
-			else
-			{
-				nextOrderButton.setVisible(true);
-			}
-
-			//set prev arrow visibility
-			if(_orders.indexOf(_currentOrder) == 0)
-			{
-				previousOrderButton.setVisible(false);
-			}
-			else
-			{
-				previousOrderButton.setVisible(true);
-			}
+			nextOrderButton.setVisible(OrderDTOUtils.getNextOrder(_orders, _currentOrder)!=_currentOrder);
+			previousOrderButton.setVisible(OrderDTOUtils.getPreviousOrder(_orders, _currentOrder)!=_currentOrder);
 
 			alwaysInfos(false);
 			orderNameLabel.setText(_currentOrder.getText());
