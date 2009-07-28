@@ -65,7 +65,6 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 
 		if (user!= null)
 		{
-
 			order.setCustomer(user);
 
 			PersistenceManager pm = PMF.get().getPersistenceManager();
@@ -253,23 +252,38 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 					Properties props = new Properties();
 					Session sessionX = Session.getDefaultInstance(props, null);
 
+					List<String> recipients = new ArrayList<String>();
+					recipients.add(order.getCustomer().getEmail());
+
+					String msgBodyHead = "";
 					String msgBody = "";
+					String msgFooter = "";
 
 					if(newStatus==Status.REJECTED)
 					{
 						//rejected message
-						msgBody = Messages.EMAIL_ORDER_REJECTED.getString() + "\n\n" + order.getText() + "\n" + order.getTags().toString();
+						msgBodyHead = Messages.EMAIL_ORDER_REJECTED.getString();
+						msgFooter = Messages.EMAIL_ORDER_REJECTED_FOOTER.getString();
 					}
-					else
+					else if (newStatus==Status.ACCEPTED)
 					{
 						//accepted message
-						msgBody = Messages.EMAIL_ORDER_ACCEPTED.getString() + "\n\n" + order.getText() + "\n" + order.getTags().toString();
+						msgBodyHead = Messages.EMAIL_ORDER_ACCEPTED.getString();
+						msgFooter = Messages.EMAIL_ORDER_ACCEPTED_FOOTER.getString();
 					}
 
-					List<String> recipients = new ArrayList<String>();
-					recipients.add(order.getCustomer().getEmail());
+					//common stuff
+					//add updated orders to email
+					msgBody+= 	"Logo Details: \n" +
+					"ID: " + order.getId() + "\n" + 
+					"Text: " + order.getText() + "\n" + 
+					"Tags: " + order.getTags().toString() + "\n" + 
+					"Colour: " + order.getColour().toString() + 
+					"\n\n";
+					//msgFooter
+					msgFooter+= "\n\n" + Messages.EMAIL_ORDER_GOODBYE.getString();
 
-					EmailSender.sendEmail(Mails.YOURLOGO.getMailAddress(), recipients, "Order Status Notification - " + new Date().toString(), msgBody);
+					EmailSender.sendEmail(Mails.YOURLOGO.getMailAddress(), recipients, "Order Status Notification", msgBodyHead + msgBody + msgFooter);
 				}
 
 				if (user != null) 

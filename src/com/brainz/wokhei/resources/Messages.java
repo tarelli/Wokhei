@@ -80,9 +80,24 @@ public enum Messages {
 	BROWSE("Browse..."), 
 	UPLOAD("Upload!"),
 
-	EMAIL_ORDER_ACCEPTED("Your logo order has been ACCEPTED by Wokhei - it will be ready in 24h:"),
-	EMAIL_ORDER_REJECTED("Your logo order has been REJECTED by Wokhei:"), 
-	EMAIL_ORDER_READY("This is a notification from Wokhei: your stir fried logo is ready!"),
+	//NOTIFICATION EMAILS
+	EMAIL_ORDER_READY_SUBJ("Your Stir Fried Logo is ready!"),
+	EMAIL_ORDER_SUBJ("News from your Stir Fried Logo order"),
+	EMAIL_ORDER_ACCEPTED("Your Stir Fried Logo order has been accepted by Wokhei - it will be ready in 24hrs! "),
+	EMAIL_ORDER_REJECTED("Sorry, your Stir Fried Logo order has been rejected by Wokhei. This can happen if your order is in violation of copyright, sounded like a joke or we just didn't like it! "),
+	EMAIL_ORDER_IN_PROGRESS("Your Stir Fried Logo has been assigned to one of the designers in the Wokhei network and is now in progress: "),
+	EMAIL_ORDER_QUALITY_GATE("Your Stir Fried Logo is currently being reviewed for quality check: "),
+	EMAIL_ORDER_READY("This is a notification from Wokhei: your stir fried logo is ready! "),
+	EMAIL_ORDER_ACCEPTED_FOOTER("Check out [ http://www.wokhei.com ] to find out more about your order status."),
+	EMAIL_ORDER_REJECTED_FOOTER("Visit [ http://www.wokhei.com ] to submit a new order and ... best of luck!"),
+	EMAIL_ORDER_IN_PROGRESS_FOOTER("Check out [ http://www.wokhei.com ] to find out more about your order status."),
+	EMAIL_ORDER_QUALITY_GATE_FOOTER("Check out [ http://www.wokhei.com ] to find out more about your order status."),
+	EMAIL_ORDER_READY_FOOTER("Visit [ http://www.wokhei.com ] to view and download your stir fried logo!"),
+	EMAIL_ORDER_GOODBYE("The Wokhei Staff"),
+
+	//NOTIFY EMAILS WHEN LOGO ORDER IS SUBMITTED
+	NOTIFY_SUBMITTED_SUBJ("New Incoming Order from "),
+	NOTIFY_SUBMITTED_BODY("A new order is been submitted by "),
 
 	//INDEX
 	WATCH_A_VIDEO("Watch a video"),
@@ -153,10 +168,6 @@ public enum Messages {
 	SUCCHIA_MELO("AZIZ AZIZ ... SUCCHIA-MELO E PALLE IN CULO"), 
 	MUST_ACCEPT_LICENSE("You need to accept terms and conditions first!"),
 	ACCEPT_CONDITIONS("I accept the terms and conditions"),
-
-	//NOTIFY EMAILS WHEN LOGO ORDER IS SUBMITTED
-	NOTIFY_SUBMITTED_SUBJ("New Incoming Order from "),
-	NOTIFY_SUBMITTED_BODY("A new order is been submitted by "),
 
 	;
 

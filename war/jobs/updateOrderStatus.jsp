@@ -38,8 +38,9 @@
 	// log start of job
 	log.info(" --> updateOrderStatus Job START <--");
 	
-	// --> 0. setup a timer for the timeout
-	// --> 0.1. before timeout reload the page so that the job keeps going
+	//declare stuff for sending emails
+	Properties props = new Properties();
+    Session sessionX = Session.getDefaultInstance(props, null);
 	
 	// declare list of updated orders (to be included in the email to admin)
 	List<Order> updatedOrders = new ArrayList<Order>();
@@ -85,6 +86,26 @@
 				{
 					order.setStatus(Status.IN_PROGRESS);
 					updatedOrders.add(order);
+					
+					//-----------------------------------------------------------------------------
+					//send an email to the user
+				    String msgBody = Messages.EMAIL_ORDER_IN_PROGRESS.getString() + "\n\n";
+				    
+			    	//add updated orders to email
+			    	msgBody+= 	"Logo Details: \n" +
+			    				"ID: " + order.getId() + "\n" + 
+			    				"Text: " + order.getText() + "\n" + 
+			    				"Tags: " + order.getTags().toString() + "\n" + 
+			    				"Colour: " + order.getColour().toString() + "\n" + 
+			    				"\n\n" +
+			    				Messages.EMAIL_ORDER_IN_PROGRESS.getString() + "\n\n" +
+			    				Messages.EMAIL_ORDER_GOODBYE.getString();
+				
+				    List<String> recipients = new ArrayList<String>();
+				    recipients.add(order.getCustomer().getEmail());
+			    
+				    EmailSender.sendEmail(Mails.YOURLOGO.getMailAddress(), recipients, Messages.EMAIL_ORDER_SUBJ.getString(), msgBody);
+				    //-----------------------------------------------------------------------------
 				}
 			}
 			else if(diffHours > 16 && diffHours < 24)
@@ -93,6 +114,26 @@
 				{
 					order.setStatus(Status.QUALITY_GATE);
 					updatedOrders.add(order);
+					
+					//-----------------------------------------------------------------------------
+					//send an email to the user
+				    String msgBody = Messages.EMAIL_ORDER_QUALITY_GATE.getString() + "\n\n";
+				    
+			    	//add updated orders to email
+			    	msgBody+= 	"Logo Details: \n" +
+			    				"ID: " + order.getId() + "\n" + 
+			    				"Text: " + order.getText() + "\n" + 
+			    				"Tags: " + order.getTags().toString() + "\n" + 
+			    				"Colour: " + order.getColour().toString() + "\n" + 
+			    				"\n\n" +
+			    				Messages.EMAIL_ORDER_QUALITY_GATE_FOOTER.getString() + "\n\n" +
+			    				Messages.EMAIL_ORDER_GOODBYE.getString();
+				
+				    List<String> recipients = new ArrayList<String>();
+				    recipients.add(order.getCustomer().getEmail());
+			    
+				    EmailSender.sendEmail(Mails.YOURLOGO.getMailAddress(), recipients, Messages.EMAIL_ORDER_SUBJ.getString(), msgBody);
+				    //-----------------------------------------------------------------------------
 				}
 			}
 			else if(diffHours > 24)
@@ -100,38 +141,32 @@
 				OrderServiceImpl orderService = new OrderServiceImpl();
 			
 				// check here to see if it's really ready
-				if(orderService.hasFileUploaded(order.getId(), FileType.PDF_VECTORIAL_LOGO) || 
-				   orderService.hasFileUploaded(order.getId(), FileType.PNG_LOGO_PRESENTATION) ||
+				if(orderService.hasFileUploaded(order.getId(), FileType.PDF_VECTORIAL_LOGO) && 
+				   orderService.hasFileUploaded(order.getId(), FileType.PNG_LOGO_PRESENTATION) &&
 				   orderService.hasFileUploaded(order.getId(), FileType.PNG_LOGO))
 				{
 				// update status
 				order.setStatus(Status.READY);
 				updatedOrders.add(order);
-				
+		
 				//-----------------------------------------------------------------------------
-				//send an email with attachment (or link) to the user
-				Properties props = new Properties();
-			    Session sessionX = Session.getDefaultInstance(props, null);
-			
+				//send an email to the user
 			    String msgBody = Messages.EMAIL_ORDER_READY.getString() + "\n\n";
 			    
-			    for(Order updatedOrder :updatedOrders)
-			    {
-			    	//add updated orders to email
-			    	msgBody+= 	"Logo Details: \n" +
-			    				"ID: " + updatedOrder.getId() + "\n" + 
-			    				"Text: " + updatedOrder.getText() + "\n" + 
-			    				"Tags: " + updatedOrder.getTags().toString() + "\n" + 
-			    				"Colour: " + updatedOrder.getColour().toString() + "\n" + 
-			    				updatedOrder.getTags().toString() + "\n" + 
-			    				"\n\n" +
-			    				"Visit [ http://www.wokhei.com ] to view and download your stir fried logo!";
-			    }
+		    	//add updated orders to email
+		    	msgBody+= 	"Logo Details: \n" +
+		    				"ID: " + order.getId() + "\n" + 
+		    				"Text: " + order.getText() + "\n" + 
+		    				"Tags: " + order.getTags().toString() + "\n" + 
+		    				"Colour: " + order.getColour().toString() + "\n" + 
+		    				"\n\n" +
+		    				Messages.EMAIL_ORDER_READY_FOOTER.getString() + "\n\n" +
+		    				Messages.EMAIL_ORDER_GOODBYE.getString();
 			
 			    List<String> recipients = new ArrayList<String>();
 			    recipients.add(order.getCustomer().getEmail());
 		    
-			    EmailSender.sendEmail(Mails.YOURLOGO.getMailAddress(), recipients, "Your Stir Fried Logo is Ready!", msgBody);
+			    EmailSender.sendEmail(Mails.YOURLOGO.getMailAddress(), recipients, Messages.EMAIL_ORDER_READY_SUBJ.getString(), msgBody);
 			    //-----------------------------------------------------------------------------
 				}
 			}	
@@ -157,8 +192,6 @@
 	
 	//-----------------------------------------------------------------------------
 	// send email to admin with list of updated orders (maybe put it in a function)
-	Properties props = new Properties();
-    Session sessionX = Session.getDefaultInstance(props, null);
 
     String msgBody = "updateOrderStatus job updated [" + ((Integer)updatedOrders.size()).toString() + "] Orders \n";
     for(Order updatedOrder :updatedOrders)
