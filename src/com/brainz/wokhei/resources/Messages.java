@@ -157,7 +157,9 @@ public enum Messages {
 
 	//NOTIFY EMAILS WHEN LOGO ORDER IS SUBMITTED
 	NOTIFY_SUBMITTED_SUBJ("New Incoming Order from "),
-	NOTIFY_SUBMITTED_BODY("A new order is been submitted by "),
+	NOTIFY_SUBMITTED_BODY("A new order is been submitted by "), 
+
+	SANDBOX("Sandbox"),
 
 	;
 

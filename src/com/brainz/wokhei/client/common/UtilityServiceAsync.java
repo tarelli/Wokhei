@@ -20,4 +20,6 @@ public interface UtilityServiceAsync extends IServiceAsync{
 	 */
 	@Deprecated 
 	void getCurrentUsername(AsyncCallback<String> result);
+
+	void isSandBox(AsyncCallback<Boolean> callback);
 }

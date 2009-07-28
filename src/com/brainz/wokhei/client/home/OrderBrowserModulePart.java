@@ -587,7 +587,15 @@ public class OrderBrowserModulePart extends AModulePart{
 	private void setupPayPalForm()
 	{
 		//fill-up paypal form
-		_paypalForm.setAction(PayPalStrings.PAYPAL_ACTION.getString());
+		if(getModule().isSandBox())
+		{
+			_paypalForm.setAction(PayPalStrings.PAYPAL_SANDBOX_ACTION.getString());
+		}
+		else
+		{
+			_paypalForm.setAction(PayPalStrings.PAYPAL_ACTION.getString());	
+		}	
+
 		_paypalForm.setEncoding(FormPanel.ENCODING_MULTIPART);
 		_paypalForm.setMethod(FormPanel.METHOD_POST);
 
@@ -597,13 +605,22 @@ public class OrderBrowserModulePart extends AModulePart{
 		Hidden sellerInfo = new Hidden();
 
 		sellerInfo.setName(PayPalStrings.PAYPAL_BUSINESS_NAME.getString());
-		sellerInfo.setValue(PayPalStrings.PAYPAL_BUSINESS_VALUE.getString());
+
+		if(getModule().isSandBox())
+		{
+			sellerInfo.setValue(PayPalStrings.PAYPAL_SANDBOX_BUSINESS_VALUE.getString());
+		}
+		else
+		{
+			sellerInfo.setValue(PayPalStrings.PAYPAL_BUSINESS_VALUE.getString());	
+		}		
 
 		formPlaceHolder.add(sellerInfo);
 		//specify buy now button
 		Hidden cmdInfo = new Hidden();
 
 		cmdInfo.setName(PayPalStrings.PAYPAL_CMD_NAME.getString());
+
 		cmdInfo.setValue(PayPalStrings.PAYPAL_CMD_VALUE.getString());
 
 		formPlaceHolder.add(cmdInfo);

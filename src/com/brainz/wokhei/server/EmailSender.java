@@ -19,6 +19,8 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
 
+import com.brainz.wokhei.resources.Messages;
+
 public class EmailSender {
 
 	private static final Logger log = Logger.getLogger(EmailSender.class.getName());
@@ -44,7 +46,15 @@ public class EmailSender {
 				msg.addRecipient(Message.RecipientType.TO,
 						new InternetAddress(recipient));
 			}
-			msg.setSubject(subject);
+			UtilityServiceImpl utilityService=new UtilityServiceImpl();
+			if(utilityService.isSandBox())
+			{
+				msg.setSubject(Messages.SANDBOX.getString()+ " "+subject);	
+			}
+			else
+			{
+				msg.setSubject(subject);
+			}
 			msg.setText(msgBody);
 			Transport.send(msg);
 
@@ -80,7 +90,15 @@ public class EmailSender {
 						new InternetAddress(recipient));
 			}
 
-			msg.setSubject(subject);
+			UtilityServiceImpl utilityService=new UtilityServiceImpl();
+			if(utilityService.isSandBox())
+			{
+				msg.setSubject(Messages.SANDBOX.getString()+ " "+subject);	
+			}
+			else
+			{
+				msg.setSubject(subject);
+			}
 			msg.setText(msgBody);
 
 			Multipart mp = new MimeMultipart();
