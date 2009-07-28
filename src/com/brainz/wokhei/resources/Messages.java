@@ -155,6 +155,10 @@ public enum Messages {
 	ACCEPT_CONDITIONS("I accept the terms and conditions"), 
 	LESS_THAN_HOUR("less than an hour "),
 
+	//NOTIFY EMAILS WHEN LOGO ORDER IS SUBMITTED
+	NOTIFY_SUBMITTED_SUBJ("New Incoming Order from "),
+	NOTIFY_SUBMITTED_BODY("A new order is been submitted by "),
+
 	;
 
 	private String _text;
