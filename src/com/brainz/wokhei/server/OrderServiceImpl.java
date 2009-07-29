@@ -402,14 +402,20 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 		Integer newNumber=0; 
 		//get current user
 		UserService userService = UserServiceFactory.getUserService();
-		User user = userService.getCurrentUser();
 
-		if(user!=null)
+		//prepare query
+
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+
+		String select_query_order = "select from " + Order.class.getName();
+		Query queryOrder = pm.newQuery(select_query_order);
+		queryOrder.setFilter("id == paramId");
+		queryOrder.declareParameters("java.lang.Long paramId");
+		//execute
+		List<Order> orders = (List<Order>) queryOrder.execute(orderID);
+
+		if(!orders.isEmpty())
 		{
-			//prepare query
-
-			PersistenceManager pm = PMF.get().getPersistenceManager();
-
 			String select_query = "select from " + Invoice.class.getName() + " order by invoiceNumber desc range 0,1";
 			Query query = pm.newQuery(select_query); 
 
@@ -422,7 +428,7 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 			newNumber++;
 
 			//TODO check if the user for that order and the current
-			Invoice newInvoice=new Invoice(user,new Date(), newNumber, orderID);
+			Invoice newInvoice=new Invoice(orders.get(0).getCustomer(),new Date(), newNumber, orderID);
 
 			try {
 				pm.makePersistent(newInvoice);
@@ -439,7 +445,7 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 		}
 		else
 		{
-			log.log(Level.SEVERE,"Attach invoice requested but not user is logged!");
+			log.log(Level.SEVERE, "No order found with id "+orderID);
 			return null;
 		}
 	}
