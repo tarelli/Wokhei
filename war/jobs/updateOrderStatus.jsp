@@ -97,7 +97,7 @@
 			    				"Tags: " + order.getTags().toString() + "\n" + 
 			    				"Colour: " + order.getColour().toString() + "\n" + 
 			    				"\n\n" +
-			    				Messages.EMAIL_ORDER_IN_PROGRESS.getString() + "\n\n" +
+			    				Messages.EMAIL_ORDER_IN_PROGRESS_FOOTER.getString() + "\n\n" +
 			    				Messages.EMAIL_ORDER_GOODBYE.getString();
 				
 				    List<String> recipients = new ArrayList<String>();
@@ -203,18 +203,13 @@
     }
 
     List<String> recipients = new ArrayList<String>();
-    List<String> extraRecipients = new ArrayList<String>();
-    
     // quasi tutti gli apostoli ed evangelisti mali
     recipients.add(Mails.GIOVANNI.getMailAddress());
     recipients.add(Mails.MATTEO.getMailAddress());
-    extraRecipients.add(Mails.MATTEO_GMAIL.getMailAddress());
-    extraRecipients.add(Mails.GIOVANNI_GMAIL.getMailAddress());
     if((Integer)updatedOrders.size() > 0)
     recipients.add(Mails.SIMONE.getMailAddress());
     
     EmailSender.sendEmail(Mails.YOURLOGO.getMailAddress(), recipients, "updateOrderStatus Job - " + serverDate.toString(), msgBody);
-    EmailSender.sendEmail(Mails.YOURLOGO.getMailAddress(), extraRecipients, Messages.EXTRAORDINARY_NOTIFICATION.getString(), Messages.SUCCHIA_MELO.getString());
     //-----------------------------------------------------------------------------
     
     // log end of job
