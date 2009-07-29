@@ -400,11 +400,8 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 
 	public InvoiceDTO attachInvoice(long orderID) {
 		Integer newNumber=0; 
-		//get current user
-		UserService userService = UserServiceFactory.getUserService();
 
 		//prepare query
-
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 
 		String select_query_order = "select from " + Order.class.getName();
