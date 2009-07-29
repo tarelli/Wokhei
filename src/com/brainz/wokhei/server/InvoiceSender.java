@@ -160,7 +160,7 @@ public class InvoiceSender extends HttpServlet
 						new Font(Font.HELVETICA, 11, Font.BOLD));
 
 			Phrase priceName =
-				new Phrase("EUR Û49.90",
+				new Phrase("EUR Û87.50",
 						new Font(Font.HELVETICA, 11, Font.NORMAL));
 
 			Phrase vat =
@@ -168,7 +168,7 @@ public class InvoiceSender extends HttpServlet
 						new Font(Font.HELVETICA, 11, Font.BOLD));
 
 			Phrase vatName =
-				new Phrase("EUR Û9.98*",
+				new Phrase("EUR Û17.50*",
 						new Font(Font.HELVETICA, 11, Font.NORMAL));
 
 			Phrase total =
@@ -176,7 +176,7 @@ public class InvoiceSender extends HttpServlet
 						new Font(Font.HELVETICA, 11, Font.BOLD));
 
 			Phrase totalName =
-				new Phrase("EUR Û59.88",
+				new Phrase("EUR Û105.00",
 						new Font(Font.HELVETICA, 11, Font.NORMAL));
 
 			Paragraph priceP=new Paragraph();

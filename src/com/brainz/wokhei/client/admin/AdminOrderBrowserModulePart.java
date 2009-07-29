@@ -189,7 +189,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 		_mainPanel.add(_ordersFlexTable);
 		_mainPanel.add(_pagingControlsTable);
 
-		_paginationBehavior.showPage(1,Columns.ID._columnText, true);
+		_paginationBehavior.showPage(1,Columns.TIMER._columnText, true);
 
 		// Associate the Main panel with the HTML host page.
 		RootPanel.get("adminConsole").add(_mainPanel);
@@ -316,7 +316,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 				_userFilterBox.setText("");
 				_startDateBox.setValue(null);
 				_endDateBox.setValue(null);
-				_paginationBehavior.showPage(1,Columns.ID._columnText, true);
+				_paginationBehavior.showPage(1,Columns.TIMER._columnText, true);
 				_filteringPopupPanel.hide();
 			}
 		});
@@ -324,7 +324,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 		_filterButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				//--> reload grid!
-				_paginationBehavior.showPage(1,Columns.ID._columnText, true);
+				_paginationBehavior.showPage(1,Columns.TIMER._columnText, true);
 				_filteringPopupPanel.hide();
 			}
 		});
