@@ -11,7 +11,7 @@ public enum PayPalStrings {
 	PAYPAL_ITEMNAME_NAME("item_name"),
 	PAYPAL_ITEMNAME_VALUE("Stir Fried Logo 24h"),
 	PAYPAL_AMOUNT_NAME("amount"),
-	PAYPAL_AMOUNT_VALUE("49.9"),
+	PAYPAL_AMOUNT_VALUE("49.90"),
 	PAYPAL_CURRENCY_NAME("currency_code"),
 	PAYPAL_CURRENCY_VALUE("EUR"),
 	PAYPAL_NOTIFY_URL_NAME("notify_url"),

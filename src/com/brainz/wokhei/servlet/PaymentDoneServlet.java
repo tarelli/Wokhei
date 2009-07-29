@@ -83,14 +83,14 @@ public class PaymentDoneServlet extends HttpServlet {
 
 		//check notification validation
 		if(resX.equals("VERIFIED")) {
-			// check that paymentStatus=Completed
+			// check that paymentStatus = Completed
 			//TODO: check that txnId has not been previously processed
 			// check that receiverEmail is your Primary PayPal email
 			// check that paymentAmount/paymentCurrency are correct
-			if(paymentStatus.toLowerCase()=="completed" 
-				&& receiverEmail.toLowerCase() == PayPalStrings.PAYPAL_SANDBOX_BUSINESS_VALUE.getString()
-				&& Long.parseLong(paymentAmount) == Long.parseLong(PayPalStrings.PAYPAL_AMOUNT_VALUE.getString())
-				&& paymentCurrency == PayPalStrings.PAYPAL_CURRENCY_VALUE.getString())
+			if(paymentStatus.equalsIgnoreCase("pending") 
+					&& receiverEmail.equalsIgnoreCase(PayPalStrings.PAYPAL_SANDBOX_BUSINESS_VALUE.getString())
+					&& paymentAmount.equalsIgnoreCase(PayPalStrings.PAYPAL_AMOUNT_VALUE.getString())
+					&& paymentCurrency.equalsIgnoreCase(PayPalStrings.PAYPAL_CURRENCY_VALUE.getString()))
 			{
 				// process payment
 				// here we do our shit (which is hot SHITE)
@@ -113,9 +113,9 @@ public class PaymentDoneServlet extends HttpServlet {
 				// some errors in the parameters checked
 				String errorMsg = "Checked failed on Paypal parameters sent with IPN, actual values follow: ";
 				errorMsg += "paymentStatus = " + paymentStatus;
-				errorMsg += "- receiverEmail = " + receiverEmail;
-				errorMsg += "- paymentAmount = " + paymentAmount;
-				errorMsg += "- paymentCurrency = " + paymentCurrency;
+				errorMsg += " - receiverEmail = " + receiverEmail;
+				errorMsg += " - paymentAmount = " + paymentAmount;
+				errorMsg += " - paymentCurrency = " + paymentCurrency;
 				// log the error
 				log.log(Level.SEVERE, errorMsg);
 			}
