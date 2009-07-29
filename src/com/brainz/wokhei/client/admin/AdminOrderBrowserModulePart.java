@@ -253,8 +253,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 			public void onClick(ClickEvent event) {
 				if(	_addAdminTextBox.getText() != "" 
 					&& !_addAdminTextBox.getText().contains(" ") 
-					&& !(_addAdminTextBox.getText() == Messages.ADMIN_ADD_ADMIN_DEFAULT_TXT.getString())
-					&& _addAdminTextBox.getText().endsWith("@wokhei.com"))
+					&& !(_addAdminTextBox.getText() == Messages.ADMIN_ADD_ADMIN_DEFAULT_TXT.getString()))
 				{
 					((AdminServiceAsync) getService(Service.ADMIN_SERVICE)).addAdmin(_addAdminTextBox.getText(), _addAdminCallback);
 					_optionsPopupPanel.hide();

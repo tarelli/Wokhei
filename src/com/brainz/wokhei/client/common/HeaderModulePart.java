@@ -81,6 +81,8 @@ public class HeaderModulePart extends AModulePart {
 			{
 				if((getModule().getLoginInfo().getEmailAddress().equals(Mails.MATTEO.getMailAddress())) ||
 						(getModule().getLoginInfo().getEmailAddress().equals(Mails.GIOVANNI.getMailAddress())) || 
+						(getModule().getLoginInfo().getEmailAddress().equals(Mails.GIOVANNI_GMAIL.getMailAddress())) || 
+						(getModule().getLoginInfo().getEmailAddress().equals(Mails.MATTEO_GMAIL.getMailAddress())) || 
 						(getModule().getLoginInfo().isAdmin()))
 				{
 					if(getModule() instanceof AdminModule)
