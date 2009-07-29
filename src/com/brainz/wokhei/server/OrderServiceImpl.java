@@ -367,7 +367,8 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 			if(configOptions.isEmpty())
 			{
 				// need to create it if not already there
-				WokheiConfig config = new WokheiConfig(isOn);
+				WokheiConfig config = new WokheiConfig(isOn, true);
+				config.setSandBox(false);
 				pm.makePersistent(config);
 				log.log(Level.INFO, "Order Killswitch set for the first time: " + isOn);
 			}
