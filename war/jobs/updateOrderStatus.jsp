@@ -92,8 +92,7 @@
 				    String msgBody = Messages.EMAIL_ORDER_IN_PROGRESS.getString() + "\n\n";
 				    
 			    	//add updated orders to email
-			    	msgBody+= 	"Logo Details: \n" +
-			    				"ID: " + order.getId() + "\n" + 
+			    	msgBody+= 	"Order details: \n" + 
 			    				"Text: " + order.getText() + "\n" + 
 			    				"Tags: " + order.getTags().toString() + "\n" + 
 			    				"Colour: " + order.getColour().toString() + "\n" + 
@@ -120,8 +119,7 @@
 				    String msgBody = Messages.EMAIL_ORDER_QUALITY_GATE.getString() + "\n\n";
 				    
 			    	//add updated orders to email
-			    	msgBody+= 	"Logo Details: \n" +
-			    				"ID: " + order.getId() + "\n" + 
+			    	msgBody+= 	"Order details: \n" + 
 			    				"Text: " + order.getText() + "\n" + 
 			    				"Tags: " + order.getTags().toString() + "\n" + 
 			    				"Colour: " + order.getColour().toString() + "\n" + 
@@ -154,8 +152,7 @@
 			    String msgBody = Messages.EMAIL_ORDER_READY.getString() + "\n\n";
 			    
 		    	//add updated orders to email
-		    	msgBody+= 	"Logo Details: \n" +
-		    				"ID: " + order.getId() + "\n" + 
+		    	msgBody+= 	"Order details: \n" +
 		    				"Text: " + order.getText() + "\n" + 
 		    				"Tags: " + order.getTags().toString() + "\n" + 
 		    				"Colour: " + order.getColour().toString() + "\n" + 

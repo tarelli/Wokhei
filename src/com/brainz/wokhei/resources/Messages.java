@@ -82,19 +82,24 @@ public enum Messages {
 
 	//NOTIFICATION EMAILS
 	EMAIL_ORDER_READY_SUBJ("Your Stir Fried Logo is ready!"),
-	EMAIL_ORDER_SUBJ("News from your Stir Fried Logo order"),
-	EMAIL_ORDER_ACCEPTED("Your Stir Fried Logo order has been accepted by Wokhei - it will be ready in 24hrs! "),
-	EMAIL_ORDER_REJECTED("Sorry, your Stir Fried Logo order has been rejected by Wokhei. This can happen if your order is in violation of copyright, sounded like a joke or we just didn't like it! "),
-	EMAIL_ORDER_IN_PROGRESS("Your Stir Fried Logo has been assigned to one of the designers in the Wokhei network and is now in progress: "),
-	EMAIL_ORDER_QUALITY_GATE("Your Stir Fried Logo is currently being reviewed for quality check: "),
-	EMAIL_ORDER_READY("This is a notification from Wokhei: your stir fried logo is ready! "),
-	EMAIL_ORDER_ACCEPTED_FOOTER("Check out [ http://www.wokhei.com ] to find out more about your order status."),
-	EMAIL_ORDER_REJECTED_FOOTER("Visit [ http://www.wokhei.com ] to submit a new order and ... best of luck!"),
-	EMAIL_ORDER_IN_PROGRESS_FOOTER("Check out [ http://www.wokhei.com ] to find out more about your order status."),
-	EMAIL_ORDER_QUALITY_GATE_FOOTER("Check out [ http://www.wokhei.com ] to find out more about your order status."),
-	EMAIL_ORDER_READY_FOOTER("Visit [ http://www.wokhei.com ] to view and download your stir fried logo!"),
-	EMAIL_ORDER_GOODBYE("The Wokhei Staff"),
+	EMAIL_ORDER_SUBJ("Order update from Wokhei"),
 
+	EMAIL_ORDER_ACCEPTED("Your Stir Fried Logo order has been accepted - it will be ready in 24hrs! "),
+	EMAIL_ORDER_ACCEPTED_FOOTER("Check out [ http://www.wokhei.com ] to find out more about your order status."),
+
+	EMAIL_ORDER_REJECTED("Apologies, your Stir Fried Logo order has been rejected! "),
+	EMAIL_ORDER_REJECTED_FOOTER("Visit [ http://www.wokhei.com ] to find out more and submit a new order."),
+
+	EMAIL_ORDER_IN_PROGRESS("Your Stir Fried Logo has been assigned to one of the designers in the Wokhei network and is now in progress."),
+	EMAIL_ORDER_IN_PROGRESS_FOOTER("Check out [ http://www.wokhei.com ] to find out more about your order status."),
+
+	EMAIL_ORDER_QUALITY_GATE("Your Stir Fried Logo is currently being reviewed for quality check."),
+	EMAIL_ORDER_QUALITY_GATE_FOOTER("Check out [ http://www.wokhei.com ] to find out more about your order status."),
+
+	EMAIL_ORDER_READY("Your Stir Fried Logo is waiting for you at www.wokhei.com! What are you waiting for? Go check it out! \nRemember, you have 24hrs to buy it starting from the first time you see it.\nBuying the logo will give you rights for commercial use under the Wokhei Commercial License."),
+	EMAIL_ORDER_READY_FOOTER("Visit [ http://www.wokhei.com ] to enjoy your brand new Stir Fried Logo!"),
+
+	EMAIL_ORDER_GOODBYE("Wokhei - Stir Fried Logos"),
 	//NOTIFY EMAILS WHEN LOGO ORDER IS SUBMITTED
 	NOTIFY_SUBMITTED_SUBJ("New Incoming Order from "),
 	NOTIFY_SUBMITTED_BODY("A new order is been submitted by "),

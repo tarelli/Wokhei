@@ -274,8 +274,7 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 
 					//common stuff
 					//add updated orders to email
-					msgBody+= 	"Logo Details: \n" +
-					"ID: " + order.getId() + "\n" + 
+					msgBody+= 	"Order details: \n" + 
 					"Text: " + order.getText() + "\n" + 
 					"Tags: " + order.getTags().toString() + "\n" + 
 					"Colour: " + order.getColour().toString() + 
