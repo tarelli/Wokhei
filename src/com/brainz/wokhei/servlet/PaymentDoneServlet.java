@@ -89,7 +89,7 @@ public class PaymentDoneServlet extends HttpServlet {
 			// check that paymentAmount/paymentCurrency are correct
 			if(paymentStatus.toLowerCase()=="completed" 
 				&& receiverEmail.toLowerCase() == PayPalStrings.PAYPAL_SANDBOX_BUSINESS_VALUE.getString()
-				&& paymentAmount == PayPalStrings.PAYPAL_AMOUNT_VALUE.getString()
+				&& Long.parseLong(paymentAmount) == Long.parseLong(PayPalStrings.PAYPAL_AMOUNT_VALUE.getString())
 				&& paymentCurrency == PayPalStrings.PAYPAL_CURRENCY_VALUE.getString())
 			{
 				// process payment
@@ -111,11 +111,11 @@ public class PaymentDoneServlet extends HttpServlet {
 			else
 			{
 				// some errors in the parameters checked
-				String errorMsg = "Checked failed on Paypal parameters sent with IPN: ";
-				errorMsg += "paymentStatus == completed ["+ (Boolean)(paymentStatus.toLowerCase()=="completed") +"] ";
-				errorMsg += "- receiverEmail == "+ PayPalStrings.PAYPAL_SANDBOX_BUSINESS_VALUE.getString() + " ["+ (Boolean)(receiverEmail.toLowerCase() == PayPalStrings.PAYPAL_SANDBOX_BUSINESS_VALUE.getString()) +"] ";
-				errorMsg += "- paymentAmount == "+ PayPalStrings.PAYPAL_AMOUNT_VALUE.getString() + " ["+ (Boolean)(paymentAmount == PayPalStrings.PAYPAL_AMOUNT_VALUE.getString()) +"] ";
-				errorMsg += "- paymentCurrency == "+ PayPalStrings.PAYPAL_CURRENCY_VALUE.getString() + " [" + (Boolean)(paymentCurrency == PayPalStrings.PAYPAL_CURRENCY_VALUE.getString()) + "] ";
+				String errorMsg = "Checked failed on Paypal parameters sent with IPN, actual values follow: ";
+				errorMsg += "paymentStatus = " + paymentStatus;
+				errorMsg += "- receiverEmail = " + receiverEmail;
+				errorMsg += "- paymentAmount = " + paymentAmount;
+				errorMsg += "- paymentCurrency = " + paymentCurrency;
 				// log the error
 				log.log(Level.SEVERE, errorMsg);
 			}
