@@ -262,13 +262,13 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 					if(newStatus==Status.REJECTED)
 					{
 						//rejected message
-						msgBodyHead = Messages.EMAIL_ORDER_REJECTED.getString();
+						msgBodyHead = Messages.EMAIL_ORDER_REJECTED.getString() + "\n\n";
 						msgFooter = Messages.EMAIL_ORDER_REJECTED_FOOTER.getString();
 					}
 					else if (newStatus==Status.ACCEPTED)
 					{
 						//accepted message
-						msgBodyHead = Messages.EMAIL_ORDER_ACCEPTED.getString();
+						msgBodyHead = Messages.EMAIL_ORDER_ACCEPTED.getString() + "\n\n";
 						msgFooter = Messages.EMAIL_ORDER_ACCEPTED_FOOTER.getString();
 					}
 

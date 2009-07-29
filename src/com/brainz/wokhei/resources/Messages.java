@@ -102,7 +102,7 @@ public enum Messages {
 	EMAIL_ORDER_GOODBYE("Wokhei - Stir Fried Logos"),
 	//NOTIFY EMAILS WHEN LOGO ORDER IS SUBMITTED
 	NOTIFY_SUBMITTED_SUBJ("New Incoming Order from "),
-	NOTIFY_SUBMITTED_BODY("A new order is been submitted by "),
+	NOTIFY_SUBMITTED_BODY("A new order has been submitted by "),
 
 	//INDEX
 	WATCH_A_VIDEO("Watch a video"),
