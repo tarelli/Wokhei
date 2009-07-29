@@ -18,9 +18,13 @@ public class WokheiConfig implements IsSerializable {
 	@Persistent
 	private boolean orderKillswitch;
 
+	@Persistent
+	private final boolean isSandBox;
+
 	public WokheiConfig(boolean orderKillswitch)
 	{
 		this.orderKillswitch = orderKillswitch;
+		this.isSandBox=false;
 	}
 
 	public Long getId() {
@@ -33,6 +37,10 @@ public class WokheiConfig implements IsSerializable {
 
 	public boolean getOrderKillswitch() {
 		return orderKillswitch;
+	}
+
+	public boolean isSandBox() {
+		return isSandBox;
 	}
 
 	public void setOrderKillswitch(boolean isOn) {

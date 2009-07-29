@@ -47,7 +47,15 @@ public class IndexModulePart extends AModulePart {
 			watchVideo.setText(Messages.WATCH_A_VIDEO.getString());
 
 			Button loginWokhei=new Button(Messages.LOGIN.getString());
-			loginWokhei.setText(Messages.LOGIN.getString());
+			if(getModule().isSandBox())
+			{
+				loginWokhei.setText(Messages.LOGIN.getString()+" "+Messages.SANDBOX.getString());
+			}
+			else
+			{
+				loginWokhei.setText(Messages.LOGIN.getString());
+			}
+
 
 			Label loginTip= new Label(Messages.LOGIN_TIP.getString());
 			loginTip.addClickHandler(new ClickHandler(){

@@ -21,7 +21,10 @@ public abstract class AModule implements EntryPoint {
 	private Date _timeStamp=null;
 
 
-	private boolean _firstResponseReceived=false;
+	private int _responsesReceived=0;
+
+
+	private Boolean _isSandBox=false;
 
 	/**
 	 * 
@@ -54,7 +57,20 @@ public abstract class AModule implements EntryPoint {
 				_timeStamp=result;
 
 				responseReceived();
-			}});		
+			}});
+
+		utilityService.isSandBox(new AsyncCallback<Boolean>(){
+
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+
+			}
+
+			public void onSuccess(Boolean result) {	
+				_isSandBox=result;
+
+				responseReceived();
+			}});
 	}
 
 	/**
@@ -62,15 +78,15 @@ public abstract class AModule implements EntryPoint {
 	 */
 	private synchronized void responseReceived() 
 	{
-		if(_firstResponseReceived)
+		if(++_responsesReceived==3)
 		{
 			//the module will be loaded only after both response is received
 			loadModule();
 		}
-		else
-		{
-			_firstResponseReceived=true;
-		}
+	}
+
+	public Boolean isSandBox() {
+		return _isSandBox;
 	}
 
 	/**
