@@ -96,7 +96,7 @@
 			    				"Text: " + order.getText() + "\n" + 
 			    				"Tags: " + order.getTags().toString() + "\n" + 
 			    				"Colour: " + order.getColour().toString() + "\n" + 
-			    				"\n\n" +
+			    				"\n" +
 			    				Messages.EMAIL_ORDER_IN_PROGRESS_FOOTER.getString() + "\n\n" +
 			    				Messages.EMAIL_ORDER_GOODBYE.getString();
 				
@@ -123,7 +123,7 @@
 			    				"Text: " + order.getText() + "\n" + 
 			    				"Tags: " + order.getTags().toString() + "\n" + 
 			    				"Colour: " + order.getColour().toString() + "\n" + 
-			    				"\n\n" +
+			    				"\n" +
 			    				Messages.EMAIL_ORDER_QUALITY_GATE_FOOTER.getString() + "\n\n" +
 			    				Messages.EMAIL_ORDER_GOODBYE.getString();
 				
@@ -156,7 +156,7 @@
 		    				"Text: " + order.getText() + "\n" + 
 		    				"Tags: " + order.getTags().toString() + "\n" + 
 		    				"Colour: " + order.getColour().toString() + "\n" + 
-		    				"\n\n" +
+		    				"\n" +
 		    				Messages.EMAIL_ORDER_READY_FOOTER.getString() + "\n\n" +
 		    				Messages.EMAIL_ORDER_GOODBYE.getString();
 			
