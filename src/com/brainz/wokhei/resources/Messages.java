@@ -57,7 +57,7 @@ public enum Messages {
 	READY_TITLE("It's ready!"),
 	READY_TEXT("Your logo is finally ready - check it out clicking on the icon above and flood your senses with Wokhei goodness!"),
 	VIEWED_TITLE("It's ready!"),
-	VIEWED_TEXT("You have 24hrs from the first time you see the logo to buy it for commercial use for only 105 EUR (VAT included) - approx 145 USD. After the 24hrs if you don't buy it you still will be able to use it but only unexclusively and under the Wokhei Limited License."),
+	VIEWED_TEXT("You have 24hrs to buy the logo for commercial use for only 105 EUR (VAT included) - approx 145 USD. If you don't buy you still will be able to use the logo but only unexclusively and under the Wokhei Limited License."),
 	BOUGHT_TITLE("You purchased this logo"),
 	BOUGHT_TEXT("You can use this logo according to the Wokhei Commercial License. Now it's your turn to make money!"),
 	ARCHIVED_TITLE("This logo is archived"),
