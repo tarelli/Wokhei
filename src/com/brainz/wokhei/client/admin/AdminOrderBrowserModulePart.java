@@ -515,8 +515,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 						_ordersFlexTable.setWidget(row, Columns.STATUS.ordinal(), getStatusImage(order.getStatus().toString(),order.getId()));
 
 						if((order.getStatus() != Status.REJECTED) && (order.getStatus() != Status.INCOMING) 
-								&& (order.getStatus() != Status.READY) && (order.getStatus() != Status.BOUGHT)
-								&& (order.getStatus() != Status.ARCHIVED) && (order.getStatus() != Status.VIEWED))
+								&& (order.getStatus() != Status.BOUGHT)	&& (order.getStatus() != Status.ARCHIVED))
 						{
 							_ordersFlexTable.setWidget(row, Columns.TIMER.ordinal(), getTimerLabel(Float.valueOf((int)((missingTime*-1+0.005f)*10.0f)/10.0f)));
 						}
