@@ -24,7 +24,7 @@ public interface OrderService extends RemoteService {
 
 	Boolean submitOrder(OrderDTO orderDTO);
 
-	Results getOrdersByUserAndStatus(Status status, String userEmail, Date startDate, Date endDate, int offset, int maxResult);
+	Results getOrdersByUserAndStatus(Status status, String userEmail, Date startDate, Date endDate, int offset, int maxResult, boolean orderByDate);
 
 	InvoiceDTO attachInvoice(long orderID);
 

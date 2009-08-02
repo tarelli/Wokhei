@@ -96,8 +96,8 @@ public enum Messages {
 	EMAIL_ORDER_QUALITY_GATE("Your Stir Fried Logo is currently being reviewed for quality check."),
 	EMAIL_ORDER_QUALITY_GATE_FOOTER("Check out [ http://www.wokhei.com ] to find out more about your order status."),
 
-	EMAIL_ORDER_READY("Your Stir Fried Logo is waiting for you! Go check it out at [ http://www.wokhei.com ] ! \nRemember, you have 24hrs to buy the logo starting from the first time you see it. Buying the logo will give you rights for commercial use under the Wokhei Commercial License."),
-	EMAIL_ORDER_READY_FOOTER("Enjoy your brand new Stir Fried Logo!"),
+	EMAIL_ORDER_READY("Your Stir Fried Logo is ready!\nWhat are you waiting for? Go check it out at [ http://www.wokhei.com ] and enjoy!"),
+	EMAIL_ORDER_READY_FOOTER("Remember, you have 24hrs to buy the logo starting from the first time you see it. Buying the logo will give you rights for commercial use under the Wokhei Commercial License."),
 
 	EMAIL_ORDER_GOODBYE("Wokhei - Stir Fried Logos"),
 	//NOTIFY EMAILS WHEN LOGO ORDER IS SUBMITTED

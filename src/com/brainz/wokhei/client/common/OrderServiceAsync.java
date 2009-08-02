@@ -9,6 +9,7 @@ import java.util.List;
 import org.gwtwidgets.client.ui.pagination.Results;
 
 import com.brainz.wokhei.shared.FileType;
+import com.brainz.wokhei.shared.InvoiceDTO;
 import com.brainz.wokhei.shared.OrderDTO;
 import com.brainz.wokhei.shared.Status;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -23,9 +24,9 @@ public interface OrderServiceAsync extends IServiceAsync {
 
 	void submitOrder(OrderDTO orderDTO, AsyncCallback<Boolean> callback);
 
-	void attachInvoice(long orderID, AsyncCallback<Integer> callback);
+	void attachInvoice(long orderID, AsyncCallback<InvoiceDTO> callback);
 
-	void getOrdersByUserAndStatus(Status status, String userEmail, Date startDate, Date endDate, int offset, int maxResult, AsyncCallback<Results> callback);
+	void getOrdersByUserAndStatus(Status status, String userEmail, Date startDate, Date endDate, int offset, int maxResult, boolean orderByDate, AsyncCallback<Results> callback);
 
 	void setOrderStatus(long orderId, Status newStatus, AsyncCallback<Long> callback);
 

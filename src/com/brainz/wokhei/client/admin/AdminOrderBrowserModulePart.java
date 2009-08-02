@@ -606,7 +606,8 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 								startDate,
 								endDate,
 								parameters.getOffset(), 
-								parameters.getMaxResults(), 
+								parameters.getMaxResults(),
+								true,
 								updateTableCallback);
 					}};
 			}

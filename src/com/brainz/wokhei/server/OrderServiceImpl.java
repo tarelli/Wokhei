@@ -111,7 +111,7 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 	// un bel metodo per succhiare il cazzo all'amministratore e a tarelli frocio male
 	@SuppressWarnings("unchecked")
 	public Results getOrdersByUserAndStatus(Status status,
-			String userEmail, Date startDate, Date endDate,int offset, int maxResult) {
+			String userEmail, Date startDate, Date endDate,int offset, int maxResult, boolean orderByDateDesc) {
 
 		//clean up filter and paramDeclaration for Query
 		QueryBuilder._filters = "";
@@ -157,13 +157,26 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 		}
 
 		Query query;
+
+		//add order by clause if input param says so
+		//TODO: add range after order by to avoid problem in case of > 1000 orders
+		String orderBy = "";
+		if(orderByDateDesc)
+		{
+			orderBy += " ORDER BY date DESC ";
+		}
+
 		try
 		{
 			// attenzione a questa cascata di porcate immonde
 			if(user != null || status!=null || startDate!=null || endDate!=null)
 			{
+
+				String filters = QueryBuilder._filters;
+
 				// if any of these is not null then invoke execute method on query object with reflection
-				query = pm.newQuery(Order.class, QueryBuilder._filters);
+				query = pm.newQuery("select from " + Order.class.getName() + orderBy );
+				query.setFilter(filters);
 				query.declareParameters(QueryBuilder._paramDeclarations);
 
 				// now prepare for reflection
@@ -183,7 +196,7 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 			}
 			else
 			{
-				query = pm.newQuery(Order.class);
+				query = pm.newQuery("select from " + Order.class.getName() + orderBy );
 				orderList = OrderUtils.getOrderDTOList((List<Order>) query.execute());
 			}
 
