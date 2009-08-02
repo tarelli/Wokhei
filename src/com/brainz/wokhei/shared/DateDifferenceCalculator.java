@@ -47,7 +47,6 @@ public class DateDifferenceCalculator {
 		sec += date.getMinutes() * 60; // every minute is made of 60 seconds.
 		// all the minutes from 0 till the
 		// current minute -1 (didnt pass yet!)
-		System.out.println("The Seconds in date " + date + " are : " + sec);
 		return sec;
 	}
 
