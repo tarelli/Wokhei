@@ -3,7 +3,6 @@
  */
 package com.brainz.wokhei.server;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -171,26 +170,14 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 			// attenzione a questa cascata di porcate immonde
 			if(user != null || status!=null || startDate!=null || endDate!=null)
 			{
-
-				String filters = QueryBuilder._filters;
-
 				// if any of these is not null then invoke execute method on query object with reflection
 				query = pm.newQuery("select from " + Order.class.getName() + orderBy );
-				query.setFilter(filters);
+				query.setFilter(QueryBuilder._filters);
 				query.declareParameters(QueryBuilder._paramDeclarations);
 
-				// now prepare for reflection
+				//execute query
+				List<Order> realOrderList = (List<Order>) query.executeWithArray(paramList.toArray());
 
-				//get class
-				Class cls = Class.forName("javax.jdo.Query");
-				//get param types --> we need to pass in a single parameter of type Object[]
-				Class parTypes[] = new Class[]{Object[].class};
-				// get method
-				Method meth = cls.getMethod("executeWithArray", parTypes);
-				//put our argList in another argList (we need to pass an arglist with an array to the method)
-				Object[] argList = new Object[]{paramList.toArray()};
-				// invoke! invoke!
-				List<Order> realOrderList = (List<Order>) meth.invoke(query, argList);
 				// convert to OrderDTO
 				orderList = OrderUtils.getOrderDTOList(realOrderList);
 			}
