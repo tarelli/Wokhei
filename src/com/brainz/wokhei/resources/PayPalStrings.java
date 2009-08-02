@@ -17,6 +17,7 @@ public enum PayPalStrings {
 	PAYPAL_CURRENCY_VALUE("EUR"),
 	PAYPAL_NOTIFY_URL_NAME("notify_url"),
 	PAYPAL_NOTIFY_URL_VALUE("http://www.wokhei.com/wokhei/paymentDone"),
+	PAYPAL_NOTIFY_URL_SANDBOX_VALUE("http://wokheisandbox.appspot.com/wokhei/paymentDone"),
 	PAYPAL_TAX_NAME("tax"),
 	PAYPAL_TAX_VALUE("17.50"),
 	PAYPAL_CUSTOM_NAME("custom"),

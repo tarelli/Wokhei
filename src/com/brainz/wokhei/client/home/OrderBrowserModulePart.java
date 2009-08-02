@@ -650,7 +650,7 @@ public class OrderBrowserModulePart extends AModulePart{
 		formPlaceHolder.add(currencyInfo);
 
 		notifyInfo.setName(PayPalStrings.PAYPAL_NOTIFY_URL_NAME.getString());
-		notifyInfo.setValue(PayPalStrings.PAYPAL_NOTIFY_URL_VALUE.getString());
+		notifyInfo.setValue(PayPalStrings.PAYPAL_NOTIFY_URL_SANDBOX_VALUE.getString());
 		formPlaceHolder.add(notifyInfo);
 
 		returnInfo.setName(PayPalStrings.PAYPAL_RETURN_NAME.getString());
