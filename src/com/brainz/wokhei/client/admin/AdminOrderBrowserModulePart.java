@@ -1050,8 +1050,6 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 				if(Window.confirm(Messages.ADMIN_CONFIRM_REJECT_TXT.getString()))
 				{
-
-
 					statusChangedSubHandler(frow, id, Status.REJECTED);
 				}
 			}
@@ -1065,7 +1063,6 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 				if(Window.confirm(Messages.ADMIN_CONFIRM_ACCEPT_TXT.getString()))
 				{
-
 					statusChangedSubHandler(frow, id, Status.ACCEPTED);
 				}
 			}
