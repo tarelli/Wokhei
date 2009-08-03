@@ -1,7 +1,4 @@
-http://www.wokhei.com/
-
-http://www.wokhei.com/about.html
-
-http://www.wokhei.com/faq.html
-
-http://www.wokhei.com/careers.html
+http://wokhei.com
+http://wokhei.com/about.html
+http://wokhei.com/faq.html
+http://wokhei.com/careers.html

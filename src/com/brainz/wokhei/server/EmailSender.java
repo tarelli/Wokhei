@@ -41,7 +41,7 @@ public class EmailSender {
 		try {
 
 			UtilityServiceImpl utilityService=new UtilityServiceImpl();
-			String webSite=utilityService.isSandBox()?Messages.WEBSITE.getString():Messages.WEBSITE_SANDBOX.getString();
+			String webSite=utilityService.isSandBox()?Messages.WEBSITE_SANDBOX.getString():Messages.WEBSITE.getString();
 
 			Message msg = new MimeMessage(sessionX);
 			msg.setFrom(new InternetAddress(sender));
@@ -108,7 +108,7 @@ public class EmailSender {
 			Multipart mp = new MimeMultipart();
 
 			MimeBodyPart htmlPart = new MimeBodyPart();
-			htmlPart.setContent(msgBody, "text/html");
+			htmlPart.setContent(msgBody.replace("$w", webSite), "text/html");
 			mp.addBodyPart(htmlPart); 
 
 			for(Attachment attachment : attachments)
