@@ -64,11 +64,11 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 		String select_query = "select from " + Order.class.getName() + " order by progressive desc range 0,1";
 		Query query = pm.newQuery(select_query); 
 
-		List<Invoice> results = (List<Invoice>)query.execute();
+		List<Order> results = (List<Order>)query.execute();
 
 		if(!results.isEmpty())
 		{
-			newNumber=results.get(0).getInvoiceNumber();
+			newNumber=results.get(0).getProgressive();
 		}
 		if(newNumber!=null)
 		{
