@@ -540,7 +540,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 						_ordersFlexTable.setText(row,Columns.DATE.ordinal(),  fmt.format(order.getDate()));
 						_ordersFlexTable.setWidget(row, Columns.STATUS.ordinal(), getStatusImage(order.getStatus().toString(),order.getId()));
 
-						if((order.getStatus() != Status.REJECTED) && (order.getStatus() != Status.INCOMING))
+						if((order.getStatus() != Status.REJECTED) && (order.getStatus() != Status.INCOMING) && (order.getStatus() != Status.ARCHIVED) && (order.getStatus() != Status.BOUGHT))
 						{
 							_ordersFlexTable.setWidget(row, Columns.TIMER.ordinal(), getTimerLabel(Float.valueOf((int)((missingTime*-1+0.005f)*10.0f)/10.0f)));
 						}
@@ -585,7 +585,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 							_ordersFlexTable.setWidget(row, Columns.ACTIONS.ordinal(), actionPanel);
 						}
-						else if (order.getStatus()!=Status.READY && order.getStatus()!=Status.REJECTED)
+						else if (order.getStatus()!=Status.REJECTED)
 						{
 							// if is not incoming and it's not ready or rejected - arguably it's always possible to upload
 							Button uploadLogoButton = new Button("Upload");

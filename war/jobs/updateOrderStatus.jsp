@@ -38,6 +38,9 @@
 	// log start of job
 	log.info(" --> updateOrderStatus Job START <--");
 	
+	//declare order service 
+	OrderServiceImpl orderService = new OrderServiceImpl();
+	
 	//declare stuff for sending emails
 	Properties props = new Properties();
     Session sessionX = Session.getDefaultInstance(props, null);
@@ -132,11 +135,32 @@
 			    
 				    EmailSender.sendEmail(Mails.YOURLOGO.getMailAddress(), recipients, Messages.EMAIL_ORDER_SUBJ.getString(), msgBody);
 				    //-----------------------------------------------------------------------------
+				    
+				    // if not everything is uploaded notify admin as we are in quality gate
+					if(orderService.hasFileUploaded(order.getId(), FileType.PDF_VECTORIAL_LOGO) && 
+					   orderService.hasFileUploaded(order.getId(), FileType.PNG_LOGO_PRESENTATION) &&
+					   orderService.hasFileUploaded(order.getId(), FileType.PNG_LOGO))
+					{
+						String msg = Messages.NOTIFY_QUALITY_GATE_BODY.getString() + "\n\n";
+						msgBody+= 	"Order details: \n" + 
+						"User: " + order.getCustomer().getEmail() + "\n" +
+						"OrderId: " + order.getId() + "\n" + 
+	    				"Text: " + order.getText() + "\n" + 
+	    				"Tags: " + order.getTags().toString() + "\n" + 
+	    				"Colour: " + order.getColour().toString() + "\n" + 
+	    				"\n";
+	    				
+	    				List<String> notifyRecipients = new ArrayList<String>();
+					    recipients.add(Mails.SIMONE.getMailAddress());
+					    recipients.add(Mails.GIOVANNI.getMailAddress());
+					    recipients.add(Mails.ADMIN.getMailAddress());
+					    
+						EmailSender.sendEmail(Mails.YOURLOGO.getMailAddress(), notifyRecipients, Messages.NOTIFY_QUALITY_GATE_SUBJ.getString(), msg);  	
+					}
 				}
 			}
 			else if(diffHours > 24)
 			{
-				OrderServiceImpl orderService = new OrderServiceImpl();
 			
 				// check here to see if it's really ready
 				if(orderService.hasFileUploaded(order.getId(), FileType.PDF_VECTORIAL_LOGO) && 
