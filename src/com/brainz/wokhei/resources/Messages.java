@@ -35,7 +35,7 @@ public enum Messages {
 
 	ACCEPTED_WAITMSG("Your logo is getting ready, fancy a drink meanwhile?"),
 	ERROR_WAITMSG("An error occurred while sending your request. Please do complain!"),
-	INCOMING_WAITMSG("Your request has been sent to the kitchen, enjoy the appetizers!"),
+	INCOMING_WAITMSG("Your request has been sent to the kitchen, you will be notified via email as soon as it gets accepted. Enjoy the appetizers!"),
 	IN_PROGRESS_WAITMSG("Your logo is being cooked-up, have some more appetizers!"),
 	QUALITY_GATE_WAITMSG("Your logo is being reviewed by our quality experts, it will be ready soon enough!"),
 	READY_WAITMSG("Your logo is ready! Click on the wok to see it!"),
@@ -45,7 +45,7 @@ public enum Messages {
 	COPYRIGHT("Copyright\u00a9 2009 WOKHEI"),
 
 	INCOMING_TITLE("Pending request..."),
-	INCOMING_TEXT("Your request has been registered. In a short time it will be approved or rejected. Just give us a moment, we might be on a coffee break!"),
+	INCOMING_TEXT("Your request has been registered. It will be shortly approved or rejected and you will be notified via email. Just give us a moment, we might be on a coffee break!"),
 	ACCEPTED_TITLE("Request accepted!"),
 	ACCEPTED_TEXT("You request has been accepted - in 24hrs your logo will be ready. Your logo is being assigned to one of the designers in the Wokhei network with expertise in your area."),
 	REJECTED_TITLE("Request rejected"),
