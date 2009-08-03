@@ -84,6 +84,32 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 	}
 
+	public enum UploadType {
+
+		PRESENTATION_PNG("Presentation"),
+		RASTERIZED_PNG("Rasterized"),
+		VECTORIAL_PDF("Vectorial"),
+		NONE("None");
+
+		String _text;
+
+		private UploadType()
+		{
+
+		}
+
+		private UploadType(String name)
+		{
+			_text= name;
+		}
+
+		public String getColumnText()
+		{
+			return _text;
+		}
+
+	}
+
 	private final VerticalPanel _mainPanel = new VerticalPanel();
 	private final FlexTable _ordersFlexTable = new FlexTable();
 	private final FlexTable _pagingControlsTable = new FlexTable();
@@ -259,7 +285,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 					_optionsPopupPanel.hide();
 				}
 				else
-					_addAdminMsgLabel.setText("Please insert a valid wokhei.com email");
+					_addAdminMsgLabel.setText("Please insert a valid email");
 			}
 		});
 
@@ -514,8 +540,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 						_ordersFlexTable.setText(row,Columns.DATE.ordinal(),  fmt.format(order.getDate()));
 						_ordersFlexTable.setWidget(row, Columns.STATUS.ordinal(), getStatusImage(order.getStatus().toString(),order.getId()));
 
-						if((order.getStatus() != Status.REJECTED) && (order.getStatus() != Status.INCOMING) 
-								&& (order.getStatus() != Status.BOUGHT)	&& (order.getStatus() != Status.ARCHIVED))
+						if((order.getStatus() != Status.REJECTED) && (order.getStatus() != Status.INCOMING))
 						{
 							_ordersFlexTable.setWidget(row, Columns.TIMER.ordinal(), getTimerLabel(Float.valueOf((int)((missingTime*-1+0.005f)*10.0f)/10.0f)));
 						}
@@ -570,7 +595,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 									//get ID from clicked row
 									updateUploadPanel(Long.parseLong(_ordersFlexTable.getText(frow, Columns.ID.ordinal())),
 											_ordersFlexTable.getText(frow, Columns.LOGO_TEXT.ordinal()),
-											_ordersFlexTable.getText(frow, Columns.TAGS.ordinal()));
+											_ordersFlexTable.getText(frow, Columns.TAGS.ordinal()), UploadType.NONE);
 									_uploadPopupPanel.center();
 									_uploadPopupPanel.show();
 								}
@@ -655,7 +680,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 		rasterizedPanel.setVerticalAlignment(HorizontalPanel.ALIGN_MIDDLE);
 		rasterizedPanel.setSpacing(10);
 		Label rasterizedLbl=new Label(Messages.RASTERIZED_LBL.getString());
-		FileUpload rasterizedUpload=new FileUpload();
+		final FileUpload rasterizedUpload=new FileUpload();
 		rasterizedUpload.setName("uploadFormElement");
 		Button rasterizedUploadBtn=new Button(Messages.UPLOAD.getString());
 		_isRasterizedImageUploaded.addStyleName("labelButton");
@@ -686,7 +711,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 			public void onSubmitComplete(SubmitCompleteEvent event)
 			{
-				updateUploadPanel(_uploadPanelOrderId, null, null);
+				updateUploadPanel(_uploadPanelOrderId, null, null, UploadType.RASTERIZED_PNG);
 
 			}
 		});
@@ -696,7 +721,15 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 			public void onClick(ClickEvent event) 
 			{
-				_rasterizedForm.submit();
+				// check if ends with png (and not null at the same time)
+				if(rasterizedUpload.getFilename().endsWith(".png"))
+				{
+					_rasterizedForm.submit();
+				}
+				else
+				{
+					Window.alert("Cannot upload - pick a valid .png file!");
+				}
 			}
 		});
 
@@ -708,7 +741,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 		presentationPanel.setVerticalAlignment(HorizontalPanel.ALIGN_MIDDLE);
 		presentationPanel.setSpacing(10);
 		Label presentationLbl=new Label(Messages.PRESENTATION_LBL.getString());
-		FileUpload presentationUpload=new FileUpload();
+		final FileUpload presentationUpload=new FileUpload();
 		presentationUpload.setName("uploadFormElement");
 		Button presentationUploadBtn=new Button(Messages.UPLOAD.getString());
 		_isPresentationImageUploaded.addStyleName("labelButton");
@@ -740,7 +773,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 			public void onSubmitComplete(SubmitCompleteEvent event)
 			{
 				//UPDATE
-				updateUploadPanel(_uploadPanelOrderId, null, null);
+				updateUploadPanel(_uploadPanelOrderId, null, null, UploadType.PRESENTATION_PNG);
 			}
 		});
 
@@ -749,7 +782,15 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 			public void onClick(ClickEvent event) 
 			{
-				_presentationForm.submit();
+				// check if ends with png (and not null at the same time)
+				if(presentationUpload.getFilename().endsWith(".png"))
+				{
+					_presentationForm.submit();
+				}
+				else
+				{
+					Window.alert("Cannot upload - pick a valid .png file!");
+				}
 			}
 		});
 
@@ -771,7 +812,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 			public void onSubmitComplete(SubmitCompleteEvent event)
 			{
 				//UPDATE
-				updateUploadPanel(_uploadPanelOrderId, null, null);
+				updateUploadPanel(_uploadPanelOrderId, null, null, UploadType.VECTORIAL_PDF);
 			}
 		});
 
@@ -779,7 +820,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 		vectorialPanel.setVerticalAlignment(HorizontalPanel.ALIGN_MIDDLE);
 		vectorialPanel.setSpacing(10);
 		Label vectorialLbl=new Label(Messages.VECTORIAL_LBL.getString());
-		FileUpload vectorialUpload=new FileUpload();
+		final FileUpload vectorialUpload=new FileUpload();
 		vectorialUpload.setName("uploadFormElement");
 		Button vectorialUploadBtn=new Button(Messages.UPLOAD.getString());
 
@@ -787,9 +828,18 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 			public void onClick(ClickEvent event) 
 			{
-				_vectorialForm.submit();
+				// check if ends with png (and not null at the same time)
+				if(vectorialUpload.getFilename().endsWith(".pdf"))
+				{
+					_vectorialForm.submit();
+				}
+				else
+				{
+					Window.alert("Cannot upload - pick a valid .pdf file!");
+				}
 			}
 		});
+
 		_isVectorialImageUploaded.addStyleName("labelButton");
 		_isVectorialImageUploaded.addClickHandler(new ClickHandler(){
 
@@ -822,8 +872,10 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	 * @param logoName 
 	 * 
 	 */
-	private void updateUploadPanel(long orderId, String logoName, String tags) 
+	private void updateUploadPanel(long orderId, String logoName, String tags, UploadType upload) 
 	{
+		final UploadType uploadType = upload;
+
 		_uploadPanelOrderId=orderId;
 		_rasterizedForm.setAction("/wokhei/uploadfile?fileType="+FileType.PNG_LOGO.toString()+"&orderid="+orderId);
 		_vectorialForm.setAction("/wokhei/uploadfile?fileType="+FileType.PDF_VECTORIAL_LOGO.toString()+"&orderid="+orderId);
@@ -842,6 +894,13 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 			public void onSuccess(Boolean result) {
 				_isRasterizedImageUploaded.setUrl(getImageUrl(result));
+				if(uploadType == UploadType.RASTERIZED_PNG)
+				{
+					if (result)
+						Window.alert("Upload Successful!");
+					else
+						Window.alert("Upload Error!");
+				}
 			}});
 
 		((OrderServiceAsync) getService(Service.ORDER_SERVICE)).hasFileUploaded(orderId, FileType.PDF_VECTORIAL_LOGO, new AsyncCallback<Boolean>(){
@@ -852,6 +911,13 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 			public void onSuccess(Boolean result) {
 				_isVectorialImageUploaded.setUrl(getImageUrl(result));
+				if(uploadType == UploadType.VECTORIAL_PDF)
+				{
+					if (result)
+						Window.alert("Upload Successful!");
+					else
+						Window.alert("Upload Error!");
+				}
 			}});
 
 		((OrderServiceAsync) getService(Service.ORDER_SERVICE)).hasFileUploaded(orderId, FileType.PNG_LOGO_PRESENTATION, new AsyncCallback<Boolean>(){
@@ -862,6 +928,13 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 			public void onSuccess(Boolean result) {
 				_isPresentationImageUploaded.setUrl(getImageUrl(result));
+				if(uploadType == UploadType.PRESENTATION_PNG)
+				{
+					if (result)
+						Window.alert("Upload Successful!");
+					else
+						Window.alert("Upload Error!");
+				}
 			}
 
 		});
