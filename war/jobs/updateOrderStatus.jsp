@@ -144,6 +144,7 @@
 						String msg = Messages.NOTIFY_QUALITY_GATE_BODY.getString() + "\n\n";
 						msgBody+= 	"Order details: \n" + 
 						"User: " + order.getCustomer().getEmail() + "\n" +
+						"Progressive: " + order.getProgressive() + "\n" + 
 						"OrderId: " + order.getId() + "\n" + 
 	    				"Text: " + order.getText() + "\n" + 
 	    				"Tags: " + order.getTags().toString() + "\n" + 
@@ -218,7 +219,8 @@
     for(Order updatedOrder :updatedOrders)
     {
     	//add updated orders to email
-    	msgBody+= 	updatedOrder.getId() + " | " + 
+    	msgBody+= 	updatedOrder.getId() + " | Progressive: " + 
+    				updatedOrder.getProgressive() + " | " + 
     				updatedOrder.getCustomer().getEmail() + " | " + 
     				updatedOrder.getText() + " | " + 
     				updatedOrder.getTags().toString() + " | " + 

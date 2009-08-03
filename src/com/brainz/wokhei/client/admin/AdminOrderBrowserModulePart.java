@@ -55,7 +55,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 	public enum Columns {
 
-		ID("ID"),
+		ID("Prog"),
 		USER("User"),
 		LOGO_TEXT("Name"),
 		TAGS("Tags"),
@@ -530,7 +530,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 						//The header row will be added afterwards (apparently, it's 2am we might be wrong)
 						final int frow = row +1 ;
-						_ordersFlexTable.setText(row, Columns.ID.ordinal(), order.getId().toString());
+						_ordersFlexTable.setWidget(row, Columns.ID.ordinal(), getProgressiveLabeL(String.valueOf(order.getProgressive()), order.getId()));
 						_ordersFlexTable.setText(row, Columns.USER.ordinal(), processUsername(order.getCustomerEmail()));
 						_ordersFlexTable.setWidget(row,Columns.LOGO_TEXT.ordinal(), getNameLabel( order.getText()));
 						String list=Arrays.asList(order.getTags()).toString().replace(",","");
@@ -544,72 +544,15 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 						{
 							_ordersFlexTable.setWidget(row, Columns.TIMER.ordinal(), getTimerLabel(Float.valueOf((int)((missingTime*-1+0.005f)*10.0f)/10.0f)));
 						}
-
-
 						if(order.getStatus()==Status.INCOMING)
 						{
-							// Add a button to remove this stock from the table.
-							Button rejectOrderButton = new Button("Reject");
-
-							rejectOrderButton.addClickHandler(new ClickHandler() {
-								public void onClick(ClickEvent event) {
-
-									if(Window.confirm(Messages.ADMIN_CONFIRM_REJECT_TXT.getString()))
-									{
-										//get ID from clicked row
-										long rejectedId = Long.parseLong(_ordersFlexTable.getText(frow, Columns.ID.ordinal()));
-										statusChangedSubHandler(frow, rejectedId, Status.REJECTED);
-									}
-								}
-							});
-
-							// Add a button to remove this stock from the table.
-							Button acceptOrderButton = new Button("Accept");
-
-							acceptOrderButton.addClickHandler(new ClickHandler() {
-								public void onClick(ClickEvent event) {
-
-									if(Window.confirm(Messages.ADMIN_CONFIRM_ACCEPT_TXT.getString()))
-									{
-										//get ID from clicked row
-										long acceptedId = Long.parseLong(_ordersFlexTable.getText(frow, Columns.ID.ordinal()));
-
-										statusChangedSubHandler(frow, acceptedId, Status.ACCEPTED);
-									}
-								}
-							});
-
-							VerticalPanel actionPanel = new VerticalPanel();
-							actionPanel.add(acceptOrderButton);
-							actionPanel.add(rejectOrderButton);
-
-							_ordersFlexTable.setWidget(row, Columns.ACTIONS.ordinal(), actionPanel);
+							_ordersFlexTable.setWidget(row, Columns.ACTIONS.ordinal(), getActionPanel(frow, order.getId()));
 						}
 						else if (order.getStatus()!=Status.REJECTED)
 						{
-							// if is not incoming and it's not ready or rejected - arguably it's always possible to upload
-							Button uploadLogoButton = new Button("Upload");
-
-							uploadLogoButton.addClickHandler(new ClickHandler() {
-								public void onClick(ClickEvent event) {
-									//get ID from clicked row
-									updateUploadPanel(Long.parseLong(_ordersFlexTable.getText(frow, Columns.ID.ordinal())),
-											_ordersFlexTable.getText(frow, Columns.LOGO_TEXT.ordinal()),
-											_ordersFlexTable.getText(frow, Columns.TAGS.ordinal()), UploadType.NONE);
-									_uploadPopupPanel.center();
-									_uploadPopupPanel.show();
-								}
-
-
-							});
-
-							_ordersFlexTable.setWidget(row, Columns.ACTIONS.ordinal(), uploadLogoButton);
+							_ordersFlexTable.setWidget(row, Columns.ACTIONS.ordinal(), getUploadLogoButton(order.getId(), order.getText(), order.getTags()));
 						}
-
-
 					}
-
-
 				};
 			}
 
@@ -1064,6 +1007,74 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 		tags.setStyleName("adminTags");
 		tags.addStyleName("fontAR");
 		return tags;
+	}
+
+	private Widget getUploadLogoButton(final Long id, final String text,
+			final String[] tags) {
+		// if is not incoming and it's not ready or rejected - arguably it's always possible to upload
+		Button uploadLogoButton = new Button("Upload");
+
+		uploadLogoButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				//get ID from clicked row
+				updateUploadPanel(id,text,Arrays.asList(tags).toString(),UploadType.NONE);
+				_uploadPopupPanel.center();
+				_uploadPopupPanel.show();
+			}
+
+
+		});
+		return uploadLogoButton;
+	}
+
+	private Widget getProgressiveLabeL(final String progValue, final Long id) {
+		Label nameLbl=new Label(progValue);
+		nameLbl.setStyleName("adminLogoProg");
+		nameLbl.addStyleName("fontAR");
+		nameLbl.addStyleName("labelButton");
+		nameLbl.addClickHandler(new ClickHandler(){
+
+			public void onClick(ClickEvent event) {
+				Window.alert("The progressive for this order is: "+progValue+" the real ID is: "+id);
+
+			}});
+		return nameLbl;
+	}
+
+	private Widget getActionPanel(final Integer frow,final Long id) {
+		// Add a button to remove this stock from the table.
+		Button rejectOrderButton = new Button("Reject");
+
+		rejectOrderButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+
+				if(Window.confirm(Messages.ADMIN_CONFIRM_REJECT_TXT.getString()))
+				{
+
+
+					statusChangedSubHandler(frow, id, Status.REJECTED);
+				}
+			}
+		});
+
+		// Add a button to remove this stock from the table.
+		Button acceptOrderButton = new Button("Accept");
+
+		acceptOrderButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+
+				if(Window.confirm(Messages.ADMIN_CONFIRM_ACCEPT_TXT.getString()))
+				{
+
+					statusChangedSubHandler(frow, id, Status.ACCEPTED);
+				}
+			}
+		});
+
+		VerticalPanel actionPanel = new VerticalPanel();
+		actionPanel.add(acceptOrderButton);
+		actionPanel.add(rejectOrderButton);
+		return actionPanel;
 	}
 
 	/**
