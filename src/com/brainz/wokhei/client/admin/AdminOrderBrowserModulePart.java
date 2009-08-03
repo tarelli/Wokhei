@@ -55,7 +55,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 	public enum Columns {
 
-		ID("ID"),
+		ID("Prog"),
 		USER("User"),
 		LOGO_TEXT("Name"),
 		TAGS("Tags"),
@@ -530,7 +530,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 						//The header row will be added afterwards (apparently, it's 2am we might be wrong)
 						final int frow = row +1 ;
-						_ordersFlexTable.setText(row, Columns.ID.ordinal(), order.getId().toString());
+						_ordersFlexTable.setWidget(row, Columns.ID.ordinal(), getProgressiveLabeL(String.valueOf(order.getProgressive()), order.getId()));
 						_ordersFlexTable.setText(row, Columns.USER.ordinal(), processUsername(order.getCustomerEmail()));
 						_ordersFlexTable.setWidget(row,Columns.LOGO_TEXT.ordinal(), getNameLabel( order.getText()));
 						String list=Arrays.asList(order.getTags()).toString().replace(",","");
@@ -608,6 +608,8 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 
 					}
+
+
 
 
 				};
@@ -1064,6 +1066,20 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 		tags.setStyleName("adminTags");
 		tags.addStyleName("fontAR");
 		return tags;
+	}
+
+	private Widget getProgressiveLabeL(final String progValue, final Long id) {
+		Label nameLbl=new Label(progValue);
+		nameLbl.setStyleName("adminLogoProg");
+		nameLbl.addStyleName("fontAR");
+		nameLbl.addStyleName("labelButton");
+		nameLbl.addClickHandler(new ClickHandler(){
+
+			public void onClick(ClickEvent event) {
+				Window.alert("The progressive for this order is: "+progValue+" the real ID is: "+id);
+
+			}});
+		return nameLbl;
 	}
 
 	/**

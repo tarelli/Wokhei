@@ -893,6 +893,11 @@ select {
 	color: #bf007e;
 }
 
+.adminLogoProg {
+	font-size: 14px;
+	color: black;
+}
+
 .orderList {
 	padding: 2px;
 	margin-bottom: 6px;

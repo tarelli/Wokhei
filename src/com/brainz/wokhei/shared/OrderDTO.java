@@ -28,6 +28,7 @@ public class OrderDTO implements Serializable{
 
 	private Colour _colour;
 
+	private Integer _progressive;
 
 	/**
 	 * 
@@ -47,7 +48,7 @@ public class OrderDTO implements Serializable{
 	 * @param customerEmail
 	 */
 	public OrderDTO(Long id, String text, String[] tags, Date date, Date acceptedDate, Date viewedDate,
-			Status status, Colour colour, String customerEmail) 
+			Status status, Colour colour, String customerEmail, Integer progressive) 
 	{
 		super();
 		_id = id;
@@ -59,7 +60,10 @@ public class OrderDTO implements Serializable{
 		_status = status;
 		_colour = colour;
 		_customerEmail = customerEmail;
+		_progressive=progressive;
 	}
+
+
 
 	/**
 	 * @return
@@ -204,6 +208,14 @@ public class OrderDTO implements Serializable{
 	public void setStatus(Status status) 
 	{
 		_status = status;
+	}
+
+	public Integer getProgressive() {
+		return _progressive;
+	}
+
+	public void setProgressive(Integer _progressive) {
+		this._progressive = _progressive;
 	}
 
 }

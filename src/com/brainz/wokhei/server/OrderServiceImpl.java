@@ -54,19 +54,38 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 	public Boolean submitOrder(OrderDTO orderDTO) 
 	{
 		Boolean returnValue;
+		Integer newNumber=0; 
 
 		// retrieve user
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+
+		String select_query = "select from " + Order.class.getName() + " order by progressive desc range 0,1";
+		Query query = pm.newQuery(select_query); 
+
+		List<Invoice> results = (List<Invoice>)query.execute();
+
+		if(!results.isEmpty())
+		{
+			newNumber=results.get(0).getInvoiceNumber();
+		}
+		if(newNumber!=null)
+		{
+			newNumber++;
+		}
+		else
+		{
+			newNumber=0;
+		}
 
 		// Instantiate order
-		Order order = new Order(user, orderDTO.getText(),Arrays.asList(orderDTO.getTags()),orderDTO.getColour(), new Date());
+		Order order = new Order(user, orderDTO.getText(),Arrays.asList(orderDTO.getTags()),orderDTO.getColour(), new Date(), newNumber);
 
 		if (user!= null)
 		{
 			order.setCustomer(user);
 
-			PersistenceManager pm = PMF.get().getPersistenceManager();
 			try {
 				pm.makePersistent(order);
 
@@ -82,6 +101,7 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 				String subj = Messages.NOTIFY_SUBMITTED_SUBJ.getString() + order.getCustomer().getEmail() + "!";
 				//msgbody
 				String msgBody = Messages.NOTIFY_SUBMITTED_BODY.getString() + order.getCustomer().getEmail() + ":\n\n";
+				msgBody += "Progressive: " + order.getProgressive() + "\n";
 				msgBody += "OrderID: " + order.getId() + "\n";
 				msgBody += "Text: " + order.getText() + "\n";
 				msgBody += "TagZ: " + order.getTags().toString() + "\n";

@@ -19,8 +19,11 @@ public class Order implements IsSerializable{
 
 
 	@PrimaryKey
-	@Persistent(valueStrategy = IdGeneratorStrategy.INCREMENT)
+	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
 	private Long id;
+
+	@Persistent
+	private Integer progressive;
 
 	@Persistent
 	private User customer;
@@ -47,12 +50,13 @@ public class Order implements IsSerializable{
 	private Colour colour;
 
 
-	public Order(User author, String text, List<String> tags, Colour colour, Date date) {
+	public Order(User author, String text, List<String> tags, Colour colour, Date date, Integer progressive) {
 		this.customer = author;
 		this.text=text;
 		this.tags = tags;
 		this.date = date;
 		this.colour=colour;
+		this.progressive=progressive;
 
 		//default values when instantiating
 		this.acceptedDate= null;
@@ -127,6 +131,14 @@ public class Order implements IsSerializable{
 
 	public void setStatus(Status status) {
 		this.status = status;
+	}
+
+	public Integer getProgressive() {
+		return progressive;
+	}
+
+	public void setProgressive(Integer progressive) {
+		this.progressive = progressive;
 	}
 }
 
