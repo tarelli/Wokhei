@@ -586,8 +586,9 @@ public class OrderBrowserModulePart extends AModulePart{
 
 	private void setupPayPalForm()
 	{
+		boolean isSandbox = getModule().isSandBox();
 		//fill-up paypal form
-		if(getModule().isSandBox())
+		if(isSandbox)
 		{
 			_paypalForm.setAction(PayPalStrings.PAYPAL_SANDBOX_ACTION.getString());
 		}
@@ -606,7 +607,7 @@ public class OrderBrowserModulePart extends AModulePart{
 
 		sellerInfo.setName(PayPalStrings.PAYPAL_BUSINESS_NAME.getString());
 
-		if(getModule().isSandBox())
+		if(isSandbox)
 		{
 			sellerInfo.setValue(PayPalStrings.PAYPAL_SANDBOX_BUSINESS_VALUE.getString());
 		}
@@ -650,7 +651,15 @@ public class OrderBrowserModulePart extends AModulePart{
 		formPlaceHolder.add(currencyInfo);
 
 		notifyInfo.setName(PayPalStrings.PAYPAL_NOTIFY_URL_NAME.getString());
-		notifyInfo.setValue(PayPalStrings.PAYPAL_NOTIFY_URL_SANDBOX_VALUE.getString());
+		if(isSandbox)
+		{
+			notifyInfo.setValue(PayPalStrings.PAYPAL_NOTIFY_URL_SANDBOX_VALUE.getString());
+		}
+		else
+		{
+			notifyInfo.setValue(PayPalStrings.PAYPAL_NOTIFY_URL_VALUE.getString());
+
+		}
 		formPlaceHolder.add(notifyInfo);
 
 		returnInfo.setName(PayPalStrings.PAYPAL_RETURN_NAME.getString());
