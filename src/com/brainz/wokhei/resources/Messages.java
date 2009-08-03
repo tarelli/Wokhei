@@ -172,7 +172,7 @@ public enum Messages {
 
 	//EXTRA
 	EXTRAORDINARY_NOTIFICATION("Urgent notification from Wokhei"),
-	SUCCHIA_MELO("AZIZ AZIZ ... SUCCHIA-MELO E PALLE IN CULO"), 
+	SUCCHIA_MELO("AZIZ AZIZA WHAT GOT INTO YOU?? I DONT KNOW, IM NOT DOING IT!"), 
 	MUST_ACCEPT_LICENSE("You need to accept terms and conditions first!"),
 	ACCEPT_CONDITIONS("I accept the terms and conditions"), 
 	LESS_THAN_HOUR("less than an hour "),
