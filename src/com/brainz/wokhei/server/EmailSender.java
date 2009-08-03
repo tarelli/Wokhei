@@ -39,6 +39,10 @@ public class EmailSender {
 		Session sessionX = Session.getDefaultInstance(props, null);
 
 		try {
+
+			UtilityServiceImpl utilityService=new UtilityServiceImpl();
+			String webSite=utilityService.isSandBox()?Messages.WEBSITE.getString():Messages.WEBSITE_SANDBOX.getString();
+
 			Message msg = new MimeMessage(sessionX);
 			msg.setFrom(new InternetAddress(sender));
 			for(String recipient : recipients)
@@ -46,7 +50,6 @@ public class EmailSender {
 				msg.addRecipient(Message.RecipientType.TO,
 						new InternetAddress(recipient));
 			}
-			UtilityServiceImpl utilityService=new UtilityServiceImpl();
 			if(utilityService.isSandBox())
 			{
 				msg.setSubject(Messages.SANDBOX.getString()+ " "+subject);	
@@ -55,7 +58,7 @@ public class EmailSender {
 			{
 				msg.setSubject(subject);
 			}
-			msg.setText(msgBody);
+			msg.setText(msgBody.replace("$w", webSite));
 			Transport.send(msg);
 
 		} catch (AddressException e) {
@@ -81,6 +84,9 @@ public class EmailSender {
 		Session sessionX = Session.getDefaultInstance(props, null);
 
 		try {
+			UtilityServiceImpl utilityService=new UtilityServiceImpl();
+			String webSite=utilityService.isSandBox()?Messages.WEBSITE.getString():Messages.WEBSITE_SANDBOX.getString();
+
 			Message msg = new MimeMessage(sessionX);
 			msg.setFrom(new InternetAddress(sender));
 
@@ -89,8 +95,6 @@ public class EmailSender {
 				msg.addRecipient(Message.RecipientType.TO,
 						new InternetAddress(recipient));
 			}
-
-			UtilityServiceImpl utilityService=new UtilityServiceImpl();
 			if(utilityService.isSandBox())
 			{
 				msg.setSubject(Messages.SANDBOX.getString()+ " "+subject);	
@@ -99,7 +103,7 @@ public class EmailSender {
 			{
 				msg.setSubject(subject);
 			}
-			msg.setText(msgBody);
+			msg.setText(msgBody.replace("$w", webSite));
 
 			Multipart mp = new MimeMultipart();
 

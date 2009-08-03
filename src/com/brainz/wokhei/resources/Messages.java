@@ -85,18 +85,18 @@ public enum Messages {
 	EMAIL_ORDER_SUBJ("Order update from Wokhei"),
 
 	EMAIL_ORDER_ACCEPTED("Your Stir Fried Logo order has been accepted - it will be ready in 24hrs! "),
-	EMAIL_ORDER_ACCEPTED_FOOTER("Check out [ http://www.wokhei.com ] to find out more about your order status."),
+	EMAIL_ORDER_ACCEPTED_FOOTER("Check out [ $w ] to find out more about your order status."),
 
 	EMAIL_ORDER_REJECTED("Apologies, your Stir Fried Logo order has been rejected! "),
-	EMAIL_ORDER_REJECTED_FOOTER("Visit [ http://www.wokhei.com ] to find out more and submit a new order."),
+	EMAIL_ORDER_REJECTED_FOOTER("Visit [ $w ] to find out more and submit a new order."),
 
 	EMAIL_ORDER_IN_PROGRESS("Your Stir Fried Logo has been assigned to one of the designers in the Wokhei network and is now in progress."),
-	EMAIL_ORDER_IN_PROGRESS_FOOTER("Check out [ http://www.wokhei.com ] to find out more about your order status."),
+	EMAIL_ORDER_IN_PROGRESS_FOOTER("Check out [ $w ] to find out more about your order status."),
 
 	EMAIL_ORDER_QUALITY_GATE("Your Stir Fried Logo is currently being reviewed for quality check."),
-	EMAIL_ORDER_QUALITY_GATE_FOOTER("Check out [ http://www.wokhei.com ] to find out more about your order status."),
+	EMAIL_ORDER_QUALITY_GATE_FOOTER("Check out [ $w ] to find out more about your order status."),
 
-	EMAIL_ORDER_READY("Your Stir Fried Logo is ready!\nWhat are you waiting for? Go check it out at [ http://www.wokhei.com ] and enjoy!"),
+	EMAIL_ORDER_READY("Your Stir Fried Logo is ready!\nWhat are you waiting for? Go check it out at [ $w ] and enjoy!"),
 	EMAIL_ORDER_READY_FOOTER("Remember, you have 24hrs to buy the logo starting from the first time you see it. Buying the logo will give you rights for commercial use under the Wokhei Commercial License."),
 
 	EMAIL_ORDER_GOODBYE("Wokhei - Stir Fried Logos"),
@@ -177,6 +177,8 @@ public enum Messages {
 	ACCEPT_CONDITIONS("I accept the terms and conditions"), 
 	LESS_THAN_HOUR("less than an hour "),
 	SANDBOX("Sandbox"),
+	WEBSITE("http://www.wokhei.com"),
+	WEBSITE_SANDBOX("http://wokheisandbox.appspot.com/")
 
 	;
 
