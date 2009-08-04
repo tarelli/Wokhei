@@ -66,6 +66,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 	private final Label _logoHintLabel = new Label(Messages.LOGO_NAME_EG_LBL.getString()); //$NON-NLS-1$
 	private final Label _logoErrorLabel = new Label(); 
 	private final Image _logoOkImage = new Image("");
+	private boolean _nameModified=false;
 
 	//COLOURS
 	private final VerticalPanel _colorPanel = new VerticalPanel();
@@ -76,6 +77,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 	private final HorizontalPanel _colourLabelPanel = new HorizontalPanel();
 	private final Label _colourErrorLabel = new Label();
 	private final Image _colourOkImage = new Image();
+	private boolean _coloursModified=false;
 
 	private final VerticalPanel _rows = new VerticalPanel();
 	private final HorizontalPanel _colorSubPanel= new HorizontalPanel();
@@ -100,6 +102,9 @@ public class OrderSubmitterModulePart extends AModulePart {
 	private final Label _tagsHintLabel = new Label(Messages.LOGO_TAGS_EG_LBL.getString()); //$NON-NLS-1$
 	private final Label _tagsErrorLabel = new Label(); 
 	private final Image _tagsOkImage = new Image();
+	private boolean _tagsModified=false;
+
+
 
 	// a pretty self-explanatory submit button
 	private final Button _submitOrderButton = new Button(Messages.SEND_REQUEST.getString()); //$NON-NLS-1$
@@ -146,7 +151,9 @@ public class OrderSubmitterModulePart extends AModulePart {
 			_mainPanel.setSpacing(10);
 
 			// set everything to invisible
-			setOkImagesVisibility(false);
+			setNameModified(false);
+			setTagsModified(false);
+			setColourModified(false);
 			_mainPanel.setVisible(false);
 
 			_requestLabel.addStyleName("h3"); //$NON-NLS-1$
@@ -165,6 +172,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 			_logoTextBox.addStyleName("fontAR");
 			_logoTextBox.addBlurHandler(new BlurHandler(){
 				public void onBlur(BlurEvent event) {
+					setNameModified(true);
 					checkErrors();
 				}
 			});
@@ -218,6 +226,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 			_logoTagsBox.getTextBox().addBlurHandler(new BlurHandler(){
 				public void onBlur(BlurEvent event) {
+					setTagsModified(true);
 					checkErrors();
 				}
 			});
@@ -427,19 +436,6 @@ public class OrderSubmitterModulePart extends AModulePart {
 		((OrderServiceAsync) getService(Service.ORDER_SERVICE)).getOrderKillswitch(_getOrderKillswitchCallback);
 	}
 
-
-	private void setOkImagesVisibility(boolean visible)
-	{
-		_tagsOkImage.setVisible(visible);
-		_logoOkImage.setVisible(visible);
-		_colourOkImage.setVisible(visible);
-	}
-
-	private boolean areOkImagesVisibile()
-	{
-		return _tagsOkImage.isVisible() && _logoOkImage.isVisible() && _colourOkImage.isVisible();
-	}
-
 	/**
 	 * @return
 	 */
@@ -565,6 +561,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 					_colours[index].removeStyleName("colourNormal"); //$NON-NLS-1$
 					_colours[index].addStyleName("colourSelected"); //$NON-NLS-1$
 					_selectedColourButton=_colours[index];
+					setColourModified(true);
 					checkErrors();
 				}});
 
@@ -584,6 +581,9 @@ public class OrderSubmitterModulePart extends AModulePart {
 	 */
 	protected void submitOrder() 
 	{
+		setNameModified(true);
+		setTagsModified(true);
+		setColourModified(true);
 		if(checkErrors())
 		{
 			// Make the call to the stock price service.
@@ -602,27 +602,37 @@ public class OrderSubmitterModulePart extends AModulePart {
 	 */
 	private boolean checkErrors() 
 	{
-		if(!areOkImagesVisibile())
-		{
-			setOkImagesVisibility(true);
-		}
-
 		if(!((MultipleTextBox)_logoTagsBox.getTextBox()).getWholeText().equals(Messages.LOGO_TAGS_TXTBOX.getString()))
 		{
 			addHashToTags();
 		}
 
-		Validator.TagsErrors tagsError=Validator.validateTags(((MultipleTextBox)_logoTagsBox.getTextBox()).getWholeText());
-		Validator.LogoErrors logoError=Validator.validateLogoName(_logoTextBox.getText());
-		Validator.ColourErrors colourError=Validator.validateColour(_selectedColour);
+		Validator.TagsErrors tagsError=TagsErrors.NONE;
+		Validator.LogoErrors logoError=LogoErrors.NONE;
+		Validator.ColourErrors colourError=ColourErrors.NONE;
 
-		setTagErrorStatus(tagsError);
-		setColourError(colourError);
-		setLogoNameError(logoError);
+		if(isTagsModified())
+		{
+			tagsError=Validator.validateTags(((MultipleTextBox)_logoTagsBox.getTextBox()).getWholeText());
+			setTagErrorStatus(tagsError);
+		}
+
+		if(isNameModified())
+		{
+			logoError=Validator.validateLogoName(_logoTextBox.getText());
+			setLogoNameError(logoError);
+		}
+
+		if(isColoursModified())
+		{
+			colourError=Validator.validateColour(_selectedColour);
+			setColourError(colourError);
+		}
 
 		return tagsError.equals(TagsErrors.NONE) && 
 		colourError.equals(ColourErrors.NONE) && 
 		logoError.equals(LogoErrors.NONE);
+
 	}
 
 
@@ -837,6 +847,39 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 	@Override
 	public void updateModulePart() {
+	}
+
+	private boolean isNameModified() {
+		return _nameModified;
+	}
+
+
+	private void setNameModified(boolean nameModified) {
+		_nameModified = nameModified;
+		_logoOkImage.setVisible(nameModified);
+	}
+
+
+	private boolean isColoursModified() {
+		return _coloursModified;
+	}
+
+
+	private void setColourModified(boolean coloursModified) {
+		_coloursModified = coloursModified;
+		_colourOkImage.setVisible(coloursModified);
+	}
+
+
+	private boolean isTagsModified() {
+		return _tagsModified;
+	}
+
+
+	private void setTagsModified(boolean tagsModified) {
+		_tagsModified = tagsModified;
+		_tagsOkImage.setVisible(tagsModified);
+
 	}
 
 
