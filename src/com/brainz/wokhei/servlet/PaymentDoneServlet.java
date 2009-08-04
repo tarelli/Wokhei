@@ -57,7 +57,7 @@ public class PaymentDoneServlet extends HttpServlet {
 		// NOTE: change http: to https: in the following URL to verify using SSL (for increased security).
 		// using HTTPS requires either Java 1.4 or greater, or Java Secure Socket Extension (JSSE)
 		// and configured for older versions.
-		URL u = new URL(PayPalStrings.PAYPAL_SANDBOX_ACTION.getString());
+		URL u = new URL(PayPalStrings.PAYPAL_ACTION.getString());
 		URLConnection uc = u.openConnection();
 		uc.setDoOutput(true);
 		uc.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
@@ -89,7 +89,7 @@ public class PaymentDoneServlet extends HttpServlet {
 			// check that receiverEmail is your Primary PayPal email
 			// check that paymentAmount/paymentCurrency are correct
 			if((paymentStatus.equalsIgnoreCase("pending")||paymentStatus.equalsIgnoreCase("complete")) 
-					&& receiverEmail.equalsIgnoreCase(PayPalStrings.PAYPAL_SANDBOX_BUSINESS_VALUE.getString())
+					&& receiverEmail.equalsIgnoreCase(PayPalStrings.PAYPAL_BUSINESS_VALUE.getString())
 					&& paymentAmount.equalsIgnoreCase(PayPalStrings.PAYPAL_AMOUNT_TEST_TOTAL.getString())
 					&& paymentCurrency.equalsIgnoreCase(PayPalStrings.PAYPAL_CURRENCY_VALUE.getString()))
 			{
