@@ -639,11 +639,11 @@ public class OrderBrowserModulePart extends AModulePart{
 		formPlaceHolder.add(itemNameInfo);
 
 		amountInfo.setName(PayPalStrings.PAYPAL_AMOUNT_NAME.getString());
-		amountInfo.setValue(PayPalStrings.PAYPAL_AMOUNT_VALUE.getString());
+		amountInfo.setValue(PayPalStrings.PAYPAL_AMOUNT_TEST_VALUE.getString());
 		formPlaceHolder.add(amountInfo);
 
 		taxInfo.setName(PayPalStrings.PAYPAL_TAX_NAME.getString());
-		taxInfo.setValue(PayPalStrings.PAYPAL_TAX_VALUE.getString());
+		taxInfo.setValue(PayPalStrings.PAYPAL_TAX_TEST_VALUE.getString());
 		formPlaceHolder.add(taxInfo);
 
 		currencyInfo.setName(PayPalStrings.PAYPAL_CURRENCY_NAME.getString());
