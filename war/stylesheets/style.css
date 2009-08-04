@@ -370,12 +370,6 @@ select {
 }
 
 /* HOME LOGGED*/ /* DOOR */
-.okImagesPanel {
-	position: absolute;
-	left: 400px;
-	top: 65px;
-}
-
 .headerDoor {
 	position: relative;
 	min-height: 149px;
