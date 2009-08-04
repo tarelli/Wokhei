@@ -141,7 +141,7 @@ public enum Messages {
 	FAQ_1("Can I login without a Google Account?"),
 	FAQ_1_ANSWER("No!\n\nYou can access our services only through a Google Account.\n\nWhy? Because virtually everyone has a Google account and this way you don't have to remember yet another password. Ok, also because we are huge Google fans. <br><br>Don't worry, the login operation is completely managed by Google, Wokhei does not have access to your password or any other personal info!"),
 	FAQ_2("What if I want to slightly modify my logo?"),
-	FAQ_2_ANSWER("Revisions are not part of the Wokhei workflow.<br>If you don't like your logo (unlikely but possible) just place another order and cross your fingers - ain't it good fun? :)"),
+	FAQ_2_ANSWER("Revisions are not part of the Wokhei workflow.<br>If you don't like your logo (unlikely but possible) just place another order and cross your fingers :)"),
 	FAQ_3("How should I use tags when requesting my logo?"),
 	FAQ_3_ANSWER("Tags are descriptive labels you must use to tell us something about your product/business and/or how you would like your logo.<br> Tags will influence our designers and you can choose a maximum of 5, so make sure to pick them carefully!"),
 	FAQ_4("What if I want no text in my logo?"),
