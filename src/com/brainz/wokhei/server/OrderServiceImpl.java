@@ -508,9 +508,10 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 		try {
 			//send enquiry
 			String msgBody = Messages.ENQUIRY_EMAIL_BODY.getString() + "\n";
+			msgBody += "Progressive ID: " + order.getProgressive().toString() + "\n";
 			msgBody += "Order ID: " + order.getId().toString() + "\n";
 			msgBody += "Text: " + order.getText().toString() + "\n";
-			msgBody += "TagZ: " + order.getTags().toString() + "\n";
+			msgBody += "TagZ: " + Arrays.asList(order.getTags()).toString() + "\n";
 			msgBody += "Colour: " + order.getColour().toString() + "\n\n";
 			msgBody += "Let's make some money!";
 
