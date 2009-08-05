@@ -116,7 +116,7 @@ public enum Messages {
 	THIRD_STEP_TITLE("Your logo is ready!"),
 	FIRST_STEP("Login with your Google Account, insert your product/company/service name, up to 5 tags to describe your logo and pick your preference for the main colour: as easy as that!"),
 	SECOND_STEP("Once your request is accepted it gets assigned to one of the graphic designers in the Wokhei network with expertise in your product area. He will prepare your logo in 24hrs!"),
-	THIRD_STEP("That was quick!<br>Buy the logo within 24hrs from the first time you see it for only <b>105 EUR</b> (VAT included) - approx <b>150 USD</b> - to use it under the <a href=\"\\licenses\\wokheiCommercialLicense.pdf\">Wokhei Commercial License</a>. Or ... use it for free under the <a href=\"\\licenses\\wokheiCommercialLicense.pdf\">Wokhei Limited License</a>!"), 
+	THIRD_STEP("That was quick!<br>Buy the logo within 24hrs from the first time you see it for only <b>105 EUR</b> (VAT included) - approx <b>150 USD</b> - to use it under the <a class=\"licenseLink\" href=\"\\licenses\\wokheiCommercialLicense.pdf\">Wokhei Commercial License</a>. Or ... use it for free under the <a class=\"licenseLink\" href=\"\\licenses\\wokheiCommercialLicense.pdf\">Wokhei Limited License</a>!"), 
 	INDEX_COPYRIGHT("\u00a9 2009 Wokhei"), 
 
 	//ABOUT

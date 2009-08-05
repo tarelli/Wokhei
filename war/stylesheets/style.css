@@ -362,6 +362,16 @@ select {
 	color: black;
 }
 
+.licenseLink {
+	color: #bf007e;
+	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	font-size: 13px;
+}
+
+.licenseLink:hover {
+	color: black;
+}
+
 .indexCopyright {
 	color: #bf007e;
 	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
