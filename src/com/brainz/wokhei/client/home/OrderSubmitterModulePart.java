@@ -167,7 +167,6 @@ public class OrderSubmitterModulePart extends AModulePart
 
 			_logoHintLabel.setStyleName("hintLabel"); //$NON-NLS-1$
 
-
 			_logoTextBox.setText(Messages.LOGO_NAME_TXTBOX.getString()); //$NON-NLS-1$
 			_logoTextBox.setWidth("290px"); //$NON-NLS-1$
 			_logoTextBox.setStyleName("textBox"); //$NON-NLS-1$
@@ -432,6 +431,13 @@ public class OrderSubmitterModulePart extends AModulePart
 			applyCufon();
 		}
 
+	}
+
+
+	private void hideValidationImages() {
+		_colourOkImage.setVisible(false);
+		_logoOkImage.setVisible(false);
+		_tagsOkImage.setVisible(false);
 	}
 
 
@@ -770,9 +776,8 @@ public class OrderSubmitterModulePart extends AModulePart
 		if(_mainPanel.isVisible())
 		{
 			// Associate the feckin' Main panel with the HTML element on the host page.
-			_logoOkImage.setVisible(true);
-			_colourOkImage.setVisible(true);
-			_tagsOkImage.setVisible(true);
+			// nascondi le cazzo di immagini per IE
+			hideValidationImages();
 			showAlternatePanels(false);
 		}
 		else
