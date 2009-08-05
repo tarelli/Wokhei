@@ -936,7 +936,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 			}
 			break;
 		case READY:
-			if(order.getViewedDate() != null)
+			if(order.getAcceptedDate() != null)
 			{
 				float diffHours = DateDifferenceCalculator.getDifferenceInHours(_serverTimeStamp,order.getAcceptedDate());
 				missingTime = (24f+diffHours);
