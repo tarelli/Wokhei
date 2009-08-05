@@ -519,6 +519,7 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 			recipients.add(Mails.ADMIN.getMailAddress());
 			recipients.add(Mails.GIOVANNI.getMailAddress());
 			recipients.add(Mails.MATTEO.getMailAddress());
+			recipients.add(Mails.SIMONE.getMailAddress());
 
 			EmailSender.sendEmail(Mails.YOURLOGO.getMailAddress(), recipients, order.getCustomerEmail() + Messages.ENQUIRY_EMAIL_SUBJECT.getString(), msgBody);
 			returnValue = true;
