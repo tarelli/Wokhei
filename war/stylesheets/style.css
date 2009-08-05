@@ -911,6 +911,10 @@ select {
 	color: red;
 }
 
+.timerGrey {
+	color: grey;
+}
+
 /*paginator stuff - shit don't work!*/ /***
    * Default Pagination Behavior
    * 

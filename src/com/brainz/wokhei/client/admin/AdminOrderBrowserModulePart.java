@@ -519,15 +519,6 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 							Object object) {
 						OrderDTO order=(OrderDTO)object;
 
-						// accepted date to be used!
-						float missingTime = 0f;
-
-						if(order.getAcceptedDate() != null)
-						{
-							float diffHours = DateDifferenceCalculator.getDifferenceInHours(_serverTimeStamp,order.getAcceptedDate());
-							missingTime = (24f+diffHours);
-						}
-
 						//The header row will be added afterwards (apparently, it's 2am we might be wrong)
 						final int frow = row +1 ;
 						_ordersFlexTable.setWidget(row, Columns.ID.ordinal(), getProgressiveLabeL(String.valueOf(order.getProgressive()), order.getId()));
@@ -540,9 +531,9 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 						_ordersFlexTable.setText(row,Columns.DATE.ordinal(),  fmt.format(order.getDate()));
 						_ordersFlexTable.setWidget(row, Columns.STATUS.ordinal(), getStatusImage(order.getStatus().toString(),order.getId()));
 
-						if((order.getStatus() != Status.REJECTED) && (order.getStatus() != Status.INCOMING) && (order.getStatus() != Status.ARCHIVED) && (order.getStatus() != Status.BOUGHT))
+						if((order.getStatus() != Status.REJECTED) && (order.getStatus() != Status.ARCHIVED) && (order.getStatus() != Status.BOUGHT))
 						{
-							_ordersFlexTable.setWidget(row, Columns.TIMER.ordinal(), getTimerLabel(Float.valueOf((int)((missingTime*-1+0.005f)*10.0f)/10.0f)));
+							_ordersFlexTable.setWidget(row, Columns.TIMER.ordinal(), getTimerLabel(order));
 						}
 						if(order.getStatus()==Status.INCOMING)
 						{
@@ -887,21 +878,86 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	 * @param result
 	 * @return
 	 */
-	private Label getTimerLabel(Float value) 
+	private Label getTimerLabel(OrderDTO order) 
 	{
-		Label timerLabel=new Label(value+ " hrs");
-		if(value<5f)
+		Float missingTime = 0f;
+
+		Label timerLabel=new Label();
+
+		switch(order.getStatus())
 		{
-			timerLabel.addStyleName("timerGreen");
+		case ACCEPTED:
+		case ARCHIVED:
+		case BOUGHT:
+		case IN_PROGRESS:
+		case QUALITY_GATE:
+
+			if(order.getAcceptedDate() != null)
+			{
+				float diffHours = DateDifferenceCalculator.getDifferenceInHours(_serverTimeStamp,order.getAcceptedDate());
+				missingTime = (24f+diffHours);
+				missingTime=Float.valueOf((int)((missingTime*-1+0.005f)*10.0f)/10.0f);
+			}
+			timerLabel.setText(missingTime+ " hrs");
+			if(missingTime<-6f)
+			{
+				timerLabel.addStyleName("timerGreen");
+			}
+			else if(missingTime<-2f)
+			{
+				timerLabel.addStyleName("timerOrange");
+			}
+			else if(missingTime>=0f)
+			{
+				timerLabel.addStyleName("timerRed");
+			}
+			break;
+		case REJECTED:
+			break;
+		case INCOMING:
+			if(order.getDate() != null)
+			{
+				float diffHours = DateDifferenceCalculator.getDifferenceInHours(_serverTimeStamp,order.getDate());
+				missingTime = diffHours;
+				missingTime=Float.valueOf((int)((missingTime*-1+0.005f)*10.0f)/10.0f);
+			}
+			timerLabel.setText(missingTime+ " hrs");
+			if(missingTime<2f)
+			{
+				timerLabel.addStyleName("timerGreen");
+			}
+			else if(missingTime<6f)
+			{
+				timerLabel.addStyleName("timerOrange");
+			}
+			else
+			{
+				timerLabel.addStyleName("timerRed");
+			}
+			break;
+		case READY:
+			if(order.getViewedDate() != null)
+			{
+				float diffHours = DateDifferenceCalculator.getDifferenceInHours(_serverTimeStamp,order.getAcceptedDate());
+				missingTime = (24f+diffHours);
+				missingTime=Float.valueOf((int)((missingTime*-1+0.005f)*10.0f)/10.0f);
+				timerLabel.addStyleName("timerGrey");
+				timerLabel.setText(missingTime+ " hrs");
+			}
+			break;
+		case VIEWED:
+			if(order.getViewedDate() != null)
+			{
+				float diffHours = DateDifferenceCalculator.getDifferenceInHours(_serverTimeStamp,order.getViewedDate());
+				missingTime = (24f+diffHours);
+				missingTime=Float.valueOf((int)((missingTime*-1+0.005f)*10.0f)/10.0f);
+				timerLabel.addStyleName("timerGrey");
+				timerLabel.setText(missingTime+ " hrs");
+			}
+			break;
 		}
-		else if(value<1f)
-		{
-			timerLabel.addStyleName("timerOrange");
-		}
-		else
-		{
-			timerLabel.addStyleName("timerRed");
-		}
+
+
 		return timerLabel;
 	}
 
