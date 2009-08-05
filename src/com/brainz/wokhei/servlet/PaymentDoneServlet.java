@@ -90,7 +90,7 @@ public class PaymentDoneServlet extends HttpServlet {
 			// check that paymentAmount/paymentCurrency are correct
 			if((paymentStatus.equalsIgnoreCase("pending") || paymentStatus.equalsIgnoreCase("completed")) 
 					&& receiverEmail.equalsIgnoreCase(PayPalStrings.PAYPAL_BUSINESS_VALUE.getString())
-					&& paymentAmount.equalsIgnoreCase(PayPalStrings.PAYPAL_AMOUNT_TEST_TOTAL.getString())
+					&& paymentAmount.equalsIgnoreCase(PayPalStrings.PAYPAL_AMOUNT_TOTAL.getString())
 					&& paymentCurrency.equalsIgnoreCase(PayPalStrings.PAYPAL_CURRENCY_VALUE.getString()))
 			{
 				// process payment
@@ -116,7 +116,7 @@ public class PaymentDoneServlet extends HttpServlet {
 				String errorMsg = "Checked failed on Paypal parameters sent with IPN, actual values follow: ";
 				errorMsg += "paymentStatus = " + paymentStatus + "[" + (paymentStatus.equalsIgnoreCase("pending") || paymentStatus.equalsIgnoreCase("completed")) + "]";
 				errorMsg += " - receiverEmail = " + receiverEmail + "[" + receiverEmail.equalsIgnoreCase(PayPalStrings.PAYPAL_BUSINESS_VALUE.getString()) + "]";
-				errorMsg += " - paymentAmount = " + paymentAmount + "[" + paymentAmount.equalsIgnoreCase(PayPalStrings.PAYPAL_AMOUNT_TEST_TOTAL.getString()) + "]";
+				errorMsg += " - paymentAmount = " + paymentAmount + "[" + paymentAmount.equalsIgnoreCase(PayPalStrings.PAYPAL_AMOUNT_TOTAL.getString()) + "]";
 				errorMsg += " - paymentCurrency = " + paymentCurrency + "[" + paymentCurrency.equalsIgnoreCase(PayPalStrings.PAYPAL_CURRENCY_VALUE.getString()) + "]";
 				// log the error
 				log.log(Level.SEVERE, errorMsg);
