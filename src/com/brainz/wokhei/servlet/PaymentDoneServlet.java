@@ -88,7 +88,7 @@ public class PaymentDoneServlet extends HttpServlet {
 			//TODO: check that txnId has not been previously processed
 			// check that receiverEmail is your Primary PayPal email
 			// check that paymentAmount/paymentCurrency are correct
-			if((paymentStatus.equalsIgnoreCase("pending")||paymentStatus.equalsIgnoreCase("complete")) 
+			if((paymentStatus.equalsIgnoreCase("pending") || paymentStatus.equalsIgnoreCase("completed")) 
 					&& receiverEmail.equalsIgnoreCase(PayPalStrings.PAYPAL_BUSINESS_VALUE.getString())
 					&& paymentAmount.equalsIgnoreCase(PayPalStrings.PAYPAL_AMOUNT_TEST_TOTAL.getString())
 					&& paymentCurrency.equalsIgnoreCase(PayPalStrings.PAYPAL_CURRENCY_VALUE.getString()))
@@ -114,10 +114,10 @@ public class PaymentDoneServlet extends HttpServlet {
 			{
 				// some errors in the parameters checked
 				String errorMsg = "Checked failed on Paypal parameters sent with IPN, actual values follow: ";
-				errorMsg += "paymentStatus = " + paymentStatus;
-				errorMsg += " - receiverEmail = " + receiverEmail;
-				errorMsg += " - paymentAmount = " + paymentAmount;
-				errorMsg += " - paymentCurrency = " + paymentCurrency;
+				errorMsg += "paymentStatus = " + paymentStatus + "[" + (paymentStatus.equalsIgnoreCase("pending") || paymentStatus.equalsIgnoreCase("completed")) + "]";
+				errorMsg += " - receiverEmail = " + receiverEmail + "[" + receiverEmail.equalsIgnoreCase(PayPalStrings.PAYPAL_BUSINESS_VALUE.getString()) + "]";
+				errorMsg += " - paymentAmount = " + paymentAmount + "[" + paymentAmount.equalsIgnoreCase(PayPalStrings.PAYPAL_AMOUNT_TEST_TOTAL.getString()) + "]";
+				errorMsg += " - paymentCurrency = " + paymentCurrency + "[" + paymentCurrency.equalsIgnoreCase(PayPalStrings.PAYPAL_CURRENCY_VALUE.getString()) + "]";
 				// log the error
 				log.log(Level.SEVERE, errorMsg);
 			}
