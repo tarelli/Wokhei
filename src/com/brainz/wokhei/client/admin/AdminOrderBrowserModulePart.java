@@ -32,6 +32,7 @@ import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -521,6 +522,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 						//The header row will be added afterwards (apparently, it's 2am we might be wrong)
 						final int frow = row +1 ;
+						_ordersFlexTable.getCellFormatter().setAlignment(row, Columns.ID.ordinal(),HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
 						_ordersFlexTable.setWidget(row, Columns.ID.ordinal(), getProgressiveLabeL(String.valueOf(order.getProgressive()), order.getId()));
 						_ordersFlexTable.setText(row, Columns.USER.ordinal(), processUsername(order.getCustomerEmail()));
 						_ordersFlexTable.setWidget(row,Columns.LOGO_TEXT.ordinal(), getNameLabel( order.getText()));
@@ -529,6 +531,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 						_ordersFlexTable.setWidget(row,Columns.COLOUR.ordinal(),  getColourPanel(order.getColour().toString()));
 						DateTimeFormat fmt = DateTimeFormat.getFormat("dd.MM.yy");
 						_ordersFlexTable.setText(row,Columns.DATE.ordinal(),  fmt.format(order.getDate()));
+						_ordersFlexTable.getCellFormatter().setAlignment(row, Columns.STATUS.ordinal(),HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
 						_ordersFlexTable.setWidget(row, Columns.STATUS.ordinal(), getStatusImage(order.getStatus().toString(),order.getId()));
 
 						if((order.getStatus() != Status.REJECTED) && (order.getStatus() != Status.ARCHIVED) && (order.getStatus() != Status.BOUGHT))
@@ -1017,6 +1020,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 		case IN_PROGRESS:
 		case QUALITY_GATE:
 		case READY:
+		case VIEWED:
 			statusImage.addStyleName("labelButton");
 			break;
 		}
@@ -1031,7 +1035,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 				case IN_PROGRESS:
 				case QUALITY_GATE:
 				case READY:
-
+				case VIEWED:
 					((OrderServiceAsync) getService(Service.ORDER_SERVICE)).hasFileUploaded(orderId, FileType.PNG_LOGO, new AsyncCallback<Boolean>(){
 						public void onFailure(Throwable caught) 
 						{
