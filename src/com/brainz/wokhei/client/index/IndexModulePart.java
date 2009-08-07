@@ -50,7 +50,7 @@ public class IndexModulePart extends AModulePart {
 			Button loginWokhei=new Button(Messages.LOGIN.getString());
 			if(getModule().isSandBox())
 			{
-				loginWokhei.setText(Messages.LOGIN.getString()+" "+Messages.SANDBOX.getString());
+				loginWokhei.setText(Messages.LOGIN_SANDBOX.getString());
 			}
 			else
 			{
