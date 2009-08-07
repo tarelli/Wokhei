@@ -110,6 +110,7 @@ public enum Messages {
 	WATCH_A_VIDEO("Watch a video"),
 	HIDE_VIDEO("Hide video"), 
 	LOGIN("Login to Wokhei"), 
+	LOGIN_SANDBOX("Login to Wokhei Sandbox"),
 	LOGIN_TIP("Click HERE if you don't have a Google Account"),
 	FIRST_STEP_TITLE("Request your logo"),
 	SECOND_STEP_TITLE("Wait 24hrs"),
