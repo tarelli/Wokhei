@@ -195,26 +195,25 @@ public class IndexModulePart extends AModulePart {
 		}
 	}
 
+	// this method extracts static text from the underlying html page. 
+	// this text will be injected in gwt widgets. 
+	// We need it as static text for google to index it.
 	private void HarnessStringsFromHTML() {
-		// this method extracts static text from the underlying html page. 
-		// this text will be injected in gwt widgets. 
-		// We need it as static text for google to index it.
-
 		//steps titles
-		Element firstStepTitle = RootPanel.get("FIRST_STEP_TITLE").getElement();
-		_firstStepTitle = firstStepTitle.getInnerHTML();
-		Element secondStepTitle = RootPanel.get("SECOND_STEP_TITLE").getElement();
-		_secondStepTitle = secondStepTitle.getInnerHTML();
-		Element thirdStepTitle = RootPanel.get("THIRD_STEP_TITLE").getElement();
-		_thirdStepTitle = thirdStepTitle.getInnerHTML();
+		Element element = RootPanel.get("FIRST_STEP_TITLE").getElement();
+		_firstStepTitle = element.getInnerHTML();
+		element = RootPanel.get("SECOND_STEP_TITLE").getElement();
+		_secondStepTitle = element.getInnerHTML();
+		element = RootPanel.get("THIRD_STEP_TITLE").getElement();
+		_thirdStepTitle = element.getInnerHTML();
 
 		// steps descriptions
-		Element firstStep = RootPanel.get("FIRST_STEP").getElement();
-		_firstStep = firstStep.getInnerHTML();
-		Element secondStep = RootPanel.get("SECOND_STEP").getElement();
-		_secondStep = secondStep.getInnerHTML();
-		Element thirdStep = RootPanel.get("THIRD_STEP").getElement();
-		_thirdStep = thirdStep.getInnerHTML();
+		element = RootPanel.get("FIRST_STEP").getElement();
+		_firstStep = element.getInnerHTML();
+		element = RootPanel.get("SECOND_STEP").getElement();
+		_secondStep = element.getInnerHTML();
+		element = RootPanel.get("THIRD_STEP").getElement();
+		_thirdStep = element.getInnerHTML();
 	}
 
 	/* (non-Javadoc)

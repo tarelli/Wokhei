@@ -8,7 +8,7 @@ import java.util.List;
 
 import com.brainz.wokhei.client.common.AModulePart;
 import com.brainz.wokhei.resources.Mails;
-import com.brainz.wokhei.resources.Messages;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.DOM;
@@ -33,12 +33,29 @@ public class AboutModulePart extends AModulePart {
 	final HTML _text = new HTML();
 	final List<Widget> _panels = new ArrayList<Widget>();
 
+	//strings harnessed from html
+	private String _aboutTitle = "";
+	private String _aboutUsTitle = "";
+	private String _aboutUsText = "";
+	private String _whatWokheiTitle = "";
+	private String _whatWokheiText = "";
+	private String _differentWokheiTitle = "";
+	private String _differentWokheiText = "";
+	private String _restaurantTitle = "";
+	private String _restaurantText = "";
+	private String _networkTitle = "";
+	private String _networkText = "";
+	private String _contactUsTitle = "";
+	private String _contactUsText = "";
+
 	/* (non-Javadoc)
 	 * @see com.brainz.wokhei.client.common.AModulePart#loadModulePart()
 	 */
 	@Override
 	public void loadModulePart() 
 	{
+		HarnessStringsFromHTML();
+
 		//MAIN LAYOUT
 		VerticalPanel leftColumnPanel=new VerticalPanel();
 		leftColumnPanel.setWidth("280px");
@@ -60,9 +77,9 @@ public class AboutModulePart extends AModulePart {
 		//RIGHT COLUMN 
 		_title.setStyleName("sectionTitle");
 		_title.addStyleName("fontAR");
-		_title.setText(Messages.ABOUT_MENU_ABOUT_US.getString());
+		_title.setText(_aboutUsTitle);
 		_text.setStyleName("sectionText");
-		_text.setHTML(Messages.ABOUT_MENU_ABOUT_US_TEXT.getString());
+		_text.setHTML(_aboutUsText);
 		Panel contactUsPanel=getContactUsPanel();
 		contactUsPanel.setVisible(false);
 		_panels.add(contactUsPanel);
@@ -72,19 +89,19 @@ public class AboutModulePart extends AModulePart {
 		rightColumnPanel.add(contactUsPanel);
 
 		//LEFT COLUMN
-		Label aboutWokhei = new Label(Messages.ABOUT_TITLE.getString());
+		Label aboutWokhei = new Label(_aboutTitle);
 		aboutWokhei.setStyleName("pageTitle");
 		aboutWokhei.addStyleName("fontAR");
 
 		VerticalPanel menu=new VerticalPanel();
 		menu.setSpacing(10);
 
-		addMenuItem(menu,Messages.ABOUT_MENU_ABOUT_US,Messages.ABOUT_MENU_ABOUT_US_TEXT);
-		addMenuItem(menu,Messages.ABOUT_MENU_WHATWOKHEI,Messages.ABOUT_MENU_WHATWOKHEI_TEXT);
-		addMenuItem(menu,Messages.ABOUT_MENU_DIFFERENTWOKHEI,Messages.ABOUT_MENU_DIFFERENTWOKHEI_TEXT);
-		addMenuItem(menu,Messages.ABOUT_MENU_RESTAURANT,Messages.ABOUT_MENU_RESTAURANT_TEXT);
-		addMenuItem(menu,Messages.ABOUT_MENU_GRAPHICSNETWORK,Messages.ABOUT_MENU_GRAPHICSNETWORK_TEXT);
-		addMenuItem(menu,Messages.ABOUT_MENU_CONTACTUS,contactUsPanel);
+		addMenuItem(menu,_aboutUsTitle,_aboutUsText);
+		addMenuItem(menu,_whatWokheiTitle,_whatWokheiText);
+		addMenuItem(menu,_differentWokheiTitle,_differentWokheiText);
+		addMenuItem(menu,_restaurantTitle,_restaurantText);
+		addMenuItem(menu,_networkTitle,_networkText);
+		addMenuItem(menu,_contactUsTitle,contactUsPanel);
 
 		leftColumnPanel.add(aboutWokhei);
 		leftColumnPanel.add(getWhiteSpace(10));
@@ -93,6 +110,44 @@ public class AboutModulePart extends AModulePart {
 
 		RootPanel.get("aboutBodyPart").add(main);
 		applyCufon();
+	}
+
+	// this method extracts static text from the underlying html page. 
+	// this text will be injected in gwt widgets. 
+	// We need it as static text for google to index it.
+	private void HarnessStringsFromHTML() {
+		Element element = RootPanel.get("ABOUT_TITLE").getElement();
+		_aboutTitle = element.getInnerHTML();
+
+		element = RootPanel.get("ABOUT_MENU_ABOUT_US").getElement();
+		_aboutUsTitle = element.getInnerHTML();
+		element = RootPanel.get("ABOUT_MENU_ABOUT_US_TEXT").getElement();
+		_aboutUsText = element.getInnerHTML();
+
+		element = RootPanel.get("ABOUT_MENU_WHATWOKHEI").getElement();
+		_whatWokheiTitle = element.getInnerHTML();
+		element = RootPanel.get("ABOUT_MENU_WHATWOKHEI_TEXT").getElement();
+		_whatWokheiText = element.getInnerHTML();
+
+		element = RootPanel.get("ABOUT_MENU_DIFFERENTWOKHEI").getElement();
+		_differentWokheiTitle = element.getInnerHTML();
+		element = RootPanel.get("ABOUT_MENU_DIFFERENTWOKHEI_TEXT").getElement();
+		_differentWokheiText = element.getInnerHTML();
+
+		element = RootPanel.get("ABOUT_MENU_RESTAURANT").getElement();
+		_restaurantTitle = element.getInnerHTML();
+		element = RootPanel.get("ABOUT_MENU_RESTAURANT_TEXT").getElement();
+		_restaurantText = element.getInnerHTML();
+
+		element = RootPanel.get("ABOUT_MENU_GRAPHICSNETWORK").getElement();
+		_networkTitle = element.getInnerHTML();
+		element = RootPanel.get("ABOUT_MENU_GRAPHICSNETWORK_TEXT").getElement();
+		_networkText = element.getInnerHTML();
+
+		element = RootPanel.get("ABOUT_MENU_CONTACTUS").getElement();
+		_contactUsTitle = element.getInnerHTML();
+		element = RootPanel.get("ABOUT_MENU_CONTACTUS_TEXT").getElement();
+		_contactUsText = element.getInnerHTML();
 	}
 
 
@@ -144,17 +199,17 @@ public class AboutModulePart extends AModulePart {
 	}
 
 
-	private Label addMenuItem(Panel menu, final Messages title, final Panel panel) 
+	private Label addMenuItem(Panel menu, final String title, final Panel panel) 
 	{
 		Label menuItem=new Label();
 		menuItem.setStyleName("labelButton");
 		menuItem.addStyleName("menuItem");
 
-		menuItem.setText(title.getString());
+		menuItem.setText(title);
 		menuItem.addClickHandler(new ClickHandler(){
 
 			public void onClick(ClickEvent event) {
-				_title.setText(title.getString());
+				_title.setText(title);
 				hideAllPanels();
 				panel.setVisible(true);
 				_text.setVisible(false);
@@ -177,18 +232,18 @@ public class AboutModulePart extends AModulePart {
 	/**
 	 * @return
 	 */
-	private Label addMenuItem(Panel menu, final Messages title, final Messages text) 
+	private Label addMenuItem(Panel menu, final String title, final String text) 
 	{
 		Label menuItem=new Label();
 		menuItem.setStyleName("labelButton");
 		menuItem.addStyleName("menuItem");
 
-		menuItem.setText(title.getString());
+		menuItem.setText(title);
 		menuItem.addClickHandler(new ClickHandler(){
 
 			public void onClick(ClickEvent event) {
-				_title.setText(title.getString());
-				_text.setHTML(text.getString());
+				_title.setText(title);
+				_text.setHTML(text);
 				hideAllPanels();
 				_text.setVisible(true);
 				applyCufon();

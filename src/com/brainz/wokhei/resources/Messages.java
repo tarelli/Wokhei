@@ -114,22 +114,7 @@ public enum Messages {
 	LOGIN_TIP("Click HERE if you don't have a Google Account"),
 	INDEX_COPYRIGHT("\u00a9 2009 Wokhei"), 
 
-	//ABOUT
-	ABOUT_TITLE("About Wokhei"),
-	ABOUT_MENU_ABOUT_US("About Us"),
-	ABOUT_MENU_WHATWOKHEI("What does Wokhei mean?"),
-	ABOUT_MENU_DIFFERENTWOKHEI("What is different about Wokhei?"),
-	ABOUT_MENU_RESTAURANT("Why Wokhei looks like a restaurant?"),
-	ABOUT_MENU_GRAPHICSNETWORK("Who is part of the Wokhei network?"),
-	ABOUT_MENU_CONTACTUS("Contact Us"),
-
-
-	ABOUT_MENU_ABOUT_US_TEXT("Wokhei is a startup founded in February 2009 with one simple goal: gather talented graphic designers from all around the globe and make them part of a unique network to offer a truly unique logo service.<br>Wokhei is now used every day by Companies, Associations and individuals to create their logos with just a few clicks.<br><br>For us at Wokhei art is not something that can be forced: art doesn't just happen at will within the white walls of an office. Because of its very essence art emerges out of different cultures, traditions and individual intuitions.<br> Art can't be standardized - that's why Wokhei is built on a completely distributed structure.<br> Wokhei truly believes in this and all of the Wokhei designers work from their chosen environment: a sunny beach, a rainy forest or - more conventionally - their bedroom or studio.<br> Wokhei simply channels its associates' creativity - with a twist!"),
-	ABOUT_MENU_WHATWOKHEI_TEXT("Wokhei (wok-hei) is a term in referring to the flavour, taste and ''essence'' imparted by a hot wok on the food.<br> When cooked correctly, the essence of the food comes through the flavour and the dish is said to ''have wok hei''.<br> To impart ''wok hei'', the food must be cooked in a wok over a high flame while being stirred and tossed quickly.<br> In practical terms, the flavour imparted by chemical compounds results from caramelization, Maillard reactions, and the partial combustion of oil that comes from charring and searing of the food at very high heat in excess of 200C degrees. Stir fry technique does not requires as much fat as typical western dishes because of a combination of the metal type and the constant shifting of the food during cook time. As diners usually elect their food with chopsticks from a shared serving bowl, any excess oil remains in the bottom of the serving dish rather than being eaten.<br>"),
-	ABOUT_MENU_DIFFERENTWOKHEI_TEXT("Wokhei is not about endless and complicated revision workflows.<br> <br>Wokhei is about entrusting designers with the power of surpising the customer.<br><br>Wokhei is a game of creativity for both the customer who requests the logo and the designer who makes it.<br><br>Wokhei is a fresh and experimental approach to logo design!"),
-	ABOUT_MENU_RESTAURANT_TEXT("Because Wokhei is your favourite place when you're hungry for stir fried logos!<br>The concept behind Wokhei is driven by the metaphor of culinary deli as artistic expression.<br>Customers in need of a tasty logo for their company or product reach out to Wokhei to get a mouthful of stir fried goodness in a reasonable time for a reasonable price, and Wokhei always responds with tasteful bites!"),
-	ABOUT_MENU_GRAPHICSNETWORK_TEXT("Wokhei is a dynamic and increasingly growing network of professional designers evenly distributed throughout the four continents.<br>See the careers section if you wish to gather more information about the unique opportunity of joining the Wokhei network.<br>"),
-	ABOUT_MENU_CONTACTUS_TEXT("Contact Us"),
+	//ABOUT --> moved to HTML
 
 	//FAQ
 	FAQ_TITLE("Frequently Asked Questions"),
