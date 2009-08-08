@@ -9,6 +9,7 @@ import com.brainz.wokhei.client.common.AModulePart;
 import com.brainz.wokhei.resources.Images;
 import com.brainz.wokhei.resources.Messages;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
@@ -26,6 +27,12 @@ import com.google.gwt.user.client.ui.RootPanel;
 public class IndexModulePart extends AModulePart {
 
 
+	private String _firstStepTitle = "";
+	private String _secondStepTitle = "";
+	private String _thirdStepTitle = "";
+	private String _firstStep = "";
+	private String _secondStep = "";
+	private String _thirdStep = "";
 
 	/* (non-Javadoc)
 	 * @see com.brainz.wokhei.client.common.AModulePart#loadModulePart()
@@ -34,13 +41,13 @@ public class IndexModulePart extends AModulePart {
 	public void loadModulePart() 
 	{
 		loadIndex();
-
-
 	}
 
 	private void loadIndex() {
 		if(RootPanel.get("indexBodyPart")!=null)
 		{
+			HarnessStringsFromHTML();
+
 			AbsolutePanel mainPanel= new AbsolutePanel();
 			mainPanel.setSize("900px", "450px");
 
@@ -73,13 +80,12 @@ public class IndexModulePart extends AModulePart {
 			final SWFWidget swfWidget = new SWFWidget("./videos/Wokhei.swf");
 			final Label screenLogos=new Label();
 			final Label logos = new Label();
-			Label firstStepTitle = new Label(Messages.FIRST_STEP_TITLE.getString());
-			Label secondStepTitle = new Label(Messages.SECOND_STEP_TITLE.getString());
-			Label thirdStepTitle = new Label(Messages.THIRD_STEP_TITLE.getString());
-			Label firstStepText = new Label(Messages.FIRST_STEP.getString());
-			Label secondStepText = new Label(Messages.SECOND_STEP.getString());
-			HTML thirdStepText = new HTML(Messages.THIRD_STEP.getString());
-
+			Label firstStepTitle = new Label(_firstStepTitle);
+			Label secondStepTitle = new Label(_secondStepTitle);
+			Label thirdStepTitle = new Label(_thirdStepTitle);
+			HTML firstStepText = new HTML(_firstStep);
+			HTML secondStepText = new HTML(_secondStep);
+			HTML thirdStepText = new HTML(_thirdStep);
 
 			watchVideo.removeStyleName("gwt-Button");
 			watchVideo.setStyleName("login");
@@ -186,8 +192,29 @@ public class IndexModulePart extends AModulePart {
 			RootPanel.get("indexHeaderPanel").add(watchVideo,620,5);
 
 			applyCufon();
-
 		}
+	}
+
+	private void HarnessStringsFromHTML() {
+		// this method extracts static text from the underlying html page. 
+		// this text will be injected in gwt widgets. 
+		// We need it as static text for google to index it.
+
+		//steps titles
+		Element firstStepTitle = RootPanel.get("FIRST_STEP_TITLE").getElement();
+		_firstStepTitle = firstStepTitle.getInnerHTML();
+		Element secondStepTitle = RootPanel.get("SECOND_STEP_TITLE").getElement();
+		_secondStepTitle = secondStepTitle.getInnerHTML();
+		Element thirdStepTitle = RootPanel.get("THIRD_STEP_TITLE").getElement();
+		_thirdStepTitle = thirdStepTitle.getInnerHTML();
+
+		// steps descriptions
+		Element firstStep = RootPanel.get("FIRST_STEP").getElement();
+		_firstStep = firstStep.getInnerHTML();
+		Element secondStep = RootPanel.get("SECOND_STEP").getElement();
+		_secondStep = secondStep.getInnerHTML();
+		Element thirdStep = RootPanel.get("THIRD_STEP").getElement();
+		_thirdStep = thirdStep.getInnerHTML();
 	}
 
 	/* (non-Javadoc)
