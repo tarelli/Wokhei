@@ -73,6 +73,15 @@
 		<url-pattern>/wokhei/changeStatus</url-pattern>
 	</servlet-mapping>
 	
+	<servlet>
+		<servlet-name>serveSitemapServlet</servlet-name>
+		<servlet-class>com.brainz.wokhei.servlet.ServeSiteMapServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>serveSitemapServlet</servlet-name>
+		<url-pattern>/wokhei/serveSitemap</url-pattern>
+	</servlet-mapping>
+	
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
