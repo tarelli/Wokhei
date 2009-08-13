@@ -909,6 +909,16 @@ select {
 	font-size: 13px;
 }
 
+.licenseTable {
+	border-style:solid;
+	border:1px;
+	border-color:#bf007e;
+	padding: 2px;
+	margin-bottom: 6px;
+	font-family: "Trebuchet MS", Verdana, Arial;
+	font-size: 13px;
+}
+
 .timerGreen {
 	color: green;
 }

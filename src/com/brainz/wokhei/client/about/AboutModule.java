@@ -12,7 +12,7 @@ import com.google.gwt.user.client.ui.RootPanel;
  * @author matteocantarelli
  *
  */
-public class AboutModule extends AModule {
+public class AboutModule extends AModule{
 
 
 	/* (non-Javadoc)
