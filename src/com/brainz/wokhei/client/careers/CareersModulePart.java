@@ -136,7 +136,7 @@ public class CareersModulePart extends AModulePart {
 		panel.add(getWhiteSpace(15));
 		panel.add(getSectionText("Responsibilities", "sectionHeader"));
 		panel.add(getWhiteSpace(10));
-		panel.add(getSectionText("Design logo and occasionally oversee logo creation", "sectionText"));
+		panel.add(getSectionText("Design logos and occasionally oversee logos creation", "sectionText"));
 		panel.add(getWhiteSpace(10));
 		panel.add(getSectionText("Creative involvement with logos from beginning to end of the design lifecycle", "sectionText"));
 		panel.add(getWhiteSpace(15));

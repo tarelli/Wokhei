@@ -177,7 +177,7 @@ public class AboutModulePart extends AModulePart implements ValueChangeHandler<S
 
 		table.getCellFormatter().setAlignment(4, 1,HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
 		table.getCellFormatter().setAlignment(4, 2,HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
-		table.setText(4,0,"How much have I to pay?");
+		table.setText(4,0,"Price");
 		table.setText(4, 1, "FREE");
 		table.setText(4, 2, "105 EUR");
 
