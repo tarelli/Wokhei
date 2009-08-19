@@ -8,7 +8,9 @@ import com.brainz.wokhei.client.common.OrderServiceAsync;
 import com.brainz.wokhei.client.common.Service;
 import com.brainz.wokhei.client.common.UtilityService;
 import com.brainz.wokhei.client.common.UtilityServiceAsync;
+import com.brainz.wokhei.resources.Mails;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootPanel;
 
 public class AdminModule extends AModule {
@@ -24,8 +26,34 @@ public class AdminModule extends AModule {
 		}
 	}
 
+
 	@Override
 	public void loadModule() {
+		if(
+				(getLoginInfo().isLoggedIn() && 
+						(
+								(getLoginInfo().getEmailAddress().equals(Mails.MATTEO.getMailAddress())) ||
+								(getLoginInfo().getEmailAddress().equals(Mails.GIOVANNI.getMailAddress())) || 
+								(getLoginInfo().getEmailAddress().equals(Mails.GIOVANNI_GMAIL.getMailAddress())) || 
+								(getLoginInfo().getEmailAddress().equals(Mails.MATTEO_GMAIL.getMailAddress())) || 
+								(getLoginInfo().isAdmin()))
+				)
+		)
+		{
+			loadAdmin();
+		} else 
+		{
+			Window.open(GWT.getHostPageBaseURL()+"index.html", "_self", "");				
+		}
+
+
+	}
+
+	/**
+	 * 
+	 */
+	private void loadAdmin()
+	{
 		// Initialize Order Service
 		OrderServiceAsync orderService = GWT.create(OrderService.class);
 		UtilityServiceAsync utilityService = GWT.create(UtilityService.class);
