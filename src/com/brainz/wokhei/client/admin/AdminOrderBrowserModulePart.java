@@ -910,7 +910,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 			{
 				timerLabel.addStyleName("timerOrange");
 			}
-			else if(missingTime>=0f)
+			else 
 			{
 				timerLabel.addStyleName("timerRed");
 			}
