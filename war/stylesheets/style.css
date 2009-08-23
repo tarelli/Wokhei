@@ -876,6 +876,25 @@ select {
 	top: 20px;
 }
 
+
+.adminNameBox {
+	border:none;
+	background-color:#f2bc4a;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	padding-top: 1px;
+	padding-right: 0px;
+	padding-bottom: 1px;
+	padding-left: 2px;
+	height: 18px;
+	font-family: "Trebuchet MS";
+	font-size: 13px;
+	color: #000000;
+	font-weight: bold;
+}
+
 .adminPopup {
 	z-index: 4;
 	background-color: #f2bc4a;

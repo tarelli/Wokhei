@@ -1153,7 +1153,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 		name.setText(text);
 		name.setReadOnly(true);
-		name.addStyleName("textBox");
+		name.addStyleName("adminNameBox");
 
 		name.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
