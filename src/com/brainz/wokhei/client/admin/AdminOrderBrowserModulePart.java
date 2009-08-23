@@ -491,12 +491,17 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	 * @param username
 	 * @return
 	 */
-	private String processUsername(String username)
+	private Label getUsernameLabel(String username)
 	{
 		if(username.contains("@"))
-			return (username.substring(0, username.indexOf('@')));
-		else
-			return username;
+			username= username.substring(0, username.indexOf('@'));
+
+		Label usernameLbl=new Label(username);
+
+		usernameLbl.setStyleName("adminLogoName");
+		usernameLbl.addStyleName("fontAR");
+
+		return usernameLbl;
 	}
 
 	/**
@@ -524,7 +529,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 						final int frow = row +1 ;
 						_ordersFlexTable.getCellFormatter().setAlignment(row, Columns.ID.ordinal(),HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
 						_ordersFlexTable.setWidget(row, Columns.ID.ordinal(), getProgressiveLabeL(String.valueOf(order.getProgressive()), order.getId()));
-						_ordersFlexTable.setText(row, Columns.USER.ordinal(), processUsername(order.getCustomerEmail()));
+						_ordersFlexTable.setWidget(row, Columns.USER.ordinal(), getUsernameLabel(order.getCustomerEmail()));
 						_ordersFlexTable.setWidget(row,Columns.LOGO_TEXT.ordinal(), getNameLabel( order.getText()));
 						String list=Arrays.asList(order.getTags()).toString().replace(",","");
 						_ordersFlexTable.setWidget(row,Columns.TAGS.ordinal(),  getTagsLabel(list.substring(1, list.length()-1)));
@@ -1140,10 +1145,23 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	 */
 	private Widget getNameLabel(String text) 
 	{
-		Label nameLbl=new Label(text);
-		nameLbl.setStyleName("adminLogoName");
-		nameLbl.addStyleName("fontAR");
-		return nameLbl;
+		// TODO:
+		// questa roba e' da cambiare con una label che sul rightclik
+		// fa vedere un pannellino context menu che permette di copiare
+		// il contentuto della label nella clipboard
+		final TextBox name=new TextBox();
+
+		name.setText(text);
+		name.setReadOnly(true);
+		name.addStyleName("textBox");
+
+		name.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				name.selectAll();
+			}
+		});
+
+		return name;
 	}
 
 	/**
