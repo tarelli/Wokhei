@@ -123,8 +123,8 @@ public enum Messages {
 	CAREERS_GRAPHIC_TITLE("Logo graphic designer"),  
 
 	// Enquiry for archived logo
-	ENQUIRY_ARCHIVED_QUESTION("Missed your chance to buy this logo?"),
-	ENQUIRY_ARCHIVED_ACTION("Click HERE!"),
+	ENQUIRY_ARCHIVED_QUESTION("Want to buy this archived logo?"),
+	ENQUIRY_ARCHIVED_ACTION("Click HERE to send an enquiry!"),
 	ENQUIRY_MADE("Your enquiry has been sent - we'll be in contact soon."),
 	ENQUIRY_EMAIL_SUBJECT(" wants to buy an archived logo"),
 	ENQUIRY_EMAIL_BODY("Happy days! Looks like this guy wants to buy an archived logo:\n"),
