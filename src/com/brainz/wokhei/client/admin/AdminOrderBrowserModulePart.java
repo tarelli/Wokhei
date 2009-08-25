@@ -17,6 +17,7 @@ import com.brainz.wokhei.client.common.Service;
 import com.brainz.wokhei.client.common.UtilityServiceAsync;
 import com.brainz.wokhei.resources.Images;
 import com.brainz.wokhei.resources.Messages;
+import com.brainz.wokhei.shared.Colour;
 import com.brainz.wokhei.shared.DateDifferenceCalculator;
 import com.brainz.wokhei.shared.FileType;
 import com.brainz.wokhei.shared.OrderDTO;
@@ -533,7 +534,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 						_ordersFlexTable.setWidget(row,Columns.LOGO_TEXT.ordinal(), getNameLabel( order.getText()));
 						String list=Arrays.asList(order.getTags()).toString().replace(",","");
 						_ordersFlexTable.setWidget(row,Columns.TAGS.ordinal(),  getTagsLabel(list.substring(1, list.length()-1)));
-						_ordersFlexTable.setWidget(row,Columns.COLOUR.ordinal(),  getColourPanel(order.getColour().toString()));
+						_ordersFlexTable.setWidget(row,Columns.COLOUR.ordinal(),  getColourPanel(order.getColour()));
 						DateTimeFormat fmt = DateTimeFormat.getFormat("dd.MM.yy");
 						_ordersFlexTable.setText(row,Columns.DATE.ordinal(),  fmt.format(order.getDate()));
 						_ordersFlexTable.getCellFormatter().setAlignment(row, Columns.STATUS.ordinal(),HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
@@ -991,19 +992,26 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	}
 
 	/**
-	 * @param substring
+	 * @param colour
 	 * @return
 	 */
-	private Widget getColourPanel(String substring) 
+	private Widget getColourPanel(Colour colour) 
 	{
 		HorizontalPanel cPanel=new HorizontalPanel();
-		Label pantone=new Label(substring.replace("PANTONE",""));
-		Label colour=new Label();
-		colour.setStyleName("colour"+substring);
-		colour.setHeight("20px");
-		colour.setWidth("20px");
+		Label pantone=new Label(colour.toString().replace("PANTONE",""));
+		Label colourLbl=new Label();
+		colourLbl.setStyleName("colour"+colour.toString());
+		colourLbl.setHeight("20px");
+		colourLbl.setWidth("20px");
 
-		cPanel.add(colour);
+		if(colour.equals(Colour.SurpriseMe))
+		{
+			colourLbl.setText("?");
+			colourLbl.addStyleName("fontAR");
+			colourLbl.addStyleName("colourSurpriseMeHomeAdmin");
+		}
+
+		cPanel.add(colourLbl);
 		cPanel.add(getNewWhiteSpace());
 		cPanel.add(pantone);
 		return cPanel;

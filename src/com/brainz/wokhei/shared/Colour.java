@@ -15,7 +15,7 @@ public enum Colour {
 	PANTONEOrange021("PANTONE\u00ae Orange 021"), 
 	PANTONE456("PANTONE\u00ae 456"),
 	PANTONE186("PANTONE\u00ae 186"),
-	PANTONEWhite("PANTONE\u00ae White"), 
+	SurpriseMe("SURPRISE ME!"), 
 	PANTONEWarmGray8("PANTONE\u00ae Warm Gray"),
 	PANTONE485("PANTONE\u00ae 485"),
 	PANTONE357("PANTONE\u00ae 357"), 

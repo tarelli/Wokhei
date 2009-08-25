@@ -332,7 +332,7 @@ public class OrderSubmitterModulePart extends AModulePart
 			_colourLabelPanel.add(getNewWhiteSpace(5));
 			_colourLabelPanel.add(_colourLabel);
 
-			_colorSubPanel.setVerticalAlignment(HorizontalPanel.ALIGN_BOTTOM);
+			_colorSubPanel.setVerticalAlignment(HorizontalPanel.ALIGN_MIDDLE);
 			_colorSubPanel.setHorizontalAlignment(HorizontalPanel.ALIGN_LEFT);
 			_colorSubPanel.add(_colourLabelPanel);
 			_colorSubPanel.add(getNewWhiteSpace(5));
@@ -582,6 +582,12 @@ public class OrderSubmitterModulePart extends AModulePart
 			else if(i<NUM_COLOURS)
 				_thirdRow.add(_colours[i]);
 		}
+
+		//Lucky Number Seven
+		_colours[7].setText("?");
+		_colours[7].addStyleName("fontAR");
+		_colours[7].addStyleName("colourSurpriseMeHomeSubmission");
+
 		_firstRow.add(getNewWhiteSpace(26));
 		_firstRow.add(_colourOkImage);
 

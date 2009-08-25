@@ -19,7 +19,7 @@ public enum Messages {
 	LOGO_NAME_ERROR_NONE("You need to specify a product name!"),
 	LOGO_NAME_ERROR_TOOLONG("Sorry the product name is too long!"),
 	LOGO_COLOUR_LBL("Main colour"),
-	LOGO_COLOUR_HELP_MESSAGE("This will be the main colour of your logo. Note that the logo might have more secondary colours or shades of the main colour you pick."),
+	LOGO_COLOUR_HELP_MESSAGE("This will be the main colour of your logo. Note that the logo might have more colours or shades of the main colour you pick. If you have no colour preference or if you want to exploit at best Wokhei's creativity pick up the question mark: we'll surprise you!"),
 	LOGO_TAGS_TXTBOX("tags to describe your business or product"),
 	LOGO_COLOUR_EG_LBL("Logo primary colour"),
 	LOGO_TAGS_LBL("Up to 5 Tags"),

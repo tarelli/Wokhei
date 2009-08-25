@@ -13,6 +13,7 @@ import com.brainz.wokhei.resources.HtmlLicenses;
 import com.brainz.wokhei.resources.Images;
 import com.brainz.wokhei.resources.Messages;
 import com.brainz.wokhei.resources.PayPalStrings;
+import com.brainz.wokhei.shared.Colour;
 import com.brainz.wokhei.shared.FileType;
 import com.brainz.wokhei.shared.OrderDTO;
 import com.brainz.wokhei.shared.OrderDTOUtils;
@@ -394,6 +395,16 @@ public class OrderBrowserModulePart extends AModulePart{
 			String list=Arrays.asList(_currentOrder.getTags()).toString().replace(",","");
 			DateTimeFormat fmt = DateTimeFormat.getFormat("EEE MMM yy k:m");
 			colour.setStyleName("colour"+_currentOrder.getColour().toString());
+			if(_currentOrder.getColour().equals(Colour.SurpriseMe))
+			{
+				colour.setText("?");
+				colour.addStyleName("fontAR");
+				colour.addStyleName("colourSurpriseMeHomeBrowsing");
+			}
+			else
+			{
+				colour.setText("");
+			}
 			colourLabel.setText(_currentOrder.getColour().getName()+" ");
 			orderTagsLabel.setText(list.substring(1, list.length()-1));
 			orderDateLabel.setText(fmt.format(_currentOrder.getDate()));

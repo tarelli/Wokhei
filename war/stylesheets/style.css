@@ -861,8 +861,23 @@ select {
 	background-color: #ff4415;
 }
 
-.colourPANTONEWhite {
+.colourSurpriseMe {
 	background-color: #ffffff;
+	text-align: center;	
+	vertical-align: middle;
+	color: #bf007e;
+}
+
+.colourSurpriseMeHomeSubmission {
+	font-size: 26px;
+}
+
+.colourSurpriseMeHomeBrowsing {
+	font-size: 10px;
+}
+
+.colourSurpriseMeHomeAdmin {
+	font-size: 18px;
 }
 
 .colourPANTONE7449 {
@@ -876,10 +891,9 @@ select {
 	top: 20px;
 }
 
-
 .adminNameBox {
-	border:none;
-	background-color:#f2bc4a;
+	border: none;
+	background-color: #f2bc4a;
 	margin-top: 0px;
 	margin-right: 0px;
 	margin-bottom: 0px;
