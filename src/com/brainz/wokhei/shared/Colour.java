@@ -31,7 +31,8 @@ public enum Colour {
 	PANTONE159("PANTONE\u00ae 159"), 
 	PANTONEWarmRed("PANTONE\u00ae Warm Red"), 
 	PANTONEPurple("PANTONE\u00ae Purple"), 
-	PANTONE7449("PANTONE\u00ae 7449")
+	PANTONE7449("PANTONE\u00ae 7449"),
+	PANTONEWhite("PANTONE\u00ae White"),
 	;
 
 	private String _name;

@@ -105,7 +105,7 @@ public class OrderBrowserModulePart extends AModulePart{
 	private final Label _forgotToBuyLbl = new Label(Messages.ENQUIRY_ARCHIVED_QUESTION.getString());
 	private final Label _sendEnquiryLblBtn = new Label(Messages.ENQUIRY_ARCHIVED_ACTION.getString()); 
 	private final Label _enquiryFeedback = new Label("");
-	private final HorizontalPanel _enquiryPanel = new HorizontalPanel();
+	private final VerticalPanel _enquiryPanel = new VerticalPanel();
 
 	private AsyncCallback<Long> _setOrderStatusCallback = null;
 
@@ -201,7 +201,8 @@ public class OrderBrowserModulePart extends AModulePart{
 			ordersPanel.add(orderDateLabel);			
 
 			_enquiryPanel.add(_forgotToBuyLbl);
-			_enquiryPanel.add(_sendEnquiryLblBtn);	
+			_enquiryPanel.add(_sendEnquiryLblBtn);
+			_enquiryPanel.add(_enquiryFeedback);
 			_enquiryPanel.setSpacing(5);
 
 			mainPanel.add(orderImage, 154, 0);
@@ -214,7 +215,6 @@ public class OrderBrowserModulePart extends AModulePart{
 			mainPanel.add(_buyNowImage, 220, 370);
 			mainPanel.add(downloadPanelContainer,165,330);
 			mainPanel.add(_enquiryPanel, 165, 380);
-			mainPanel.add(_enquiryFeedback, 170, 400);
 			mainPanel.add(infos,190,20);
 
 			RootPanel.get("ordersBrowser").add(getPanel());
@@ -228,6 +228,7 @@ public class OrderBrowserModulePart extends AModulePart{
 
 		_sendEnquiryLblBtn.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
+				_sendEnquiryLblBtn.setVisible(false);
 				((OrderServiceAsync)getService(Service.ORDER_SERVICE)).sendEnquiry(_currentOrder, _sendEnquiryCallback);
 			}
 		});
@@ -289,9 +290,13 @@ public class OrderBrowserModulePart extends AModulePart{
 
 			public void onSuccess(Boolean result) {
 				if(result)
+				{
 					_enquiryFeedback.setText(Messages.ENQUIRY_FEEDBACK_OK.getString());
+				}
 				else
+				{
 					_enquiryFeedback.setText(Messages.ENQUIRY_FEEDBACK_KO.getString());
+				}
 			}
 
 			public void onFailure(Throwable caught) {
