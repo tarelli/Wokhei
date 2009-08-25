@@ -131,9 +131,7 @@ public enum Messages {
 	ENQUIRY_FEEDBACK_OK("Enquiry submitted. We'll be in contact soon!"),
 	ENQUIRY_FEEDBACK_KO("Something went terribly wrong and your enquiry was not submitted. Try again!"),
 
-	//EXTRA
-	EXTRAORDINARY_NOTIFICATION("Urgent notification from Wokhei"),
-	SUCCHIA_MELO("AZIZ AZIZA WHAT GOT INTO YOU?? I DONT KNOW, IM NOT DOING IT!"), 
+	//EXTRA 
 	MUST_ACCEPT_LICENSE("You need to accept terms and conditions first!"),
 	ACCEPT_CONDITIONS("I accept the terms and conditions"), 
 	LESS_THAN_HOUR("less than an hour "),

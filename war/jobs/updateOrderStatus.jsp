@@ -153,7 +153,6 @@
 	    				
 	    				List<String> notifyRecipients = new ArrayList<String>();
 					    recipients.add(Mails.SIMONE.getMailAddress());
-					    recipients.add(Mails.GIOVANNI.getMailAddress());
 					    recipients.add(Mails.ADMIN.getMailAddress());
 					    
 						EmailSender.sendEmail(Mails.YOURLOGO.getMailAddress(), notifyRecipients, Messages.NOTIFY_QUALITY_GATE_SUBJ.getString(), msg);  	
@@ -230,8 +229,7 @@
 
     List<String> recipients = new ArrayList<String>();
     // quasi tutti gli apostoli ed evangelisti mali
-    recipients.add(Mails.GIOVANNI.getMailAddress());
-    recipients.add(Mails.MATTEO.getMailAddress());
+    recipients.add(Mails.ADMIN.getMailAddress());
     if((Integer)updatedOrders.size() > 0)
     recipients.add(Mails.SIMONE.getMailAddress());
     
