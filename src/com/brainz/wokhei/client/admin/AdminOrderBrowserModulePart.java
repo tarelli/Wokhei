@@ -492,17 +492,24 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	 * @param username
 	 * @return
 	 */
-	private Label getUsernameLabel(String username)
+	private TextBox getUsernameWidget(String username)
 	{
 		if(username.contains("@"))
 			username= username.substring(0, username.indexOf('@'));
 
-		Label usernameLbl=new Label(username);
+		final TextBox name=new TextBox();
 
-		usernameLbl.setStyleName("adminLogoName");
-		usernameLbl.addStyleName("fontAR");
+		name.setText(username);
+		name.setReadOnly(true);
+		name.addStyleName("adminNameBox");
 
-		return usernameLbl;
+		name.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				name.selectAll();
+			}
+		});
+
+		return name;
 	}
 
 	/**
@@ -530,10 +537,10 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 						final int frow = row +1 ;
 						_ordersFlexTable.getCellFormatter().setAlignment(row, Columns.ID.ordinal(),HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
 						_ordersFlexTable.setWidget(row, Columns.ID.ordinal(), getProgressiveLabeL(String.valueOf(order.getProgressive()), order.getId()));
-						_ordersFlexTable.setWidget(row, Columns.USER.ordinal(), getUsernameLabel(order.getCustomerEmail()));
-						_ordersFlexTable.setWidget(row,Columns.LOGO_TEXT.ordinal(), getNameLabel( order.getText()));
+						_ordersFlexTable.setWidget(row, Columns.USER.ordinal(), getUsernameWidget(order.getCustomerEmail()));
+						_ordersFlexTable.setWidget(row,Columns.LOGO_TEXT.ordinal(), getNameWidget( order.getText()));
 						String list=Arrays.asList(order.getTags()).toString().replace(",","");
-						_ordersFlexTable.setWidget(row,Columns.TAGS.ordinal(),  getTagsLabel(list.substring(1, list.length()-1)));
+						_ordersFlexTable.setWidget(row,Columns.TAGS.ordinal(),  getTagsWidget(list.substring(1, list.length()-1)));
 						_ordersFlexTable.setWidget(row,Columns.COLOUR.ordinal(),  getColourPanel(order.getColour()));
 						DateTimeFormat fmt = DateTimeFormat.getFormat("dd.MM.yy");
 						_ordersFlexTable.setText(row,Columns.DATE.ordinal(),  fmt.format(order.getDate()));
@@ -1074,11 +1081,20 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	 * @param substring
 	 * @return
 	 */
-	private Widget getTagsLabel(String substring) 
+	private Widget getTagsWidget(String substring) 
 	{
-		Label tags=new Label(substring);
-		tags.setStyleName("adminTags");
-		tags.addStyleName("fontAR");
+		final TextBox tags =new TextBox();
+
+		tags.setText(substring);
+		tags.setReadOnly(true);
+		tags.addStyleName("adminNameBox");
+
+		tags.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				tags.selectAll();
+			}
+		});
+
 		return tags;
 	}
 
@@ -1151,12 +1167,8 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	 * @param text
 	 * @return
 	 */
-	private Widget getNameLabel(String text) 
+	private Widget getNameWidget(String text) 
 	{
-		// TODO:
-		// questa roba e' da cambiare con una label che sul rightclik
-		// fa vedere un pannellino context menu che permette di copiare
-		// il contentuto della label nella clipboard
 		final TextBox name=new TextBox();
 
 		name.setText(text);
