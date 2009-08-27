@@ -91,7 +91,7 @@ div#page-wrap {
 .bodytileAdmin {
 	position: relative;
 	background: URL("../images/bodytile.png");
-	min-height: 650px;
+	min-height: 700px;
 	z-index: 0;
 }
 
@@ -898,18 +898,27 @@ select {
 .adminNameBox {
 	border: none;
 	background-color: #f2bc4a;
-	margin-top: 0px;
-	margin-right: 0px;
-	margin-bottom: 0px;
-	margin-left: 0px;
-	padding-top: 1px;
-	padding-right: 0px;
-	padding-bottom: 1px;
-	padding-left: 2px;
-	height: 18px;
 	font-family: "Trebuchet MS";
 	font-size: 13px;
 	color: #000000;
+	font-weight: bold;
+}
+
+.adminCopyBox {
+	border: none;
+	background-color: #f3d3e6;
+	font-family: "Trebuchet MS";
+	font-size: 13px;
+	color: #000000;
+	font-weight: bold;
+}
+
+.adminUsernameBox {
+	border: none;
+	background-color: #f3d3e6;
+	font-family: "Trebuchet MS";
+	font-size: 13px;
+	color: #bf007e;
 	font-weight: bold;
 }
 

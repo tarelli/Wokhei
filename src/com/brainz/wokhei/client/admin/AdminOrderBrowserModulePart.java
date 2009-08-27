@@ -492,16 +492,18 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	 * @param username
 	 * @return
 	 */
-	private TextBox getUsernameWidget(String username)
+	private AutoResizeTextArea getUsernameWidget(String username)
 	{
 		if(username.contains("@"))
 			username= username.substring(0, username.indexOf('@'));
 
-		final TextBox name=new TextBox();
+		final AutoResizeTextArea name=new AutoResizeTextArea();
 
 		name.setText(username);
 		name.setReadOnly(true);
-		name.addStyleName("adminNameBox");
+		name.setWidth("100px");
+		name.setHeight("40px");
+		name.setStyleName("adminUsernameBox");
 
 		name.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -1083,14 +1085,17 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	 */
 	private Widget getTagsWidget(String substring) 
 	{
-		final TextBox tags =new TextBox();
+		final AutoResizeTextArea tags =new AutoResizeTextArea();
 
+		substring=substring.replace("#", "\n#").trim();
 		tags.setText(substring);
 		tags.setReadOnly(true);
-		tags.addStyleName("adminNameBox");
+		tags.setWidth("150px");
+		tags.setStyleName("adminCopyBox");
 
 		tags.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
+
 				tags.selectAll();
 			}
 		});
@@ -1169,11 +1174,13 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	 */
 	private Widget getNameWidget(String text) 
 	{
-		final TextBox name=new TextBox();
+		final AutoResizeTextArea name=new AutoResizeTextArea();
 
 		name.setText(text);
 		name.setReadOnly(true);
-		name.addStyleName("adminNameBox");
+		name.setStyleName("adminNameBox");
+		name.setWidth("150px");
+		name.setHeight("40px");
 
 		name.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
