@@ -20,6 +20,7 @@ public abstract class AModule implements EntryPoint {
 
 	private Date _timeStamp=null;
 
+	private boolean _isKillSwitch=false;
 
 	private int _responsesReceived=0;
 
@@ -71,6 +72,20 @@ public abstract class AModule implements EntryPoint {
 
 				responseReceived();
 			}});
+
+		OrderServiceAsync orderService=GWT.create(OrderService.class);
+		orderService.getOrderKillswitch(new AsyncCallback<Boolean>() {
+
+			public void onSuccess(Boolean result) {
+				_isKillSwitch = result;
+				responseReceived();
+			}
+
+			public void onFailure(Throwable caught) {
+				//TODO - do something in case of failure
+			}
+		}
+		);
 	}
 
 	/**
@@ -78,15 +93,19 @@ public abstract class AModule implements EntryPoint {
 	 */
 	private synchronized void responseReceived() 
 	{
-		if(++_responsesReceived==3)
+		if(++_responsesReceived==4)
 		{
-			//the module will be loaded only after both response is received
+			//the module will be loaded only after all the responses are received
 			loadModule();
 		}
 	}
 
 	public Boolean isSandBox() {
 		return _isSandBox;
+	}
+
+	public Boolean isKillSwitchOn() {
+		return _isKillSwitch;
 	}
 
 	/**

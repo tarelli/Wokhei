@@ -127,9 +127,6 @@ public class OrderSubmitterModulePart extends AModulePart
 	// callbacks
 	private AsyncCallback<List<OrderDTO>> _getOrdersCallback = null;
 	private AsyncCallback<Boolean> _submitOrderCallback = null;
-	private AsyncCallback<Boolean> _getOrderKillswitchCallback = null;
-
-	private boolean _orderKillswitch = false;
 
 	private OrderDTO _submittedOrder = null;
 
@@ -147,238 +144,235 @@ public class OrderSubmitterModulePart extends AModulePart
 		{
 			hookUpCallbacks();
 
-			// get order kill-switch value
-			getOrderKillSwitchValue();
-
-			_mainPanel.setSpacing(10);
-
-			// set everything to invisible
-			setNameModified(false);
-			setTagsModified(false);
-			setColourModified(false);
-			_mainPanel.setVisible(false);
-
-			_requestLabel.addStyleName("h3"); //$NON-NLS-1$
-			_requestLabel.addStyleName("fontAR");
-			_mainPanel.add(_requestLabel );
-
-			_logoTextLabel.addStyleName("label"); //$NON-NLS-1$
-			_logoTextLabel.addStyleName("fontAR"); 
-
-			_logoHintLabel.setStyleName("hintLabel"); //$NON-NLS-1$
-
-			_logoTextBox.setText(Messages.LOGO_NAME_TXTBOX.getString()); //$NON-NLS-1$
-			_logoTextBox.setWidth("290px"); //$NON-NLS-1$
-			_logoTextBox.setStyleName("textBox"); //$NON-NLS-1$
-			_logoTextBox.addStyleName("fontAR");
-			_logoTextBox.addBlurHandler(new BlurHandler(){
-				public void onBlur(BlurEvent event) {
-					setNameModified(true);
-					checkErrors();
-				}
-			});
-
-			_logoTextBox.addClickHandler(new ClickHandler(){
-				public void onClick(ClickEvent event) {
-					if(_logoTextBox.getText().equals(Messages.LOGO_NAME_TXTBOX.getString())) //$NON-NLS-1$
-					{
-						_logoTextBox.selectAll();
-					}
-				}});
-
-			_logoTextBoxPanel.add(_logoTextBox);
-			_logoTextBoxPanel.add(getNewWhiteSpace(10));
-			_logoTextBoxPanel.add(_logoOkImage);
-			_logoTagsLabel.addStyleName("label"); //$NON-NLS-1$
-			_logoTagsLabel.addStyleName("fontAR");
-
-			_tagsHintLabel.addStyleName("hintLabel"); //$NON-NLS-1$
-
-			// prepare my motherfuckin' logoText vertical panel
-			_logoTextPanel.setSpacing(2);
-
-			_logoTextLabelPanel.setVerticalAlignment(VerticalPanel.ALIGN_TOP);
-			_logoTextLabelPanel.add(_logoTextHelpMark);
-			_logoTextLabelPanel.add(getNewWhiteSpace(10));
-			_logoTextLabelPanel.add(_logoTextLabel);
-
-			_logoTextPanel.add(_logoTextLabelPanel);
-			_logoTextPanel.add(_logoHintLabel);
-			_logoTextPanel.add(_logoTextBoxPanel);
-			_logoTextPanel.add(_logoErrorLabel);
-
-
-			// prepare my cock-fuckerin' tags vertical panel
-
-			for(TagsOracle tag:TagsOracle.values())
+			if(!getModule().isKillSwitchOn())
 			{
-				_logoTagsOracle.add(tag.getString());
-				_logoTagsOracle.add(tag.getHashedString());
-			}
+				_mainPanel.setSpacing(10);
 
-			_logoTagsBox.setWidth("290px"); //$NON-NLS-1$
-			_logoTagsBox.setText(Messages.LOGO_TAGS_TXTBOX.getString()); //$NON-NLS-1$
-			_logoTagsBox.setStyleName("textBox"); //$NON-NLS-1$
-			_logoTagsBox.setLimit(15);
-			_logoTagsBox.getTextBox().addClickHandler(new ClickHandler(){
-				public void onClick(ClickEvent event) {
-					if(((MultipleTextBox)_logoTagsBox.getTextBox()).getWholeText().equals(Messages.LOGO_TAGS_TXTBOX.getString())) //$NON-NLS-1$
-					{
-						_logoTagsBox.getTextBox().selectAll();
+				// set everything to invisible
+				setNameModified(false);
+				setTagsModified(false);
+				setColourModified(false);
+				_mainPanel.setVisible(false);
+
+				_requestLabel.addStyleName("h3"); //$NON-NLS-1$
+				_requestLabel.addStyleName("fontAR");
+				_mainPanel.add(_requestLabel );
+
+				_logoTextLabel.addStyleName("label"); //$NON-NLS-1$
+				_logoTextLabel.addStyleName("fontAR"); 
+
+				_logoHintLabel.setStyleName("hintLabel"); //$NON-NLS-1$
+
+				_logoTextBox.setText(Messages.LOGO_NAME_TXTBOX.getString()); //$NON-NLS-1$
+				_logoTextBox.setWidth("290px"); //$NON-NLS-1$
+				_logoTextBox.setStyleName("textBox"); //$NON-NLS-1$
+				_logoTextBox.addStyleName("fontAR");
+				_logoTextBox.addBlurHandler(new BlurHandler(){
+					public void onBlur(BlurEvent event) {
+						setNameModified(true);
+						checkErrors();
 					}
-				}});
+				});
 
-			_logoTagsBox.getTextBox().addBlurHandler(new BlurHandler(){
-				public void onBlur(BlurEvent event) {
-					setTagsModified(true);
-					checkErrors();
+				_logoTextBox.addClickHandler(new ClickHandler(){
+					public void onClick(ClickEvent event) {
+						if(_logoTextBox.getText().equals(Messages.LOGO_NAME_TXTBOX.getString())) //$NON-NLS-1$
+						{
+							_logoTextBox.selectAll();
+						}
+					}});
+
+				_logoTextBoxPanel.add(_logoTextBox);
+				_logoTextBoxPanel.add(getNewWhiteSpace(10));
+				_logoTextBoxPanel.add(_logoOkImage);
+				_logoTagsLabel.addStyleName("label"); //$NON-NLS-1$
+				_logoTagsLabel.addStyleName("fontAR");
+
+				_tagsHintLabel.addStyleName("hintLabel"); //$NON-NLS-1$
+
+				// prepare my motherfuckin' logoText vertical panel
+				_logoTextPanel.setSpacing(2);
+
+				_logoTextLabelPanel.setVerticalAlignment(VerticalPanel.ALIGN_TOP);
+				_logoTextLabelPanel.add(_logoTextHelpMark);
+				_logoTextLabelPanel.add(getNewWhiteSpace(10));
+				_logoTextLabelPanel.add(_logoTextLabel);
+
+				_logoTextPanel.add(_logoTextLabelPanel);
+				_logoTextPanel.add(_logoHintLabel);
+				_logoTextPanel.add(_logoTextBoxPanel);
+				_logoTextPanel.add(_logoErrorLabel);
+
+
+				// prepare my cock-fuckerin' tags vertical panel
+
+				for(TagsOracle tag:TagsOracle.values())
+				{
+					_logoTagsOracle.add(tag.getString());
+					_logoTagsOracle.add(tag.getHashedString());
 				}
-			});
 
-			_logoTagsBoxPanel.add(_logoTagsBox);
-			_logoTagsBoxPanel.add(getNewWhiteSpace(10));
-			_logoTagsBoxPanel.add(_tagsOkImage);
+				_logoTagsBox.setWidth("290px"); //$NON-NLS-1$
+				_logoTagsBox.setText(Messages.LOGO_TAGS_TXTBOX.getString()); //$NON-NLS-1$
+				_logoTagsBox.setStyleName("textBox"); //$NON-NLS-1$
+				_logoTagsBox.setLimit(15);
+				_logoTagsBox.getTextBox().addClickHandler(new ClickHandler(){
+					public void onClick(ClickEvent event) {
+						if(((MultipleTextBox)_logoTagsBox.getTextBox()).getWholeText().equals(Messages.LOGO_TAGS_TXTBOX.getString())) //$NON-NLS-1$
+						{
+							_logoTagsBox.getTextBox().selectAll();
+						}
+					}});
 
-			_logoTagsPanel.setSpacing(2);
-
-
-			_logoTagsLabelPanel.add(_logoTagsHelpMark);
-			_logoTagsLabelPanel.add(getNewWhiteSpace(5));
-			_logoTagsLabelPanel.add(_logoTagsLabel);
-
-			_logoTagsPanel.add(_logoTagsLabelPanel);
-			_logoTagsPanel.add(_tagsHintLabel);
-			_logoTagsPanel.add(_logoTagsBoxPanel);
-			_logoTagsPanel.add(_tagsErrorLabel);
-
-			//setup the help popup for the tags
-			_logoTextHelpPopup.setStyleName("helpPopup");
-			_logoTagsHelpPopup.setStyleName("helpPopup");
-			_logoColourHelpPopup.setStyleName("helpPopup");
-
-			_logoTextHelpMark.addStyleName("infoButton");
-			_logoTextHelpMark.addStyleName("labelButton");
-			_logoTagsHelpMark.addStyleName("infoButton");
-			_logoTagsHelpMark.addStyleName("labelButton");
-			_logoColourHelpMark.addStyleName("infoButton");
-			_logoColourHelpMark.addStyleName("labelButton");
-
-			_logoTextHelpPopup.setWidth("220px");
-			_logoTagsHelpPopup.setWidth("220px");
-			_logoColourHelpPopup.setWidth("220px");
-
-			_logoTextHelpMark.addClickHandler(new ClickHandler(){
-				public void onClick(ClickEvent event) {	
-					if(!_logoTextHelpPopup.isShowing())
-					{
-						_logoTextHelpPopup.showRelativeTo(_logoTextLabel);
-						_logoTextHelpMark.removeStyleName("infoButton");
-						_logoTextHelpMark.addStyleName("infoButtonClicked");
+				_logoTagsBox.getTextBox().addBlurHandler(new BlurHandler(){
+					public void onBlur(BlurEvent event) {
+						setTagsModified(true);
+						checkErrors();
 					}
-				}});
+				});
 
-			_logoTextHelpPopup.addCloseHandler(new CloseHandler<PopupPanel>(){
-				public void onClose(CloseEvent<PopupPanel> event) {
-					_logoTextHelpMark.addStyleName("infoButton");
-					_logoTextHelpMark.removeStyleName("infoButtonClicked");
-				}});
+				_logoTagsBoxPanel.add(_logoTagsBox);
+				_logoTagsBoxPanel.add(getNewWhiteSpace(10));
+				_logoTagsBoxPanel.add(_tagsOkImage);
 
-			_logoTextHelpPopup.setWidget(_logoTextHelpLabel);
-
-			_logoTagsHelpMark.addClickHandler(new ClickHandler(){
-				public void onClick(ClickEvent event) {	
-					if(!_logoTagsHelpPopup.isShowing())
-					{
-						_logoTagsHelpPopup.showRelativeTo(_logoTagsLabel);
-						_logoTagsHelpMark.removeStyleName("infoButton");
-						_logoTagsHelpMark.addStyleName("infoButtonClicked");
-					}
-				}});
-
-			_logoTagsHelpPopup.addCloseHandler(new CloseHandler<PopupPanel>(){
-				public void onClose(CloseEvent<PopupPanel> event) {
-					_logoTagsHelpMark.addStyleName("infoButton");
-					_logoTagsHelpMark.removeStyleName("infoButtonClicked");
-				}});
-
-			_logoTagsHelpPopup.setWidget(_logoTagsHelpLabel);
-
-			_logoColourHelpMark.addClickHandler(new ClickHandler(){
-				public void onClick(ClickEvent event) {	
-					if(!_logoColourHelpPopup.isShowing())
-					{
-						_logoColourHelpPopup.showRelativeTo(_colourLabel);
-						_logoColourHelpMark.removeStyleName("infoButton");
-						_logoColourHelpMark.addStyleName("infoButtonClicked");
-					}
-				}});
-
-			_logoColourHelpPopup.addCloseHandler(new CloseHandler<PopupPanel>(){
-				public void onClose(CloseEvent<PopupPanel> event) {
-					_logoColourHelpMark.removeStyleName("infoButtonClicked");
-					_logoColourHelpMark.addStyleName("infoButton");
-				}});
+				_logoTagsPanel.setSpacing(2);
 
 
-			_logoColourHelpPopup.setWidget(_logoColourHelpLabel);
+				_logoTagsLabelPanel.add(_logoTagsHelpMark);
+				_logoTagsLabelPanel.add(getNewWhiteSpace(5));
+				_logoTagsLabelPanel.add(_logoTagsLabel);
 
-			_colourLabel.setStyleName("label"); //$NON-NLS-1$
-			_colourLabel.addStyleName("fontAR");
+				_logoTagsPanel.add(_logoTagsLabelPanel);
+				_logoTagsPanel.add(_tagsHintLabel);
+				_logoTagsPanel.add(_logoTagsBoxPanel);
+				_logoTagsPanel.add(_tagsErrorLabel);
 
-			_pantoneTextBox.setStyleName("pantoneLabel"); //$NON-NLS-1$
-			_pantoneTextBox.addStyleName("fontAR");
+				//setup the help popup for the tags
+				_logoTextHelpPopup.setStyleName("helpPopup");
+				_logoTagsHelpPopup.setStyleName("helpPopup");
+				_logoColourHelpPopup.setStyleName("helpPopup");
 
-			_colourLabelPanel.add(_logoColourHelpMark);
-			_colourLabelPanel.add(getNewWhiteSpace(5));
-			_colourLabelPanel.add(_colourLabel);
+				_logoTextHelpMark.addStyleName("infoButton");
+				_logoTextHelpMark.addStyleName("labelButton");
+				_logoTagsHelpMark.addStyleName("infoButton");
+				_logoTagsHelpMark.addStyleName("labelButton");
+				_logoColourHelpMark.addStyleName("infoButton");
+				_logoColourHelpMark.addStyleName("labelButton");
 
-			_colorSubPanel.setVerticalAlignment(HorizontalPanel.ALIGN_MIDDLE);
-			_colorSubPanel.setHorizontalAlignment(HorizontalPanel.ALIGN_LEFT);
-			_colorSubPanel.add(_colourLabelPanel);
-			_colorSubPanel.add(getNewWhiteSpace(5));
-			_colorSubPanel.add(_pantoneTextBox);
-			_colorSubPanel.setHeight("15px"); //$NON-NLS-1$
+				_logoTextHelpPopup.setWidth("220px");
+				_logoTagsHelpPopup.setWidth("220px");
+				_logoColourHelpPopup.setWidth("220px");
 
-			_colorPanel.add(_colorSubPanel);
-			_colorPanel.add(_colourErrorLabel);
+				_logoTextHelpMark.addClickHandler(new ClickHandler(){
+					public void onClick(ClickEvent event) {	
+						if(!_logoTextHelpPopup.isShowing())
+						{
+							_logoTextHelpPopup.showRelativeTo(_logoTextLabel);
+							_logoTextHelpMark.removeStyleName("infoButton");
+							_logoTextHelpMark.addStyleName("infoButtonClicked");
+						}
+					}});
 
-			configureColoursPanels();
+				_logoTextHelpPopup.addCloseHandler(new CloseHandler<PopupPanel>(){
+					public void onClose(CloseEvent<PopupPanel> event) {
+						_logoTextHelpMark.addStyleName("infoButton");
+						_logoTextHelpMark.removeStyleName("infoButtonClicked");
+					}});
 
-			_colorPanel.setWidth("300px"); //$NON-NLS-1$
-			_colorPanel.setSpacing(2);
+				_logoTextHelpPopup.setWidget(_logoTextHelpLabel);
 
-			_rows.setSpacing(0);
-			_rows.add(_firstRow);
-			_rows.add(_secondRow);
-			_rows.add(_thirdRow);
+				_logoTagsHelpMark.addClickHandler(new ClickHandler(){
+					public void onClick(ClickEvent event) {	
+						if(!_logoTagsHelpPopup.isShowing())
+						{
+							_logoTagsHelpPopup.showRelativeTo(_logoTagsLabel);
+							_logoTagsHelpMark.removeStyleName("infoButton");
+							_logoTagsHelpMark.addStyleName("infoButtonClicked");
+						}
+					}});
 
-			_colorPanel.add(_rows);
+				_logoTagsHelpPopup.addCloseHandler(new CloseHandler<PopupPanel>(){
+					public void onClose(CloseEvent<PopupPanel> event) {
+						_logoTagsHelpMark.addStyleName("infoButton");
+						_logoTagsHelpMark.removeStyleName("infoButtonClicked");
+					}});
 
-			_tagsErrorLabel.setStyleName("errorLabel"); //$NON-NLS-1$
-			_logoErrorLabel.setStyleName("errorLabel"); //$NON-NLS-1$
-			_colourErrorLabel.setStyleName("errorLabel"); //$NON-NLS-1$
+				_logoTagsHelpPopup.setWidget(_logoTagsHelpLabel);
 
-			_submitOrderButton.removeStyleName("gwt-Button");
-			_submitOrderButton.addStyleName("submitRequest"); //$NON-NLS-1$
-			_submitOrderButton.addStyleName("fontAR"); //$NON-NLS-1$
+				_logoColourHelpMark.addClickHandler(new ClickHandler(){
+					public void onClick(ClickEvent event) {	
+						if(!_logoColourHelpPopup.isShowing())
+						{
+							_logoColourHelpPopup.showRelativeTo(_colourLabel);
+							_logoColourHelpMark.removeStyleName("infoButton");
+							_logoColourHelpMark.addStyleName("infoButtonClicked");
+						}
+					}});
 
-			// Fill up that son of a bitch of a mainPanel
+				_logoColourHelpPopup.addCloseHandler(new CloseHandler<PopupPanel>(){
+					public void onClose(CloseEvent<PopupPanel> event) {
+						_logoColourHelpMark.removeStyleName("infoButtonClicked");
+						_logoColourHelpMark.addStyleName("infoButton");
+					}});
 
-			_mainPanel.add(_logoTextPanel);
-			_mainPanel.add(_logoTagsPanel);
-			_mainPanel.add(_colorPanel);
-			_mainPanel.add(_submitOrderButton);
 
-			//alternate panel stuff
-			_waitLabel.addStyleName("waitLabel"); //$NON-NLS-1$
-			_waitLabel.addStyleName("fontAR");
-			_waitLabel.setWidth("350px"); //$NON-NLS-1$
-			_waitLabel.addStyleName("labelButton");
-			_waitLabel.addClickHandler(new ClickHandler(){
+				_logoColourHelpPopup.setWidget(_logoColourHelpLabel);
 
-				public void onClick(ClickEvent event) {
-					if(!_waitLabel.getText().equals(Messages.KILLSWITCH_ON_WAITMSG.getString()))
-					{
+				_colourLabel.setStyleName("label"); //$NON-NLS-1$
+				_colourLabel.addStyleName("fontAR");
+
+				_pantoneTextBox.setStyleName("pantoneLabel"); //$NON-NLS-1$
+				_pantoneTextBox.addStyleName("fontAR");
+
+				_colourLabelPanel.add(_logoColourHelpMark);
+				_colourLabelPanel.add(getNewWhiteSpace(5));
+				_colourLabelPanel.add(_colourLabel);
+
+				_colorSubPanel.setVerticalAlignment(HorizontalPanel.ALIGN_MIDDLE);
+				_colorSubPanel.setHorizontalAlignment(HorizontalPanel.ALIGN_LEFT);
+				_colorSubPanel.add(_colourLabelPanel);
+				_colorSubPanel.add(getNewWhiteSpace(5));
+				_colorSubPanel.add(_pantoneTextBox);
+				_colorSubPanel.setHeight("15px"); //$NON-NLS-1$
+
+				_colorPanel.add(_colorSubPanel);
+				_colorPanel.add(_colourErrorLabel);
+
+				configureColoursPanels();
+
+				_colorPanel.setWidth("300px"); //$NON-NLS-1$
+				_colorPanel.setSpacing(2);
+
+				_rows.setSpacing(0);
+				_rows.add(_firstRow);
+				_rows.add(_secondRow);
+				_rows.add(_thirdRow);
+
+				_colorPanel.add(_rows);
+
+				_tagsErrorLabel.setStyleName("errorLabel"); //$NON-NLS-1$
+				_logoErrorLabel.setStyleName("errorLabel"); //$NON-NLS-1$
+				_colourErrorLabel.setStyleName("errorLabel"); //$NON-NLS-1$
+
+				_submitOrderButton.removeStyleName("gwt-Button");
+				_submitOrderButton.addStyleName("submitRequest"); //$NON-NLS-1$
+				_submitOrderButton.addStyleName("fontAR"); //$NON-NLS-1$
+
+				// Fill up that son of a bitch of a mainPanel
+
+				_mainPanel.add(_logoTextPanel);
+				_mainPanel.add(_logoTagsPanel);
+				_mainPanel.add(_colorPanel);
+				_mainPanel.add(_submitOrderButton);
+
+				//alternate panel stuff
+				_waitLabel.addStyleName("waitLabel"); //$NON-NLS-1$
+				_waitLabel.addStyleName("fontAR");
+				_waitLabel.setWidth("350px"); //$NON-NLS-1$
+				_waitLabel.addStyleName("labelButton");
+				_waitLabel.addClickHandler(new ClickHandler(){
+
+					public void onClick(ClickEvent event) {
 						for(AModulePart modulePart:_moduleParts)
 						{
 							if(modulePart instanceof OrderBrowserModulePart)
@@ -388,46 +382,74 @@ public class OrderSubmitterModulePart extends AModulePart
 								break;
 							}
 						}
-					}
 
-				}});
+
+					}});
+
+				_alternateSubPanelBody.addStyleName("orderSubmitterAlternateBody"); //$NON-NLS-1$
+				_alternateSubPanelBodyTile.addStyleName("orderSubmitterAlternateBodytile"); //$NON-NLS-1$
+				_alternateSubPanelFooter.addStyleName("orderSubmitterAlternateFooter"); //$NON-NLS-1$
+
+
+				_alternateSubPanelBody.add(_waitLabel,85,30);
+				_alternateRootPanelBody.setWidth("500px"); //$NON-NLS-1$
+				_alternateRootPanelBodyTile.setWidth("500px"); //$NON-NLS-1$
+				_alternateRootPanelFooter.setWidth("500px"); //$NON-NLS-1$
+
+				_alternateRootPanelBody.add(_alternateSubPanelBody);
+				_alternateRootPanelBodyTile.add(_alternateSubPanelBodyTile);
+				_alternateRootPanelFooter.add(_alternateSubPanelFooter);
+
+				//add main and alternate panel to root panel
+				_rootPanel.add(_mainPanel);
+
+				setViewByLatestOrder();
+
+				RootPanel.get("orderSubmitter").add(_rootPanel); //$NON-NLS-1$
+
+				// Move cursor focus to the logoText input box.
+				_logoTextBox.setFocus(true);
+
+				// Listen for mouse events on the Add button.
+				_submitOrderButton.addClickHandler(new ClickHandler() {
+					public void onClick(ClickEvent event) {
+						submitOrder();
+					}
+				});
+
+				RootPanel.get("orderSubmitter").add(getOrderSubmitPanel(),90,15); //$NON-NLS-1$
+				RootPanel.get("orderSubmitterAlternateBody").add(getOrderSubmitAlternateBodyPanel()); //$NON-NLS-1$
+				RootPanel.get("orderSubmitterAlternateBodytile").add(getOrderSubmitAlternateBodytilePanel()); //$NON-NLS-1$
+				RootPanel.get("orderSubmitterAlternateFooter").add(getOrderSubmitAlternateFooterPanel()); //$NON-NLS-1$
+
+				applyCufon();
+			}
+		}
+		else
+		{
+			//in case it is switched off 
+			_waitLabel.addStyleName("waitLabel"); //$NON-NLS-1$
+			_waitLabel.addStyleName("fontAR");
+			_waitLabel.setWidth("350px"); //$NON-NLS-1$
+			_waitLabel.addStyleName("labelButton");
+			_waitLabel.setText(Messages.valueOf("KILLSWITCH_ON_WAITMSG").getString());
 
 			_alternateSubPanelBody.addStyleName("orderSubmitterAlternateBody"); //$NON-NLS-1$
 			_alternateSubPanelBodyTile.addStyleName("orderSubmitterAlternateBodytile"); //$NON-NLS-1$
 			_alternateSubPanelFooter.addStyleName("orderSubmitterAlternateFooter"); //$NON-NLS-1$
-
-
 			_alternateSubPanelBody.add(_waitLabel,85,30);
 			_alternateRootPanelBody.setWidth("500px"); //$NON-NLS-1$
 			_alternateRootPanelBodyTile.setWidth("500px"); //$NON-NLS-1$
 			_alternateRootPanelFooter.setWidth("500px"); //$NON-NLS-1$
-
 			_alternateRootPanelBody.add(_alternateSubPanelBody);
 			_alternateRootPanelBodyTile.add(_alternateSubPanelBodyTile);
 			_alternateRootPanelFooter.add(_alternateSubPanelFooter);
 
-			//add main and alternate panel to root panel
-			_rootPanel.add(_mainPanel);
-
-			setViewByLatestOrder();
-
-			RootPanel.get("orderSubmitter").add(_rootPanel); //$NON-NLS-1$
-
-			// Move cursor focus to the logoText input box.
-			_logoTextBox.setFocus(true);
-
-			// Listen for mouse events on the Add button.
-			_submitOrderButton.addClickHandler(new ClickHandler() {
-				public void onClick(ClickEvent event) {
-					submitOrder();
-				}
-			});
-
-			RootPanel.get("orderSubmitter").add(getOrderSubmitPanel(),90,15); //$NON-NLS-1$
 			RootPanel.get("orderSubmitterAlternateBody").add(getOrderSubmitAlternateBodyPanel()); //$NON-NLS-1$
 			RootPanel.get("orderSubmitterAlternateBodytile").add(getOrderSubmitAlternateBodytilePanel()); //$NON-NLS-1$
 			RootPanel.get("orderSubmitterAlternateFooter").add(getOrderSubmitAlternateFooterPanel()); //$NON-NLS-1$
 
+			//apply cufon for nice fonts
 			applyCufon();
 		}
 
@@ -440,10 +462,6 @@ public class OrderSubmitterModulePart extends AModulePart
 		_tagsOkImage.setVisible(false);
 	}
 
-
-	private void getOrderKillSwitchValue() {
-		((OrderServiceAsync) getService(Service.ORDER_SERVICE)).getOrderKillswitch(_getOrderKillswitchCallback);
-	}
 
 	/**
 	 * @param i 
@@ -514,17 +532,6 @@ public class OrderSubmitterModulePart extends AModulePart
 					showHidePanels();
 					notifyChanges();
 				}
-			}
-		};
-
-		_getOrderKillswitchCallback  = new AsyncCallback<Boolean>() {
-
-			public void onSuccess(Boolean result) {
-				_orderKillswitch = result;
-			}
-
-			public void onFailure(Throwable caught) {
-				//TODO - do something in case of failure
 			}
 		};
 
@@ -804,17 +811,8 @@ public class OrderSubmitterModulePart extends AModulePart
 				|| result.getStatus() == Status.BOUGHT 
 				|| result.getStatus() == Status.REJECTED))
 		{
-			if(!_orderKillswitch)
-			{
-				_mainPanel.setVisible(true);
-			}
-			else
-			{
-				this._waitLabel.setText(Messages.valueOf("KILLSWITCH_ON_WAITMSG").getString());
 
-				//apply cufon for nice fonts
-				applyCufon();
-			}
+			_mainPanel.setVisible(true);
 		}
 		else
 		{
