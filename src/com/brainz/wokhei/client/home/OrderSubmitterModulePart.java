@@ -421,33 +421,31 @@ public class OrderSubmitterModulePart extends AModulePart
 				RootPanel.get("orderSubmitterAlternateBody").add(getOrderSubmitAlternateBodyPanel()); //$NON-NLS-1$
 				RootPanel.get("orderSubmitterAlternateBodytile").add(getOrderSubmitAlternateBodytilePanel()); //$NON-NLS-1$
 				RootPanel.get("orderSubmitterAlternateFooter").add(getOrderSubmitAlternateFooterPanel()); //$NON-NLS-1$
-
-				applyCufon();
 			}
-		}
-		else
-		{
-			//in case it is switched off 
-			_waitLabel.addStyleName("waitLabel"); //$NON-NLS-1$
-			_waitLabel.addStyleName("fontAR");
-			_waitLabel.setWidth("350px"); //$NON-NLS-1$
-			_waitLabel.addStyleName("labelButton");
-			_waitLabel.setText(Messages.valueOf("KILLSWITCH_ON_WAITMSG").getString());
+			else
+			{
+				//in case it is switched off 
+				_waitLabel.addStyleName("waitLabel"); //$NON-NLS-1$
+				_waitLabel.addStyleName("fontAR");
+				_waitLabel.setWidth("350px"); //$NON-NLS-1$
+				_waitLabel.addStyleName("labelButton");
+				_waitLabel.setText(Messages.valueOf("KILLSWITCH_ON_WAITMSG").getString());
 
-			_alternateSubPanelBody.addStyleName("orderSubmitterAlternateBody"); //$NON-NLS-1$
-			_alternateSubPanelBodyTile.addStyleName("orderSubmitterAlternateBodytile"); //$NON-NLS-1$
-			_alternateSubPanelFooter.addStyleName("orderSubmitterAlternateFooter"); //$NON-NLS-1$
-			_alternateSubPanelBody.add(_waitLabel,85,30);
-			_alternateRootPanelBody.setWidth("500px"); //$NON-NLS-1$
-			_alternateRootPanelBodyTile.setWidth("500px"); //$NON-NLS-1$
-			_alternateRootPanelFooter.setWidth("500px"); //$NON-NLS-1$
-			_alternateRootPanelBody.add(_alternateSubPanelBody);
-			_alternateRootPanelBodyTile.add(_alternateSubPanelBodyTile);
-			_alternateRootPanelFooter.add(_alternateSubPanelFooter);
+				_alternateSubPanelBody.addStyleName("orderSubmitterAlternateBody"); //$NON-NLS-1$
+				_alternateSubPanelBodyTile.addStyleName("orderSubmitterAlternateBodytile"); //$NON-NLS-1$
+				_alternateSubPanelFooter.addStyleName("orderSubmitterAlternateFooter"); //$NON-NLS-1$
+				_alternateSubPanelBody.add(_waitLabel,85,30);
+				_alternateRootPanelBody.setWidth("500px"); //$NON-NLS-1$
+				_alternateRootPanelBodyTile.setWidth("500px"); //$NON-NLS-1$
+				_alternateRootPanelFooter.setWidth("500px"); //$NON-NLS-1$
+				_alternateRootPanelBody.add(_alternateSubPanelBody);
+				_alternateRootPanelBodyTile.add(_alternateSubPanelBodyTile);
+				_alternateRootPanelFooter.add(_alternateSubPanelFooter);
 
-			RootPanel.get("orderSubmitterAlternateBody").add(getOrderSubmitAlternateBodyPanel()); //$NON-NLS-1$
-			RootPanel.get("orderSubmitterAlternateBodytile").add(getOrderSubmitAlternateBodytilePanel()); //$NON-NLS-1$
-			RootPanel.get("orderSubmitterAlternateFooter").add(getOrderSubmitAlternateFooterPanel()); //$NON-NLS-1$
+				RootPanel.get("orderSubmitterAlternateBody").add(getOrderSubmitAlternateBodyPanel()); //$NON-NLS-1$
+				RootPanel.get("orderSubmitterAlternateBodytile").add(getOrderSubmitAlternateBodytilePanel()); //$NON-NLS-1$
+				RootPanel.get("orderSubmitterAlternateFooter").add(getOrderSubmitAlternateFooterPanel()); //$NON-NLS-1$
+			}
 
 			//apply cufon for nice fonts
 			applyCufon();
