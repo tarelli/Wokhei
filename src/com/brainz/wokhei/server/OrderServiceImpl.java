@@ -80,7 +80,7 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 		}
 
 		// Instantiate order
-		Order order = new Order(user, orderDTO.getText(),Arrays.asList(orderDTO.getTags()),orderDTO.getColour(), new Date(), newNumber);
+		Order order = new Order(user, orderDTO.getText(),Arrays.asList(orderDTO.getDescriptions()),orderDTO.getColour(), new Date(), newNumber);
 
 		if (user!= null)
 		{
@@ -513,7 +513,7 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 			msgBody += "Progressive ID: " + order.getProgressive().toString() + "\n";
 			msgBody += "Order ID: " + order.getId().toString() + "\n";
 			msgBody += "Text: " + order.getText().toString() + "\n";
-			msgBody += "TagZ: " + Arrays.asList(order.getTags()).toString() + "\n";
+			msgBody += "TagZ: " + Arrays.asList(order.getDescriptions()).toString() + "\n";
 			msgBody += "Colour: " + order.getColour().toString() + "\n\n";
 			msgBody += "Let's make some money!";
 

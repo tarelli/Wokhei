@@ -397,7 +397,7 @@ public class OrderBrowserModulePart extends AModulePart{
 
 			alwaysInfos(false);
 			orderNameLabel.setText(_currentOrder.getText());
-			String list=Arrays.asList(_currentOrder.getTags()).toString().replace(",","");
+			String list=Arrays.asList(_currentOrder.getDescriptions()).toString().replace(",","");
 			DateTimeFormat fmt = DateTimeFormat.getFormat("EEE MMM yy k:m");
 			colour.setStyleName("colour"+_currentOrder.getColour().toString());
 			if(_currentOrder.getColour().equals(Colour.SurpriseMe))

@@ -541,7 +541,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 						_ordersFlexTable.setWidget(row, Columns.ID.ordinal(), getProgressiveLabeL(String.valueOf(order.getProgressive()), order.getId()));
 						_ordersFlexTable.setWidget(row, Columns.USER.ordinal(), getUsernameWidget(order.getCustomerEmail()));
 						_ordersFlexTable.setWidget(row,Columns.LOGO_TEXT.ordinal(), getNameWidget( order.getText()));
-						String list=Arrays.asList(order.getTags()).toString().replace(",","");
+						String list=Arrays.asList(order.getDescriptions()).toString().replace(",","");
 						_ordersFlexTable.setWidget(row,Columns.TAGS.ordinal(),  getTagsWidget(list.substring(1, list.length()-1)));
 						_ordersFlexTable.setWidget(row,Columns.COLOUR.ordinal(),  getColourPanel(order.getColour()));
 						DateTimeFormat fmt = DateTimeFormat.getFormat("dd.MM.yy");
@@ -559,7 +559,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 						}
 						else if (order.getStatus()!=Status.REJECTED)
 						{
-							_ordersFlexTable.setWidget(row, Columns.ACTIONS.ordinal(), getUploadLogoButton(order.getId(), order.getText(), order.getTags()));
+							_ordersFlexTable.setWidget(row, Columns.ACTIONS.ordinal(), getUploadLogoButton(order.getId(), order.getText(), order.getDescriptions()));
 						}
 					}
 				};

@@ -7,15 +7,13 @@ import java.util.Date;
 import java.util.List;
 
 import com.brainz.wokhei.client.common.AModulePart;
-import com.brainz.wokhei.client.common.MultipleTextBox;
 import com.brainz.wokhei.client.common.OrderServiceAsync;
 import com.brainz.wokhei.client.common.Service;
 import com.brainz.wokhei.client.home.Validator.ColourErrors;
+import com.brainz.wokhei.client.home.Validator.DescriptionErrors;
 import com.brainz.wokhei.client.home.Validator.LogoErrors;
-import com.brainz.wokhei.client.home.Validator.TagsErrors;
 import com.brainz.wokhei.resources.Images;
 import com.brainz.wokhei.resources.Messages;
-import com.brainz.wokhei.resources.TagsOracle;
 import com.brainz.wokhei.shared.Colour;
 import com.brainz.wokhei.shared.DateDifferenceCalculator;
 import com.brainz.wokhei.shared.OrderDTO;
@@ -33,10 +31,8 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -46,7 +42,6 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class OrderSubmitterModulePart extends AModulePart 
 {
-
 	private static final int NUM_COLOURS = 24;
 
 	//root panel to host main and alternate panel
@@ -89,19 +84,18 @@ public class OrderSubmitterModulePart extends AModulePart
 	private Colour _selectedColour;
 	private Label _selectedColourButton=null;
 
-	//TAGS
-	private final VerticalPanel _logoTagsPanel = new VerticalPanel();
-	private final MultiWordSuggestOracle _logoTagsOracle = new MultiWordSuggestOracle();  
-	private final SuggestBox _logoTagsBox = new SuggestBox(_logoTagsOracle,new MultipleTextBox());
-	private final Label _logoTagsHelpMark = new Label();
-	private final Label _logoTagsHelpLabel = new Label(Messages.LOGO_TAGS_HELP_MESSAGE.getString());
-	private final PopupPanel _logoTagsHelpPopup = new PopupPanel(true);
-	private final Label _logoTagsLabel = new Label(Messages.LOGO_TAGS_LBL.getString()); //$NON-NLS-1$
-	private final HorizontalPanel _logoTagsLabelPanel = new HorizontalPanel();
-	private final Label _tagsHintLabel = new Label(Messages.LOGO_TAGS_EG_LBL.getString()); //$NON-NLS-1$
-	private final Label _tagsErrorLabel = new Label(); 
-	private final Image _tagsOkImage = new Image();
-	private boolean _tagsModified=false;
+	//Description
+	private final VerticalPanel _logoDescriptionPanel = new VerticalPanel();
+	private final TextBox _logoDescBox = new TextBox();
+	private final Label _logoDescHelpMark = new Label();
+	private final Label _logoDescHelpLabel = new Label(Messages.LOGO_DESC_HELP_MESSAGE.getString());
+	private final PopupPanel _logoDescHelpPopup = new PopupPanel(true);
+	private final Label _logoDescLabel = new Label(Messages.LOGO_DESC_LBL.getString()); //$NON-NLS-1$
+	private final HorizontalPanel _logoDescLabelPanel = new HorizontalPanel();
+	private final Label _descHintLabel = new Label(Messages.LOGO_DESC_EG_LBL.getString()); //$NON-NLS-1$
+	private final Label _descErrorLabel = new Label(); 
+	private final Image _descOkImage = new Image();
+	private boolean _descModified=false;
 
 	// a pretty self-explanatory submit button
 	private final Button _submitOrderButton = new Button(Messages.SEND_REQUEST.getString()); //$NON-NLS-1$
@@ -118,21 +112,17 @@ public class OrderSubmitterModulePart extends AModulePart
 
 	private final Label _waitLabel = new Label(); //$NON-NLS-1$
 
-	private final Label _requestLabel = new Label(Messages.REQUEST_LOGO_LBL.getString()); //$NON-NLS-1$
-
 	private final HorizontalPanel _logoTextBoxPanel=new HorizontalPanel();
 
-	private final HorizontalPanel _logoTagsBoxPanel=new HorizontalPanel();
+	private final HorizontalPanel _logoDescBoxPanel=new HorizontalPanel();
 
 	// callbacks
 	private AsyncCallback<List<OrderDTO>> _getOrdersCallback = null;
+	private AsyncCallback<List<OrderDTO>> _getOrdersForKillswitchOnCallback = null;
 	private AsyncCallback<Boolean> _submitOrderCallback = null;
+	private AsyncCallback<Long> _setOrderStatusCallback = null;
 
 	private OrderDTO _submittedOrder = null;
-
-	private AsyncCallback<Long> _setOrderStatusCallback;
-
-
 
 	@Override
 	public void loadModulePart() {
@@ -146,277 +136,30 @@ public class OrderSubmitterModulePart extends AModulePart
 
 			if(!getModule().isKillSwitchOn())
 			{
+				//set main panel spacing
 				_mainPanel.setSpacing(10);
 
-				// set everything to invisible
-				setNameModified(false);
-				setTagsModified(false);
-				setColourModified(false);
-				_mainPanel.setVisible(false);
+				//setup stuff
+				setEverythingToInvisible();
+				setupLogoTextPanel();
+				setupLogoDescPanel();
+				setupColorPickerPanel();
+				setupAllHelpPopups();
+				setErrorLabelsStyles();
+				setSubmitButtonStuff();
+				setupAlternatePanel();
 
-				_requestLabel.addStyleName("h3"); //$NON-NLS-1$
-				_requestLabel.addStyleName("fontAR");
-				_mainPanel.add(_requestLabel );
+				fillMainPanel();
 
-				_logoTextLabel.addStyleName("label"); //$NON-NLS-1$
-				_logoTextLabel.addStyleName("fontAR"); 
-
-				_logoHintLabel.setStyleName("hintLabel"); //$NON-NLS-1$
-
-				_logoTextBox.setText(Messages.LOGO_NAME_TXTBOX.getString()); //$NON-NLS-1$
-				_logoTextBox.setWidth("290px"); //$NON-NLS-1$
-				_logoTextBox.setStyleName("textBox"); //$NON-NLS-1$
-				_logoTextBox.addStyleName("fontAR");
-				_logoTextBox.addBlurHandler(new BlurHandler(){
-					public void onBlur(BlurEvent event) {
-						setNameModified(true);
-						checkErrors();
-					}
-				});
-
-				_logoTextBox.addClickHandler(new ClickHandler(){
-					public void onClick(ClickEvent event) {
-						if(_logoTextBox.getText().equals(Messages.LOGO_NAME_TXTBOX.getString())) //$NON-NLS-1$
-						{
-							_logoTextBox.selectAll();
-						}
-					}});
-
-				_logoTextBoxPanel.add(_logoTextBox);
-				_logoTextBoxPanel.add(getNewWhiteSpace(10));
-				_logoTextBoxPanel.add(_logoOkImage);
-				_logoTagsLabel.addStyleName("label"); //$NON-NLS-1$
-				_logoTagsLabel.addStyleName("fontAR");
-
-				_tagsHintLabel.addStyleName("hintLabel"); //$NON-NLS-1$
-
-				// prepare my motherfuckin' logoText vertical panel
-				_logoTextPanel.setSpacing(2);
-
-				_logoTextLabelPanel.setVerticalAlignment(VerticalPanel.ALIGN_TOP);
-				_logoTextLabelPanel.add(_logoTextHelpMark);
-				_logoTextLabelPanel.add(getNewWhiteSpace(10));
-				_logoTextLabelPanel.add(_logoTextLabel);
-
-				_logoTextPanel.add(_logoTextLabelPanel);
-				_logoTextPanel.add(_logoHintLabel);
-				_logoTextPanel.add(_logoTextBoxPanel);
-				_logoTextPanel.add(_logoErrorLabel);
-
-
-				// prepare my cock-fuckerin' tags vertical panel
-
-				for(TagsOracle tag:TagsOracle.values())
-				{
-					_logoTagsOracle.add(tag.getString());
-					_logoTagsOracle.add(tag.getHashedString());
-				}
-
-				_logoTagsBox.setWidth("290px"); //$NON-NLS-1$
-				_logoTagsBox.setText(Messages.LOGO_TAGS_TXTBOX.getString()); //$NON-NLS-1$
-				_logoTagsBox.setStyleName("textBox"); //$NON-NLS-1$
-				_logoTagsBox.setLimit(15);
-				_logoTagsBox.getTextBox().addClickHandler(new ClickHandler(){
-					public void onClick(ClickEvent event) {
-						if(((MultipleTextBox)_logoTagsBox.getTextBox()).getWholeText().equals(Messages.LOGO_TAGS_TXTBOX.getString())) //$NON-NLS-1$
-						{
-							_logoTagsBox.getTextBox().selectAll();
-						}
-					}});
-
-				_logoTagsBox.getTextBox().addBlurHandler(new BlurHandler(){
-					public void onBlur(BlurEvent event) {
-						setTagsModified(true);
-						checkErrors();
-					}
-				});
-
-				_logoTagsBoxPanel.add(_logoTagsBox);
-				_logoTagsBoxPanel.add(getNewWhiteSpace(10));
-				_logoTagsBoxPanel.add(_tagsOkImage);
-
-				_logoTagsPanel.setSpacing(2);
-
-
-				_logoTagsLabelPanel.add(_logoTagsHelpMark);
-				_logoTagsLabelPanel.add(getNewWhiteSpace(5));
-				_logoTagsLabelPanel.add(_logoTagsLabel);
-
-				_logoTagsPanel.add(_logoTagsLabelPanel);
-				_logoTagsPanel.add(_tagsHintLabel);
-				_logoTagsPanel.add(_logoTagsBoxPanel);
-				_logoTagsPanel.add(_tagsErrorLabel);
-
-				//setup the help popup for the tags
-				_logoTextHelpPopup.setStyleName("helpPopup");
-				_logoTagsHelpPopup.setStyleName("helpPopup");
-				_logoColourHelpPopup.setStyleName("helpPopup");
-
-				_logoTextHelpMark.addStyleName("infoButton");
-				_logoTextHelpMark.addStyleName("labelButton");
-				_logoTagsHelpMark.addStyleName("infoButton");
-				_logoTagsHelpMark.addStyleName("labelButton");
-				_logoColourHelpMark.addStyleName("infoButton");
-				_logoColourHelpMark.addStyleName("labelButton");
-
-				_logoTextHelpPopup.setWidth("220px");
-				_logoTagsHelpPopup.setWidth("220px");
-				_logoColourHelpPopup.setWidth("220px");
-
-				_logoTextHelpMark.addClickHandler(new ClickHandler(){
-					public void onClick(ClickEvent event) {	
-						if(!_logoTextHelpPopup.isShowing())
-						{
-							_logoTextHelpPopup.showRelativeTo(_logoTextLabel);
-							_logoTextHelpMark.removeStyleName("infoButton");
-							_logoTextHelpMark.addStyleName("infoButtonClicked");
-						}
-					}});
-
-				_logoTextHelpPopup.addCloseHandler(new CloseHandler<PopupPanel>(){
-					public void onClose(CloseEvent<PopupPanel> event) {
-						_logoTextHelpMark.addStyleName("infoButton");
-						_logoTextHelpMark.removeStyleName("infoButtonClicked");
-					}});
-
-				_logoTextHelpPopup.setWidget(_logoTextHelpLabel);
-
-				_logoTagsHelpMark.addClickHandler(new ClickHandler(){
-					public void onClick(ClickEvent event) {	
-						if(!_logoTagsHelpPopup.isShowing())
-						{
-							_logoTagsHelpPopup.showRelativeTo(_logoTagsLabel);
-							_logoTagsHelpMark.removeStyleName("infoButton");
-							_logoTagsHelpMark.addStyleName("infoButtonClicked");
-						}
-					}});
-
-				_logoTagsHelpPopup.addCloseHandler(new CloseHandler<PopupPanel>(){
-					public void onClose(CloseEvent<PopupPanel> event) {
-						_logoTagsHelpMark.addStyleName("infoButton");
-						_logoTagsHelpMark.removeStyleName("infoButtonClicked");
-					}});
-
-				_logoTagsHelpPopup.setWidget(_logoTagsHelpLabel);
-
-				_logoColourHelpMark.addClickHandler(new ClickHandler(){
-					public void onClick(ClickEvent event) {	
-						if(!_logoColourHelpPopup.isShowing())
-						{
-							_logoColourHelpPopup.showRelativeTo(_colourLabel);
-							_logoColourHelpMark.removeStyleName("infoButton");
-							_logoColourHelpMark.addStyleName("infoButtonClicked");
-						}
-					}});
-
-				_logoColourHelpPopup.addCloseHandler(new CloseHandler<PopupPanel>(){
-					public void onClose(CloseEvent<PopupPanel> event) {
-						_logoColourHelpMark.removeStyleName("infoButtonClicked");
-						_logoColourHelpMark.addStyleName("infoButton");
-					}});
-
-
-				_logoColourHelpPopup.setWidget(_logoColourHelpLabel);
-
-				_colourLabel.setStyleName("label"); //$NON-NLS-1$
-				_colourLabel.addStyleName("fontAR");
-
-				_pantoneTextBox.setStyleName("pantoneLabel"); //$NON-NLS-1$
-				_pantoneTextBox.addStyleName("fontAR");
-
-				_colourLabelPanel.add(_logoColourHelpMark);
-				_colourLabelPanel.add(getNewWhiteSpace(5));
-				_colourLabelPanel.add(_colourLabel);
-
-				_colorSubPanel.setVerticalAlignment(HorizontalPanel.ALIGN_MIDDLE);
-				_colorSubPanel.setHorizontalAlignment(HorizontalPanel.ALIGN_LEFT);
-				_colorSubPanel.add(_colourLabelPanel);
-				_colorSubPanel.add(getNewWhiteSpace(5));
-				_colorSubPanel.add(_pantoneTextBox);
-				_colorSubPanel.setHeight("15px"); //$NON-NLS-1$
-
-				_colorPanel.add(_colorSubPanel);
-				_colorPanel.add(_colourErrorLabel);
-
-				configureColoursPanels();
-
-				_colorPanel.setWidth("300px"); //$NON-NLS-1$
-				_colorPanel.setSpacing(2);
-
-				_rows.setSpacing(0);
-				_rows.add(_firstRow);
-				_rows.add(_secondRow);
-				_rows.add(_thirdRow);
-
-				_colorPanel.add(_rows);
-
-				_tagsErrorLabel.setStyleName("errorLabel"); //$NON-NLS-1$
-				_logoErrorLabel.setStyleName("errorLabel"); //$NON-NLS-1$
-				_colourErrorLabel.setStyleName("errorLabel"); //$NON-NLS-1$
-
-				_submitOrderButton.removeStyleName("gwt-Button");
-				_submitOrderButton.addStyleName("submitRequest"); //$NON-NLS-1$
-				_submitOrderButton.addStyleName("fontAR"); //$NON-NLS-1$
-
-				// Fill up that son of a bitch of a mainPanel
-
-				_mainPanel.add(_logoTextPanel);
-				_mainPanel.add(_logoTagsPanel);
-				_mainPanel.add(_colorPanel);
-				_mainPanel.add(_submitOrderButton);
-
-				//alternate panel stuff
-				_waitLabel.addStyleName("waitLabel"); //$NON-NLS-1$
-				_waitLabel.addStyleName("fontAR");
-				_waitLabel.setWidth("350px"); //$NON-NLS-1$
-				_waitLabel.addStyleName("labelButton");
-				_waitLabel.addClickHandler(new ClickHandler(){
-
-					public void onClick(ClickEvent event) {
-						for(AModulePart modulePart:_moduleParts)
-						{
-							if(modulePart instanceof OrderBrowserModulePart)
-							{
-								((OrderBrowserModulePart)modulePart).getLastOrder();
-								notifyChanges();
-								break;
-							}
-						}
-
-
-					}});
-
-				_alternateSubPanelBody.addStyleName("orderSubmitterAlternateBody"); //$NON-NLS-1$
-				_alternateSubPanelBodyTile.addStyleName("orderSubmitterAlternateBodytile"); //$NON-NLS-1$
-				_alternateSubPanelFooter.addStyleName("orderSubmitterAlternateFooter"); //$NON-NLS-1$
-
-
-				_alternateSubPanelBody.add(_waitLabel,85,30);
-				_alternateRootPanelBody.setWidth("500px"); //$NON-NLS-1$
-				_alternateRootPanelBodyTile.setWidth("500px"); //$NON-NLS-1$
-				_alternateRootPanelFooter.setWidth("500px"); //$NON-NLS-1$
-
-				_alternateRootPanelBody.add(_alternateSubPanelBody);
-				_alternateRootPanelBodyTile.add(_alternateSubPanelBodyTile);
-				_alternateRootPanelFooter.add(_alternateSubPanelFooter);
-
-				//add main and alternate panel to root panel
-				_rootPanel.add(_mainPanel);
-
+				//setup page state 
 				setViewByLatestOrder();
-
-				RootPanel.get("orderSubmitter").add(_rootPanel); //$NON-NLS-1$
-
 				// Move cursor focus to the logoText input box.
 				_logoTextBox.setFocus(true);
 
-				// Listen for mouse events on the Add button.
-				_submitOrderButton.addClickHandler(new ClickHandler() {
-					public void onClick(ClickEvent event) {
-						submitOrder();
-					}
-				});
-
+				//add main and alternate panel to root panel
+				_rootPanel.add(_mainPanel);
+				//inject stuff into page
+				RootPanel.get("orderSubmitter").add(_rootPanel);
 				RootPanel.get("orderSubmitter").add(getOrderSubmitPanel(),90,15); //$NON-NLS-1$
 				RootPanel.get("orderSubmitterAlternateBody").add(getOrderSubmitAlternateBodyPanel()); //$NON-NLS-1$
 				RootPanel.get("orderSubmitterAlternateBodytile").add(getOrderSubmitAlternateBodytilePanel()); //$NON-NLS-1$
@@ -424,27 +167,9 @@ public class OrderSubmitterModulePart extends AModulePart
 			}
 			else
 			{
-				//in case it is switched off 
-				_waitLabel.addStyleName("waitLabel"); //$NON-NLS-1$
-				_waitLabel.addStyleName("fontAR");
-				_waitLabel.setWidth("350px"); //$NON-NLS-1$
-				_waitLabel.addStyleName("labelButton");
-				_waitLabel.setText(Messages.valueOf("KILLSWITCH_ON_WAITMSG").getString());
+				setAlternatePanelKillswitchOn();
 
-				_alternateSubPanelBody.addStyleName("orderSubmitterAlternateBody"); //$NON-NLS-1$
-				_alternateSubPanelBodyTile.addStyleName("orderSubmitterAlternateBodytile"); //$NON-NLS-1$
-				_alternateSubPanelFooter.addStyleName("orderSubmitterAlternateFooter"); //$NON-NLS-1$
-				_alternateSubPanelBody.add(_waitLabel,85,30);
-				_alternateRootPanelBody.setWidth("500px"); //$NON-NLS-1$
-				_alternateRootPanelBodyTile.setWidth("500px"); //$NON-NLS-1$
-				_alternateRootPanelFooter.setWidth("500px"); //$NON-NLS-1$
-				_alternateRootPanelBody.add(_alternateSubPanelBody);
-				_alternateRootPanelBodyTile.add(_alternateSubPanelBodyTile);
-				_alternateRootPanelFooter.add(_alternateSubPanelFooter);
-
-				RootPanel.get("orderSubmitterAlternateBody").add(getOrderSubmitAlternateBodyPanel()); //$NON-NLS-1$
-				RootPanel.get("orderSubmitterAlternateBodytile").add(getOrderSubmitAlternateBodytilePanel()); //$NON-NLS-1$
-				RootPanel.get("orderSubmitterAlternateFooter").add(getOrderSubmitAlternateFooterPanel()); //$NON-NLS-1$
+				((OrderServiceAsync) getService(Service.ORDER_SERVICE)).getOrdersForCurrentUser(_getOrdersForKillswitchOnCallback);
 			}
 
 			//apply cufon for nice fonts
@@ -453,11 +178,306 @@ public class OrderSubmitterModulePart extends AModulePart
 
 	}
 
+	private void setAlternatePanelKillswitchOn() {
+		//in case kill-switch is switched ON
+		_waitLabel.addStyleName("waitLabel"); //$NON-NLS-1$
+		_waitLabel.addStyleName("fontAR");
+		_waitLabel.setWidth("350px"); //$NON-NLS-1$
+		_waitLabel.addStyleName("labelButton");
+
+		_alternateSubPanelBody.addStyleName("orderSubmitterAlternateBody"); //$NON-NLS-1$
+		_alternateSubPanelBodyTile.addStyleName("orderSubmitterAlternateBodytile"); //$NON-NLS-1$
+		_alternateSubPanelFooter.addStyleName("orderSubmitterAlternateFooter"); //$NON-NLS-1$
+		_alternateSubPanelBody.add(_waitLabel,85,30);
+		_alternateRootPanelBody.setWidth("500px"); //$NON-NLS-1$
+		_alternateRootPanelBodyTile.setWidth("500px"); //$NON-NLS-1$
+		_alternateRootPanelFooter.setWidth("500px"); //$NON-NLS-1$
+		_alternateRootPanelBody.add(_alternateSubPanelBody);
+		_alternateRootPanelBodyTile.add(_alternateSubPanelBodyTile);
+		_alternateRootPanelFooter.add(_alternateSubPanelFooter);
+
+		RootPanel.get("orderSubmitterAlternateBody").add(getOrderSubmitAlternateBodyPanel()); //$NON-NLS-1$
+		RootPanel.get("orderSubmitterAlternateBodytile").add(getOrderSubmitAlternateBodytilePanel()); //$NON-NLS-1$
+		RootPanel.get("orderSubmitterAlternateFooter").add(getOrderSubmitAlternateFooterPanel()); //$NON-NLS-1$
+	}
+
+
+	private void setupAlternatePanel() {
+		//alternate panel stuff
+		_waitLabel.addStyleName("waitLabel"); //$NON-NLS-1$
+		_waitLabel.addStyleName("fontAR");
+		_waitLabel.setWidth("350px"); //$NON-NLS-1$
+		_waitLabel.addStyleName("labelButton");
+		_waitLabel.addClickHandler(new ClickHandler(){
+
+			public void onClick(ClickEvent event) {
+				for(AModulePart modulePart:_moduleParts)
+				{
+					if(modulePart instanceof OrderBrowserModulePart)
+					{
+						((OrderBrowserModulePart)modulePart).getLastOrder();
+						notifyChanges();
+						break;
+					}
+				}
+
+
+			}});
+
+		_alternateSubPanelBody.addStyleName("orderSubmitterAlternateBody"); //$NON-NLS-1$
+		_alternateSubPanelBodyTile.addStyleName("orderSubmitterAlternateBodytile"); //$NON-NLS-1$
+		_alternateSubPanelFooter.addStyleName("orderSubmitterAlternateFooter"); //$NON-NLS-1$
+
+
+		_alternateSubPanelBody.add(_waitLabel,85,30);
+		_alternateRootPanelBody.setWidth("500px"); //$NON-NLS-1$
+		_alternateRootPanelBodyTile.setWidth("500px"); //$NON-NLS-1$
+		_alternateRootPanelFooter.setWidth("500px"); //$NON-NLS-1$
+
+		_alternateRootPanelBody.add(_alternateSubPanelBody);
+		_alternateRootPanelBodyTile.add(_alternateSubPanelBodyTile);
+		_alternateRootPanelFooter.add(_alternateSubPanelFooter);
+	}
+
+
+	private void fillMainPanel() {
+		// Fill up that son of a bitch of a mainPanel
+		Label requestLabel = new Label(Messages.REQUEST_LOGO_LBL.getString());
+		requestLabel.addStyleName("h3"); 
+		requestLabel.addStyleName("fontAR");
+
+		_mainPanel.add(requestLabel );
+
+		_mainPanel.add(_logoTextPanel);
+		_mainPanel.add(_logoDescriptionPanel);
+		_mainPanel.add(_colorPanel);
+		_mainPanel.add(_submitOrderButton);
+	}
+
+
+	private void setSubmitButtonStuff() {
+		_submitOrderButton.removeStyleName("gwt-Button");
+		_submitOrderButton.addStyleName("submitRequest"); //$NON-NLS-1$
+		_submitOrderButton.addStyleName("fontAR"); //$NON-NLS-1$
+
+		// Listen for mouse events on the Add button.
+		_submitOrderButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				submitOrder();
+			}
+		});
+	}
+
+
+	private void setErrorLabelsStyles() {
+		_descErrorLabel.setStyleName("errorLabel"); //$NON-NLS-1$
+		_logoErrorLabel.setStyleName("errorLabel"); //$NON-NLS-1$
+		_colourErrorLabel.setStyleName("errorLabel"); //$NON-NLS-1$
+	}
+
+
+	private void setupColorPickerPanel() {
+		//Setup color picker stuff
+		_colourLabel.setStyleName("label"); //$NON-NLS-1$
+		_colourLabel.addStyleName("fontAR");
+
+		_pantoneTextBox.setStyleName("pantoneLabel"); //$NON-NLS-1$
+		_pantoneTextBox.addStyleName("fontAR");
+
+		_colourLabelPanel.add(_logoColourHelpMark);
+		_colourLabelPanel.add(getNewWhiteSpace(5));
+		_colourLabelPanel.add(_colourLabel);
+
+		_colorSubPanel.setVerticalAlignment(HorizontalPanel.ALIGN_MIDDLE);
+		_colorSubPanel.setHorizontalAlignment(HorizontalPanel.ALIGN_LEFT);
+		_colorSubPanel.add(_colourLabelPanel);
+		_colorSubPanel.add(getNewWhiteSpace(5));
+		_colorSubPanel.add(_pantoneTextBox);
+		_colorSubPanel.setHeight("15px"); //$NON-NLS-1$
+
+		_colorPanel.add(_colorSubPanel);
+		_colorPanel.add(_colourErrorLabel);
+
+		configureColoursPanels();
+
+		_colorPanel.setWidth("300px"); //$NON-NLS-1$
+		_colorPanel.setSpacing(2);
+
+		_rows.setSpacing(0);
+		_rows.add(_firstRow);
+		_rows.add(_secondRow);
+		_rows.add(_thirdRow);
+
+		_colorPanel.add(_rows);
+	}
+
+
+	private void setupAllHelpPopups() {
+		//3.Setup help popups for Logo Text - Tags - Color choice
+		_logoTextHelpPopup.setStyleName("helpPopup");
+		_logoDescHelpPopup.setStyleName("helpPopup");
+		_logoColourHelpPopup.setStyleName("helpPopup");
+
+		_logoTextHelpMark.addStyleName("infoButton");
+		_logoTextHelpMark.addStyleName("labelButton");
+		_logoDescHelpMark.addStyleName("infoButton");
+		_logoDescHelpMark.addStyleName("labelButton");
+		_logoColourHelpMark.addStyleName("infoButton");
+		_logoColourHelpMark.addStyleName("labelButton");
+
+		_logoTextHelpPopup.setWidth("220px");
+		_logoDescHelpPopup.setWidth("220px");
+		_logoColourHelpPopup.setWidth("220px");
+
+		_logoTextHelpMark.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event) {	
+				if(!_logoTextHelpPopup.isShowing())
+				{
+					_logoTextHelpPopup.showRelativeTo(_logoTextLabel);
+					_logoTextHelpMark.removeStyleName("infoButton");
+					_logoTextHelpMark.addStyleName("infoButtonClicked");
+				}
+			}});
+
+		_logoTextHelpPopup.addCloseHandler(new CloseHandler<PopupPanel>(){
+			public void onClose(CloseEvent<PopupPanel> event) {
+				_logoTextHelpMark.addStyleName("infoButton");
+				_logoTextHelpMark.removeStyleName("infoButtonClicked");
+			}});
+
+		_logoTextHelpPopup.setWidget(_logoTextHelpLabel);
+
+		_logoDescHelpMark.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event) {	
+				if(!_logoDescHelpPopup.isShowing())
+				{
+					_logoDescHelpPopup.showRelativeTo(_logoDescLabel);
+					_logoDescHelpMark.removeStyleName("infoButton");
+					_logoDescHelpMark.addStyleName("infoButtonClicked");
+				}
+			}});
+
+		_logoDescHelpPopup.addCloseHandler(new CloseHandler<PopupPanel>(){
+			public void onClose(CloseEvent<PopupPanel> event) {
+				_logoDescHelpMark.addStyleName("infoButton");
+				_logoDescHelpMark.removeStyleName("infoButtonClicked");
+			}});
+
+		_logoDescHelpPopup.setWidget(_logoDescHelpLabel);
+
+		_logoColourHelpMark.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event) {	
+				if(!_logoColourHelpPopup.isShowing())
+				{
+					_logoColourHelpPopup.showRelativeTo(_colourLabel);
+					_logoColourHelpMark.removeStyleName("infoButton");
+					_logoColourHelpMark.addStyleName("infoButtonClicked");
+				}
+			}});
+
+		_logoColourHelpPopup.addCloseHandler(new CloseHandler<PopupPanel>(){
+			public void onClose(CloseEvent<PopupPanel> event) {
+				_logoColourHelpMark.removeStyleName("infoButtonClicked");
+				_logoColourHelpMark.addStyleName("infoButton");
+			}});
+
+
+		_logoColourHelpPopup.setWidget(_logoColourHelpLabel);
+	}
+
+
+	private void setupLogoDescPanel() {
+		//2.Tags section setup
+		_logoDescLabel.addStyleName("label");
+		_logoDescLabel.addStyleName("fontAR");
+		_descHintLabel.addStyleName("hintLabel"); 
+
+		_logoDescBox.setWidth("290px"); 
+		_logoDescBox.setText(Messages.LOGO_DESC_TXTBOX.getString());
+		_logoDescBox.setStyleName("textBox"); 
+
+		_logoDescBox.addBlurHandler(new BlurHandler(){
+			public void onBlur(BlurEvent event) {
+				setDescModified(true);
+				checkErrors();
+			}
+		});
+
+		_logoDescBoxPanel.add(_logoDescBox);
+		_logoDescBoxPanel.add(getNewWhiteSpace(10));
+		_logoDescBoxPanel.add(_descOkImage);
+
+		_logoDescriptionPanel.setSpacing(2);
+
+
+		_logoDescLabelPanel.add(_logoDescHelpMark);
+		_logoDescLabelPanel.add(getNewWhiteSpace(5));
+		_logoDescLabelPanel.add(_logoDescLabel);
+
+		_logoDescriptionPanel.add(_logoDescLabelPanel);
+		_logoDescriptionPanel.add(_descHintLabel);
+		_logoDescriptionPanel.add(_logoDescBoxPanel);
+		_logoDescriptionPanel.add(_descErrorLabel);
+	}
+
+
+	private void setupLogoTextPanel() {
+		//1.Logo Name section setup
+		_logoTextLabel.addStyleName("label"); //$NON-NLS-1$
+		_logoTextLabel.addStyleName("fontAR"); 
+		_logoHintLabel.setStyleName("hintLabel"); //$NON-NLS-1$
+
+		_logoTextBox.setText(Messages.LOGO_NAME_TXTBOX.getString()); //$NON-NLS-1$
+		_logoTextBox.setWidth("290px"); //$NON-NLS-1$
+		_logoTextBox.setStyleName("textBox"); //$NON-NLS-1$
+		_logoTextBox.addStyleName("fontAR");
+		_logoTextBox.addBlurHandler(new BlurHandler(){
+			public void onBlur(BlurEvent event) {
+				setNameModified(true);
+				checkErrors();
+			}
+		});
+
+		_logoTextBox.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event) {
+				if(_logoTextBox.getText().equals(Messages.LOGO_NAME_TXTBOX.getString())) //$NON-NLS-1$
+				{
+					_logoTextBox.selectAll();
+				}
+			}});
+
+		_logoTextBoxPanel.add(_logoTextBox);
+		_logoTextBoxPanel.add(getNewWhiteSpace(10));
+		_logoTextBoxPanel.add(_logoOkImage);
+
+		// prepare logoText vertical panel
+		_logoTextPanel.setSpacing(2);
+
+		_logoTextLabelPanel.setVerticalAlignment(VerticalPanel.ALIGN_TOP);
+		_logoTextLabelPanel.add(_logoTextHelpMark);
+		_logoTextLabelPanel.add(getNewWhiteSpace(10));
+		_logoTextLabelPanel.add(_logoTextLabel);
+
+		_logoTextPanel.add(_logoTextLabelPanel);
+		_logoTextPanel.add(_logoHintLabel);
+		_logoTextPanel.add(_logoTextBoxPanel);
+		_logoTextPanel.add(_logoErrorLabel);
+	}
+
+
+	private void setEverythingToInvisible() {
+		// set everything to invisible
+		setNameModified(false);
+		setDescModified(false);
+		setColourModified(false);
+		_mainPanel.setVisible(false);
+	}
+
 
 	private void hideValidationImages() {
 		_colourOkImage.setVisible(false);
 		_logoOkImage.setVisible(false);
-		_tagsOkImage.setVisible(false);
+		_descOkImage.setVisible(false);
 	}
 
 
@@ -475,13 +495,13 @@ public class OrderSubmitterModulePart extends AModulePart
 	/**
 	 * 
 	 */
-	private void addHashToTags() 
+	/*private void addHashToTags() 
 	{
-		if(!_logoTagsBox.isSuggestionListShowing())
+		if(!_logoDescBox.isSuggestionListShowing())
 		{
-			if(((MultipleTextBox)_logoTagsBox.getTextBox()).getWholeText().length()!=0)
+			if(((MultipleTextBox)_logoDescBox.getTextBox()).getWholeText().length()!=0)
 			{
-				String[] tags=((MultipleTextBox)_logoTagsBox.getTextBox()).getWholeText().split(" ");
+				String[] tags=((MultipleTextBox)_logoDescBox.getTextBox()).getWholeText().split(" ");
 				String tagsString="";
 				for(int i=0;i<tags.length;i++)
 				{
@@ -494,10 +514,10 @@ public class OrderSubmitterModulePart extends AModulePart
 						tagsString+=tags[i]+" ";
 					}
 				}
-				((MultipleTextBox)_logoTagsBox.getTextBox()).setWholeText(tagsString.trim());
+				((MultipleTextBox)_logoDescBox.getTextBox()).setWholeText(tagsString.trim());
 			}
 		}
-	}
+	}*/
 
 	private void hookUpCallbacks() {
 		// Set up the callback object
@@ -506,11 +526,24 @@ public class OrderSubmitterModulePart extends AModulePart
 			public void onSuccess(List<OrderDTO> result) {
 				// check state and accordingly set alternate/main panel switch
 				setShowHideStateByLatestOrder(OrderDTOUtils.getMostRecentOrder(result));
-				showHidePanels();
 			}
 
 			public void onFailure(Throwable caught) {
 				// TODO Auto-generated method stub
+			}
+		};
+
+		//set up get latest order callback
+		_getOrdersForKillswitchOnCallback = new AsyncCallback<List<OrderDTO>>() {
+
+			public void onSuccess(List<OrderDTO> result) {
+				// sets wait message when killswitch is on depending on the latest order
+				setMessageWithKillswitchOn(OrderDTOUtils.getMostRecentOrder(result));
+			}
+
+			public void onFailure(Throwable caught) {
+				// on failure la porcata - defaulta a killswitch
+				_waitLabel.setText(Messages.ERROR_WAITMSG.getString()); 
 			}
 		};
 
@@ -544,6 +577,24 @@ public class OrderSubmitterModulePart extends AModulePart
 				//TODO give feedback to the user that something went wrong!
 			}
 		};
+	}
+
+
+	protected void setMessageWithKillswitchOn(OrderDTO latestOrder) {
+		// sets wait message when killswitch is on depending on the latest order
+		if(latestOrder==null || (latestOrder.getStatus() == Status.ARCHIVED 
+				|| latestOrder.getStatus() == Status.BOUGHT 
+				|| latestOrder.getStatus() == Status.REJECTED))
+		{
+			//set wait label text --> killswitch message
+			_waitLabel.setText(Messages.valueOf("KILLSWITCH_ON_WAITMSG").getString());
+		}
+		else
+		{
+			//set wait label text according to latest order status
+			updateAlternatePanelMessage(latestOrder,false);
+		}
+
 	}
 
 
@@ -605,14 +656,15 @@ public class OrderSubmitterModulePart extends AModulePart
 	protected void submitOrder() 
 	{
 		setNameModified(true);
-		setTagsModified(true);
+		setDescModified(true);
 		setColourModified(true);
 		if(checkErrors())
 		{
 			// Make the call to the stock price service.
 			_submittedOrder=new OrderDTO();
 			_submittedOrder.setStatus(Status.INCOMING);
-			_submittedOrder.setTags(((MultipleTextBox)_logoTagsBox.getTextBox()).getWholeText().split(" ")); //$NON-NLS-1$
+			String[] descriptions = {_logoDescBox.getText()};
+			_submittedOrder.setDescriptions(descriptions);
 			_submittedOrder.setText(_logoTextBox.getText());
 			_submittedOrder.setColour(_selectedColour);
 
@@ -625,19 +677,14 @@ public class OrderSubmitterModulePart extends AModulePart
 	 */
 	private boolean checkErrors() 
 	{
-		if(!((MultipleTextBox)_logoTagsBox.getTextBox()).getWholeText().equals(Messages.LOGO_TAGS_TXTBOX.getString()))
-		{
-			addHashToTags();
-		}
+		Validator.DescriptionErrors descError = DescriptionErrors.NONE;
+		Validator.LogoErrors logoError = LogoErrors.NONE;
+		Validator.ColourErrors colourError = ColourErrors.NONE;
 
-		Validator.TagsErrors tagsError=TagsErrors.NONE;
-		Validator.LogoErrors logoError=LogoErrors.NONE;
-		Validator.ColourErrors colourError=ColourErrors.NONE;
-
-		if(isTagsModified())
+		if(isDescModified())
 		{
-			tagsError=Validator.validateTags(((MultipleTextBox)_logoTagsBox.getTextBox()).getWholeText());
-			setTagErrorStatus(tagsError);
+			descError=Validator.validateDescription(_logoDescBox.getText());
+			setTagErrorStatus(descError);
 		}
 
 		if(isNameModified())
@@ -652,7 +699,7 @@ public class OrderSubmitterModulePart extends AModulePart
 			setColourError(colourError);
 		}
 
-		return tagsError.equals(TagsErrors.NONE) && 
+		return descError.equals(DescriptionErrors.NONE) && 
 		colourError.equals(ColourErrors.NONE) && 
 		logoError.equals(LogoErrors.NONE);
 
@@ -704,25 +751,25 @@ public class OrderSubmitterModulePart extends AModulePart
 	/**
 	 * @param tagsError
 	 */
-	private void setTagErrorStatus(TagsErrors tagsError) 
+	private void setTagErrorStatus(DescriptionErrors tagsError) 
 	{
 		switch(tagsError)
 		{
-		case TOO_FEW_TAGS:
-			_tagsErrorLabel.setText(Messages.LOGO_TAGS_ERROR_NOTENOUGH.getString());
-			_tagsOkImage.setUrl(Images.NOK.getImageURL());
+		case TOO_SHORT:
+			_descErrorLabel.setText(Messages.LOGO_DESC_ERROR_TOOSHORT.getString());
+			_descOkImage.setUrl(Images.NOK.getImageURL());
 			break;
 		case NONE:
-			_tagsErrorLabel.setText("");
-			_tagsOkImage.setUrl(Images.OK.getImageURL());
+			_descErrorLabel.setText("");
+			_descOkImage.setUrl(Images.OK.getImageURL());
 			break;
-		case TAGS_TOO_LONG:
-			_tagsErrorLabel.setText(Messages.LOGO_TAGS_ERROR_TOOLONG.getString());
-			_tagsOkImage.setUrl(Images.NOK.getImageURL());
+		case TOO_LONG:
+			_descErrorLabel.setText(Messages.LOGO_DESC_ERROR_TOOLONG.getString());
+			_descOkImage.setUrl(Images.NOK.getImageURL());
 			break;
-		case TOO_MANY_TAGS:
-			_tagsErrorLabel.setText(Messages.LOGO_TAGS_ERROR_TOOMANY.getString());
-			_tagsOkImage.setUrl(Images.NOK.getImageURL());
+		case EMPTY:
+			_descErrorLabel.setText(Messages.LOGO_DESC_ERROR_EMPTY.getString());
+			_descOkImage.setUrl(Images.NOK.getImageURL());
 			break;
 		}
 	}
@@ -763,7 +810,7 @@ public class OrderSubmitterModulePart extends AModulePart
 		}
 		else
 		{
-			this._waitLabel.setText(Messages.ERROR_WAITMSG.getString()); //$NON-NLS-1$
+			this._waitLabel.setText(Messages.ERROR_WAITMSG.getString());
 		}
 
 		applyCufon();
@@ -771,7 +818,7 @@ public class OrderSubmitterModulePart extends AModulePart
 
 
 	/**
-	 * Gets latest order and hooks up event success/failure handlers (a bit fucked if you ask me)
+	 * Gets latest order and hooks up event success/failure handlers
 	 */
 	protected void setViewByLatestOrder() 
 	{
@@ -786,7 +833,6 @@ public class OrderSubmitterModulePart extends AModulePart
 	{
 		if(_mainPanel.isVisible())
 		{
-			// Associate the feckin' Main panel with the HTML element on the host page.
 			// nascondi le cazzo di immagini per IE
 			hideValidationImages();
 			showAlternatePanels(false);
@@ -795,7 +841,7 @@ public class OrderSubmitterModulePart extends AModulePart
 		{
 			_logoOkImage.setVisible(false);
 			_colourOkImage.setVisible(false);
-			_tagsOkImage.setVisible(false);
+			_descOkImage.setVisible(false);
 			showAlternatePanels(true);	
 		}
 	}
@@ -811,11 +857,20 @@ public class OrderSubmitterModulePart extends AModulePart
 		{
 
 			_mainPanel.setVisible(true);
+
+			// nascondi le cazzo di immagini per IE
+			hideValidationImages();
+			showAlternatePanels(false);
 		}
 		else
 		{
 			_mainPanel.setVisible(false);
 			updateAlternatePanelMessage(result,false);
+
+			_logoOkImage.setVisible(false);
+			_colourOkImage.setVisible(false);
+			_descOkImage.setVisible(false);
+			showAlternatePanels(true);	
 		}
 	}
 
@@ -888,14 +943,14 @@ public class OrderSubmitterModulePart extends AModulePart
 	}
 
 
-	private boolean isTagsModified() {
-		return _tagsModified;
+	private boolean isDescModified() {
+		return _descModified;
 	}
 
 
-	private void setTagsModified(boolean tagsModified) {
-		_tagsModified = tagsModified;
-		_tagsOkImage.setVisible(tagsModified);
+	private void setDescModified(boolean descModified) {
+		_descModified = descModified;
+		_descOkImage.setVisible(descModified);
 
 	}
 
