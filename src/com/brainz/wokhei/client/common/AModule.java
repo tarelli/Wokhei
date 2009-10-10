@@ -17,13 +17,11 @@ public abstract class AModule implements EntryPoint {
 
 	private LoginInfo _loginInfo = null;
 
-
 	private Date _timeStamp=null;
 
 	private boolean _isKillSwitch=false;
 
 	private int _responsesReceived=0;
-
 
 	private Boolean _isSandBox=false;
 

@@ -23,9 +23,9 @@ public class UtilityServiceImpl extends RemoteServiceServlet implements UtilityS
 	private static final Logger log = Logger.getLogger(UtilityServiceImpl.class.getName());
 
 	public Date getServerTimestamp() {
-		Date timeStamp = new Date();
+		Date timeStamp = new Date(); 
 		return timeStamp;
-	}
+	} 
 
 	/* (non-Javadoc)
 	 * @see com.brainz.wokhei.client.UtilityService#getCurrentUsername()
