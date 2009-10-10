@@ -14,7 +14,7 @@ public class OrderDTO implements Serializable{
 
 	private String _text;
 
-	private String[] _tags;
+	private String[] _descriptions;
 
 	private Date _date;
 
@@ -41,19 +41,19 @@ public class OrderDTO implements Serializable{
 	/**
 	 * @param id
 	 * @param text
-	 * @param tags
+	 * @param descriptions
 	 * @param date
 	 * @param status
 	 * @param colour
 	 * @param customerEmail
 	 */
-	public OrderDTO(Long id, String text, String[] tags, Date date, Date acceptedDate, Date viewedDate,
+	public OrderDTO(Long id, String text, String[] descriptions, Date date, Date acceptedDate, Date viewedDate,
 			Status status, Colour colour, String customerEmail, Integer progressive) 
 	{
 		super();
 		_id = id;
 		_text = text;
-		_tags = tags;
+		_descriptions = descriptions;
 		_date = date;
 		_acceptedDate = acceptedDate;
 		_viewedDate = viewedDate;
@@ -133,17 +133,17 @@ public class OrderDTO implements Serializable{
 	/**
 	 * @return
 	 */
-	public String[] getTags() 
+	public String[] getDescriptions() 
 	{
-		return _tags;
+		return _descriptions;
 	}
 
 	/**
-	 * @param tags
+	 * @param descriptions
 	 */
-	public void setTags(String[] tags) 
+	public void setDescriptions(String[] descriptions) 
 	{
-		_tags = tags;
+		_descriptions = descriptions;
 	}
 
 	/**

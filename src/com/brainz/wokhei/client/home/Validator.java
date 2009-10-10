@@ -12,16 +12,15 @@ import com.brainz.wokhei.shared.Colour;
 public class Validator {
 
 	private static final int MAX_LOGONAME_LENGTH = 30;
-	private static final int MAX_TAGS = 5;
-	private static final int TAG_MAX_LENGTH = 20;
-	private static final int MIN_TAGS = 3;
+	private static final int DESC_MAX_LENGTH = 250;
+	private static final int DESC_MIN_LENGTH = 25;
 
-	public enum TagsErrors
+	public enum DescriptionErrors
 	{
 		NONE,
-		TOO_MANY_TAGS,
-		TAGS_TOO_LONG,
-		TOO_FEW_TAGS
+		TOO_SHORT,
+		TOO_LONG,
+		EMPTY
 	}
 
 	public enum ColourErrors{
@@ -36,28 +35,27 @@ public class Validator {
 	}
 
 	/**
-	 * @param tagsString
+	 * @param description
 	 * @return
 	 */
-	public static TagsErrors validateTags(String tagsString)
+	public static DescriptionErrors validateDescription(String description)
 	{
-		String[] tags=tagsString.split(" ");
-		if(tags.length<MIN_TAGS)
+		String desc = description;
+
+		if(desc.length() == 0)
 		{
-			return TagsErrors.TOO_FEW_TAGS;
+			return DescriptionErrors.EMPTY;
 		}
-		else if(tags.length>MAX_TAGS)
+		if(desc.length() < DESC_MIN_LENGTH)
 		{
-			return TagsErrors.TOO_MANY_TAGS;
+			return DescriptionErrors.TOO_SHORT;
 		}
-		for(int i=0;i<tags.length;i++)
+		else if(desc.length() > DESC_MAX_LENGTH)
 		{
-			if(tags[i].length()-1>TAG_MAX_LENGTH)
-			{
-				return TagsErrors.TAGS_TOO_LONG;
-			}
+			return DescriptionErrors.TOO_LONG;
 		}
-		return TagsErrors.NONE;
+
+		return DescriptionErrors.NONE;
 	}
 
 	/**
