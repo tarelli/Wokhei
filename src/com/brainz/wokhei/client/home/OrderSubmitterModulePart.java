@@ -14,11 +14,13 @@ import com.brainz.wokhei.client.home.Validator.DescriptionErrors;
 import com.brainz.wokhei.client.home.Validator.LogoErrors;
 import com.brainz.wokhei.resources.Images;
 import com.brainz.wokhei.resources.Messages;
+import com.brainz.wokhei.resources.PayPalStrings;
 import com.brainz.wokhei.shared.Colour;
 import com.brainz.wokhei.shared.DateDifferenceCalculator;
 import com.brainz.wokhei.shared.OrderDTO;
 import com.brainz.wokhei.shared.OrderDTOUtils;
 import com.brainz.wokhei.shared.Status;
+import com.brainz.wokhei.shared.TransactionType;
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -28,6 +30,8 @@ import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.FormPanel;
+import com.google.gwt.user.client.ui.Hidden;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -36,6 +40,10 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
+import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteHandler;
+import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
+import com.google.gwt.user.client.ui.FormPanel.SubmitHandler;
 /**
  * @author matteocantarelli
  *
@@ -119,7 +127,7 @@ public class OrderSubmitterModulePart extends AModulePart
 	// callbacks
 	private AsyncCallback<List<OrderDTO>> _getOrdersCallback = null;
 	private AsyncCallback<List<OrderDTO>> _getOrdersForKillswitchOnCallback = null;
-	private AsyncCallback<Boolean> _submitOrderCallback = null;
+	private AsyncCallback<Long> _submitOrderCallback = null;
 	private AsyncCallback<Long> _setOrderStatusCallback = null;
 
 	private OrderDTO _submittedOrder = null;
@@ -492,33 +500,6 @@ public class OrderSubmitterModulePart extends AModulePart
 		return whiteSpace;
 	}
 
-	/**
-	 * 
-	 */
-	/*private void addHashToTags() 
-	{
-		if(!_logoDescBox.isSuggestionListShowing())
-		{
-			if(((MultipleTextBox)_logoDescBox.getTextBox()).getWholeText().length()!=0)
-			{
-				String[] tags=((MultipleTextBox)_logoDescBox.getTextBox()).getWholeText().split(" ");
-				String tagsString="";
-				for(int i=0;i<tags.length;i++)
-				{
-					if(tags[i].charAt(0)!='#')
-					{
-						tagsString+="#"+tags[i]+" ";
-					}
-					else
-					{
-						tagsString+=tags[i]+" ";
-					}
-				}
-				((MultipleTextBox)_logoDescBox.getTextBox()).setWholeText(tagsString.trim());
-			}
-		}
-	}*/
-
 	private void hookUpCallbacks() {
 		// Set up the callback object
 		_getOrdersCallback = new AsyncCallback<List<OrderDTO>>() {
@@ -548,20 +529,24 @@ public class OrderSubmitterModulePart extends AModulePart
 		};
 
 		// Set up the callback object.
-		_submitOrderCallback  = new AsyncCallback<Boolean>() {
+		_submitOrderCallback  = new AsyncCallback<Long>() {
 			public void onFailure(Throwable caught) {
 				//				_messageLabel.setText(Messages.GENERIC_ERROR.getString() + caught.getMessage()); //$NON-NLS-1$
 			}
 
-			public void onSuccess(Boolean result) {
-				if(result!=false && _submittedOrder!=null)
+			public void onSuccess(Long result) {
+				if(result!=null && _submittedOrder!=null)
 				{
-					updateAlternatePanelMessage(_submittedOrder, result);
-
-					_mainPanel.setVisible(false);
-
-					showHidePanels();
-					notifyChanges();
+					_submittedOrder.setId(result);
+					PopupPanel microPayment=getMicroPaymentPanel();
+					microPayment.show();
+					//			QUESTO DOVRA ESSERE FATTO NELLA SERVLET QUANDO ARRIVA IL PAGAMENTO..forse		
+					//					updateAlternatePanelMessage(_submittedOrder, result);
+					//
+					//					_mainPanel.setVisible(false);
+					//
+					//					showHidePanels();
+					//					notifyChanges();
 				}
 			}
 		};
@@ -650,6 +635,180 @@ public class OrderSubmitterModulePart extends AModulePart
 	}
 
 
+	private FormPanel getPayPalForm(Long orderId)
+	{
+		final FormPanel paypalForm = new FormPanel("");
+		boolean isSandbox = getModule().isSandBox();
+		//fill-up paypal form
+		if(isSandbox)
+		{
+			paypalForm.setAction(PayPalStrings.PAYPAL_SANDBOX_ACTION.getString());
+		}
+		else
+		{
+			paypalForm.setAction(PayPalStrings.PAYPAL_ACTION.getString());	
+		}	
+
+		paypalForm.setEncoding(FormPanel.ENCODING_MULTIPART);
+		paypalForm.setMethod(FormPanel.METHOD_POST);
+
+		VerticalPanel formPlaceHolder = new VerticalPanel();
+
+		//setup input element for seller
+		Hidden sellerInfo = new Hidden();
+
+		sellerInfo.setName(PayPalStrings.PAYPAL_BUSINESS_NAME.getString());
+
+		if(isSandbox)
+		{
+			sellerInfo.setValue(PayPalStrings.PAYPAL_SANDBOX_BUSINESS_VALUE.getString());
+		}
+		else
+		{
+			sellerInfo.setValue(PayPalStrings.PAYPAL_BUSINESS_VALUE.getString());	
+		}		
+
+		formPlaceHolder.add(sellerInfo);
+		//specify buy now button
+		Hidden cmdInfo = new Hidden();
+
+		cmdInfo.setName(PayPalStrings.PAYPAL_CMD_NAME.getString());
+
+		cmdInfo.setValue(PayPalStrings.PAYPAL_CMD_VALUE.getString());
+
+		formPlaceHolder.add(cmdInfo);
+		//specify purchase details
+		Hidden itemNameInfo = new Hidden();
+		Hidden amountInfo = new Hidden();
+		Hidden taxInfo = new Hidden();
+		Hidden currencyInfo = new Hidden();
+		Hidden notifyInfo = new Hidden();
+		Hidden returnInfo = new Hidden();
+		Hidden custom = new Hidden();
+		Hidden transactiontype=new Hidden();
+		Hidden locale = new Hidden();
+
+		itemNameInfo.setName(PayPalStrings.PAYPAL_ITEMNAME_NAME.getString());
+		itemNameInfo.setValue(PayPalStrings.PAYPAL_ITEMNAME_VALUE.getString());
+		formPlaceHolder.add(itemNameInfo);
+
+		amountInfo.setName(PayPalStrings.PAYPAL_AMOUNT_NAME.getString());
+		amountInfo.setValue(TransactionType.MICROPAYMENT.getValue().toString());
+		formPlaceHolder.add(amountInfo);
+
+		taxInfo.setName(PayPalStrings.PAYPAL_TAX_NAME.getString());
+		taxInfo.setValue(TransactionType.MICROPAYMENT.getTax().toString());
+		formPlaceHolder.add(taxInfo);
+
+		currencyInfo.setName(PayPalStrings.PAYPAL_CURRENCY_NAME.getString());
+		currencyInfo.setValue(PayPalStrings.PAYPAL_CURRENCY_VALUE.getString());
+		formPlaceHolder.add(currencyInfo);
+
+		notifyInfo.setName(PayPalStrings.PAYPAL_NOTIFY_URL_NAME.getString());
+		if(isSandbox)
+		{
+			notifyInfo.setValue(PayPalStrings.PAYPAL_NOTIFY_URL_SANDBOX_VALUE.getString());
+		}
+		else
+		{
+			notifyInfo.setValue(PayPalStrings.PAYPAL_NOTIFY_URL_VALUE.getString());
+
+		}
+		formPlaceHolder.add(notifyInfo);
+
+		returnInfo.setName(PayPalStrings.PAYPAL_RETURN_NAME.getString());
+		returnInfo.setValue(PayPalStrings.PAYPAL_RETURN_VALUE.getString());
+
+		custom.setName(PayPalStrings.PAYPAL_CUSTOM_NAME.getString());
+		custom.setValue(orderId.toString());
+		formPlaceHolder.add(custom);
+
+		transactiontype.setName(PayPalStrings.PAYPAL_TRANSACTIONTYPE_NAME.getString());
+		transactiontype.setValue(TransactionType.MICROPAYMENT.toString());
+		formPlaceHolder.add(transactiontype);
+
+		locale.setName(PayPalStrings.PAYPAL_LOCALE_NAME.getString());
+		locale.setValue(PayPalStrings.PAYPAL_LOCALE_NAME.getString());
+		formPlaceHolder.add(locale);
+
+		//setup submit button
+		Image buyNowButton = new Image();
+		buyNowButton.setStyleName("labelButton");
+		buyNowButton.setUrl(Images.PAYPAL_BUTTON.getImageURL());
+
+		buyNowButton.addClickHandler(new ClickHandler(){
+
+			public void onClick(ClickEvent event) 
+			{
+				paypalForm.submit();
+			}
+		});
+		formPlaceHolder.add(buyNowButton);
+
+		paypalForm.add(formPlaceHolder);
+
+
+
+		return paypalForm;
+	}
+
+
+	private PopupPanel getMicroPaymentPanel()
+	{
+		//setup submit button
+		Image payTipButton = new Image();
+		payTipButton.setStyleName("labelButton");
+		payTipButton.setUrl(Images.PAYPAL_BUTTON.getImageURL());
+
+		payTipButton.addClickHandler(new ClickHandler(){
+
+			public void onClick(ClickEvent event) 
+			{
+
+
+				FormPanel paypalForm=getPayPalForm(_submittedOrder.getId());
+
+				//setup submit handlers
+				paypalForm.addSubmitHandler(new SubmitHandler(){
+					public void onSubmit(SubmitEvent event) {
+						//cancel if license has not been accepted
+						//								if (! _acceptLicenseCheckBox.getValue())
+						//								{
+						//									_feedBackLabel.setText(Messages.MUST_ACCEPT_LICENSE.getString());
+						//									event.cancel();
+						//								}
+					}
+				});
+
+				paypalForm.addSubmitCompleteHandler(new SubmitCompleteHandler() {
+
+					public void onSubmitComplete(SubmitCompleteEvent event)
+					{
+						//nothing to handle? whoo-yeah! AVP sucks dick
+					}
+				});
+
+
+				paypalForm.submit();
+			}
+		});
+
+		VerticalPanel microPaymentPanel=new VerticalPanel();
+		microPaymentPanel.setHorizontalAlignment(VerticalPanel.ALIGN_CENTER);
+		microPaymentPanel.add(payTipButton);
+
+
+		PopupPanel micropaymentPopup= new PopupPanel(true); 
+		micropaymentPopup.setStyleName("microPaymentPopup");
+		micropaymentPopup.setWidget(microPaymentPanel);
+		micropaymentPopup.setWidth("300px");
+		micropaymentPopup.center();
+		micropaymentPopup.show();
+
+		return micropaymentPopup;
+
+	}
+
 	/**
 	 * 
 	 */
@@ -660,15 +819,14 @@ public class OrderSubmitterModulePart extends AModulePart
 		setColourModified(true);
 		if(checkErrors())
 		{
-			// Make the call to the stock price service.
 			_submittedOrder=new OrderDTO();
-			_submittedOrder.setStatus(Status.INCOMING);
+			_submittedOrder.setStatus(Status.PENDING);
 			String[] descriptions = {_logoDescBox.getText()};
 			_submittedOrder.setDescriptions(descriptions);
 			_submittedOrder.setText(_logoTextBox.getText());
 			_submittedOrder.setColour(_selectedColour);
 
-			((OrderServiceAsync) getService(Service.ORDER_SERVICE)).submitOrder(_submittedOrder, _submitOrderCallback);	
+			((OrderServiceAsync)getService(Service.ORDER_SERVICE)).submitOrder(_submittedOrder, _submitOrderCallback);
 		}
 	}
 
@@ -853,7 +1011,8 @@ public class OrderSubmitterModulePart extends AModulePart
 	{
 		if(result==null || (result.getStatus() == Status.ARCHIVED 
 				|| result.getStatus() == Status.BOUGHT 
-				|| result.getStatus() == Status.REJECTED))
+				|| result.getStatus() == Status.REJECTED
+				|| result.getStatus() == Status.PENDING))
 		{
 
 			_mainPanel.setVisible(true);
@@ -861,17 +1020,38 @@ public class OrderSubmitterModulePart extends AModulePart
 			// nascondi le cazzo di immagini per IE
 			hideValidationImages();
 			showAlternatePanels(false);
+
+			if(result.getStatus().equals(Status.PENDING))
+			{
+				//load in the submitter the data from the pending request
+				_logoDescBox.setText(result.getDescriptions()[0]);
+				_logoTextBox.setText(result.getText());
+
+				_pantoneTextBox.setText(result.getColour().getName());
+				int index=Colour.indexOf(result.getColour());
+				_selectedColourButton=_colours[index];
+				_selectedColour=result.getColour();
+				_colours[index].removeStyleName("colourNormal"); //$NON-NLS-1$
+				_colours[index].addStyleName("colourSelected"); //$NON-NLS-1$
+
+				setNameModified(true);
+				setDescModified(true);
+				setColourModified(true);
+				checkErrors();
+			}
 		}
 		else
 		{
 			_mainPanel.setVisible(false);
 			updateAlternatePanelMessage(result,false);
-
 			_logoOkImage.setVisible(false);
 			_colourOkImage.setVisible(false);
 			_descOkImage.setVisible(false);
 			showAlternatePanels(true);	
+
+
 		}
+
 	}
 
 	/**

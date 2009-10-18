@@ -32,7 +32,7 @@ public class Order implements IsSerializable{
 	private String text;
 
 	@Persistent
-	private List<String> tags;
+	private List<String> descriptions;
 
 	@Persistent
 	private Date date;
@@ -53,7 +53,7 @@ public class Order implements IsSerializable{
 	public Order(User author, String text, List<String> tags, Colour colour, Date date, Integer progressive) {
 		this.customer = author;
 		this.text=text;
-		this.tags = tags;
+		this.descriptions = tags;
 		this.date = date;
 		this.colour=colour;
 		this.progressive=progressive;
@@ -61,7 +61,7 @@ public class Order implements IsSerializable{
 		//default values when instantiating
 		this.acceptedDate= null;
 		this.viewedDate = null;
-		this.status=Status.INCOMING;
+		this.status=Status.PENDING;
 	}
 
 	public Colour getColour() {
@@ -80,8 +80,8 @@ public class Order implements IsSerializable{
 		return customer;
 	}
 
-	public List<String> getTags() {
-		return tags;
+	public List<String> getDescriptions() {
+		return descriptions;
 	}
 
 	public Date getDate() {
@@ -100,8 +100,8 @@ public class Order implements IsSerializable{
 		this.customer = author;
 	}
 
-	public void setTags(List<String> tags) {
-		this.tags = tags;
+	public void setDescriptions(List<String> tags) {
+		this.descriptions = tags;
 	}
 
 	public void setDate(Date date) {
@@ -126,7 +126,7 @@ public class Order implements IsSerializable{
 	}
 
 	public Status getStatus() {
-		return status;
+		return status; 
 	}
 
 	public void setStatus(Status status) {

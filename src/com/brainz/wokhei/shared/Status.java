@@ -1,6 +1,7 @@
 package com.brainz.wokhei.shared;
 
 public enum Status {
+	PENDING,
 	INCOMING,
 	ACCEPTED,
 	REJECTED,

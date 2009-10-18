@@ -47,4 +47,16 @@ public enum Colour {
 		return _name;
 	}
 
+	public static int indexOf(Colour colour)
+	{
+		for(int i=0;i<Colour.values().length;i++)
+		{
+			if(Colour.values()[i].equals(colour))
+			{
+				return i;
+			}
+		}
+		return -1;
+	}
+
 }

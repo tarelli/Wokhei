@@ -3,6 +3,7 @@
  */
 package com.brainz.wokhei.client.home;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import com.brainz.wokhei.shared.FileType;
 import com.brainz.wokhei.shared.OrderDTO;
 import com.brainz.wokhei.shared.OrderDTOUtils;
 import com.brainz.wokhei.shared.Status;
+import com.brainz.wokhei.shared.TransactionType;
 import com.codelathe.gwt.client.SlideShow;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -279,8 +281,22 @@ public class OrderBrowserModulePart extends AModulePart{
 
 			}
 
-			public void onSuccess(List<OrderDTO> result) {
+			public void onSuccess(List<OrderDTO> result) {				
+
 				_orders=result;
+				List<OrderDTO> pendingOrders=new ArrayList<OrderDTO>();
+
+				//remove all the pending orders from the received ones
+				//if needed the pendingorders could become global				
+				for(OrderDTO o:_orders)
+				{
+					if(o.getStatus().equals(Status.PENDING))
+					{
+						pendingOrders.add(o);
+					}
+				}
+				_orders.removeAll(pendingOrders);
+
 				_currentOrder=OrderDTOUtils.getMostRecentOrder(result);
 				updatePanel();
 			}
@@ -649,6 +665,7 @@ public class OrderBrowserModulePart extends AModulePart{
 		Hidden notifyInfo = new Hidden();
 		Hidden returnInfo = new Hidden();
 		Hidden custom = new Hidden();
+		Hidden transactiontype = new Hidden();
 		Hidden locale = new Hidden();
 
 		itemNameInfo.setName(PayPalStrings.PAYPAL_ITEMNAME_NAME.getString());
@@ -656,11 +673,11 @@ public class OrderBrowserModulePart extends AModulePart{
 		formPlaceHolder.add(itemNameInfo);
 
 		amountInfo.setName(PayPalStrings.PAYPAL_AMOUNT_NAME.getString());
-		amountInfo.setValue(PayPalStrings.PAYPAL_AMOUNT_VALUE.getString());
+		amountInfo.setValue(TransactionType.BUYING_LOGO.getValue().toString());
 		formPlaceHolder.add(amountInfo);
 
 		taxInfo.setName(PayPalStrings.PAYPAL_TAX_NAME.getString());
-		taxInfo.setValue(PayPalStrings.PAYPAL_TAX_VALUE.getString());
+		taxInfo.setValue(TransactionType.BUYING_LOGO.getTax().toString());
 		formPlaceHolder.add(taxInfo);
 
 		currencyInfo.setName(PayPalStrings.PAYPAL_CURRENCY_NAME.getString());
@@ -685,6 +702,10 @@ public class OrderBrowserModulePart extends AModulePart{
 		custom.setName(PayPalStrings.PAYPAL_CUSTOM_NAME.getString());
 		custom.setValue(_currentOrder.getId().toString());
 		formPlaceHolder.add(custom);
+
+		transactiontype.setName(PayPalStrings.PAYPAL_TRANSACTIONTYPE_NAME.getString());
+		transactiontype.setValue(TransactionType.BUYING_LOGO.toString());
+		formPlaceHolder.add(transactiontype);
 
 		locale.setName(PayPalStrings.PAYPAL_LOCALE_NAME.getString());
 		locale.setValue(PayPalStrings.PAYPAL_LOCALE_NAME.getString());

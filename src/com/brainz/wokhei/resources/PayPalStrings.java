@@ -12,7 +12,6 @@ public enum PayPalStrings {
 	PAYPAL_ITEMNAME_NAME("item_name"),
 	PAYPAL_ITEMNAME_VALUE("Stir Fried Logo 24h"),
 	PAYPAL_AMOUNT_NAME("amount"),
-	PAYPAL_AMOUNT_VALUE("87.50"),
 	PAYPAL_AMOUNT_TEST_VALUE("0.75"),
 	PAYPAL_CURRENCY_NAME("currency_code"),
 	PAYPAL_CURRENCY_VALUE("EUR"),
@@ -20,15 +19,16 @@ public enum PayPalStrings {
 	PAYPAL_NOTIFY_URL_VALUE("http://www.wokhei.com/wokhei/paymentDone"),
 	PAYPAL_NOTIFY_URL_SANDBOX_VALUE("http://wokheisandbox.appspot.com/wokhei/paymentDone"),
 	PAYPAL_TAX_NAME("tax"),
-	PAYPAL_TAX_VALUE("17.50"),
+	//PAYPAL_TAX_VALUE("17.50"),
 	PAYPAL_TAX_TEST_VALUE("0.25"),
 	PAYPAL_CUSTOM_NAME("custom"),
 	PAYPAL_RETURN_NAME("return"),
 	PAYPAL_RETURN_VALUE("http://www.wokhei.com/home.html"),
-	PAYPAL_AMOUNT_TOTAL("105.00"),
+	//PAYPAL_AMOUNT_TOTAL("105.00"),
 	PAYPAL_AMOUNT_TEST_TOTAL("1.00"),
 	PAYPAL_LOCALE_NAME("lc"),
-	PAYPAL_LOCALE_VALUE("US"),
+	PAYPAL_LOCALE_VALUE("US"), 
+	PAYPAL_TRANSACTIONTYPE_NAME("transactiontype"),
 	;
 
 	private String _text;

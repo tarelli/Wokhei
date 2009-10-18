@@ -491,6 +491,17 @@ select {
 	font-size: 13px;
 }
 
+.microPaymentPopup{
+	z-index: 4;
+	background-color: #f2bc4a;
+	border: solid 2px;
+	border-color: #f69000;
+	font-family: "Trebuchet MS";
+	font-size: 12px;
+	padding: 5px;
+	color: #000000;
+}
+
 .submitRequest {
 	position: absolute;
 	width: 269px;
@@ -932,6 +943,7 @@ select {
 	padding: 5px;
 	color: #000000;
 }
+
 
 .adminTags {
 	font-size: 14px;

@@ -21,8 +21,8 @@ public class OrderUtils {
 	 */
 	public static OrderDTO getOrderDTO(Order order) 
 	{
-		String[] strArr = new String[order.getTags().size()];
-		System.arraycopy(order.getTags().toArray(), 0, strArr, 0, order.getTags().size());
+		String[] strArr = new String[order.getDescriptions().size()];
+		System.arraycopy(order.getDescriptions().toArray(), 0, strArr, 0, order.getDescriptions().size());
 		return new OrderDTO(order.getId(),order.getText(),strArr,order.getDate(),order.getAcceptedDate(),order.getViewedDate(),order.getStatus(),order.getColour(), order.getCustomer().getEmail(),order.getProgressive());
 	}
 

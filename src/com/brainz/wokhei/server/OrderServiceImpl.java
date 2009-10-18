@@ -51,9 +51,9 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 	/* (non-Javadoc)
 	 * @see com.brainz.wokhei.client.OrderService#submitOrder(com.brainz.wokhei.shared.OrderDTO)
 	 */
-	public Boolean submitOrder(OrderDTO orderDTO) 
+	public Long submitOrder(OrderDTO orderDTO) 
 	{
-		Boolean returnValue;
+		Long orderId=null;
 		Integer newNumber=0; 
 
 		// retrieve user
@@ -61,70 +61,93 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 		User user = userService.getCurrentUser();
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 
-		String select_query = "select from " + Order.class.getName() + " order by progressive desc range 0,1";
-		Query query = pm.newQuery(select_query); 
+		String pendingOrdersQueryString = "select from " + Order.class.getName() + " where  desc range 0,1";
+		Query queryPendingOrder = pm.newQuery(pendingOrdersQueryString); 
+		queryPendingOrder.setFilter("status == paramStatus"); 
+		queryPendingOrder.declareParameters("com.brainz.wokhei.shared.Status paramStatus"); 
+		List<Order> resultPendingOrders = (List<Order>)queryPendingOrder.execute(Status.PENDING);
 
-		List<Order> results = (List<Order>)query.execute();
-
-		if(!results.isEmpty())
+		Order order=null;
+		if(resultPendingOrders==null || resultPendingOrders.isEmpty())
 		{
-			newNumber=results.get(0).getProgressive();
-		}
-		if(newNumber!=null)
-		{
-			newNumber++;
-		}
-		else
-		{
-			newNumber=0;
-		}
+			//create it, no previous pending orders exist
 
-		// Instantiate order
-		Order order = new Order(user, orderDTO.getText(),Arrays.asList(orderDTO.getDescriptions()),orderDTO.getColour(), new Date(), newNumber);
+			//figure out the progressive number with a kick-ass query
+			String select_query = "select from " + Order.class.getName() + " order by progressive desc range 0,1";
+			Query query = pm.newQuery(select_query); 
 
-		if (user!= null)
-		{
-			order.setCustomer(user);
+			List<Order> results = (List<Order>)query.execute();
 
-			try {
-				pm.makePersistent(order);
-
-				returnValue = true;
-
-				//notify via email cool people
-				List<String> recipients = new ArrayList<String>();
-				recipients.add(Mails.GIOVANNI.getMailAddress());
-				recipients.add(Mails.MATTEO.getMailAddress());
-				recipients.add(Mails.SIMONE.getMailAddress());
-				recipients.add(Mails.ADMIN.getMailAddress());
-				//subject
-				String subj = Messages.NOTIFY_SUBMITTED_SUBJ.getString() + order.getCustomer().getEmail() + "!";
-				//msgbody
-				String msgBody = Messages.NOTIFY_SUBMITTED_BODY.getString() + order.getCustomer().getEmail() + ":\n\n";
-				msgBody += "Progressive: " + order.getProgressive() + "\n";
-				msgBody += "OrderID: " + order.getId() + "\n";
-				msgBody += "Text: " + order.getText() + "\n";
-				msgBody += "TagZ: " + order.getTags().toString() + "\n";
-				msgBody += "Colour: " + order.getColour().toString() + "\n";
-				EmailSender.sendEmail(Mails.YOURLOGO.getMailAddress(), recipients, subj, msgBody);
-
-				// log - this is fucked-up - if no user set there's something wrong
-				log.info("order submitted by user " + order.getCustomer().getNickname() + ": " + order.getText() + " - " + order.getTags().toString() + " COLOUR:" + order.getColour().getName());
-			} 
-			catch(Exception ex)
+			if(!results.isEmpty())
 			{
-				returnValue = false;
-				log.log(Level.SEVERE, ex.toString());
+				newNumber=results.get(0).getProgressive();
 			}
-			finally {
-				pm.close();
+			if(newNumber!=null)
+			{
+				newNumber++;
+			}
+			else
+			{
+				newNumber=0;
 			}
 
+			// Instantiate order
+			order = new Order(user, orderDTO.getText(),Arrays.asList(orderDTO.getDescriptions()),orderDTO.getColour(), new Date(), newNumber);
 		}
 		else
-			returnValue = false;
+		{
+			//update it
+			order=resultPendingOrders.get(0);
+			order.setText(orderDTO.getText());
+			order.setColour(orderDTO.getColour());
+			order.setDescriptions(Arrays.asList(orderDTO.getDescriptions()));
+			orderId = order.getId();
 
-		return returnValue;
+		}
+
+		if(order!=null)
+		{
+			if (user!= null)
+			{
+				order.setCustomer(user);
+
+				try {
+					pm.makePersistent(order);
+
+					// log - this is fucked-up - if no user set there's something wrong
+					log.info("order submitted by user " + order.getCustomer().getNickname() + ": " + order.getText() + " - " + order.getDescriptions().toString() + " COLOUR:" + order.getColour().getName());
+				} 
+				catch(Exception ex)
+				{
+					log.log(Level.SEVERE, ex.toString());
+				}
+				finally {
+					pm.close();
+				}
+			}
+
+			orderId = order.getId();
+			//non stanno pagando niente, ne teniamo traccia senza broadcastarci er culo
+
+			//notify via email cool people
+			List<String> recipients = new ArrayList<String>();
+			//recipients.add(Mails.GIOVANNI.getMailAddress());
+			//recipients.add(Mails.MATTEO.getMailAddress());
+			//recipients.add(Mails.SIMONE.getMailAddress());
+			recipients.add(Mails.ADMIN.getMailAddress());
+			//subject
+			String subj = Messages.NOTIFY_SUBMITTED_SUBJ.getString() + order.getCustomer().getEmail() + "!";
+			//msgbody
+			String msgBody = Messages.NOTIFY_SUBMITTED_BODY.getString() + order.getCustomer().getEmail() + ":\n\n";
+			msgBody += "Progressive: " + order.getProgressive() + "\n";
+			msgBody += "OrderID: " + order.getId() + "\n";
+			msgBody += "Text: " + order.getText() + "\n";
+			msgBody += "Description: " + order.getDescriptions().toString() + "\n";
+			msgBody += "Colour: " + order.getColour().toString() + "\n";
+			EmailSender.sendEmail(Mails.YOURLOGO.getMailAddress(), recipients, subj, msgBody);
+
+		}
+		return orderId;
 	}
 
 	// un bel metodo per succhiare il cazzo all'amministratore e a tarelli frocio male
@@ -297,7 +320,7 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 					//add updated orders to email
 					msgBody+= 	"Order details: \n" + 
 					"Text: " + order.getText() + "\n" + 
-					"Tags: " + order.getTags().toString() + "\n" + 
+					"Tags: " + order.getDescriptions().toString() + "\n" + 
 					"Colour: " + order.getColour().toString() + 
 					"\n\n";
 					//msgFooter

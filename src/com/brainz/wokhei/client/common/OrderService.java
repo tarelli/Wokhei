@@ -22,7 +22,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("orderservice")
 public interface OrderService extends RemoteService {
 
-	Boolean submitOrder(OrderDTO orderDTO);
+	Long submitOrder(OrderDTO orderDTO);
 
 	Results getOrdersByUserAndStatus(Status status, String userEmail, Date startDate, Date endDate, int offset, int maxResult, boolean orderByDate);
 

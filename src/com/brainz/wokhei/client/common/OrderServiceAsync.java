@@ -22,7 +22,7 @@ public interface OrderServiceAsync extends IServiceAsync {
 
 	void getOrdersForCurrentUser(AsyncCallback<List<OrderDTO>> callback);
 
-	void submitOrder(OrderDTO orderDTO, AsyncCallback<Boolean> callback);
+	void submitOrder(OrderDTO orderDTO, AsyncCallback<Long> callback);
 
 	void attachInvoice(long orderID, AsyncCallback<InvoiceDTO> callback);
 
