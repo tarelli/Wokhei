@@ -40,6 +40,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -60,7 +61,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 		ID("Prog"),
 		USER("User"),
 		LOGO_TEXT("Name"),
-		TAGS("Tags"),
+		DESC("Desc"),
 		COLOUR("Colour"),
 		DATE("Date"),
 		STATUS("Status"),
@@ -541,8 +542,8 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 						_ordersFlexTable.setWidget(row, Columns.ID.ordinal(), getProgressiveLabeL(String.valueOf(order.getProgressive()), order.getId()));
 						_ordersFlexTable.setWidget(row, Columns.USER.ordinal(), getUsernameWidget(order.getCustomerEmail()));
 						_ordersFlexTable.setWidget(row,Columns.LOGO_TEXT.ordinal(), getNameWidget( order.getText()));
-						String list=Arrays.asList(order.getDescriptions()).toString().replace(",","");
-						_ordersFlexTable.setWidget(row,Columns.TAGS.ordinal(),  getTagsWidget(list.substring(1, list.length()-1)));
+						List<String> list=Arrays.asList(order.getDescriptions());
+						_ordersFlexTable.setWidget(row,Columns.DESC.ordinal(),  getDescriptionsWidget(list, order.getText()));
 						_ordersFlexTable.setWidget(row,Columns.COLOUR.ordinal(),  getColourPanel(order.getColour()));
 						DateTimeFormat fmt = DateTimeFormat.getFormat("dd.MM.yy");
 						_ordersFlexTable.setText(row,Columns.DATE.ordinal(),  fmt.format(order.getDate()));
@@ -595,7 +596,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 				return new Column[] { new Column(Columns.ID.getColumnText()),
 						new Column(Columns.USER.getColumnText()),
 						new Column(Columns.LOGO_TEXT.getColumnText()),
-						new Column(Columns.TAGS.getColumnText()),
+						new Column(Columns.DESC.getColumnText()),
 						new Column(Columns.COLOUR.getColumnText()),
 						new Column(Columns.DATE.getColumnText()),
 						new Column(Columns.STATUS.getColumnText()),
@@ -1083,24 +1084,68 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	 * @param substring
 	 * @return
 	 */
-	private Widget getTagsWidget(String substring) 
+	private Widget getDescriptionsWidget(List<String> descList, String logoText) 
 	{
-		final AutoResizeTextArea tags =new AutoResizeTextArea();
+		Label logoTextLbl = new Label(logoText);
+		logoTextLbl.setStyleName("adminLogoName");
 
-		substring=substring.replace("#", "\n#").trim();
-		tags.setText(substring);
-		tags.setReadOnly(true);
-		tags.setWidth("150px");
-		tags.setStyleName("adminCopyBox");
+		//create a button that when clicked shows a popup panel with the descriptions
+		//each description after the first one is a revision
+		final Button btn = new Button("Show");
 
-		tags.addClickHandler(new ClickHandler() {
+		final PopupPanel popup = new PopupPanel(true);
+		popup.setStyleName("adminPopup");
+
+		VerticalPanel descriptionsHolder = new VerticalPanel();
+		descriptionsHolder.add(logoTextLbl);
+
+		int i = 0;
+		//fill pop-up panel with the descriptions
+		for (String elem : descList)
+		{
+			Label titleLbl = new Label();
+			titleLbl.addStyleName("h3");
+			titleLbl.addStyleName("fontAR");
+
+			if (i>0)
+			{
+				titleLbl.setText("Revision " + i);
+			}
+			else
+			{
+				titleLbl.setText("Original Description");
+			}
+
+			final TextArea desc = new TextArea();
+			desc.setReadOnly(true);
+			desc.setWidth("250px");
+			desc.setHeight("120px");
+			desc.setStyleName("adminCopyBox");
+			desc.setText(elem.trim());
+
+			desc.addClickHandler(new ClickHandler() {
+				public void onClick(ClickEvent event) {
+					desc.selectAll();
+				}
+			});
+
+			// add to vertical panel
+			descriptionsHolder.add(titleLbl);
+			descriptionsHolder.add(desc);
+
+			i++;
+		}
+
+		popup.add(descriptionsHolder);
+
+		btn.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-
-				tags.selectAll();
+				popup.showRelativeTo(btn);
+				popup.show();
 			}
 		});
 
-		return tags;
+		return btn;
 	}
 
 	private Widget getUploadLogoButton(final Long id, final String text,
