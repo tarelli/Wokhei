@@ -10,7 +10,7 @@ public enum PayPalStrings {
 	PAYPAL_CMD_VALUE("_xclick"),
 	PAYPAL_CMD_NOTIFY_VALIDATE("cmd=_notify-validate"),
 	PAYPAL_ITEMNAME_NAME("item_name"),
-	PAYPAL_ITEMNAME_VALUE("Stir Fried Logo 24h"),
+	//PAYPAL_ITEMNAME_VALUE("Stir Fried Logo 24h"),
 	PAYPAL_AMOUNT_NAME("amount"),
 	PAYPAL_AMOUNT_TEST_VALUE("0.75"),
 	PAYPAL_CURRENCY_NAME("currency_code"),

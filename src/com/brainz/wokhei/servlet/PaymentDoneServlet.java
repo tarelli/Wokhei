@@ -100,7 +100,7 @@ public class PaymentDoneServlet extends HttpServlet {
 				switch(transactionType)
 				{
 				case BUYING_LOGO:
-
+				{
 					// process payment
 					// here we do our shit (which is hot SHITE)
 					OrderServiceImpl orderService=new OrderServiceImpl();
@@ -118,9 +118,14 @@ public class PaymentDoneServlet extends HttpServlet {
 					}
 
 					break;
+				}
 				case MICROPAYMENT:
+				{
+					OrderServiceImpl orderService=new OrderServiceImpl();
+					orderService.setOrderStatus(orderId, Status.INCOMING);
+					log.log(Level.INFO,"MicroPayment completed successfully for order: " + orderId);
 					break;
-
+				}
 				}
 			}
 			else

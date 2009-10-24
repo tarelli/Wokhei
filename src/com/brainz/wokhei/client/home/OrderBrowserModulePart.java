@@ -729,7 +729,7 @@ public class OrderBrowserModulePart extends AModulePart{
 		Hidden locale = new Hidden();
 
 		itemNameInfo.setName(PayPalStrings.PAYPAL_ITEMNAME_NAME.getString());
-		itemNameInfo.setValue(PayPalStrings.PAYPAL_ITEMNAME_VALUE.getString());
+		itemNameInfo.setValue(TransactionType.BUYING_LOGO.getDescription());
 		formPlaceHolder.add(itemNameInfo);
 
 		amountInfo.setName(PayPalStrings.PAYPAL_AMOUNT_NAME.getString());

@@ -40,10 +40,6 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
-import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteHandler;
-import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
-import com.google.gwt.user.client.ui.FormPanel.SubmitHandler;
 /**
  * @author matteocantarelli
  *
@@ -538,8 +534,11 @@ public class OrderSubmitterModulePart extends AModulePart
 				if(result!=null && _submittedOrder!=null)
 				{
 					_submittedOrder.setId(result);
-					PopupPanel microPayment=getMicroPaymentPanel();
-					microPayment.show();
+					FormPanel paypalForm=getPayPalForm(_submittedOrder.getId());
+					paypalForm.submit();
+
+					//					PopupPanel microPayment=getMicroPaymentPanel();
+					//					microPayment.show();
 					//			QUESTO DOVRA ESSERE FATTO NELLA SERVLET QUANDO ARRIVA IL PAGAMENTO..forse		
 					//					updateAlternatePanelMessage(_submittedOrder, result);
 					//
@@ -689,7 +688,7 @@ public class OrderSubmitterModulePart extends AModulePart
 		Hidden locale = new Hidden();
 
 		itemNameInfo.setName(PayPalStrings.PAYPAL_ITEMNAME_NAME.getString());
-		itemNameInfo.setValue(PayPalStrings.PAYPAL_ITEMNAME_VALUE.getString());
+		itemNameInfo.setValue(TransactionType.MICROPAYMENT.getDescription());
 		formPlaceHolder.add(itemNameInfo);
 
 		amountInfo.setName(PayPalStrings.PAYPAL_AMOUNT_NAME.getString());
@@ -752,62 +751,64 @@ public class OrderSubmitterModulePart extends AModulePart
 		return paypalForm;
 	}
 
-
-	private PopupPanel getMicroPaymentPanel()
-	{
-		//setup submit button
-		Image payTipButton = new Image();
-		payTipButton.setStyleName("labelButton");
-		payTipButton.setUrl(Images.PAYPAL_BUTTON.getImageURL());
-
-		payTipButton.addClickHandler(new ClickHandler(){
-
-			public void onClick(ClickEvent event) 
-			{
-
-
-				FormPanel paypalForm=getPayPalForm(_submittedOrder.getId());
-
-				//setup submit handlers
-				paypalForm.addSubmitHandler(new SubmitHandler(){
-					public void onSubmit(SubmitEvent event) {
-						//cancel if license has not been accepted
-						//								if (! _acceptLicenseCheckBox.getValue())
-						//								{
-						//									_feedBackLabel.setText(Messages.MUST_ACCEPT_LICENSE.getString());
-						//									event.cancel();
-						//								}
-					}
-				});
-
-				paypalForm.addSubmitCompleteHandler(new SubmitCompleteHandler() {
-
-					public void onSubmitComplete(SubmitCompleteEvent event)
-					{
-						//nothing to handle? whoo-yeah! AVP sucks dick
-					}
-				});
-
-
-				paypalForm.submit();
-			}
-		});
-
-		VerticalPanel microPaymentPanel=new VerticalPanel();
-		microPaymentPanel.setHorizontalAlignment(VerticalPanel.ALIGN_CENTER);
-		microPaymentPanel.add(payTipButton);
-
-
-		PopupPanel micropaymentPopup= new PopupPanel(true); 
-		micropaymentPopup.setStyleName("microPaymentPopup");
-		micropaymentPopup.setWidget(microPaymentPanel);
-		micropaymentPopup.setWidth("300px");
-		micropaymentPopup.center();
-		micropaymentPopup.show();
-
-		return micropaymentPopup;
-
-	}
+	//COMMENTING THE MICROPAYMENT POPUP PANEL FOR NOW.
+	//WE NEVER KNOW IF WE CHANGE OUR MIND AGAIN.
+	//sweet Johnny Drama
+	//	private PopupPanel getMicroPaymentPanel()
+	//	{
+	//		//setup submit button
+	//		Image payTipButton = new Image();
+	//		payTipButton.setStyleName("labelButton");
+	//		payTipButton.setUrl(Images.PAYPAL_BUTTON.getImageURL());
+	//
+	//		payTipButton.addClickHandler(new ClickHandler(){
+	//
+	//			public void onClick(ClickEvent event) 
+	//			{
+	//
+	//
+	//				FormPanel paypalForm=getPayPalForm(_submittedOrder.getId());
+	//
+	//				//setup submit handlers
+	//				paypalForm.addSubmitHandler(new SubmitHandler(){
+	//					public void onSubmit(SubmitEvent event) {
+	//						//cancel if license has not been accepted
+	//						//								if (! _acceptLicenseCheckBox.getValue())
+	//						//								{
+	//						//									_feedBackLabel.setText(Messages.MUST_ACCEPT_LICENSE.getString());
+	//						//									event.cancel();
+	//						//								}
+	//					}
+	//				});
+	//
+	//				paypalForm.addSubmitCompleteHandler(new SubmitCompleteHandler() {
+	//
+	//					public void onSubmitComplete(SubmitCompleteEvent event)
+	//					{
+	//						//nothing to handle? whoo-yeah! AVP sucks dick
+	//					}
+	//				});
+	//
+	//
+	//				paypalForm.submit();
+	//			}
+	//		});
+	//
+	//		VerticalPanel microPaymentPanel=new VerticalPanel();
+	//		microPaymentPanel.setHorizontalAlignment(VerticalPanel.ALIGN_CENTER);
+	//		microPaymentPanel.add(payTipButton);
+	//
+	//
+	//		PopupPanel micropaymentPopup= new PopupPanel(true); 
+	//		micropaymentPopup.setStyleName("microPaymentPopup");
+	//		micropaymentPopup.setWidget(microPaymentPanel);
+	//		micropaymentPopup.setWidth("300px");
+	//		micropaymentPopup.center();
+	//		micropaymentPopup.show();
+	//
+	//		return micropaymentPopup;
+	//
+	//	}
 
 	/**
 	 * 
