@@ -26,6 +26,7 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -50,48 +51,37 @@ import com.google.gwt.user.client.ui.FormPanel.SubmitHandler;
 public class OrderBrowserModulePart extends AModulePart{
 
 	private final AbsolutePanel mainPanel = new AbsolutePanel();
-
 	private final VerticalPanel ordersPanel = new VerticalPanel();
-
 	private final Label orderNameLabel = new Label();
 
-	private final Label orderTagsLabel = new Label();
+	// Sub this label with a panel with up/down arrows and a label to display descriptions/revisions
+	private final VerticalPanel _orderDescriptionsPanel = new VerticalPanel();
+	private Label _descriptionLabel;
+	private Button _upArrow;
+	private Button _downArrow;
+	private int _currentDescIndex;
+
 
 	private final Image orderImage = new Image();
-
 	private final Label colour= new Label();
-
 	private final Label infoButton = new Label();
-
 	private final Image infos = new Image();
-
 	private final Label statusDescription = new Label();
-
 	private final Label statusTitle = new Label();
-
 	private final Label previousOrderButton = new Label();
-
 	private final Label nextOrderButton = new Label();
-
 	private OrderDTO _currentOrder=null;
 
 	private List<OrderDTO> _orders=null;
-
 	private final Label orderDateLabel = new Label();
-
 	private final Label colourLabel = new Label();
-
 	private final HorizontalPanel colourPanel = new HorizontalPanel();
-
 	private VerticalPanel downloadPanel=null;
-
 	private final VerticalPanel downloadPanelContainer=new VerticalPanel();
-
 	private final Label colourSpace = new Label();
-
 	private final SlideShow slideShow = new SlideShow();
 
-	// will load-up the panel with license + paypal 
+	// Will load-up the panel with license + paypal 
 	private final Label _buyNowImage = new Label();
 	private final PopupPanel _buyNowPopUpPanel = new PopupPanel(true);
 	private final VerticalPanel _buyNowPanel = new VerticalPanel();
@@ -108,9 +98,7 @@ public class OrderBrowserModulePart extends AModulePart{
 	private final VerticalPanel _enquiryPanel = new VerticalPanel();
 
 	private AsyncCallback<Long> _setOrderStatusCallback = null;
-
 	private AsyncCallback<List<OrderDTO>> _getOrdersCallback = null;
-
 	private AsyncCallback<Boolean> _sendEnquiryCallback = null;
 
 	private boolean _buyNowLoaded=false;
@@ -170,7 +158,6 @@ public class OrderBrowserModulePart extends AModulePart{
 			nextOrderButton.addStyleName("labelButton");
 			orderNameLabel.setStyleName("logoNameLabel");
 			orderNameLabel.addStyleName("fontAR");
-			orderTagsLabel.setStyleName("logoTagsDateLabel");
 			orderDateLabel.setStyleName("logoTagsDateLabel");
 
 			infos.setVisible(false);
@@ -196,7 +183,7 @@ public class OrderBrowserModulePart extends AModulePart{
 			ordersPanel.setWidth("150px");
 
 			ordersPanel.add(orderNameLabel);
-			ordersPanel.add(orderTagsLabel);
+			ordersPanel.add(_orderDescriptionsPanel);
 			ordersPanel.add(colourPanel);
 			ordersPanel.add(orderDateLabel);			
 
@@ -397,7 +384,7 @@ public class OrderBrowserModulePart extends AModulePart{
 
 			alwaysInfos(false);
 			orderNameLabel.setText(_currentOrder.getText());
-			String list=Arrays.asList(_currentOrder.getDescriptions()).toString().replace(",","");
+
 			DateTimeFormat fmt = DateTimeFormat.getFormat("EEE MMM yy k:m");
 			colour.setStyleName("colour"+_currentOrder.getColour().toString());
 			if(_currentOrder.getColour().equals(Colour.SurpriseMe))
@@ -411,7 +398,10 @@ public class OrderBrowserModulePart extends AModulePart{
 				colour.setText("");
 			}
 			colourLabel.setText(_currentOrder.getColour().getName()+" ");
-			orderTagsLabel.setText(list.substring(1, list.length()-1));
+
+			// Set original description + revisions --> a panel with small top-down small arrows
+			setupDescriptionsPanel();
+
 			orderDateLabel.setText(fmt.format(_currentOrder.getDate()));
 			statusTitle.setText(Messages.valueOf(_currentOrder.getStatus().toString()+"_TITLE").getString());
 			statusDescription.setText(Messages.valueOf(_currentOrder.getStatus().toString()+"_TEXT").getString());
@@ -454,6 +444,76 @@ public class OrderBrowserModulePart extends AModulePart{
 			alwaysInfos(true);
 		}
 		applyCufon();
+	}
+
+	private void setupDescriptionsPanel() {
+		//0. clear descPanel
+		_orderDescriptionsPanel.clear();
+
+		// 1. create label to hold description
+		_descriptionLabel = new Label();
+		_descriptionLabel.setStyleName("logoTagsDateLabel");
+		//set text to latest description
+		int size = Arrays.asList(_currentOrder.getDescriptions()).size();
+		_descriptionLabel.setText(Arrays.asList(_currentOrder.getDescriptions()).get(size-1));
+		//set index
+		_currentDescIndex = size - 1;
+
+		// 2. create up arrow and down arrow to show prev/next description and set arrows visibility
+		//instatiate buttons
+		_upArrow = new Button("next");
+		_downArrow = new Button("prev");
+
+		_upArrow.addClickHandler(new ClickHandler(){
+
+			public void onClick(ClickEvent event) {
+
+				_descriptionLabel.setText(Arrays.asList(_currentOrder.getDescriptions()).get(++_currentDescIndex));
+				setUpDownArrowsVisibility(Arrays.asList(_currentOrder.getDescriptions()));
+
+			}});
+
+		_downArrow.addClickHandler(new ClickHandler(){
+
+			public void onClick(ClickEvent event) {
+
+				_descriptionLabel.setText(Arrays.asList(_currentOrder.getDescriptions()).get(--_currentDescIndex));
+				setUpDownArrowsVisibility(Arrays.asList(_currentOrder.getDescriptions()));
+
+			}});
+
+		// 3. fill-up the panel with the stuff
+		_orderDescriptionsPanel.add(_upArrow);
+		_orderDescriptionsPanel.add(_descriptionLabel);
+		_orderDescriptionsPanel.add(_downArrow);
+
+		// 4. set arrows visibility
+		setUpDownArrowsVisibility(Arrays.asList(_currentOrder.getDescriptions()));
+	}
+
+	private void setUpDownArrowsVisibility(List<String> descriptionsList) {
+
+		if(_currentDescIndex > 0 && _currentDescIndex < descriptionsList.size()-1)
+		{
+			_upArrow.setVisible(true);
+			_downArrow.setVisible(true);
+		}
+		else if(_currentDescIndex == 0 && _currentDescIndex < descriptionsList.size()-1)
+		{
+			_upArrow.setVisible(true);
+			_downArrow.setVisible(false);
+		}
+		else if(_currentDescIndex > 0 && _currentDescIndex == descriptionsList.size()-1)
+		{
+			_upArrow.setVisible(false);
+			_downArrow.setVisible(true);
+		}
+		else if(_currentDescIndex == 0 && _currentDescIndex == descriptionsList.size()-1)
+		{
+			_upArrow.setVisible(false);
+			_downArrow.setVisible(false);
+		}
+
 	}
 
 	private void setupDownloadStuff(final Status status) {
