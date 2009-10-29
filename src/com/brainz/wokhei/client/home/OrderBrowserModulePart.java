@@ -55,6 +55,8 @@ public class OrderBrowserModulePart extends AModulePart{
 	private final Label orderNameLabel = new Label();
 
 	// Sub this label with a panel with up/down arrows and a label to display descriptions/revisions
+	private final HorizontalPanel _descriptionsContainer = new HorizontalPanel();
+	private final VerticalPanel _descriptionsArrowsPanel = new VerticalPanel();
 	private final VerticalPanel _orderDescriptionsPanel = new VerticalPanel();
 	private Label _descriptionLabel;
 	private Button _upArrow;
@@ -181,9 +183,13 @@ public class OrderBrowserModulePart extends AModulePart{
 			colourPanel.add(colour);
 
 			ordersPanel.setWidth("150px");
-
 			ordersPanel.add(orderNameLabel);
-			ordersPanel.add(_orderDescriptionsPanel);
+
+			_descriptionsContainer.setHeight("100px");
+			_descriptionsContainer.add(_orderDescriptionsPanel);
+			_descriptionsContainer.add(_descriptionsArrowsPanel);
+
+			ordersPanel.add(_descriptionsContainer);
 			ordersPanel.add(colourPanel);
 			ordersPanel.add(orderDateLabel);			
 
@@ -193,12 +199,12 @@ public class OrderBrowserModulePart extends AModulePart{
 			_enquiryPanel.setSpacing(5);
 
 			mainPanel.add(orderImage, 154, 0);
-			mainPanel.add(previousOrderButton,370,150);
-			mainPanel.add(nextOrderButton,420,150);
+			mainPanel.add(previousOrderButton,370,170);
+			mainPanel.add(nextOrderButton,420,170);
 			mainPanel.add(statusDescription,170,250);
 			mainPanel.add(statusTitle,170,220);
 			mainPanel.add(infoButton,147,221);
-			mainPanel.add(ordersPanel,360,43);
+			mainPanel.add(ordersPanel,360,0);
 			mainPanel.add(_buyNowImage, 220, 370);
 			mainPanel.add(downloadPanelContainer,165,330);
 			mainPanel.add(_enquiryPanel, 165, 380);
@@ -449,13 +455,16 @@ public class OrderBrowserModulePart extends AModulePart{
 	private void setupDescriptionsPanel() {
 		//0. clear descPanel
 		_orderDescriptionsPanel.clear();
+		_descriptionsArrowsPanel.clear();
 
 		// 1. create label to hold description
 		_descriptionLabel = new Label();
 		_descriptionLabel.setStyleName("logoTagsDateLabel");
+
 		//set text to latest description
 		int size = Arrays.asList(_currentOrder.getDescriptions()).size();
 		_descriptionLabel.setText(Arrays.asList(_currentOrder.getDescriptions()).get(size-1));
+
 		//set index
 		_currentDescIndex = size - 1;
 
@@ -467,25 +476,23 @@ public class OrderBrowserModulePart extends AModulePart{
 		_upArrow.addClickHandler(new ClickHandler(){
 
 			public void onClick(ClickEvent event) {
-
 				_descriptionLabel.setText(Arrays.asList(_currentOrder.getDescriptions()).get(++_currentDescIndex));
 				setUpDownArrowsVisibility(Arrays.asList(_currentOrder.getDescriptions()));
-
 			}});
 
 		_downArrow.addClickHandler(new ClickHandler(){
 
 			public void onClick(ClickEvent event) {
-
 				_descriptionLabel.setText(Arrays.asList(_currentOrder.getDescriptions()).get(--_currentDescIndex));
 				setUpDownArrowsVisibility(Arrays.asList(_currentOrder.getDescriptions()));
-
 			}});
 
 		// 3. fill-up the panel with the stuff
-		_orderDescriptionsPanel.add(_upArrow);
+		_orderDescriptionsPanel.setWidth("150px");
 		_orderDescriptionsPanel.add(_descriptionLabel);
-		_orderDescriptionsPanel.add(_downArrow);
+
+		_descriptionsArrowsPanel.add(_upArrow);
+		_descriptionsArrowsPanel.add(_downArrow);
 
 		// 4. set arrows visibility
 		setUpDownArrowsVisibility(Arrays.asList(_currentOrder.getDescriptions()));
