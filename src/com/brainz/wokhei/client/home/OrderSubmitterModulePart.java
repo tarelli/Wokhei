@@ -3,7 +3,6 @@
  */
 package com.brainz.wokhei.client.home;
 
-import java.util.Date;
 import java.util.List;
 
 import com.brainz.wokhei.client.common.AModulePart;
@@ -15,7 +14,6 @@ import com.brainz.wokhei.client.home.Validator.LogoErrors;
 import com.brainz.wokhei.resources.Images;
 import com.brainz.wokhei.resources.Messages;
 import com.brainz.wokhei.shared.Colour;
-import com.brainz.wokhei.shared.DateDifferenceCalculator;
 import com.brainz.wokhei.shared.OrderDTO;
 import com.brainz.wokhei.shared.OrderDTOUtils;
 import com.brainz.wokhei.shared.Status;
@@ -37,7 +35,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 /**
- * @author matteocantarelli
+ * @author matteocantarelli / giovazza
  *
  */
 public class OrderSubmitterModulePart extends AModulePart 
@@ -582,9 +580,7 @@ public class OrderSubmitterModulePart extends AModulePart
 
 	protected void setMessageWithKillswitchOn(OrderDTO latestOrder) {
 		// sets wait message when killswitch is on depending on the latest order
-		if(latestOrder==null || (latestOrder.getStatus() == Status.ARCHIVED 
-				|| latestOrder.getStatus() == Status.BOUGHT 
-				|| latestOrder.getStatus() == Status.REJECTED))
+		if(latestOrder==null || ( latestOrder.getStatus() == Status.BOUGHT || latestOrder.getStatus() == Status.REJECTED))
 		{
 			//set wait label text --> killswitch message
 			_waitLabel.setText(Messages.valueOf("KILLSWITCH_ON_WAITMSG").getString());
@@ -788,24 +784,7 @@ public class OrderSubmitterModulePart extends AModulePart
 			}
 			else
 			{
-				Date serverTimeStamp = this.getModule().getServerTimeStamp();
-				float diffHours = DateDifferenceCalculator.getDifferenceInHours(serverTimeStamp,order.getViewedDate());
-				Integer missingTime=(24 + (int)diffHours);
-				String missingTimeString = missingTime.toString();
-
-				if(missingTime>=0)
-				{
-					if(missingTime<1)
-					{
-						missingTimeString=Messages.LESS_THAN_HOUR.getString();
-					}
-					this._waitLabel.setText(Messages.VIEWED_WAITMSG_1.getString() + missingTimeString + Messages.VIEWED_WAITMSG_2.getString());
-				}
-				else
-				{
-					((OrderServiceAsync)getService(Service.ORDER_SERVICE)).setOrderStatus(order.getId(), Status.ARCHIVED, _setOrderStatusCallback);
-				}
-
+				this._waitLabel.setText(Messages.VIEWED_WAITMSG.getString());
 			}
 		}
 		else
@@ -851,9 +830,7 @@ public class OrderSubmitterModulePart extends AModulePart
 	 */
 	protected void setShowHideStateByLatestOrder(OrderDTO result) 
 	{
-		if(result==null || (result.getStatus() == Status.ARCHIVED 
-				|| result.getStatus() == Status.BOUGHT 
-				|| result.getStatus() == Status.REJECTED))
+		if(result==null || (result.getStatus() == Status.BOUGHT || result.getStatus() == Status.REJECTED))
 		{
 
 			_mainPanel.setVisible(true);

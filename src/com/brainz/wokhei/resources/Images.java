@@ -4,7 +4,6 @@ public enum Images {
 
 	INCOMING("./images/status/incoming.png","./images/status/incomingSmall.png"),
 	READY("./images/status/ready.gif","./images/status/readySmall.png"),
-	ARCHIVED("./images/status/archived.png","./images/status/archivedSmall.png"),
 	IN_PROGRESS("./images/status/inprogress.png","./images/status/inprogressSmall.png"),
 	TASTING("./images/status/tasting.png","./images/status/tastingSmall.png"),
 	BOUGHT("./images/status/bought.png","./images/status/boughtSmall.png"),

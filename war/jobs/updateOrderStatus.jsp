@@ -193,17 +193,6 @@
 			}	
 		}
 		
-		// 5.if any loop through VIEWED orders and set to ARCHIVED if more than 24hrs from viewed timestamp
-		for(Order order : viewedOrders)
-		{
-			if(order.getViewedDate() != null)
-			{
-				float diffHours = DateDifferenceCalculator.getDifferenceInHours(order.getViewedDate(), serverDate);
-				if(diffHours > 24)
-				order.setStatus(Status.ARCHIVED);
-			}	
-		}
-		
 	} catch (Exception ex) {
 		log.log(Level.SEVERE, "update order Status Job failed to retrieve Orders: " + ex.getMessage());
 	} finally {

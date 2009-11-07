@@ -550,7 +550,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 						_ordersFlexTable.getCellFormatter().setAlignment(row, Columns.STATUS.ordinal(),HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
 						_ordersFlexTable.setWidget(row, Columns.STATUS.ordinal(), getStatusImage(order.getStatus().toString(),order.getId()));
 
-						if((order.getStatus() != Status.REJECTED) && (order.getStatus() != Status.ARCHIVED) && (order.getStatus() != Status.BOUGHT))
+						if((order.getStatus() != Status.REJECTED) && (order.getStatus() != Status.BOUGHT))
 						{
 							_ordersFlexTable.setWidget(row, Columns.TIMER.ordinal(), getTimerLabel(order));
 						}
@@ -906,7 +906,6 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 		switch(order.getStatus())
 		{
 		case ACCEPTED:
-		case ARCHIVED:
 		case BOUGHT:
 		case IN_PROGRESS:
 		case QUALITY_GATE:
@@ -1038,7 +1037,6 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 		switch(status)
 		{
 		case ACCEPTED:
-		case ARCHIVED:
 		case BOUGHT:
 		case IN_PROGRESS:
 		case QUALITY_GATE:
@@ -1053,7 +1051,6 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 				switch(status)
 				{
 				case ACCEPTED:
-				case ARCHIVED:
 				case BOUGHT:
 				case IN_PROGRESS:
 				case QUALITY_GATE:

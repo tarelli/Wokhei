@@ -8,8 +8,7 @@ public enum Status {
 	QUALITY_GATE,
 	READY,
 	BOUGHT,
-	VIEWED,
-	ARCHIVED
+	VIEWED
 	;
 }
 

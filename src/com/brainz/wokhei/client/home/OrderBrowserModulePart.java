@@ -93,15 +93,8 @@ public class OrderBrowserModulePart extends AModulePart{
 	private final FormPanel _paypalForm = new FormPanel("");
 	private final PopupPanel _acceptAgreementPopupPanel= new PopupPanel(true);
 
-	// Enquiry for archived logos
-	private final Label _forgotToBuyLbl = new Label(Messages.ENQUIRY_ARCHIVED_QUESTION.getString());
-	private final Label _sendEnquiryLblBtn = new Label(Messages.ENQUIRY_ARCHIVED_ACTION.getString()); 
-	private final Label _enquiryFeedback = new Label("");
-	private final VerticalPanel _enquiryPanel = new VerticalPanel();
-
 	private AsyncCallback<Long> _setOrderStatusCallback = null;
 	private AsyncCallback<List<OrderDTO>> _getOrdersCallback = null;
-	private AsyncCallback<Boolean> _sendEnquiryCallback = null;
 
 	private boolean _buyNowLoaded=false;
 
@@ -115,8 +108,6 @@ public class OrderBrowserModulePart extends AModulePart{
 			getOrdersForCurrentCustomer();
 
 			setupLightBox();
-
-			setupEnquiryControls();
 
 			setupAcceptAgreement();		
 
@@ -193,11 +184,6 @@ public class OrderBrowserModulePart extends AModulePart{
 			ordersPanel.add(colourPanel);
 			ordersPanel.add(orderDateLabel);			
 
-			_enquiryPanel.add(_forgotToBuyLbl);
-			_enquiryPanel.add(_sendEnquiryLblBtn);
-			_enquiryPanel.add(_enquiryFeedback);
-			_enquiryPanel.setSpacing(5);
-
 			mainPanel.add(orderImage, 154, 0);
 			mainPanel.add(previousOrderButton,370,170);
 			mainPanel.add(nextOrderButton,420,170);
@@ -207,40 +193,12 @@ public class OrderBrowserModulePart extends AModulePart{
 			mainPanel.add(ordersPanel,360,0);
 			mainPanel.add(_buyNowImage, 220, 370);
 			mainPanel.add(downloadPanelContainer,165,330);
-			mainPanel.add(_enquiryPanel, 165, 380);
 			mainPanel.add(infos,190,20);
 
 			RootPanel.get("ordersBrowser").add(getPanel());
 
 			applyCufon();
 		}
-	}
-
-	private void setupEnquiryControls() {
-		setEnquiryControlsVisibility(false);
-
-		_sendEnquiryLblBtn.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				_sendEnquiryLblBtn.setVisible(false);
-				((OrderServiceAsync)getService(Service.ORDER_SERVICE)).sendEnquiry(_currentOrder, _sendEnquiryCallback);
-			}
-		});
-
-		//style
-		_forgotToBuyLbl.setStyleName("labelForgot");
-		_sendEnquiryLblBtn.addStyleName("labelButton");
-		_sendEnquiryLblBtn.addStyleName("labelLink");
-		_sendEnquiryLblBtn.addStyleName("labelForgot");
-		_enquiryFeedback.setStyleName("labelForgotFeedback");
-	}
-
-	private void setEnquiryControlsVisibility(boolean visible)
-	{
-		_enquiryFeedback.setText("");
-
-		_forgotToBuyLbl.setVisible(visible);
-		_sendEnquiryLblBtn.setVisible(visible);
-		_enquiryFeedback.setVisible(visible);
 	}
 
 	private void hookUpCallbacks() 
@@ -279,24 +237,6 @@ public class OrderBrowserModulePart extends AModulePart{
 			}
 		};
 
-		_sendEnquiryCallback = new AsyncCallback<Boolean>() {
-
-			public void onSuccess(Boolean result) {
-				if(result)
-				{
-					_enquiryFeedback.setText(Messages.ENQUIRY_FEEDBACK_OK.getString());
-				}
-				else
-				{
-					_enquiryFeedback.setText(Messages.ENQUIRY_FEEDBACK_KO.getString());
-				}
-			}
-
-			public void onFailure(Throwable caught) {
-				_enquiryFeedback.setText(Messages.ENQUIRY_FEEDBACK_KO.getString());
-			}
-
-		};
 	}
 
 	private void setupLightBox() {
@@ -314,7 +254,6 @@ public class OrderBrowserModulePart extends AModulePart{
 					break;
 				case VIEWED:
 				case BOUGHT:
-				case ARCHIVED:
 					slideShow.showSingleImage("/wokhei/getfile?fileType="+FileType.PNG_LOGO_PRESENTATION.toString()+"&orderid="+_currentOrder.getId(), Messages.COPYRIGHT.getString());
 					break;
 				}
@@ -372,8 +311,6 @@ public class OrderBrowserModulePart extends AModulePart{
 	private void updatePanel() {
 		//buy now false by default
 		_buyNowImage.setVisible(false);
-		//send enquiry visibility false by default
-		setEnquiryControlsVisibility(false);
 
 		if(downloadPanel!=null)
 		{
@@ -434,12 +371,6 @@ public class OrderBrowserModulePart extends AModulePart{
 				orderImage.addStyleName("labelButton");
 				orderImage.setUrl(Images.valueOf(_currentOrder.getStatus().toString()).getImageURL()); 
 				setupDownloadStuff(_currentOrder.getStatus());
-				break;
-			case ARCHIVED:
-				orderImage.addStyleName("labelButton");
-				orderImage.setUrl(Images.valueOf(_currentOrder.getStatus().toString()).getImageURL()); 
-				setupDownloadStuff(_currentOrder.getStatus());
-				setEnquiryControlsVisibility(true);
 				break;
 			}
 		}
