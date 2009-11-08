@@ -737,7 +737,9 @@ public class OrderBrowserModulePart extends AModulePart{
 		formPlaceHolder.add(amountInfo);
 
 		taxInfo.setName(PayPalStrings.PAYPAL_TAX_NAME.getString());
-		taxInfo.setValue(TransactionType.BUYING_LOGO.getTax().toString());
+		//FIXME: 0d needs to be removed, just fixing the compilation errror. the price is going to be
+		//the difference between the total and the micropayment
+		taxInfo.setValue(TransactionType.BUYING_LOGO.getTax(0d).toString());
 		formPlaceHolder.add(taxInfo);
 
 		currencyInfo.setName(PayPalStrings.PAYPAL_CURRENCY_NAME.getString());

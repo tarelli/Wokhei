@@ -13,18 +13,18 @@ public enum Messages {
 	ARCHIVED("Archived"),
 
 	LOGO_NAME_LBL("Product name"),
-	LOGO_NAME_HELP_MESSAGE("This is the name of the company, product, service, website, association (or anything else) that you need the logo for. This name will appear in the logo unless you specify the #notext tag, in that case the logo will only be a graphic representation."),
+	LOGO_NAME_HELP_MESSAGE("This is the name of the company, product, service, website, association (or anything else) that you need the logo for. This name will appear in the logo unless you specify otherwise in the description."),
 	LOGO_NAME_EG_LBL("e.g. Tree Of Life Ltd"),
 	LOGO_NAME_TXTBOX("the name of your business or product"),
 	LOGO_NAME_ERROR_NONE("You need to specify a product name!"),
 	LOGO_NAME_ERROR_TOOLONG("Sorry the product name is too long!"),
 	LOGO_COLOUR_LBL("Main colour"),
 	LOGO_COLOUR_HELP_MESSAGE("This will be the main colour of your logo. Note that the logo might have more colours or different shades of the main colour you pick. If you have no colour preference, or if you want to entrust our designers with this choice, pick the question mark: we'll surprise you!"),
-	LOGO_DESC_TXTBOX("Describe your logo"),
+	LOGO_DESC_TXTBOX("Describe here how you want your logo and what it is for!"),
 	LOGO_COLOUR_EG_LBL("Logo primary colour"),
-	LOGO_DESC_LBL("Up to 250 characters"),
-	LOGO_DESC_HELP_MESSAGE("You can use up to 250 characters to tell us how youwould like you logo and something more about your business or product."),
-	LOGO_DESC_EG_LBL("e.g. We'd like a tree in the logo. Please no bright colors (...)"),
+	LOGO_DESC_LBL("Description"),
+	LOGO_DESC_HELP_MESSAGE("You can use up to 250 characters to tell us how you would like your logo and something more about your business or product."),
+	LOGO_DESC_EG_LBL("e.g. We'd like a tree in the logo for our recycling business (...)"),
 	LOGO_DESC_ERROR_EMPTY("Sorry, you need to put in a description!"),
 	LOGO_DESC_ERROR_TOOLONG("Sorry, description can't be longer than 250 characters!"),
 	LOGO_COLOUR_ERROR_NONE("Pick the main colour!"),
@@ -137,7 +137,10 @@ public enum Messages {
 	LESS_THAN_HOUR("less than an hour "),
 	SANDBOX("Sandbox"),
 	WEBSITE("http://www.wokhei.com"),
-	WEBSITE_SANDBOX("http://wokheisandbox.appspot.com/")
+	WEBSITE_SANDBOX("http://wokheisandbox.appspot.com/"), 
+	EUR(" EUR")
+
+
 
 	;
 

@@ -6,6 +6,8 @@ package com.brainz.wokhei.client.home;
 import java.util.Date;
 import java.util.List;
 
+import pl.rmalinowski.gwt2swf.client.ui.SWFWidget;
+
 import com.brainz.wokhei.client.common.AModulePart;
 import com.brainz.wokhei.client.common.OrderServiceAsync;
 import com.brainz.wokhei.client.common.Service;
@@ -25,6 +27,8 @@ import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -37,9 +41,14 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
+import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteHandler;
+import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
+import com.google.gwt.user.client.ui.FormPanel.SubmitHandler;
 /**
  * @author matteocantarelli
  *
@@ -90,7 +99,7 @@ public class OrderSubmitterModulePart extends AModulePart
 
 	//Description
 	private final VerticalPanel _logoDescriptionPanel = new VerticalPanel();
-	private final TextBox _logoDescBox = new TextBox();
+	private final TextArea _logoDescBox = new TextArea();
 	private final Label _logoDescHelpMark = new Label();
 	private final Label _logoDescHelpLabel = new Label(Messages.LOGO_DESC_HELP_MESSAGE.getString());
 	private final PopupPanel _logoDescHelpPopup = new PopupPanel(true);
@@ -126,7 +135,13 @@ public class OrderSubmitterModulePart extends AModulePart
 	private AsyncCallback<Long> _submitOrderCallback = null;
 	private AsyncCallback<Long> _setOrderStatusCallback = null;
 
+	private PopupPanel _micropaymentPopup=null;
+
 	private OrderDTO _submittedOrder = null;
+
+	private SWFWidget _seppiaWidget=null;
+
+	private final Label _charactersLabel=new Label();
 
 	@Override
 	public void loadModulePart() {
@@ -141,7 +156,7 @@ public class OrderSubmitterModulePart extends AModulePart
 			if(!getModule().isKillSwitchOn())
 			{
 				//set main panel spacing
-				_mainPanel.setSpacing(10);
+				_mainPanel.setSpacing(3);
 
 				//setup stuff
 				setEverythingToInvisible();
@@ -394,16 +409,39 @@ public class OrderSubmitterModulePart extends AModulePart
 		//2.Tags section setup
 		_logoDescLabel.addStyleName("label");
 		_logoDescLabel.addStyleName("fontAR");
+		_charactersLabel.addStyleName("charsLabel");
+		_charactersLabel.addStyleName("fontAR");
 		_descHintLabel.addStyleName("hintLabel"); 
 
 		_logoDescBox.setWidth("290px"); 
 		_logoDescBox.setText(Messages.LOGO_DESC_TXTBOX.getString());
-		_logoDescBox.setStyleName("textBox"); 
+		_logoDescBox.setStyleName("textDescBox"); 
 
 		_logoDescBox.addBlurHandler(new BlurHandler(){
 			public void onBlur(BlurEvent event) {
 				setDescModified(true);
 				checkErrors();
+			}
+		});
+
+		_logoDescBox.addKeyPressHandler(new KeyPressHandler() {
+
+			@Override
+			public void onKeyPress(KeyPressEvent event) {
+				_charactersLabel.setText(250-_logoDescBox.getText().length() +" chars left");
+				if(_logoDescBox.getText().length()>250)
+				{
+					_charactersLabel.removeStyleName("timerGreen");
+					_charactersLabel.addStyleName("timerRed");
+
+				}
+				else
+				{
+					_charactersLabel.removeStyleName("timerRed");
+					_charactersLabel.addStyleName("timerGreen");
+				}
+				applyCufon();
+
 			}
 		});
 
@@ -413,10 +451,12 @@ public class OrderSubmitterModulePart extends AModulePart
 
 		_logoDescriptionPanel.setSpacing(2);
 
-
+		_logoDescLabelPanel.setVerticalAlignment(HorizontalPanel.ALIGN_BOTTOM);
 		_logoDescLabelPanel.add(_logoDescHelpMark);
 		_logoDescLabelPanel.add(getNewWhiteSpace(5));
 		_logoDescLabelPanel.add(_logoDescLabel);
+		_logoDescLabelPanel.add(getNewWhiteSpace(130));
+		_logoDescLabelPanel.add(_charactersLabel);
 
 		_logoDescriptionPanel.add(_logoDescLabelPanel);
 		_logoDescriptionPanel.add(_descHintLabel);
@@ -531,14 +571,17 @@ public class OrderSubmitterModulePart extends AModulePart
 			}
 
 			public void onSuccess(Long result) {
-				if(result!=null && _submittedOrder!=null)
+				if(result!=null && getSubmittedOrder()!=null)
 				{
-					_submittedOrder.setId(result);
-					FormPanel paypalForm=getPayPalForm(_submittedOrder.getId());
-					paypalForm.submit();
+					getSubmittedOrder().setId(result);
 
-					//					PopupPanel microPayment=getMicroPaymentPanel();
-					//					microPayment.show();
+					if(_micropaymentPopup==null || !_micropaymentPopup.isShowing())
+					{
+						_micropaymentPopup=getMicroPaymentPanel();
+						_micropaymentPopup.center();
+						_micropaymentPopup.show();
+						applyCufon();
+					}
 					//			QUESTO DOVRA ESSERE FATTO NELLA SERVLET QUANDO ARRIVA IL PAGAMENTO..forse		
 					//					updateAlternatePanelMessage(_submittedOrder, result);
 					//
@@ -634,7 +677,7 @@ public class OrderSubmitterModulePart extends AModulePart
 	}
 
 
-	private FormPanel getPayPalForm(Long orderId)
+	private FormPanel getPayPalForm()
 	{
 		final FormPanel paypalForm = new FormPanel("");
 		boolean isSandbox = getModule().isSandBox();
@@ -692,11 +735,11 @@ public class OrderSubmitterModulePart extends AModulePart
 		formPlaceHolder.add(itemNameInfo);
 
 		amountInfo.setName(PayPalStrings.PAYPAL_AMOUNT_NAME.getString());
-		amountInfo.setValue(TransactionType.MICROPAYMENT.getValue().toString());
+		amountInfo.setValue(TransactionType.MICROPAYMENT.getNet(getSubmittedOrder().getTip()).toString());
 		formPlaceHolder.add(amountInfo);
 
 		taxInfo.setName(PayPalStrings.PAYPAL_TAX_NAME.getString());
-		taxInfo.setValue(TransactionType.MICROPAYMENT.getTax().toString());
+		taxInfo.setValue(TransactionType.MICROPAYMENT.getTax(getSubmittedOrder().getTip()).toString());
 		formPlaceHolder.add(taxInfo);
 
 		currencyInfo.setName(PayPalStrings.PAYPAL_CURRENCY_NAME.getString());
@@ -719,7 +762,7 @@ public class OrderSubmitterModulePart extends AModulePart
 		returnInfo.setValue(PayPalStrings.PAYPAL_RETURN_VALUE.getString());
 
 		custom.setName(PayPalStrings.PAYPAL_CUSTOM_NAME.getString());
-		custom.setValue(orderId.toString());
+		custom.setValue(getSubmittedOrder().getId().toString());
 		formPlaceHolder.add(custom);
 
 		transactiontype.setName(PayPalStrings.PAYPAL_TRANSACTIONTYPE_NAME.getString());
@@ -753,62 +796,140 @@ public class OrderSubmitterModulePart extends AModulePart
 
 	//COMMENTING THE MICROPAYMENT POPUP PANEL FOR NOW.
 	//WE NEVER KNOW IF WE CHANGE OUR MIND AGAIN.
+	//Update: WISE MAN!!! Panel is back
 	//sweet Johnny Drama
-	//	private PopupPanel getMicroPaymentPanel()
-	//	{
-	//		//setup submit button
-	//		Image payTipButton = new Image();
-	//		payTipButton.setStyleName("labelButton");
-	//		payTipButton.setUrl(Images.PAYPAL_BUTTON.getImageURL());
-	//
-	//		payTipButton.addClickHandler(new ClickHandler(){
-	//
-	//			public void onClick(ClickEvent event) 
-	//			{
-	//
-	//
-	//				FormPanel paypalForm=getPayPalForm(_submittedOrder.getId());
-	//
-	//				//setup submit handlers
-	//				paypalForm.addSubmitHandler(new SubmitHandler(){
-	//					public void onSubmit(SubmitEvent event) {
-	//						//cancel if license has not been accepted
-	//						//								if (! _acceptLicenseCheckBox.getValue())
-	//						//								{
-	//						//									_feedBackLabel.setText(Messages.MUST_ACCEPT_LICENSE.getString());
-	//						//									event.cancel();
-	//						//								}
-	//					}
-	//				});
-	//
-	//				paypalForm.addSubmitCompleteHandler(new SubmitCompleteHandler() {
-	//
-	//					public void onSubmitComplete(SubmitCompleteEvent event)
-	//					{
-	//						//nothing to handle? whoo-yeah! AVP sucks dick
-	//					}
-	//				});
-	//
-	//
-	//				paypalForm.submit();
-	//			}
-	//		});
-	//
-	//		VerticalPanel microPaymentPanel=new VerticalPanel();
-	//		microPaymentPanel.setHorizontalAlignment(VerticalPanel.ALIGN_CENTER);
-	//		microPaymentPanel.add(payTipButton);
-	//
-	//
-	//		PopupPanel micropaymentPopup= new PopupPanel(true); 
-	//		micropaymentPopup.setStyleName("microPaymentPopup");
-	//		micropaymentPopup.setWidget(microPaymentPanel);
-	//		micropaymentPopup.setWidth("300px");
-	//		micropaymentPopup.center();
-	//		micropaymentPopup.show();
-	//
-	//		return micropaymentPopup;
-	//
-	//	}
+
+	private PopupPanel getMicroPaymentPanel()
+	{
+		//setup submit button
+		final VerticalPanel microPaymentPanel=new VerticalPanel();
+
+		_seppiaWidget = getSeppiaWidget(Images.SEPPIA.getImageURL());
+
+		Image tipInstructions = new Image(Images.TIP_INSTRUCTIONS.getImageURL());
+
+		HorizontalPanel tipHPanel =new HorizontalPanel();
+
+		tipHPanel.setVerticalAlignment(HorizontalPanel.ALIGN_MIDDLE);
+
+		final Label tipBox=new Label();
+
+		if(getSubmittedOrder().getTip()==null)
+		{
+			getSubmittedOrder().setTip(new Double(6.5d));
+		}
+		tipBox.setText(getSubmittedOrder().getTip()+Messages.EUR.getString()); //$NON-NLS-1$
+		tipBox.setWidth("100px"); //$NON-NLS-1$
+		tipBox.setHeight("19px");
+		tipBox.setStyleName("tipLabel"); //$NON-NLS-1$
+		tipBox.addStyleName("fontAR");
+
+
+		VerticalPanel tipChangeVPanel=new VerticalPanel();
+		tipChangeVPanel.setSpacing(5);
+
+		Label decreaseTip=new Label();
+		decreaseTip.setStyleName("downArrow");
+		decreaseTip.addStyleName("labelButton");
+		decreaseTip.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				//it's already the minimum value 
+				if(!getSubmittedOrder().getTip().equals(TransactionType.MICROPAYMENT.getValue()))
+				{
+					SWFWidget toRemove=_seppiaWidget;
+					_seppiaWidget=getSeppiaWidget(Images.SEPPIA2.getImageURL());
+					microPaymentPanel.insert(_seppiaWidget, 0);
+					toRemove.removeFromParent();
+					getSubmittedOrder().setTip(getSubmittedOrder().getTip()-0.5d);
+					tipBox.setText(getSubmittedOrder().getTip()+Messages.EUR.getString()); //$NON-NLS-1$
+					applyCufon();
+				}
+			}
+		});
+
+		Label increaseTip=new Label();
+		increaseTip.setStyleName("upArrow");
+		increaseTip.addStyleName("labelButton");
+		increaseTip.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				SWFWidget toRemove=_seppiaWidget;
+				_seppiaWidget=getSeppiaWidget(Images.SEPPIA1.getImageURL());
+				microPaymentPanel.insert(_seppiaWidget, 0);
+				toRemove.removeFromParent();
+				getSubmittedOrder().setTip(getSubmittedOrder().getTip()+0.5d);
+				tipBox.setText(getSubmittedOrder().getTip()+Messages.EUR.getString()); //$NON-NLS-1$
+				applyCufon();
+			}
+		});
+
+		Image payTipButton = new Image();
+		payTipButton.setStyleName("sendTip");
+		payTipButton.addClickHandler(new ClickHandler(){
+
+			public void onClick(ClickEvent event) 
+			{
+				((OrderServiceAsync)getService(Service.ORDER_SERVICE)).submitOrder(getSubmittedOrder(), _submitOrderCallback);
+				FormPanel paypalForm=getPayPalForm();
+
+				//setup submit handlers
+				paypalForm.addSubmitHandler(new SubmitHandler(){
+					public void onSubmit(SubmitEvent event) {
+
+					}
+				});
+
+				paypalForm.addSubmitCompleteHandler(new SubmitCompleteHandler() {
+
+					public void onSubmitComplete(SubmitCompleteEvent event)
+					{
+						//nothing to handle? whoo-yeah! AVP sucks dick
+					}
+				});
+
+
+				paypalForm.submit();
+			}
+		});
+
+		tipChangeVPanel.add(increaseTip);
+		tipChangeVPanel.add(decreaseTip);
+
+		tipHPanel.add(tipBox);
+		tipHPanel.add(tipChangeVPanel);
+		tipHPanel.add(payTipButton);
+
+
+
+		microPaymentPanel.setSpacing(10);
+		microPaymentPanel.setHorizontalAlignment(VerticalPanel.ALIGN_CENTER);
+		microPaymentPanel.add(_seppiaWidget);
+		microPaymentPanel.add(tipHPanel);
+		microPaymentPanel.add(tipInstructions);
+
+		PopupPanel micropaymentPopup= new PopupPanel(true); 
+		micropaymentPopup.setStyleName("microPaymentPopup");
+		micropaymentPopup.setWidget(microPaymentPanel);
+		micropaymentPopup.setWidth("350px");
+		return micropaymentPopup;
+
+	}
+
+	/**
+	 * @param imageURL
+	 * @return
+	 */
+	private SWFWidget getSeppiaWidget(String imageURL) 
+	{
+		SWFWidget seppiaWidget=new SWFWidget(imageURL);
+		seppiaWidget.setWidth("300px");
+		seppiaWidget.setHeight("300px");
+		seppiaWidget.setVisible(true);
+		return seppiaWidget;
+	}
 
 	/**
 	 * 
@@ -820,15 +941,26 @@ public class OrderSubmitterModulePart extends AModulePart
 		setColourModified(true);
 		if(checkErrors())
 		{
-			_submittedOrder=new OrderDTO();
-			_submittedOrder.setStatus(Status.PENDING);
+			getSubmittedOrder().setStatus(Status.PENDING);
 			String[] descriptions = {_logoDescBox.getText()};
-			_submittedOrder.setDescriptions(descriptions);
-			_submittedOrder.setText(_logoTextBox.getText());
-			_submittedOrder.setColour(_selectedColour);
-
-			((OrderServiceAsync)getService(Service.ORDER_SERVICE)).submitOrder(_submittedOrder, _submitOrderCallback);
+			getSubmittedOrder().setDescriptions(descriptions);
+			getSubmittedOrder().setText(_logoTextBox.getText());
+			getSubmittedOrder().setColour(_selectedColour);
+			((OrderServiceAsync)getService(Service.ORDER_SERVICE)).submitOrder(getSubmittedOrder(), _submitOrderCallback);
 		}
+	}
+
+
+	/**
+	 * 
+	 */
+	private OrderDTO getSubmittedOrder() 
+	{
+		if(_submittedOrder==null)
+		{
+			_submittedOrder=new OrderDTO();
+		}
+		return _submittedOrder;
 	}
 
 	/**

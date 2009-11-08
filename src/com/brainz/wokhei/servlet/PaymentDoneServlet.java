@@ -94,7 +94,7 @@ public class PaymentDoneServlet extends HttpServlet {
 
 			if((paymentStatus.equalsIgnoreCase("pending") || paymentStatus.equalsIgnoreCase("completed")) 
 					&& receiverEmail.equalsIgnoreCase(PayPalStrings.PAYPAL_BUSINESS_VALUE.getString())
-					&& paymentAmount==transactionType.getTotal()
+					//&& paymentAmount==transactionType.getTotal() FIXTHIS!!
 					&& paymentCurrency.equalsIgnoreCase(PayPalStrings.PAYPAL_CURRENCY_VALUE.getString()))
 			{
 				switch(transactionType)
@@ -162,7 +162,7 @@ public class PaymentDoneServlet extends HttpServlet {
 		String errorMsg = "Checked failed on Paypal parameters sent with IPN, actual values follow: ";
 		errorMsg += "paymentStatus = " + paymentStatus + "[" + (paymentStatus.equalsIgnoreCase("pending") || paymentStatus.equalsIgnoreCase("completed")) + "]";
 		errorMsg += " - receiverEmail = " + receiverEmail + "[" + receiverEmail.equalsIgnoreCase(PayPalStrings.PAYPAL_BUSINESS_VALUE.getString()) + "]";
-		errorMsg += " - paymentAmount = " + paymentAmount + "[" + paymentAmount==transactionType.getTotal() + "]";
+		errorMsg += " - paymentAmount = " + paymentAmount + "[" + /*paymentAmount==transactionType.getTotal() + FIX THIS!!*/ "]";
 		errorMsg += " - paymentCurrency = " + paymentCurrency + "[" + paymentCurrency.equalsIgnoreCase(PayPalStrings.PAYPAL_CURRENCY_VALUE.getString()) + "]";
 		// log the error
 		log.log(Level.SEVERE, errorMsg);

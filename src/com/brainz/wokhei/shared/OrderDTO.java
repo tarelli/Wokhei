@@ -30,6 +30,10 @@ public class OrderDTO implements Serializable{
 
 	private Integer _progressive;
 
+	private Double _tip;
+
+
+
 	/**
 	 * 
 	 */
@@ -64,6 +68,21 @@ public class OrderDTO implements Serializable{
 	}
 
 
+	/**
+	 * @return
+	 */
+	public Double getTip() 
+	{
+		return _tip;
+	}
+
+	/**
+	 * @param tip
+	 */
+	public void setTip(Double tip) 
+	{
+		_tip = tip;
+	}
 
 	/**
 	 * @return

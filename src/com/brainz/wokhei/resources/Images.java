@@ -30,6 +30,11 @@ public enum Images {
 	LOGO("./images/logo.png"),
 	PAID("./images/paid.png"), 
 	THE_BIG_PURPLE("./images/bigPurple.png"),
+	TIP_INSTRUCTIONS("./images/tipinstructions.png"),
+	SEPPIA("./videos/seppia0.swf"), 
+	SEPPIA1("./videos/seppia1.swf"),
+	SEPPIA2("./videos/seppia2.swf"),
+
 	;
 
 	String _imageName;
@@ -59,4 +64,5 @@ public enum Images {
 	public String getSmallImageURL() {
 		return _smallImageName;
 	}
+
 }

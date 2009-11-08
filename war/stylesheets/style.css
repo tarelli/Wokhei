@@ -169,6 +169,21 @@ a1:hover {
 	font-size: 14px;
 }
 
+.charsLabel {
+	color: #bf007e;
+	font-size: 10px;
+}
+
+.tipLabel{
+	color: #bf007e;
+	background-color:#FFFFFF;
+	border: solid 2px;
+	text-align:center ;
+	vertical-align:baseline;
+	font-size: 18px;
+	
+}
+
 .labelForgot {
 	color: black;
 	font-family: "Trebuchet MS", Gadget, sans-serif;
@@ -493,13 +508,25 @@ select {
 
 .microPaymentPopup{
 	z-index: 4;
-	background-color: #f2bc4a;
+	background-color: #fbaa25;
 	border: solid 2px;
-	border-color: #f69000;
+	border-color: #fd8b04;
 	font-family: "Trebuchet MS";
 	font-size: 12px;
 	padding: 5px;
 	color: #000000;
+}
+
+.sendTip {
+	border: none 0px;
+	width: 159px;
+	height: 55px;
+	background: URL("../images/sendTipOFF.png");
+	cursor: pointer;
+}
+
+.sendTip:hover {
+	background: URL("../images/sendTip.png");
 }
 
 .submitRequest {
@@ -540,6 +567,28 @@ select {
 
 .rightArrow:hover {
 	background: URL("../images/rightarrow.png");
+}
+
+.upArrow {
+	background: URL("../images/uparrowOFF.png");
+	border: 0px;
+	width: 24px;
+	height: 24px;
+}
+
+.upArrow:hover {
+	background: URL("../images/uparrow.png");
+}
+
+.downArrow {
+	background: URL("../images/downarrowOFF.png");
+	border: 0px;
+	width: 24px;
+	height: 24px;
+}
+
+.downArrow:hover {
+	background: URL("../images/downarrow.png");
 }
 
 .infoButton {
@@ -626,11 +675,28 @@ select {
 	color: #000000;
 }
 
+.textDescBox {
+	border: 3px #c60089 solid;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	padding-top: 1px;
+	padding-right: 0px;
+	padding-bottom: 1px;
+	padding-left: 2px;
+	height: 80px;
+	vertical-align:top;
+	color: #000000;
+	font-size: 13px;
+	color: #000000;
+}
+
 .errorLabel {
 	color: #FF0000;
 	font-family: "Trebuchet MS", Verdana, Arial;
 	font-size: 10px;
-	height: 12px;
+	height: 10px;
 	vertical-align: bottom;
 }
 
