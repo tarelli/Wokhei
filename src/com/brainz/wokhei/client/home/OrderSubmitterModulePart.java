@@ -818,7 +818,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 		//setup submit button
 		final VerticalPanel microPaymentPanel=new VerticalPanel();
 
-		final SWFWidget seppiaWidget = getSeppiaWidget(Images.SEPPIA1.getImageURL());
+		final SWFWidget waiterSWFWidget = getWaiterSWFWidget(Images.WAITER.getImageURL());
 
 		Image tipInstructions = new Image(Images.TIP_INSTRUCTIONS.getImageURL());
 
@@ -852,7 +852,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 				//it's already the minimum value 
 				if(!getSubmittedOrder().getTip().equals(TransactionType.MICROPAYMENT.getValue()))
 				{
-					sendStatusToSeppia(seppiaWidget.getElement(),"sad");
+					sendStatusToSeppia(waiterSWFWidget.getElement(),"sad");
 					getSubmittedOrder().setTip(getSubmittedOrder().getTip()-0.5d);
 					tipBox.setText(getSubmittedOrder().getTip()+Messages.EUR.getString()); //$NON-NLS-1$
 					applyCufon();
@@ -867,7 +867,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				sendStatusToSeppia(seppiaWidget.getElement(),"smile");
+				sendStatusToSeppia(waiterSWFWidget.getElement(),"smile");
 				getSubmittedOrder().setTip(getSubmittedOrder().getTip()+0.5d);
 				tipBox.setText(getSubmittedOrder().getTip()+Messages.EUR.getString()); //$NON-NLS-1$
 				applyCufon();
@@ -921,7 +921,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 		microPaymentPanel.setSpacing(10);
 		microPaymentPanel.setHorizontalAlignment(VerticalPanel.ALIGN_CENTER);
-		microPaymentPanel.add(seppiaWidget);
+		microPaymentPanel.add(waiterSWFWidget);
 		microPaymentPanel.add(tipHPanel);
 		microPaymentPanel.add(tipInstructions);
 
@@ -937,12 +937,12 @@ public class OrderSubmitterModulePart extends AModulePart {
 	 * @param imageURL
 	 * @return
 	 */
-	private SWFWidget getSeppiaWidget(String imageURL) {
-		SWFWidget seppiaWidget = new SWFWidget(imageURL);
-		seppiaWidget.setWidth("300px");
-		seppiaWidget.setHeight("300px");
-		seppiaWidget.setVisible(true);
-		return seppiaWidget;
+	private SWFWidget getWaiterSWFWidget(String imageURL) {
+		SWFWidget waiterSWFWidget = new SWFWidget(imageURL);
+		waiterSWFWidget.setWidth("300px");
+		waiterSWFWidget.setHeight("300px");
+		waiterSWFWidget.setVisible(true);
+		return waiterSWFWidget;
 	}
 
 	/**
