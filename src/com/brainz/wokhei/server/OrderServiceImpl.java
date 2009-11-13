@@ -41,7 +41,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
  */
 public class OrderServiceImpl extends RemoteServiceServlet implements OrderService {
 
-	/**
+	/** 
 	 * 
 	 */
 	private static final long serialVersionUID = -5060860293974160016L;
