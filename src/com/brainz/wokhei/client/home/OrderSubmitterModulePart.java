@@ -3,7 +3,6 @@
  */
 package com.brainz.wokhei.client.home;
 
-import java.util.Date;
 import java.util.List;
 
 import pl.rmalinowski.gwt2swf.client.ui.SWFWidget;
@@ -18,7 +17,6 @@ import com.brainz.wokhei.resources.Images;
 import com.brainz.wokhei.resources.Messages;
 import com.brainz.wokhei.resources.PayPalStrings;
 import com.brainz.wokhei.shared.Colour;
-import com.brainz.wokhei.shared.DateDifferenceCalculator;
 import com.brainz.wokhei.shared.OrderDTO;
 import com.brainz.wokhei.shared.OrderDTOUtils;
 import com.brainz.wokhei.shared.Status;
@@ -52,8 +50,7 @@ import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
 import com.google.gwt.user.client.ui.FormPanel.SubmitHandler;
 
 /**
- * @author matteocantarelli
- * 
+ * @author matteocantarelli / giovazza
  */
 public class OrderSubmitterModulePart extends AModulePart {
 	private static final int NUM_COLOURS = 24;
@@ -624,16 +621,16 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 	protected void setMessageWithKillswitchOn(OrderDTO latestOrder) {
 		// sets wait message when killswitch is on depending on the latest order
-		if (latestOrder == null
-				|| (latestOrder.getStatus() == Status.ARCHIVED
-						|| latestOrder.getStatus() == Status.BOUGHT || latestOrder
-						.getStatus() == Status.REJECTED)) {
-			// set wait label text --> killswitch message
-			_waitLabel.setText(Messages.valueOf("KILLSWITCH_ON_WAITMSG")
-					.getString());
-		} else {
-			// set wait label text according to latest order status
-			updateAlternatePanelMessage(latestOrder, false);
+
+		if(latestOrder==null || ( latestOrder.getStatus() == Status.BOUGHT || latestOrder.getStatus() == Status.REJECTED))
+		{
+			//set wait label text --> killswitch message
+			_waitLabel.setText(Messages.valueOf("KILLSWITCH_ON_WAITMSG").getString());
+		}
+		else
+		{
+			//set wait label text according to latest order status
+			updateAlternatePanelMessage(latestOrder,false);
 		}
 
 	}
@@ -1069,33 +1066,18 @@ public class OrderSubmitterModulePart extends AModulePart {
 	/**
 	 * @param error
 	 */
-	protected void updateAlternatePanelMessage(OrderDTO order, Boolean error) {
-		if (error != null) {
-			if (order.getStatus() != Status.VIEWED) {
-				this._waitLabel.setText(Messages.valueOf(
-						order.getStatus().toString() + "_WAITMSG").getString()); //$NON-NLS-1$
-			} else {
-				Date serverTimeStamp = this.getModule().getServerTimeStamp();
-				float diffHours = DateDifferenceCalculator
-				.getDifferenceInHours(serverTimeStamp, order
-						.getViewedDate());
-				Integer missingTime = (24 + (int) diffHours);
-				String missingTimeString = missingTime.toString();
 
-				if (missingTime >= 0) {
-					if (missingTime < 1) {
-						missingTimeString = Messages.LESS_THAN_HOUR.getString();
-					}
-					this._waitLabel.setText(Messages.VIEWED_WAITMSG_1
-							.getString()
-							+ missingTimeString
-							+ Messages.VIEWED_WAITMSG_2.getString());
-				} else {
-					((OrderServiceAsync) getService(Service.ORDER_SERVICE))
-					.setOrderStatus(order.getId(), Status.ARCHIVED,
-							_setOrderStatusCallback);
-				}
-
+	protected void updateAlternatePanelMessage(OrderDTO order, Boolean error) 
+	{
+		if(error!=null)
+		{
+			if(order.getStatus() != Status.VIEWED)
+			{
+				this._waitLabel.setText(Messages.valueOf(order.getStatus().toString()+"_WAITMSG").getString()); //$NON-NLS-1$
+			}
+			else
+			{
+				this._waitLabel.setText(Messages.VIEWED_WAITMSG.getString());
 			}
 		} else {
 			this._waitLabel.setText(Messages.ERROR_WAITMSG.getString());
@@ -1131,12 +1113,13 @@ public class OrderSubmitterModulePart extends AModulePart {
 	/**
 	 * @param result
 	 */
-	protected void setShowHideStateByLatestOrder(OrderDTO result) {
-		if (result == null
-				|| (result.getStatus() == Status.ARCHIVED
-						|| result.getStatus() == Status.BOUGHT
-						|| result.getStatus() == Status.REJECTED || result
-						.getStatus() == Status.PENDING)) {
+
+	protected void setShowHideStateByLatestOrder(OrderDTO result) 
+	{
+		if(result==null || (result.getStatus() == Status.BOUGHT || result.getStatus() == Status.REJECTED|| result
+				.getStatus() == Status.PENDING))
+		{
+
 
 			_mainPanel.setVisible(true);
 

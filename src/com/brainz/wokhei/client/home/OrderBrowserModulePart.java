@@ -57,6 +57,8 @@ public class OrderBrowserModulePart extends AModulePart{
 	private final Label orderNameLabel = new Label();
 
 	// Sub this label with a panel with up/down arrows and a label to display descriptions/revisions
+	private final HorizontalPanel _descriptionsContainer = new HorizontalPanel();
+	private final VerticalPanel _descriptionsArrowsPanel = new VerticalPanel();
 	private final VerticalPanel _orderDescriptionsPanel = new VerticalPanel();
 	private Label _descriptionLabel;
 	private Button _upArrow;
@@ -93,15 +95,8 @@ public class OrderBrowserModulePart extends AModulePart{
 	private final FormPanel _paypalForm = new FormPanel("");
 	private final PopupPanel _acceptAgreementPopupPanel= new PopupPanel(true);
 
-	// Enquiry for archived logos
-	private final Label _forgotToBuyLbl = new Label(Messages.ENQUIRY_ARCHIVED_QUESTION.getString());
-	private final Label _sendEnquiryLblBtn = new Label(Messages.ENQUIRY_ARCHIVED_ACTION.getString()); 
-	private final Label _enquiryFeedback = new Label("");
-	private final VerticalPanel _enquiryPanel = new VerticalPanel();
-
 	private AsyncCallback<Long> _setOrderStatusCallback = null;
 	private AsyncCallback<List<OrderDTO>> _getOrdersCallback = null;
-	private AsyncCallback<Boolean> _sendEnquiryCallback = null;
 
 	private boolean _buyNowLoaded=false;
 
@@ -115,8 +110,6 @@ public class OrderBrowserModulePart extends AModulePart{
 			getOrdersForCurrentCustomer();
 
 			setupLightBox();
-
-			setupEnquiryControls();
 
 			setupAcceptAgreement();		
 
@@ -183,60 +176,31 @@ public class OrderBrowserModulePart extends AModulePart{
 			colourPanel.add(colour);
 
 			ordersPanel.setWidth("150px");
-
 			ordersPanel.add(orderNameLabel);
-			ordersPanel.add(_orderDescriptionsPanel);
+
+			_descriptionsContainer.setHeight("100px");
+			_descriptionsContainer.add(_orderDescriptionsPanel);
+			_descriptionsContainer.add(_descriptionsArrowsPanel);
+
+			ordersPanel.add(_descriptionsContainer);
 			ordersPanel.add(colourPanel);
 			ordersPanel.add(orderDateLabel);			
 
-			_enquiryPanel.add(_forgotToBuyLbl);
-			_enquiryPanel.add(_sendEnquiryLblBtn);
-			_enquiryPanel.add(_enquiryFeedback);
-			_enquiryPanel.setSpacing(5);
-
 			mainPanel.add(orderImage, 154, 0);
-			mainPanel.add(previousOrderButton,370,150);
-			mainPanel.add(nextOrderButton,420,150);
+			mainPanel.add(previousOrderButton,370,170);
+			mainPanel.add(nextOrderButton,420,170);
 			mainPanel.add(statusDescription,170,250);
 			mainPanel.add(statusTitle,170,220);
 			mainPanel.add(infoButton,147,221);
 			mainPanel.add(ordersPanel,360,13);
 			mainPanel.add(_buyNowImage, 220, 370);
 			mainPanel.add(downloadPanelContainer,165,330);
-			mainPanel.add(_enquiryPanel, 165, 380);
 			mainPanel.add(infos,190,20);
 
 			RootPanel.get("ordersBrowser").add(getPanel());
 
 			applyCufon();
 		}
-	}
-
-	private void setupEnquiryControls() {
-		setEnquiryControlsVisibility(false);
-
-		_sendEnquiryLblBtn.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				_sendEnquiryLblBtn.setVisible(false);
-				((OrderServiceAsync)getService(Service.ORDER_SERVICE)).sendEnquiry(_currentOrder, _sendEnquiryCallback);
-			}
-		});
-
-		//style
-		_forgotToBuyLbl.setStyleName("labelForgot");
-		_sendEnquiryLblBtn.addStyleName("labelButton");
-		_sendEnquiryLblBtn.addStyleName("labelLink");
-		_sendEnquiryLblBtn.addStyleName("labelForgot");
-		_enquiryFeedback.setStyleName("labelForgotFeedback");
-	}
-
-	private void setEnquiryControlsVisibility(boolean visible)
-	{
-		_enquiryFeedback.setText("");
-
-		_forgotToBuyLbl.setVisible(visible);
-		_sendEnquiryLblBtn.setVisible(visible);
-		_enquiryFeedback.setVisible(visible);
 	}
 
 	private void hookUpCallbacks() 
@@ -289,24 +253,6 @@ public class OrderBrowserModulePart extends AModulePart{
 			}
 		};
 
-		_sendEnquiryCallback = new AsyncCallback<Boolean>() {
-
-			public void onSuccess(Boolean result) {
-				if(result)
-				{
-					_enquiryFeedback.setText(Messages.ENQUIRY_FEEDBACK_OK.getString());
-				}
-				else
-				{
-					_enquiryFeedback.setText(Messages.ENQUIRY_FEEDBACK_KO.getString());
-				}
-			}
-
-			public void onFailure(Throwable caught) {
-				_enquiryFeedback.setText(Messages.ENQUIRY_FEEDBACK_KO.getString());
-			}
-
-		};
 	}
 
 	private void setupLightBox() {
@@ -324,7 +270,6 @@ public class OrderBrowserModulePart extends AModulePart{
 					break;
 				case VIEWED:
 				case BOUGHT:
-				case ARCHIVED:
 					slideShow.showSingleImage("/wokhei/getfile?fileType="+FileType.PNG_LOGO_PRESENTATION.toString()+"&orderid="+_currentOrder.getId(), Messages.COPYRIGHT.getString());
 					break;
 				}
@@ -382,8 +327,6 @@ public class OrderBrowserModulePart extends AModulePart{
 	private void updatePanel() {
 		//buy now false by default
 		_buyNowImage.setVisible(false);
-		//send enquiry visibility false by default
-		setEnquiryControlsVisibility(false);
 
 		if(downloadPanel!=null)
 		{
@@ -445,12 +388,6 @@ public class OrderBrowserModulePart extends AModulePart{
 				orderImage.setUrl(Images.valueOf(_currentOrder.getStatus().toString()).getImageURL()); 
 				setupDownloadStuff(_currentOrder.getStatus());
 				break;
-			case ARCHIVED:
-				orderImage.addStyleName("labelButton");
-				orderImage.setUrl(Images.valueOf(_currentOrder.getStatus().toString()).getImageURL()); 
-				setupDownloadStuff(_currentOrder.getStatus());
-				setEnquiryControlsVisibility(true);
-				break;
 			}
 		}
 		else
@@ -465,13 +402,16 @@ public class OrderBrowserModulePart extends AModulePart{
 	private void setupDescriptionsPanel() {
 		//0. clear descPanel
 		_orderDescriptionsPanel.clear();
+		_descriptionsArrowsPanel.clear();
 
 		// 1. create label to hold description
 		_descriptionLabel = new Label();
 		_descriptionLabel.setStyleName("logoTagsDateLabel");
+
 		//set text to latest description
 		int size = Arrays.asList(_currentOrder.getDescriptions()).size();
 		_descriptionLabel.setText(Arrays.asList(_currentOrder.getDescriptions()).get(size-1));
+
 		//set index
 		_currentDescIndex = size - 1;
 
@@ -483,25 +423,23 @@ public class OrderBrowserModulePart extends AModulePart{
 		_upArrow.addClickHandler(new ClickHandler(){
 
 			public void onClick(ClickEvent event) {
-
 				_descriptionLabel.setText(Arrays.asList(_currentOrder.getDescriptions()).get(++_currentDescIndex));
 				setUpDownArrowsVisibility(Arrays.asList(_currentOrder.getDescriptions()));
-
 			}});
 
 		_downArrow.addClickHandler(new ClickHandler(){
 
 			public void onClick(ClickEvent event) {
-
 				_descriptionLabel.setText(Arrays.asList(_currentOrder.getDescriptions()).get(--_currentDescIndex));
 				setUpDownArrowsVisibility(Arrays.asList(_currentOrder.getDescriptions()));
-
 			}});
 
 		// 3. fill-up the panel with the stuff
-		_orderDescriptionsPanel.add(_upArrow);
+		_orderDescriptionsPanel.setWidth("150px");
 		_orderDescriptionsPanel.add(_descriptionLabel);
-		_orderDescriptionsPanel.add(_downArrow);
+
+		_descriptionsArrowsPanel.add(_upArrow);
+		_descriptionsArrowsPanel.add(_downArrow);
 
 		// 4. set arrows visibility
 		setUpDownArrowsVisibility(Arrays.asList(_currentOrder.getDescriptions()));

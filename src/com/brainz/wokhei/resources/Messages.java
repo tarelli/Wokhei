@@ -11,7 +11,6 @@ public enum Messages {
 	READY("Ready"),
 	BOUGHT("Bought"),
 	VIEWED("Viewed"),
-	ARCHIVED("Archived"),
 
 	LOGO_NAME_LBL("Product name"),
 	LOGO_NAME_HELP_MESSAGE("This is the name of the company, product, service, website, association (or anything else) that you need the logo for. This name will appear in the logo unless you specify otherwise in the description."),
@@ -40,9 +39,8 @@ public enum Messages {
 	PENDING_WAITMSG("Thanks for your tip! As soon as you'll complete the transaction your order will be queued! Refresh this page if you want to change the details of your order before the transaction is complete!"),
 	IN_PROGRESS_WAITMSG("Your logo is being cooked-up, have some more appetizers!"),
 	QUALITY_GATE_WAITMSG("Your logo is being reviewed by our quality experts, it will be ready soon enough!"),
-	READY_WAITMSG("Your logo is ready! Click on the wok to see it!"),
-	VIEWED_WAITMSG_1("Enjoy your tasty Stir Fried Logo! You have "),
-	VIEWED_WAITMSG_2("hrs left to buy. Hurry up!"),
+	READY_WAITMSG("Your logo is ready! Click on the steamin' wok to watch it!"),
+	VIEWED_WAITMSG("Enjoy your tasty Stir Fried Logo!"),
 	KILLSWITCH_ON_WAITMSG("Sorry, we are fully booked at the moment, come back later!"),
 	COPYRIGHT("Copyright\u00a9 2009 WOKHEI"),
 
@@ -62,8 +60,6 @@ public enum Messages {
 	VIEWED_TEXT("You have 24hrs to buy the logo for commercial use for only 105 EUR (VAT included) - approx 145 USD. If you don't buy you still will be able to use the logo but only unexclusively and under the Wokhei Limited License."),
 	BOUGHT_TITLE("You purchased this logo"),
 	BOUGHT_TEXT("You can use this logo according to the Wokhei Commercial License. Now it's your turn to make money!"),
-	ARCHIVED_TITLE("This logo is archived"),
-	ARCHIVED_TEXT("You didn't buy this logo, you can use it under the Wokhei Limited Licence. Please remember to read the license agreement and to credit Wokhei if you use it."), 
 
 	DOWNLOAD_RASTERIZED("Download Logo (Rasterized PNG)"),
 	DOWNLOAD_VECTORIAL("Download Logo (Vectorial PDF)"),
@@ -123,15 +119,6 @@ public enum Messages {
 	//CAREEERS
 	CAREERS_TITLE("Careers"), 
 	CAREERS_GRAPHIC_TITLE("Logo graphic designer"),  
-
-	// Enquiry for archived logo
-	ENQUIRY_ARCHIVED_QUESTION("Want to buy this archived logo?"),
-	ENQUIRY_ARCHIVED_ACTION("Click HERE to send an enquiry!"),
-	ENQUIRY_MADE("Your enquiry has been sent - we'll be in contact soon."),
-	ENQUIRY_EMAIL_SUBJECT(" wants to buy an archived logo"),
-	ENQUIRY_EMAIL_BODY("Happy days! Looks like this guy wants to buy an archived logo:\n"),
-	ENQUIRY_FEEDBACK_OK("Enquiry submitted. We'll be in contact soon!"),
-	ENQUIRY_FEEDBACK_KO("Something went terribly wrong and your enquiry was not submitted. Try again!"),
 
 	//EXTRA 
 	MUST_ACCEPT_LICENSE("You need to accept terms and conditions first!"),
