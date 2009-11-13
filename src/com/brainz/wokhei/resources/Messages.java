@@ -2,6 +2,7 @@ package com.brainz.wokhei.resources;
 
 public enum Messages {
 
+	PENDING("Pending"),
 	INCOMING("Incoming"),
 	ACCEPTED("Accepted"),
 	REJECTED("Rejected"),
@@ -36,6 +37,7 @@ public enum Messages {
 	ACCEPTED_WAITMSG("Your logo is getting ready, fancy a drink meanwhile?"),
 	ERROR_WAITMSG("An error occurred while sending your request. Please do complain!"),
 	INCOMING_WAITMSG("Your request has been sent to the kitchen. Enjoy the appetizers!"),
+	PENDING_WAITMSG("Thanks for your tip! As soon as you'll complete the transaction your order will be queued! Refresh this page if you want to change the details of your order before the transaction is complete!"),
 	IN_PROGRESS_WAITMSG("Your logo is being cooked-up, have some more appetizers!"),
 	QUALITY_GATE_WAITMSG("Your logo is being reviewed by our quality experts, it will be ready soon enough!"),
 	READY_WAITMSG("Your logo is ready! Click on the wok to see it!"),

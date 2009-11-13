@@ -200,7 +200,7 @@ public class OrderBrowserModulePart extends AModulePart{
 			mainPanel.add(statusDescription,170,250);
 			mainPanel.add(statusTitle,170,220);
 			mainPanel.add(infoButton,147,221);
-			mainPanel.add(ordersPanel,360,43);
+			mainPanel.add(ordersPanel,360,13);
 			mainPanel.add(_buyNowImage, 220, 370);
 			mainPanel.add(downloadPanelContainer,165,330);
 			mainPanel.add(_enquiryPanel, 165, 380);

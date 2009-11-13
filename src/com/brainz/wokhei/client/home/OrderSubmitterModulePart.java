@@ -23,6 +23,7 @@ import com.brainz.wokhei.shared.OrderDTO;
 import com.brainz.wokhei.shared.OrderDTOUtils;
 import com.brainz.wokhei.shared.Status;
 import com.brainz.wokhei.shared.TransactionType;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -49,45 +50,52 @@ import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
 import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteHandler;
 import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
 import com.google.gwt.user.client.ui.FormPanel.SubmitHandler;
+
 /**
  * @author matteocantarelli
- *
+ * 
  */
-public class OrderSubmitterModulePart extends AModulePart 
-{
+public class OrderSubmitterModulePart extends AModulePart {
 	private static final int NUM_COLOURS = 24;
 
-	//root panel to host main and alternate panel
+	private static final boolean DEBUG = true;
+
+	// root panel to host main and alternate panel
 	private final VerticalPanel _rootPanel = new VerticalPanel();
 
 	private final VerticalPanel _mainPanel = new VerticalPanel();
 
-	//NAME
+	// NAME
 	private final VerticalPanel _logoTextPanel = new VerticalPanel();
 	private final TextBox _logoTextBox = new TextBox();
 	private final Label _logoTextHelpMark = new Label();
-	private final Label _logoTextHelpLabel = new Label(Messages.LOGO_NAME_HELP_MESSAGE.getString());
+	private final Label _logoTextHelpLabel = new Label(
+			Messages.LOGO_NAME_HELP_MESSAGE.getString());
 	private final PopupPanel _logoTextHelpPopup = new PopupPanel(true);
-	private final Label _logoTextLabel = new Label(Messages.LOGO_NAME_LBL.getString()); //$NON-NLS-1$
+	private final Label _logoTextLabel = new Label(Messages.LOGO_NAME_LBL
+			.getString()); //$NON-NLS-1$
 	private final HorizontalPanel _logoTextLabelPanel = new HorizontalPanel();
-	private final Label _logoHintLabel = new Label(Messages.LOGO_NAME_EG_LBL.getString()); //$NON-NLS-1$
-	private final Label _logoErrorLabel = new Label(); 
+	private final Label _logoHintLabel = new Label(Messages.LOGO_NAME_EG_LBL
+			.getString()); //$NON-NLS-1$
+	private final Label _logoErrorLabel = new Label();
 	private final Image _logoOkImage = new Image();
-	private boolean _nameModified=false;
+	private boolean _nameModified = false;
 
-	//COLOURS
+	// COLOURS
 	private final VerticalPanel _colorPanel = new VerticalPanel();
 	private final Label _logoColourHelpMark = new Label();
-	private final Label _logoColourHelpLabel = new Label(Messages.LOGO_COLOUR_HELP_MESSAGE.getString());
+	private final Label _logoColourHelpLabel = new Label(
+			Messages.LOGO_COLOUR_HELP_MESSAGE.getString());
 	private final PopupPanel _logoColourHelpPopup = new PopupPanel(true);
-	private final Label _colourLabel = new Label(Messages.LOGO_COLOUR_LBL.getString()); //$NON-NLS-1$
+	private final Label _colourLabel = new Label(Messages.LOGO_COLOUR_LBL
+			.getString()); //$NON-NLS-1$
 	private final HorizontalPanel _colourLabelPanel = new HorizontalPanel();
 	private final Label _colourErrorLabel = new Label();
 	private final Image _colourOkImage = new Image();
-	private boolean _coloursModified=false;
+	private boolean _coloursModified = false;
 
 	private final VerticalPanel _rows = new VerticalPanel();
-	private final HorizontalPanel _colorSubPanel= new HorizontalPanel();
+	private final HorizontalPanel _colorSubPanel = new HorizontalPanel();
 	private final HorizontalPanel _firstRow = new HorizontalPanel();
 	private final HorizontalPanel _secondRow = new HorizontalPanel();
 	private final HorizontalPanel _thirdRow = new HorizontalPanel();
@@ -95,39 +103,43 @@ public class OrderSubmitterModulePart extends AModulePart
 	private final Label _colours[] = new Label[NUM_COLOURS];
 
 	private Colour _selectedColour;
-	private Label _selectedColourButton=null;
+	private Label _selectedColourButton = null;
 
-	//Description
+	// Description
 	private final VerticalPanel _logoDescriptionPanel = new VerticalPanel();
 	private final TextArea _logoDescBox = new TextArea();
 	private final Label _logoDescHelpMark = new Label();
-	private final Label _logoDescHelpLabel = new Label(Messages.LOGO_DESC_HELP_MESSAGE.getString());
+	private final Label _logoDescHelpLabel = new Label(
+			Messages.LOGO_DESC_HELP_MESSAGE.getString());
 	private final PopupPanel _logoDescHelpPopup = new PopupPanel(true);
-	private final Label _logoDescLabel = new Label(Messages.LOGO_DESC_LBL.getString()); //$NON-NLS-1$
+	private final Label _logoDescLabel = new Label(Messages.LOGO_DESC_LBL
+			.getString()); //$NON-NLS-1$
 	private final HorizontalPanel _logoDescLabelPanel = new HorizontalPanel();
-	private final Label _descHintLabel = new Label(Messages.LOGO_DESC_EG_LBL.getString()); //$NON-NLS-1$
-	private final Label _descErrorLabel = new Label(); 
+	private final Label _descHintLabel = new Label(Messages.LOGO_DESC_EG_LBL
+			.getString()); //$NON-NLS-1$
+	private final Label _descErrorLabel = new Label();
 	private final Image _descOkImage = new Image();
-	private boolean _descModified=false;
+	private boolean _descModified = false;
 
 	// a pretty self-explanatory submit button
-	private final Button _submitOrderButton = new Button(Messages.SEND_REQUEST.getString()); //$NON-NLS-1$
+	private final Button _submitOrderButton = new Button(Messages.SEND_REQUEST
+			.getString()); //$NON-NLS-1$
 
 	// these panels are the place olders for the drink images
-	private final VerticalPanel _alternateRootPanelBody= new VerticalPanel();
-	private final VerticalPanel _alternateRootPanelBodyTile= new VerticalPanel();
-	private final VerticalPanel _alternateRootPanelFooter= new VerticalPanel();
+	private final VerticalPanel _alternateRootPanelBody = new VerticalPanel();
+	private final VerticalPanel _alternateRootPanelBodyTile = new VerticalPanel();
+	private final VerticalPanel _alternateRootPanelFooter = new VerticalPanel();
 
 	// these panels are the place olders for the drink images
-	private final AbsolutePanel _alternateSubPanelBody= new AbsolutePanel();
-	private final AbsolutePanel _alternateSubPanelBodyTile= new AbsolutePanel();
-	private final AbsolutePanel _alternateSubPanelFooter= new AbsolutePanel();
+	private final AbsolutePanel _alternateSubPanelBody = new AbsolutePanel();
+	private final AbsolutePanel _alternateSubPanelBodyTile = new AbsolutePanel();
+	private final AbsolutePanel _alternateSubPanelFooter = new AbsolutePanel();
 
 	private final Label _waitLabel = new Label(); //$NON-NLS-1$
 
-	private final HorizontalPanel _logoTextBoxPanel=new HorizontalPanel();
+	private final HorizontalPanel _logoTextBoxPanel = new HorizontalPanel();
 
-	private final HorizontalPanel _logoDescBoxPanel=new HorizontalPanel();
+	private final HorizontalPanel _logoDescBoxPanel = new HorizontalPanel();
 
 	// callbacks
 	private AsyncCallback<List<OrderDTO>> _getOrdersCallback = null;
@@ -135,30 +147,26 @@ public class OrderSubmitterModulePart extends AModulePart
 	private AsyncCallback<Long> _submitOrderCallback = null;
 	private AsyncCallback<Long> _setOrderStatusCallback = null;
 
-	private PopupPanel _micropaymentPopup=null;
+	private PopupPanel _micropaymentPopup = null;
 
 	private OrderDTO _submittedOrder = null;
 
-	private SWFWidget _seppiaWidget=null;
-
-	private final Label _charactersLabel=new Label();
+	private final Label _charactersLabel = new Label();
 
 	@Override
 	public void loadModulePart() {
 
-		if((RootPanel.get("orderSubmitter")!=null)&&
-				(RootPanel.get("orderSubmitterAlternateBody")!=null)&&
-				(RootPanel.get("orderSubmitterAlternateBodytile")!=null)&&
-				(RootPanel.get("orderSubmitterAlternateFooter")!=null))
-		{
+		if ((RootPanel.get("orderSubmitter") != null)
+				&& (RootPanel.get("orderSubmitterAlternateBody") != null)
+				&& (RootPanel.get("orderSubmitterAlternateBodytile") != null)
+				&& (RootPanel.get("orderSubmitterAlternateFooter") != null)) {
 			hookUpCallbacks();
 
-			if(!getModule().isKillSwitchOn())
-			{
-				//set main panel spacing
+			if (!getModule().isKillSwitchOn()) {
+				// set main panel spacing
 				_mainPanel.setSpacing(3);
 
-				//setup stuff
+				// setup stuff
 				setEverythingToInvisible();
 				setupLogoTextPanel();
 				setupLogoDescPanel();
@@ -170,44 +178,48 @@ public class OrderSubmitterModulePart extends AModulePart
 
 				fillMainPanel();
 
-				//setup page state 
+				// setup page state
 				setViewByLatestOrder();
 				// Move cursor focus to the logoText input box.
 				_logoTextBox.setFocus(true);
 
-				//add main and alternate panel to root panel
+				// add main and alternate panel to root panel
 				_rootPanel.add(_mainPanel);
-				//inject stuff into page
+				// inject stuff into page
 				RootPanel.get("orderSubmitter").add(_rootPanel);
-				RootPanel.get("orderSubmitter").add(getOrderSubmitPanel(),90,15); //$NON-NLS-1$
-				RootPanel.get("orderSubmitterAlternateBody").add(getOrderSubmitAlternateBodyPanel()); //$NON-NLS-1$
-				RootPanel.get("orderSubmitterAlternateBodytile").add(getOrderSubmitAlternateBodytilePanel()); //$NON-NLS-1$
-				RootPanel.get("orderSubmitterAlternateFooter").add(getOrderSubmitAlternateFooterPanel()); //$NON-NLS-1$
-			}
-			else
-			{
+				RootPanel
+				.get("orderSubmitter").add(getOrderSubmitPanel(), 90, 15); //$NON-NLS-1$
+				RootPanel
+				.get("orderSubmitterAlternateBody").add(getOrderSubmitAlternateBodyPanel()); //$NON-NLS-1$
+				RootPanel
+				.get("orderSubmitterAlternateBodytile").add(getOrderSubmitAlternateBodytilePanel()); //$NON-NLS-1$
+				RootPanel
+				.get("orderSubmitterAlternateFooter").add(getOrderSubmitAlternateFooterPanel()); //$NON-NLS-1$
+			} else {
 				setAlternatePanelKillswitchOn();
 
-				((OrderServiceAsync) getService(Service.ORDER_SERVICE)).getOrdersForCurrentUser(_getOrdersForKillswitchOnCallback);
+				((OrderServiceAsync) getService(Service.ORDER_SERVICE))
+				.getOrdersForCurrentUser(_getOrdersForKillswitchOnCallback);
 			}
 
-			//apply cufon for nice fonts
+			// apply cufon for nice fonts
 			applyCufon();
 		}
 
 	}
 
 	private void setAlternatePanelKillswitchOn() {
-		//in case kill-switch is switched ON
+		// in case kill-switch is switched ON
 		_waitLabel.addStyleName("waitLabel"); //$NON-NLS-1$
 		_waitLabel.addStyleName("fontAR");
 		_waitLabel.setWidth("350px"); //$NON-NLS-1$
 		_waitLabel.addStyleName("labelButton");
 
 		_alternateSubPanelBody.addStyleName("orderSubmitterAlternateBody"); //$NON-NLS-1$
-		_alternateSubPanelBodyTile.addStyleName("orderSubmitterAlternateBodytile"); //$NON-NLS-1$
+		_alternateSubPanelBodyTile
+		.addStyleName("orderSubmitterAlternateBodytile"); //$NON-NLS-1$
 		_alternateSubPanelFooter.addStyleName("orderSubmitterAlternateFooter"); //$NON-NLS-1$
-		_alternateSubPanelBody.add(_waitLabel,85,30);
+		_alternateSubPanelBody.add(_waitLabel, 85, 30);
 		_alternateRootPanelBody.setWidth("500px"); //$NON-NLS-1$
 		_alternateRootPanelBodyTile.setWidth("500px"); //$NON-NLS-1$
 		_alternateRootPanelFooter.setWidth("500px"); //$NON-NLS-1$
@@ -215,40 +227,40 @@ public class OrderSubmitterModulePart extends AModulePart
 		_alternateRootPanelBodyTile.add(_alternateSubPanelBodyTile);
 		_alternateRootPanelFooter.add(_alternateSubPanelFooter);
 
-		RootPanel.get("orderSubmitterAlternateBody").add(getOrderSubmitAlternateBodyPanel()); //$NON-NLS-1$
-		RootPanel.get("orderSubmitterAlternateBodytile").add(getOrderSubmitAlternateBodytilePanel()); //$NON-NLS-1$
-		RootPanel.get("orderSubmitterAlternateFooter").add(getOrderSubmitAlternateFooterPanel()); //$NON-NLS-1$
+		RootPanel
+		.get("orderSubmitterAlternateBody").add(getOrderSubmitAlternateBodyPanel()); //$NON-NLS-1$
+		RootPanel
+		.get("orderSubmitterAlternateBodytile").add(getOrderSubmitAlternateBodytilePanel()); //$NON-NLS-1$
+		RootPanel
+		.get("orderSubmitterAlternateFooter").add(getOrderSubmitAlternateFooterPanel()); //$NON-NLS-1$
 	}
 
-
 	private void setupAlternatePanel() {
-		//alternate panel stuff
+		// alternate panel stuff
 		_waitLabel.addStyleName("waitLabel"); //$NON-NLS-1$
 		_waitLabel.addStyleName("fontAR");
 		_waitLabel.setWidth("350px"); //$NON-NLS-1$
 		_waitLabel.addStyleName("labelButton");
-		_waitLabel.addClickHandler(new ClickHandler(){
+		_waitLabel.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				for(AModulePart modulePart:_moduleParts)
-				{
-					if(modulePart instanceof OrderBrowserModulePart)
-					{
-						((OrderBrowserModulePart)modulePart).getLastOrder();
+				for (AModulePart modulePart : _moduleParts) {
+					if (modulePart instanceof OrderBrowserModulePart) {
+						((OrderBrowserModulePart) modulePart).getLastOrder();
 						notifyChanges();
 						break;
 					}
 				}
 
-
-			}});
+			}
+		});
 
 		_alternateSubPanelBody.addStyleName("orderSubmitterAlternateBody"); //$NON-NLS-1$
-		_alternateSubPanelBodyTile.addStyleName("orderSubmitterAlternateBodytile"); //$NON-NLS-1$
+		_alternateSubPanelBodyTile
+		.addStyleName("orderSubmitterAlternateBodytile"); //$NON-NLS-1$
 		_alternateSubPanelFooter.addStyleName("orderSubmitterAlternateFooter"); //$NON-NLS-1$
 
-
-		_alternateSubPanelBody.add(_waitLabel,85,30);
+		_alternateSubPanelBody.add(_waitLabel, 85, 30);
 		_alternateRootPanelBody.setWidth("500px"); //$NON-NLS-1$
 		_alternateRootPanelBodyTile.setWidth("500px"); //$NON-NLS-1$
 		_alternateRootPanelFooter.setWidth("500px"); //$NON-NLS-1$
@@ -258,21 +270,19 @@ public class OrderSubmitterModulePart extends AModulePart
 		_alternateRootPanelFooter.add(_alternateSubPanelFooter);
 	}
 
-
 	private void fillMainPanel() {
 		// Fill up that son of a bitch of a mainPanel
 		Label requestLabel = new Label(Messages.REQUEST_LOGO_LBL.getString());
-		requestLabel.addStyleName("h3"); 
+		requestLabel.addStyleName("h3");
 		requestLabel.addStyleName("fontAR");
 
-		_mainPanel.add(requestLabel );
+		_mainPanel.add(requestLabel);
 
 		_mainPanel.add(_logoTextPanel);
 		_mainPanel.add(_logoDescriptionPanel);
 		_mainPanel.add(_colorPanel);
 		_mainPanel.add(_submitOrderButton);
 	}
-
 
 	private void setSubmitButtonStuff() {
 		_submitOrderButton.removeStyleName("gwt-Button");
@@ -287,16 +297,14 @@ public class OrderSubmitterModulePart extends AModulePart
 		});
 	}
 
-
 	private void setErrorLabelsStyles() {
 		_descErrorLabel.setStyleName("errorLabel"); //$NON-NLS-1$
 		_logoErrorLabel.setStyleName("errorLabel"); //$NON-NLS-1$
 		_colourErrorLabel.setStyleName("errorLabel"); //$NON-NLS-1$
 	}
 
-
 	private void setupColorPickerPanel() {
-		//Setup color picker stuff
+		// Setup color picker stuff
 		_colourLabel.setStyleName("label"); //$NON-NLS-1$
 		_colourLabel.addStyleName("fontAR");
 
@@ -330,9 +338,8 @@ public class OrderSubmitterModulePart extends AModulePart
 		_colorPanel.add(_rows);
 	}
 
-
 	private void setupAllHelpPopups() {
-		//3.Setup help popups for Logo Text - Tags - Color choice
+		// 3.Setup help popups for Logo Text - Tags - Color choice
 		_logoTextHelpPopup.setStyleName("helpPopup");
 		_logoDescHelpPopup.setStyleName("helpPopup");
 		_logoColourHelpPopup.setStyleName("helpPopup");
@@ -348,76 +355,77 @@ public class OrderSubmitterModulePart extends AModulePart
 		_logoDescHelpPopup.setWidth("220px");
 		_logoColourHelpPopup.setWidth("220px");
 
-		_logoTextHelpMark.addClickHandler(new ClickHandler(){
-			public void onClick(ClickEvent event) {	
-				if(!_logoTextHelpPopup.isShowing())
-				{
+		_logoTextHelpMark.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				if (!_logoTextHelpPopup.isShowing()) {
 					_logoTextHelpPopup.showRelativeTo(_logoTextLabel);
 					_logoTextHelpMark.removeStyleName("infoButton");
 					_logoTextHelpMark.addStyleName("infoButtonClicked");
 				}
-			}});
+			}
+		});
 
-		_logoTextHelpPopup.addCloseHandler(new CloseHandler<PopupPanel>(){
+		_logoTextHelpPopup.addCloseHandler(new CloseHandler<PopupPanel>() {
 			public void onClose(CloseEvent<PopupPanel> event) {
 				_logoTextHelpMark.addStyleName("infoButton");
 				_logoTextHelpMark.removeStyleName("infoButtonClicked");
-			}});
+			}
+		});
 
 		_logoTextHelpPopup.setWidget(_logoTextHelpLabel);
 
-		_logoDescHelpMark.addClickHandler(new ClickHandler(){
-			public void onClick(ClickEvent event) {	
-				if(!_logoDescHelpPopup.isShowing())
-				{
+		_logoDescHelpMark.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				if (!_logoDescHelpPopup.isShowing()) {
 					_logoDescHelpPopup.showRelativeTo(_logoDescLabel);
 					_logoDescHelpMark.removeStyleName("infoButton");
 					_logoDescHelpMark.addStyleName("infoButtonClicked");
 				}
-			}});
+			}
+		});
 
-		_logoDescHelpPopup.addCloseHandler(new CloseHandler<PopupPanel>(){
+		_logoDescHelpPopup.addCloseHandler(new CloseHandler<PopupPanel>() {
 			public void onClose(CloseEvent<PopupPanel> event) {
 				_logoDescHelpMark.addStyleName("infoButton");
 				_logoDescHelpMark.removeStyleName("infoButtonClicked");
-			}});
+			}
+		});
 
 		_logoDescHelpPopup.setWidget(_logoDescHelpLabel);
 
-		_logoColourHelpMark.addClickHandler(new ClickHandler(){
-			public void onClick(ClickEvent event) {	
-				if(!_logoColourHelpPopup.isShowing())
-				{
+		_logoColourHelpMark.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				if (!_logoColourHelpPopup.isShowing()) {
 					_logoColourHelpPopup.showRelativeTo(_colourLabel);
 					_logoColourHelpMark.removeStyleName("infoButton");
 					_logoColourHelpMark.addStyleName("infoButtonClicked");
 				}
-			}});
+			}
+		});
 
-		_logoColourHelpPopup.addCloseHandler(new CloseHandler<PopupPanel>(){
+		_logoColourHelpPopup.addCloseHandler(new CloseHandler<PopupPanel>() {
 			public void onClose(CloseEvent<PopupPanel> event) {
 				_logoColourHelpMark.removeStyleName("infoButtonClicked");
 				_logoColourHelpMark.addStyleName("infoButton");
-			}});
-
+			}
+		});
 
 		_logoColourHelpPopup.setWidget(_logoColourHelpLabel);
 	}
 
-
 	private void setupLogoDescPanel() {
-		//2.Tags section setup
+		// 2.Tags section setup
 		_logoDescLabel.addStyleName("label");
 		_logoDescLabel.addStyleName("fontAR");
 		_charactersLabel.addStyleName("charsLabel");
 		_charactersLabel.addStyleName("fontAR");
-		_descHintLabel.addStyleName("hintLabel"); 
+		_descHintLabel.addStyleName("hintLabel");
 
-		_logoDescBox.setWidth("290px"); 
+		_logoDescBox.setWidth("290px");
 		_logoDescBox.setText(Messages.LOGO_DESC_TXTBOX.getString());
-		_logoDescBox.setStyleName("textDescBox"); 
+		_logoDescBox.setStyleName("textDescBox");
 
-		_logoDescBox.addBlurHandler(new BlurHandler(){
+		_logoDescBox.addBlurHandler(new BlurHandler() {
 			public void onBlur(BlurEvent event) {
 				setDescModified(true);
 				checkErrors();
@@ -428,15 +436,13 @@ public class OrderSubmitterModulePart extends AModulePart
 
 			@Override
 			public void onKeyPress(KeyPressEvent event) {
-				_charactersLabel.setText(250-_logoDescBox.getText().length() +" chars left");
-				if(_logoDescBox.getText().length()>250)
-				{
+				_charactersLabel.setText(250 - _logoDescBox.getText().length()
+						+ " chars left");
+				if (_logoDescBox.getText().length() > 250) {
 					_charactersLabel.removeStyleName("timerGreen");
 					_charactersLabel.addStyleName("timerRed");
 
-				}
-				else
-				{
+				} else {
 					_charactersLabel.removeStyleName("timerRed");
 					_charactersLabel.addStyleName("timerGreen");
 				}
@@ -464,31 +470,32 @@ public class OrderSubmitterModulePart extends AModulePart
 		_logoDescriptionPanel.add(_descErrorLabel);
 	}
 
-
 	private void setupLogoTextPanel() {
-		//1.Logo Name section setup
+		// 1.Logo Name section setup
 		_logoTextLabel.addStyleName("label"); //$NON-NLS-1$
-		_logoTextLabel.addStyleName("fontAR"); 
+		_logoTextLabel.addStyleName("fontAR");
 		_logoHintLabel.setStyleName("hintLabel"); //$NON-NLS-1$
 
 		_logoTextBox.setText(Messages.LOGO_NAME_TXTBOX.getString()); //$NON-NLS-1$
 		_logoTextBox.setWidth("290px"); //$NON-NLS-1$
 		_logoTextBox.setStyleName("textBox"); //$NON-NLS-1$
 		_logoTextBox.addStyleName("fontAR");
-		_logoTextBox.addBlurHandler(new BlurHandler(){
+		_logoTextBox.addBlurHandler(new BlurHandler() {
 			public void onBlur(BlurEvent event) {
 				setNameModified(true);
 				checkErrors();
 			}
 		});
 
-		_logoTextBox.addClickHandler(new ClickHandler(){
+		_logoTextBox.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				if(_logoTextBox.getText().equals(Messages.LOGO_NAME_TXTBOX.getString())) //$NON-NLS-1$
+				if (_logoTextBox.getText().equals(
+						Messages.LOGO_NAME_TXTBOX.getString())) //$NON-NLS-1$
 				{
 					_logoTextBox.selectAll();
 				}
-			}});
+			}
+		});
 
 		_logoTextBoxPanel.add(_logoTextBox);
 		_logoTextBoxPanel.add(getNewWhiteSpace(10));
@@ -508,7 +515,6 @@ public class OrderSubmitterModulePart extends AModulePart
 		_logoTextPanel.add(_logoErrorLabel);
 	}
 
-
 	private void setEverythingToInvisible() {
 		// set everything to invisible
 		setNameModified(false);
@@ -517,22 +523,19 @@ public class OrderSubmitterModulePart extends AModulePart
 		_mainPanel.setVisible(false);
 	}
 
-
 	private void hideValidationImages() {
 		_colourOkImage.setVisible(false);
 		_logoOkImage.setVisible(false);
 		_descOkImage.setVisible(false);
 	}
 
-
 	/**
-	 * @param i 
+	 * @param i
 	 * @return
 	 */
-	private Widget getNewWhiteSpace(Integer i) 
-	{
-		Label whiteSpace=new Label();
-		whiteSpace.setWidth(i.toString()+"px");
+	private Widget getNewWhiteSpace(Integer i) {
+		Label whiteSpace = new Label();
+		whiteSpace.setWidth(i.toString() + "px");
 		return whiteSpace;
 	}
 
@@ -542,7 +545,8 @@ public class OrderSubmitterModulePart extends AModulePart
 
 			public void onSuccess(List<OrderDTO> result) {
 				// check state and accordingly set alternate/main panel switch
-				setShowHideStateByLatestOrder(OrderDTOUtils.getMostRecentOrder(result));
+				setShowHideStateByLatestOrder(OrderDTOUtils
+						.getMostRecentOrder(result));
 			}
 
 			public void onFailure(Throwable caught) {
@@ -550,45 +554,53 @@ public class OrderSubmitterModulePart extends AModulePart
 			}
 		};
 
-		//set up get latest order callback
+		// set up get latest order callback
 		_getOrdersForKillswitchOnCallback = new AsyncCallback<List<OrderDTO>>() {
 
 			public void onSuccess(List<OrderDTO> result) {
-				// sets wait message when killswitch is on depending on the latest order
-				setMessageWithKillswitchOn(OrderDTOUtils.getMostRecentOrder(result));
+				// sets wait message when killswitch is on depending on the
+				// latest order
+				setMessageWithKillswitchOn(OrderDTOUtils
+						.getMostRecentOrder(result));
 			}
 
 			public void onFailure(Throwable caught) {
 				// on failure la porcata - defaulta a killswitch
-				_waitLabel.setText(Messages.ERROR_WAITMSG.getString()); 
+				_waitLabel.setText(Messages.ERROR_WAITMSG.getString());
 			}
 		};
 
 		// Set up the callback object.
-		_submitOrderCallback  = new AsyncCallback<Long>() {
+		_submitOrderCallback = new AsyncCallback<Long>() {
 			public void onFailure(Throwable caught) {
 				//				_messageLabel.setText(Messages.GENERIC_ERROR.getString() + caught.getMessage()); //$NON-NLS-1$
 			}
 
 			public void onSuccess(Long result) {
-				if(result!=null && getSubmittedOrder()!=null)
-				{
+				if (result != null && getSubmittedOrder() != null) {
 					getSubmittedOrder().setId(result);
 
-					if(_micropaymentPopup==null || !_micropaymentPopup.isShowing())
-					{
-						_micropaymentPopup=getMicroPaymentPanel();
+					if (_micropaymentPopup == null
+							|| !_micropaymentPopup.isShowing()) {
+						//the micropayment popup panel is not open
+						_micropaymentPopup = getMicroPaymentPanel();
 						_micropaymentPopup.center();
 						_micropaymentPopup.show();
 						applyCufon();
 					}
-					//			QUESTO DOVRA ESSERE FATTO NELLA SERVLET QUANDO ARRIVA IL PAGAMENTO..forse		
-					//					updateAlternatePanelMessage(_submittedOrder, result);
+					else
+					{
+						_micropaymentPopup.hide();
+						hideMainPanelShowAlternate(getSubmittedOrder());
+					}
+					// QUESTO DOVRA ESSERE FATTO NELLA SERVLET QUANDO ARRIVA IL
+					// PAGAMENTO..forse
+					// updateAlternatePanelMessage(_submittedOrder, result);
 					//
-					//					_mainPanel.setVisible(false);
+					// _mainPanel.setVisible(false);
 					//
-					//					showHidePanels();
-					//					notifyChanges();
+					// showHidePanels();
+					// notifyChanges();
 				}
 			}
 		};
@@ -598,75 +610,74 @@ public class OrderSubmitterModulePart extends AModulePart
 			public void onSuccess(Long result) {
 				setViewByLatestOrder();
 				notifyChanges();
+				if(DEBUG && _micropaymentPopup!=null && _micropaymentPopup.isShowing())
+				{
+					_micropaymentPopup.hide();
+				}
 			}
 
 			public void onFailure(Throwable caught) {
-				//TODO give feedback to the user that something went wrong!
+				// TODO give feedback to the user that something went wrong!
 			}
 		};
 	}
 
-
 	protected void setMessageWithKillswitchOn(OrderDTO latestOrder) {
 		// sets wait message when killswitch is on depending on the latest order
-		if(latestOrder==null || (latestOrder.getStatus() == Status.ARCHIVED 
-				|| latestOrder.getStatus() == Status.BOUGHT 
-				|| latestOrder.getStatus() == Status.REJECTED))
-		{
-			//set wait label text --> killswitch message
-			_waitLabel.setText(Messages.valueOf("KILLSWITCH_ON_WAITMSG").getString());
-		}
-		else
-		{
-			//set wait label text according to latest order status
-			updateAlternatePanelMessage(latestOrder,false);
+		if (latestOrder == null
+				|| (latestOrder.getStatus() == Status.ARCHIVED
+						|| latestOrder.getStatus() == Status.BOUGHT || latestOrder
+						.getStatus() == Status.REJECTED)) {
+			// set wait label text --> killswitch message
+			_waitLabel.setText(Messages.valueOf("KILLSWITCH_ON_WAITMSG")
+					.getString());
+		} else {
+			// set wait label text according to latest order status
+			updateAlternatePanelMessage(latestOrder, false);
 		}
 
 	}
 
-
-	private void configureColoursPanels() 
-	{
+	private void configureColoursPanels() {
 		_firstRow.setSpacing(1);
 		_secondRow.setSpacing(1);
 		_thirdRow.setSpacing(1);
 
-		for(int i=0;i<NUM_COLOURS;i++)
-		{
-			_colours[i]=new Label();
+		for (int i = 0; i < NUM_COLOURS; i++) {
+			_colours[i] = new Label();
 			_colours[i].setHeight("28px"); //$NON-NLS-1$
 			_colours[i].setWidth("28px"); //$NON-NLS-1$
-			_colours[i].addStyleName("colour"+Colour.values()[i].toString()); //$NON-NLS-1$
+			_colours[i].addStyleName("colour" + Colour.values()[i].toString()); //$NON-NLS-1$
 			_colours[i].addStyleName("colourNormal"); //$NON-NLS-1$
 			_colours[i].addStyleName("colourBorder"); //$NON-NLS-1$
 
-			final int index=i;
+			final int index = i;
 
-			_colours[i].addClickHandler(new ClickHandler(){
+			_colours[i].addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
 					_pantoneTextBox.setText(Colour.values()[index].getName());
-					if(_selectedColourButton!=null)
-					{
+					if (_selectedColourButton != null) {
 						_selectedColourButton.removeStyleName("colourSelected"); //$NON-NLS-1$
 						_selectedColourButton.addStyleName("colourNormal"); //$NON-NLS-1$
 					}
-					_selectedColour=Colour.values()[index];
+					_selectedColour = Colour.values()[index];
 					_colours[index].removeStyleName("colourNormal"); //$NON-NLS-1$
 					_colours[index].addStyleName("colourSelected"); //$NON-NLS-1$
-					_selectedColourButton=_colours[index];
+					_selectedColourButton = _colours[index];
 					setColourModified(true);
 					checkErrors();
-				}});
+				}
+			});
 
-			if(i<8)
+			if (i < 8)
 				_firstRow.add(_colours[i]);
-			else if(i<16)
+			else if (i < 16)
 				_secondRow.add(_colours[i]);
-			else if(i<NUM_COLOURS)
+			else if (i < NUM_COLOURS)
 				_thirdRow.add(_colours[i]);
 		}
 
-		//Lucky Number Seven
+		// Lucky Number Seven
 		_colours[7].setText("?");
 		_colours[7].addStyleName("fontAR");
 		_colours[7].addStyleName("colourSurpriseMeHomeSubmission");
@@ -676,42 +687,37 @@ public class OrderSubmitterModulePart extends AModulePart
 
 	}
 
-
-	private FormPanel getPayPalForm()
-	{
+	private FormPanel getPayPalForm() {
 		final FormPanel paypalForm = new FormPanel("");
 		boolean isSandbox = getModule().isSandBox();
-		//fill-up paypal form
-		if(isSandbox)
-		{
-			paypalForm.setAction(PayPalStrings.PAYPAL_SANDBOX_ACTION.getString());
+		// fill-up paypal form
+		if (isSandbox) {
+			paypalForm.setAction(PayPalStrings.PAYPAL_SANDBOX_ACTION
+					.getString());
+		} else {
+			paypalForm.setAction(PayPalStrings.PAYPAL_ACTION.getString());
 		}
-		else
-		{
-			paypalForm.setAction(PayPalStrings.PAYPAL_ACTION.getString());	
-		}	
 
 		paypalForm.setEncoding(FormPanel.ENCODING_MULTIPART);
 		paypalForm.setMethod(FormPanel.METHOD_POST);
 
 		VerticalPanel formPlaceHolder = new VerticalPanel();
 
-		//setup input element for seller
+		// setup input element for seller
 		Hidden sellerInfo = new Hidden();
 
 		sellerInfo.setName(PayPalStrings.PAYPAL_BUSINESS_NAME.getString());
 
-		if(isSandbox)
-		{
-			sellerInfo.setValue(PayPalStrings.PAYPAL_SANDBOX_BUSINESS_VALUE.getString());
+		if (isSandbox) {
+			sellerInfo.setValue(PayPalStrings.PAYPAL_SANDBOX_BUSINESS_VALUE
+					.getString());
+		} else {
+			sellerInfo
+			.setValue(PayPalStrings.PAYPAL_BUSINESS_VALUE.getString());
 		}
-		else
-		{
-			sellerInfo.setValue(PayPalStrings.PAYPAL_BUSINESS_VALUE.getString());	
-		}		
 
 		formPlaceHolder.add(sellerInfo);
-		//specify buy now button
+		// specify buy now button
 		Hidden cmdInfo = new Hidden();
 
 		cmdInfo.setName(PayPalStrings.PAYPAL_CMD_NAME.getString());
@@ -719,7 +725,7 @@ public class OrderSubmitterModulePart extends AModulePart
 		cmdInfo.setValue(PayPalStrings.PAYPAL_CMD_VALUE.getString());
 
 		formPlaceHolder.add(cmdInfo);
-		//specify purchase details
+		// specify purchase details
 		Hidden itemNameInfo = new Hidden();
 		Hidden amountInfo = new Hidden();
 		Hidden taxInfo = new Hidden();
@@ -727,7 +733,7 @@ public class OrderSubmitterModulePart extends AModulePart
 		Hidden notifyInfo = new Hidden();
 		Hidden returnInfo = new Hidden();
 		Hidden custom = new Hidden();
-		Hidden transactiontype=new Hidden();
+		Hidden transactiontype = new Hidden();
 		Hidden locale = new Hidden();
 
 		itemNameInfo.setName(PayPalStrings.PAYPAL_ITEMNAME_NAME.getString());
@@ -735,11 +741,13 @@ public class OrderSubmitterModulePart extends AModulePart
 		formPlaceHolder.add(itemNameInfo);
 
 		amountInfo.setName(PayPalStrings.PAYPAL_AMOUNT_NAME.getString());
-		amountInfo.setValue(TransactionType.MICROPAYMENT.getNet(getSubmittedOrder().getTip()).toString());
+		amountInfo.setValue(TransactionType.MICROPAYMENT.getNet(
+				getSubmittedOrder().getTip()).toString());
 		formPlaceHolder.add(amountInfo);
 
 		taxInfo.setName(PayPalStrings.PAYPAL_TAX_NAME.getString());
-		taxInfo.setValue(TransactionType.MICROPAYMENT.getTax(getSubmittedOrder().getTip()).toString());
+		taxInfo.setValue(TransactionType.MICROPAYMENT.getTax(
+				getSubmittedOrder().getTip()).toString());
 		formPlaceHolder.add(taxInfo);
 
 		currencyInfo.setName(PayPalStrings.PAYPAL_CURRENCY_NAME.getString());
@@ -747,13 +755,12 @@ public class OrderSubmitterModulePart extends AModulePart
 		formPlaceHolder.add(currencyInfo);
 
 		notifyInfo.setName(PayPalStrings.PAYPAL_NOTIFY_URL_NAME.getString());
-		if(isSandbox)
-		{
-			notifyInfo.setValue(PayPalStrings.PAYPAL_NOTIFY_URL_SANDBOX_VALUE.getString());
-		}
-		else
-		{
-			notifyInfo.setValue(PayPalStrings.PAYPAL_NOTIFY_URL_VALUE.getString());
+		if (isSandbox) {
+			notifyInfo.setValue(PayPalStrings.PAYPAL_NOTIFY_URL_SANDBOX_VALUE
+					.getString());
+		} else {
+			notifyInfo.setValue(PayPalStrings.PAYPAL_NOTIFY_URL_VALUE
+					.getString());
 
 		}
 		formPlaceHolder.add(notifyInfo);
@@ -765,7 +772,8 @@ public class OrderSubmitterModulePart extends AModulePart
 		custom.setValue(getSubmittedOrder().getId().toString());
 		formPlaceHolder.add(custom);
 
-		transactiontype.setName(PayPalStrings.PAYPAL_TRANSACTIONTYPE_NAME.getString());
+		transactiontype.setName(PayPalStrings.PAYPAL_TRANSACTIONTYPE_NAME
+				.getString());
 		transactiontype.setValue(TransactionType.MICROPAYMENT.toString());
 		formPlaceHolder.add(transactiontype);
 
@@ -773,15 +781,14 @@ public class OrderSubmitterModulePart extends AModulePart
 		locale.setValue(PayPalStrings.PAYPAL_LOCALE_NAME.getString());
 		formPlaceHolder.add(locale);
 
-		//setup submit button
+		// setup submit button
 		Image buyNowButton = new Image();
 		buyNowButton.setStyleName("labelButton");
 		buyNowButton.setUrl(Images.PAYPAL_BUTTON.getImageURL());
 
-		buyNowButton.addClickHandler(new ClickHandler(){
+		buyNowButton.addClickHandler(new ClickHandler() {
 
-			public void onClick(ClickEvent event) 
-			{
+			public void onClick(ClickEvent event) {
 				paypalForm.submit();
 			}
 		});
@@ -789,22 +796,29 @@ public class OrderSubmitterModulePart extends AModulePart
 
 		paypalForm.add(formPlaceHolder);
 
-
-
 		return paypalForm;
 	}
 
-	//COMMENTING THE MICROPAYMENT POPUP PANEL FOR NOW.
-	//WE NEVER KNOW IF WE CHANGE OUR MIND AGAIN.
-	//Update: WISE MAN!!! Panel is back
-	//sweet Johnny Drama
+	/**
+	 * @param swfWidget
+	 * @param status
+	 * @return
+	 */
+	native String sendStatusToSeppia(Element swfWidget, String status) /*-{
+		swfWidget.childNodes[0].sendToActionScript(status);
+	}-*/;
+
+	// COMMENTING THE MICROPAYMENT POPUP PANEL FOR NOW.
+	// WE NEVER KNOW IF WE CHANGE OUR MIND AGAIN.
+	// Update: WISE MAN!!! Panel is back
+	// sweet Johnny Drama
 
 	private PopupPanel getMicroPaymentPanel()
 	{
 		//setup submit button
 		final VerticalPanel microPaymentPanel=new VerticalPanel();
 
-		_seppiaWidget = getSeppiaWidget(Images.SEPPIA.getImageURL());
+		final SWFWidget seppiaWidget = getSeppiaWidget(Images.SEPPIA1.getImageURL());
 
 		Image tipInstructions = new Image(Images.TIP_INSTRUCTIONS.getImageURL());
 
@@ -838,10 +852,7 @@ public class OrderSubmitterModulePart extends AModulePart
 				//it's already the minimum value 
 				if(!getSubmittedOrder().getTip().equals(TransactionType.MICROPAYMENT.getValue()))
 				{
-					SWFWidget toRemove=_seppiaWidget;
-					_seppiaWidget=getSeppiaWidget(Images.SEPPIA2.getImageURL());
-					microPaymentPanel.insert(_seppiaWidget, 0);
-					toRemove.removeFromParent();
+					sendStatusToSeppia(seppiaWidget.getElement(),"sad");
 					getSubmittedOrder().setTip(getSubmittedOrder().getTip()-0.5d);
 					tipBox.setText(getSubmittedOrder().getTip()+Messages.EUR.getString()); //$NON-NLS-1$
 					applyCufon();
@@ -856,10 +867,7 @@ public class OrderSubmitterModulePart extends AModulePart
 
 			@Override
 			public void onClick(ClickEvent event) {
-				SWFWidget toRemove=_seppiaWidget;
-				_seppiaWidget=getSeppiaWidget(Images.SEPPIA1.getImageURL());
-				microPaymentPanel.insert(_seppiaWidget, 0);
-				toRemove.removeFromParent();
+				sendStatusToSeppia(seppiaWidget.getElement(),"smile");
 				getSubmittedOrder().setTip(getSubmittedOrder().getTip()+0.5d);
 				tipBox.setText(getSubmittedOrder().getTip()+Messages.EUR.getString()); //$NON-NLS-1$
 				applyCufon();
@@ -870,28 +878,35 @@ public class OrderSubmitterModulePart extends AModulePart
 		payTipButton.setStyleName("sendTip");
 		payTipButton.addClickHandler(new ClickHandler(){
 
+
 			public void onClick(ClickEvent event) 
 			{
-				((OrderServiceAsync)getService(Service.ORDER_SERVICE)).submitOrder(getSubmittedOrder(), _submitOrderCallback);
-				FormPanel paypalForm=getPayPalForm();
+				if(!DEBUG)
+				{
+					((OrderServiceAsync)getService(Service.ORDER_SERVICE)).submitOrder(getSubmittedOrder(), _submitOrderCallback);
+					FormPanel paypalForm=getPayPalForm();
 
-				//setup submit handlers
-				paypalForm.addSubmitHandler(new SubmitHandler(){
-					public void onSubmit(SubmitEvent event) {
+					//setup submit handlers
+					paypalForm.addSubmitHandler(new SubmitHandler(){
+						public void onSubmit(SubmitEvent event) {
 
-					}
-				});
+						}
+					});
 
-				paypalForm.addSubmitCompleteHandler(new SubmitCompleteHandler() {
+					paypalForm.addSubmitCompleteHandler(new SubmitCompleteHandler() {
 
-					public void onSubmitComplete(SubmitCompleteEvent event)
-					{
-						//nothing to handle? whoo-yeah! AVP sucks dick
-					}
-				});
+						public void onSubmitComplete(SubmitCompleteEvent event)
+						{
+							//nothing to handle? whoo-yeah! AVP sucks dick
+						}
+					});
+					paypalForm.submit();
 
-
-				paypalForm.submit();
+				}
+				else //DEBUGGING, don't open paypal, not required, change instead the status to INCOMING
+				{
+					((OrderServiceAsync)getService(Service.ORDER_SERVICE)).setOrderStatus(getSubmittedOrder().getId(), Status.INCOMING, _setOrderStatusCallback);
+				}
 			}
 		});
 
@@ -906,7 +921,7 @@ public class OrderSubmitterModulePart extends AModulePart
 
 		microPaymentPanel.setSpacing(10);
 		microPaymentPanel.setHorizontalAlignment(VerticalPanel.ALIGN_CENTER);
-		microPaymentPanel.add(_seppiaWidget);
+		microPaymentPanel.add(seppiaWidget);
 		microPaymentPanel.add(tipHPanel);
 		microPaymentPanel.add(tipInstructions);
 
@@ -922,9 +937,8 @@ public class OrderSubmitterModulePart extends AModulePart
 	 * @param imageURL
 	 * @return
 	 */
-	private SWFWidget getSeppiaWidget(String imageURL) 
-	{
-		SWFWidget seppiaWidget=new SWFWidget(imageURL);
+	private SWFWidget getSeppiaWidget(String imageURL) {
+		SWFWidget seppiaWidget = new SWFWidget(imageURL);
 		seppiaWidget.setWidth("300px");
 		seppiaWidget.setHeight("300px");
 		seppiaWidget.setVisible(true);
@@ -934,31 +948,27 @@ public class OrderSubmitterModulePart extends AModulePart
 	/**
 	 * 
 	 */
-	protected void submitOrder() 
-	{
+	protected void submitOrder() {
 		setNameModified(true);
 		setDescModified(true);
 		setColourModified(true);
-		if(checkErrors())
-		{
+		if (checkErrors()) {
 			getSubmittedOrder().setStatus(Status.PENDING);
-			String[] descriptions = {_logoDescBox.getText()};
+			String[] descriptions = { _logoDescBox.getText() };
 			getSubmittedOrder().setDescriptions(descriptions);
 			getSubmittedOrder().setText(_logoTextBox.getText());
 			getSubmittedOrder().setColour(_selectedColour);
-			((OrderServiceAsync)getService(Service.ORDER_SERVICE)).submitOrder(getSubmittedOrder(), _submitOrderCallback);
+			((OrderServiceAsync) getService(Service.ORDER_SERVICE))
+			.submitOrder(getSubmittedOrder(), _submitOrderCallback);
 		}
 	}
-
 
 	/**
 	 * 
 	 */
-	private OrderDTO getSubmittedOrder() 
-	{
-		if(_submittedOrder==null)
-		{
-			_submittedOrder=new OrderDTO();
+	private OrderDTO getSubmittedOrder() {
+		if (_submittedOrder == null) {
+			_submittedOrder = new OrderDTO();
 		}
 		return _submittedOrder;
 	}
@@ -966,50 +976,44 @@ public class OrderSubmitterModulePart extends AModulePart
 	/**
 	 * @return
 	 */
-	private boolean checkErrors() 
-	{
+	private boolean checkErrors() {
 		Validator.DescriptionErrors descError = DescriptionErrors.NONE;
 		Validator.LogoErrors logoError = LogoErrors.NONE;
 		Validator.ColourErrors colourError = ColourErrors.NONE;
 
-		if(isDescModified())
-		{
-			descError=Validator.validateDescription(_logoDescBox.getText());
+		if (isDescModified()) {
+			descError = Validator.validateDescription(_logoDescBox.getText());
 			setTagErrorStatus(descError);
 		}
 
-		if(isNameModified())
-		{
-			logoError=Validator.validateLogoName(_logoTextBox.getText());
+		if (isNameModified()) {
+			logoError = Validator.validateLogoName(_logoTextBox.getText());
 			setLogoNameError(logoError);
 		}
 
-		if(isColoursModified())
-		{
-			colourError=Validator.validateColour(_selectedColour);
+		if (isColoursModified()) {
+			colourError = Validator.validateColour(_selectedColour);
 			setColourError(colourError);
 		}
 
-		return descError.equals(DescriptionErrors.NONE) && 
-		colourError.equals(ColourErrors.NONE) && 
-		logoError.equals(LogoErrors.NONE);
+		return descError.equals(DescriptionErrors.NONE)
+		&& colourError.equals(ColourErrors.NONE)
+		&& logoError.equals(LogoErrors.NONE);
 
 	}
-
 
 	/**
 	 * @param logoError
 	 */
-	private void setLogoNameError(LogoErrors logoError) 
-	{
-		switch(logoError)
-		{
+	private void setLogoNameError(LogoErrors logoError) {
+		switch (logoError) {
 		case EMPTY:
 			_logoErrorLabel.setText(Messages.LOGO_NAME_ERROR_NONE.getString());
 			_logoOkImage.setUrl(Images.NOK.getImageURL());
 			break;
 		case TOO_LONG:
-			_logoErrorLabel.setText(Messages.LOGO_NAME_ERROR_TOOLONG.getString());
+			_logoErrorLabel.setText(Messages.LOGO_NAME_ERROR_TOOLONG
+					.getString());
 			_logoOkImage.setUrl(Images.NOK.getImageURL());
 			break;
 		case NONE:
@@ -1019,16 +1023,14 @@ public class OrderSubmitterModulePart extends AModulePart
 		}
 	}
 
-
 	/**
 	 * @param colourError
 	 */
-	private void setColourError(ColourErrors colourError) 
-	{
-		switch(colourError)
-		{
+	private void setColourError(ColourErrors colourError) {
+		switch (colourError) {
 		case NO_COLOR:
-			_colourErrorLabel.setText(Messages.LOGO_COLOUR_ERROR_NONE.getString());
+			_colourErrorLabel.setText(Messages.LOGO_COLOUR_ERROR_NONE
+					.getString());
 			_colourOkImage.setUrl(Images.NOK.getImageURL());
 			break;
 		case NONE:
@@ -1038,16 +1040,14 @@ public class OrderSubmitterModulePart extends AModulePart
 		}
 	}
 
-
 	/**
 	 * @param tagsError
 	 */
-	private void setTagErrorStatus(DescriptionErrors tagsError) 
-	{
-		switch(tagsError)
-		{
+	private void setTagErrorStatus(DescriptionErrors tagsError) {
+		switch (tagsError) {
 		case TOO_SHORT:
-			_descErrorLabel.setText(Messages.LOGO_DESC_ERROR_TOOSHORT.getString());
+			_descErrorLabel.setText(Messages.LOGO_DESC_ERROR_TOOSHORT
+					.getString());
 			_descOkImage.setUrl(Images.NOK.getImageURL());
 			break;
 		case NONE:
@@ -1055,7 +1055,8 @@ public class OrderSubmitterModulePart extends AModulePart
 			_descOkImage.setUrl(Images.OK.getImageURL());
 			break;
 		case TOO_LONG:
-			_descErrorLabel.setText(Messages.LOGO_DESC_ERROR_TOOLONG.getString());
+			_descErrorLabel.setText(Messages.LOGO_DESC_ERROR_TOOLONG
+					.getString());
 			_descOkImage.setUrl(Images.NOK.getImageURL());
 			break;
 		case EMPTY:
@@ -1065,88 +1066,77 @@ public class OrderSubmitterModulePart extends AModulePart
 		}
 	}
 
-
 	/**
 	 * @param error
 	 */
-	protected void updateAlternatePanelMessage(OrderDTO order, Boolean error) 
-	{
-		if(error!=null)
-		{
-			if(order.getStatus() != Status.VIEWED)
-			{
-				this._waitLabel.setText(Messages.valueOf(order.getStatus().toString()+"_WAITMSG").getString()); //$NON-NLS-1$
-			}
-			else
-			{
+	protected void updateAlternatePanelMessage(OrderDTO order, Boolean error) {
+		if (error != null) {
+			if (order.getStatus() != Status.VIEWED) {
+				this._waitLabel.setText(Messages.valueOf(
+						order.getStatus().toString() + "_WAITMSG").getString()); //$NON-NLS-1$
+			} else {
 				Date serverTimeStamp = this.getModule().getServerTimeStamp();
-				float diffHours = DateDifferenceCalculator.getDifferenceInHours(serverTimeStamp,order.getViewedDate());
-				Integer missingTime=(24 + (int)diffHours);
+				float diffHours = DateDifferenceCalculator
+				.getDifferenceInHours(serverTimeStamp, order
+						.getViewedDate());
+				Integer missingTime = (24 + (int) diffHours);
 				String missingTimeString = missingTime.toString();
 
-				if(missingTime>=0)
-				{
-					if(missingTime<1)
-					{
-						missingTimeString=Messages.LESS_THAN_HOUR.getString();
+				if (missingTime >= 0) {
+					if (missingTime < 1) {
+						missingTimeString = Messages.LESS_THAN_HOUR.getString();
 					}
-					this._waitLabel.setText(Messages.VIEWED_WAITMSG_1.getString() + missingTimeString + Messages.VIEWED_WAITMSG_2.getString());
-				}
-				else
-				{
-					((OrderServiceAsync)getService(Service.ORDER_SERVICE)).setOrderStatus(order.getId(), Status.ARCHIVED, _setOrderStatusCallback);
+					this._waitLabel.setText(Messages.VIEWED_WAITMSG_1
+							.getString()
+							+ missingTimeString
+							+ Messages.VIEWED_WAITMSG_2.getString());
+				} else {
+					((OrderServiceAsync) getService(Service.ORDER_SERVICE))
+					.setOrderStatus(order.getId(), Status.ARCHIVED,
+							_setOrderStatusCallback);
 				}
 
 			}
-		}
-		else
-		{
+		} else {
 			this._waitLabel.setText(Messages.ERROR_WAITMSG.getString());
 		}
 
 		applyCufon();
 	}
 
-
 	/**
 	 * Gets latest order and hooks up event success/failure handlers
 	 */
-	protected void setViewByLatestOrder() 
-	{
-		((OrderServiceAsync) getService(Service.ORDER_SERVICE)).getOrdersForCurrentUser(_getOrdersCallback);
+	protected void setViewByLatestOrder() {
+		((OrderServiceAsync) getService(Service.ORDER_SERVICE))
+		.getOrdersForCurrentUser(_getOrdersCallback);
 	}
-
 
 	/**
 	 * 
 	 */
-	protected void showHidePanels() 
-	{
-		if(_mainPanel.isVisible())
-		{
+	protected void showHidePanels() {
+		if (_mainPanel.isVisible()) {
 			// nascondi le cazzo di immagini per IE
 			hideValidationImages();
 			showAlternatePanels(false);
-		}
-		else
-		{
+		} else {
 			_logoOkImage.setVisible(false);
 			_colourOkImage.setVisible(false);
 			_descOkImage.setVisible(false);
-			showAlternatePanels(true);	
+			showAlternatePanels(true);
 		}
 	}
 
 	/**
 	 * @param result
 	 */
-	protected void setShowHideStateByLatestOrder(OrderDTO result) 
-	{
-		if(result==null || (result.getStatus() == Status.ARCHIVED 
-				|| result.getStatus() == Status.BOUGHT 
-				|| result.getStatus() == Status.REJECTED
-				|| result.getStatus() == Status.PENDING))
-		{
+	protected void setShowHideStateByLatestOrder(OrderDTO result) {
+		if (result == null
+				|| (result.getStatus() == Status.ARCHIVED
+						|| result.getStatus() == Status.BOUGHT
+						|| result.getStatus() == Status.REJECTED || result
+						.getStatus() == Status.PENDING)) {
 
 			_mainPanel.setVisible(true);
 
@@ -1154,16 +1144,15 @@ public class OrderSubmitterModulePart extends AModulePart
 			hideValidationImages();
 			showAlternatePanels(false);
 
-			if(result.getStatus().equals(Status.PENDING))
-			{
-				//load in the submitter the data from the pending request
+			if (result.getStatus().equals(Status.PENDING)) {
+				// load in the submitter the data from the pending request
 				_logoDescBox.setText(result.getDescriptions()[0]);
 				_logoTextBox.setText(result.getText());
 
 				_pantoneTextBox.setText(result.getColour().getName());
-				int index=Colour.indexOf(result.getColour());
-				_selectedColourButton=_colours[index];
-				_selectedColour=result.getColour();
+				int index = Colour.indexOf(result.getColour());
+				_selectedColourButton = _colours[index];
+				_selectedColour = result.getColour();
 				_colours[index].removeStyleName("colourNormal"); //$NON-NLS-1$
 				_colours[index].addStyleName("colourSelected"); //$NON-NLS-1$
 
@@ -1172,63 +1161,59 @@ public class OrderSubmitterModulePart extends AModulePart
 				setColourModified(true);
 				checkErrors();
 			}
-		}
-		else
-		{
-			_mainPanel.setVisible(false);
-			updateAlternatePanelMessage(result,false);
-			_logoOkImage.setVisible(false);
-			_colourOkImage.setVisible(false);
-			_descOkImage.setVisible(false);
-			showAlternatePanels(true);	
-
+		} else {
+			hideMainPanelShowAlternate(result);
 
 		}
 
 	}
 
+	private void hideMainPanelShowAlternate(OrderDTO result)
+	{
+		_mainPanel.setVisible(false);
+		updateAlternatePanelMessage(result, false);
+		_logoOkImage.setVisible(false);
+		_colourOkImage.setVisible(false);
+		_descOkImage.setVisible(false);
+		showAlternatePanels(true);
+	}
+
 	/**
 	 * @return
 	 */
-	private Widget getOrderSubmitPanel() 
-	{
+	private Widget getOrderSubmitPanel() {
 		return _mainPanel;
 	}
 
 	/**
 	 * @return
 	 */
-	private Widget getOrderSubmitAlternateFooterPanel() 
-	{
+	private Widget getOrderSubmitAlternateFooterPanel() {
 		return _alternateRootPanelFooter;
 	}
 
 	/**
 	 * @return
 	 */
-	private Widget getOrderSubmitAlternateBodyPanel() 
-	{
+	private Widget getOrderSubmitAlternateBodyPanel() {
 		return _alternateRootPanelBody;
 	}
 
 	/**
 	 * @return
 	 */
-	private Widget getOrderSubmitAlternateBodytilePanel() 
-	{
+	private Widget getOrderSubmitAlternateBodytilePanel() {
 		return _alternateRootPanelBodyTile;
 	}
 
 	/**
 	 * @param show
 	 */
-	private void showAlternatePanels(boolean show)
-	{
+	private void showAlternatePanels(boolean show) {
 		_alternateSubPanelBody.setVisible(show);
 		_alternateSubPanelBodyTile.setVisible(show);
 		_alternateSubPanelFooter.setVisible(show);
 	}
-
 
 	@Override
 	public void updateModulePart() {
@@ -1238,34 +1223,28 @@ public class OrderSubmitterModulePart extends AModulePart
 		return _nameModified;
 	}
 
-
 	private void setNameModified(boolean nameModified) {
 		_nameModified = nameModified;
 		_logoOkImage.setVisible(nameModified);
 	}
 
-
 	private boolean isColoursModified() {
 		return _coloursModified;
 	}
-
 
 	private void setColourModified(boolean coloursModified) {
 		_coloursModified = coloursModified;
 		_colourOkImage.setVisible(coloursModified);
 	}
 
-
 	private boolean isDescModified() {
 		return _descModified;
 	}
-
 
 	private void setDescModified(boolean descModified) {
 		_descModified = descModified;
 		_descOkImage.setVisible(descModified);
 
 	}
-
 
 }
