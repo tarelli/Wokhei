@@ -20,7 +20,7 @@ public class Order implements IsSerializable{
 
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	private Long id;
+	private Long id; 
 
 	@Persistent
 	private Integer progressive;

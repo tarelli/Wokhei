@@ -150,6 +150,8 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 	private final Label _charactersLabel = new Label();
 
+	private SWFWidget _waiterSWFWidget=null;
+
 	@Override
 	public void loadModulePart() {
 
@@ -581,7 +583,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 							|| !_micropaymentPopup.isShowing()) {
 						//the micropayment popup panel is not open
 						_micropaymentPopup = getMicroPaymentPanel();
-						_micropaymentPopup.center();
+						_micropaymentPopup.center(); 
 						_micropaymentPopup.show();
 						applyCufon();
 					}
@@ -849,7 +851,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 				//it's already the minimum value 
 				if(!getSubmittedOrder().getTip().equals(TransactionType.MICROPAYMENT.getValue()))
 				{
-					sendStatusToSeppia(waiterSWFWidget.getElement(),"sad");
+					setWaiterMood(waiterSWFWidget,getSubmittedOrder().getTip(),getSubmittedOrder().getTip()-0.5d);
 					getSubmittedOrder().setTip(getSubmittedOrder().getTip()-0.5d);
 					tipBox.setText(getSubmittedOrder().getTip()+Messages.EUR.getString()); //$NON-NLS-1$
 					applyCufon();
@@ -864,11 +866,13 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				sendStatusToSeppia(waiterSWFWidget.getElement(),"smile");
+				setWaiterMood(waiterSWFWidget,getSubmittedOrder().getTip(),getSubmittedOrder().getTip()+0.5d);
 				getSubmittedOrder().setTip(getSubmittedOrder().getTip()+0.5d);
 				tipBox.setText(getSubmittedOrder().getTip()+Messages.EUR.getString()); //$NON-NLS-1$
 				applyCufon();
 			}
+
+
 		});
 
 		Image payTipButton = new Image();
@@ -931,15 +935,61 @@ public class OrderSubmitterModulePart extends AModulePart {
 	}
 
 	/**
+	 * @param waiterSWFWidget
+	 * @param oldtip
+	 * @param newtip
+	 */
+	private void setWaiterMood(SWFWidget waiterSWFWidget, double oldtip, double newtip)
+	{
+		String mood="start";
+		if(newtip>oldtip)
+		{
+			mood="smile";
+		}
+		else if (newtip<oldtip)
+		{
+			mood="sad";
+		}
+		if(newtip>=15d)
+		{
+			sendStatusToSeppia(waiterSWFWidget.getElement(),"start");
+			mood="smokingrock";
+		}
+		else if(newtip>=12d)
+		{
+			sendStatusToSeppia(waiterSWFWidget.getElement(),"start");
+			mood="smokinghot";
+		}
+		else if(newtip>=9d)
+		{
+			sendStatusToSeppia(waiterSWFWidget.getElement(),"start");
+			mood="smokingcool";
+		}
+		else if(newtip>=7d)
+		{
+			sendStatusToSeppia(waiterSWFWidget.getElement(),"start");
+			mood="smoking";
+		}
+		sendStatusToSeppia(waiterSWFWidget.getElement(),mood);
+	}
+
+	/**
 	 * @param imageURL
 	 * @return
 	 */
 	private SWFWidget getWaiterSWFWidget(String imageURL) {
-		SWFWidget waiterSWFWidget = new SWFWidget(imageURL);
-		waiterSWFWidget.setWidth("300px");
-		waiterSWFWidget.setHeight("300px");
-		waiterSWFWidget.setVisible(true);
-		return waiterSWFWidget;
+		if(_micropaymentPopup!=null && _micropaymentPopup.isShowing())
+		{
+			return _waiterSWFWidget;
+		}
+		else
+		{
+			_waiterSWFWidget = new SWFWidget(imageURL);
+			_waiterSWFWidget.setWidth("300px");
+			_waiterSWFWidget.setHeight("300px");
+			_waiterSWFWidget.setVisible(true);
+			return _waiterSWFWidget; 
+		}
 	}
 
 	/**
