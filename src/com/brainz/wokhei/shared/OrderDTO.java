@@ -32,6 +32,8 @@ public class OrderDTO implements Serializable{
 
 	private Double _tip;
 
+	private Integer _revisionCounter;
+
 
 
 	/**
@@ -52,7 +54,7 @@ public class OrderDTO implements Serializable{
 	 * @param customerEmail
 	 */
 	public OrderDTO(Long id, String text, String[] descriptions, Date date, Date acceptedDate, Date viewedDate,
-			Status status, Colour colour, String customerEmail, Integer progressive) 
+			Status status, Colour colour, String customerEmail, Integer progressive, Integer revisionCounter) 
 	{
 		super();
 		_id = id;
@@ -64,6 +66,7 @@ public class OrderDTO implements Serializable{
 		_status = status;
 		_colour = colour;
 		_customerEmail = customerEmail;
+		_revisionCounter=revisionCounter;
 		_progressive=progressive;
 	}
 
@@ -235,6 +238,14 @@ public class OrderDTO implements Serializable{
 
 	public void setProgressive(Integer _progressive) {
 		this._progressive = _progressive;
+	}
+
+	public int getRevisionCounter() {
+		return _revisionCounter;
+	}
+
+	public void setRevisionCounter(Integer revisionCounter) {
+		this._revisionCounter = revisionCounter;
 	}
 
 }

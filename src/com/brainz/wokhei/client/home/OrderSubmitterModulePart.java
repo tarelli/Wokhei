@@ -152,6 +152,8 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 	private SWFWidget _waiterSWFWidget=null;
 
+	Label _requestLabel = new Label(Messages.REQUEST_LOGO_LBL.getString());
+
 	@Override
 	public void loadModulePart() {
 
@@ -246,7 +248,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 				for (AModulePart modulePart : _moduleParts) {
 					if (modulePart instanceof OrderBrowserModulePart) {
 						((OrderBrowserModulePart) modulePart).getLastOrder();
-						notifyChanges();
+						notifyChanges(_submittedOrder);
 						break;
 					}
 				}
@@ -271,11 +273,11 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 	private void fillMainPanel() {
 		// Fill up that son of a bitch of a mainPanel
-		Label requestLabel = new Label(Messages.REQUEST_LOGO_LBL.getString());
-		requestLabel.addStyleName("h3");
-		requestLabel.addStyleName("fontAR");
 
-		_mainPanel.add(requestLabel);
+		_requestLabel.addStyleName("h3");
+		_requestLabel.addStyleName("fontAR");
+
+		_mainPanel.add(_requestLabel);
 
 		_mainPanel.add(_logoTextPanel);
 		_mainPanel.add(_logoDescriptionPanel);
@@ -431,6 +433,16 @@ public class OrderSubmitterModulePart extends AModulePart {
 			}
 		});
 
+		_logoDescBox.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				if(_logoDescBox.getText().equals(Messages.LOGO_DESC_TXTBOX.getString()) || _logoDescBox.getText().equals(Messages.LOGO_DESC_TXTBOX_REVISION.getString()))
+				{
+					_logoDescBox.selectAll();
+				}
+			}
+		});
 		_logoDescBox.addKeyPressHandler(new KeyPressHandler() {
 
 			@Override
@@ -579,18 +591,25 @@ public class OrderSubmitterModulePart extends AModulePart {
 				if (result != null && getSubmittedOrder() != null) {
 					getSubmittedOrder().setId(result);
 
-					if (_micropaymentPopup == null
-							|| !_micropaymentPopup.isShowing()) {
-						//the micropayment popup panel is not open
-						_micropaymentPopup = getMicroPaymentPanel();
-						_micropaymentPopup.center(); 
-						_micropaymentPopup.show();
-						applyCufon();
+					if(getSubmittedOrder().getRevisionCounter()>0)
+					{
+						hideMainPanelShowAlternate(getSubmittedOrder());
 					}
 					else
 					{
-						_micropaymentPopup.hide();
-						hideMainPanelShowAlternate(getSubmittedOrder());
+						if (_micropaymentPopup == null
+								|| !_micropaymentPopup.isShowing()) {
+							//the micropayment popup panel is not open
+							_micropaymentPopup = getMicroPaymentPanel();
+							_micropaymentPopup.center(); 
+							_micropaymentPopup.show();
+							applyCufon();
+						}
+						else
+						{
+							_micropaymentPopup.hide();
+							hideMainPanelShowAlternate(getSubmittedOrder());
+						}
 					}
 					// QUESTO DOVRA ESSERE FATTO NELLA SERVLET QUANDO ARRIVA IL
 					// PAGAMENTO..forse
@@ -608,7 +627,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 			public void onSuccess(Long result) {
 				setViewByLatestOrder();
-				notifyChanges();
+				notifyChanges(_submittedOrder);
 				if(DEBUG && _micropaymentPopup!=null && _micropaymentPopup.isShowing())
 				{
 					_micropaymentPopup.hide();
@@ -1000,11 +1019,35 @@ public class OrderSubmitterModulePart extends AModulePart {
 		setDescModified(true);
 		setColourModified(true);
 		if (checkErrors()) {
-			getSubmittedOrder().setStatus(Status.PENDING);
-			String[] descriptions = { _logoDescBox.getText() };
-			getSubmittedOrder().setDescriptions(descriptions);
-			getSubmittedOrder().setText(_logoTextBox.getText());
-			getSubmittedOrder().setColour(_selectedColour);
+			if(getSubmittedOrder().getRevisionCounter()==0)
+			{
+				getSubmittedOrder().setStatus(Status.PENDING);
+				String[] descriptions = { _logoDescBox.getText() };
+				getSubmittedOrder().setDescriptions(descriptions);
+				getSubmittedOrder().setText(_logoTextBox.getText());
+				getSubmittedOrder().setColour(_selectedColour);
+			}
+			else
+			{
+				//-1 because the first one is not a revision
+				if(getSubmittedOrder().getDescriptions().length-1<getSubmittedOrder().getRevisionCounter())
+				{
+					//going to accepted now, this could change if we introduce a revision status. This is what I call XP.
+					getSubmittedOrder().setStatus(Status.ACCEPTED);
+					getSubmittedOrder().setText(_logoTextBox.getText());
+					getSubmittedOrder().setColour(_selectedColour);
+
+
+					String[] descriptions = new String[getSubmittedOrder().getDescriptions().length+1];
+					int i=0;
+					for(String description:getSubmittedOrder().getDescriptions())
+					{
+						descriptions[i++]=description;
+					}
+					descriptions[getSubmittedOrder().getDescriptions().length]= _logoDescBox.getText();
+					getSubmittedOrder().setDescriptions(descriptions);
+				}
+			}
 			((OrderServiceAsync) getService(Service.ORDER_SERVICE))
 			.submitOrder(getSubmittedOrder(), _submitOrderCallback);
 		}
@@ -1167,11 +1210,10 @@ public class OrderSubmitterModulePart extends AModulePart {
 	protected void setShowHideStateByLatestOrder(OrderDTO result) 
 	{
 		if(result==null || (result.getStatus() == Status.BOUGHT || result.getStatus() == Status.REJECTED|| result
-				.getStatus() == Status.PENDING))
+				.getStatus() == Status.PENDING || (result.getStatus() == Status.VIEWED && result.getRevisionCounter()>0)))
 		{
-
-
 			_mainPanel.setVisible(true);
+			_requestLabel.setText(Messages.REQUEST_LOGO_LBL.getString());
 
 			// nascondi le cazzo di immagini per IE
 			hideValidationImages();
@@ -1193,6 +1235,26 @@ public class OrderSubmitterModulePart extends AModulePart {
 				setDescModified(true);
 				setColourModified(true);
 				checkErrors();
+			}
+			if(result.getStatus() == Status.VIEWED && result.getRevisionCounter()>0)
+			{
+				_requestLabel.setText(Messages.REVISION_LOGO_LBL.getString());
+
+				// load in the submitter the data from the pending request
+				_logoDescBox.setText(Messages.LOGO_DESC_TXTBOX_REVISION.getString());
+				_logoTextBox.setText(result.getText());
+
+				_pantoneTextBox.setText(result.getColour().getName());
+				int index = Colour.indexOf(result.getColour());
+				_selectedColourButton = _colours[index];
+				_selectedColour = result.getColour();
+				_colours[index].removeStyleName("colourNormal"); //$NON-NLS-1$
+				_colours[index].addStyleName("colourSelected"); //$NON-NLS-1$
+
+				setNameModified(true);
+				setColourModified(true);
+				checkErrors();
+				applyCufon();
 			}
 		} else {
 			hideMainPanelShowAlternate(result);
@@ -1249,7 +1311,13 @@ public class OrderSubmitterModulePart extends AModulePart {
 	}
 
 	@Override
-	public void updateModulePart() {
+	public void updateModulePart(OrderDTO selection) {
+		if(selection.getRevisionCounter()>0)
+		{
+			_submittedOrder=selection;
+			setShowHideStateByLatestOrder(_submittedOrder);
+		}
+
 	}
 
 	private boolean isNameModified() {

@@ -1384,7 +1384,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	 * @see com.brainz.wokhei.client.AModulePart#updateModulePart()
 	 */
 	@Override
-	public void updateModulePart() 
+	public void updateModulePart(OrderDTO selection) 
 	{
 		try {
 			throw new Exception("Metti che il VP ci implementa tutto e usa questo metodo ...");

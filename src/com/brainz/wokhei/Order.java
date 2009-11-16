@@ -49,6 +49,9 @@ public class Order implements IsSerializable{
 	@Persistent
 	private Colour colour;
 
+	@Persistent
+	private Integer revisionCounter;
+
 
 	public Order(User author, String text, List<String> tags, Colour colour, Date date, Integer progressive) {
 		this.customer = author;
@@ -62,6 +65,7 @@ public class Order implements IsSerializable{
 		this.acceptedDate= null;
 		this.viewedDate = null;
 		this.status=Status.PENDING;
+		this.revisionCounter=new Integer(0);
 	}
 
 	public Colour getColour() {
@@ -139,6 +143,14 @@ public class Order implements IsSerializable{
 
 	public void setProgressive(Integer progressive) {
 		this.progressive = progressive;
+	}
+
+	public Integer getRevisionCounter() {
+		return revisionCounter;
+	}
+
+	public void setRevisionCounter(Integer revisionCounter) {
+		this.revisionCounter = revisionCounter;
 	}
 }
 

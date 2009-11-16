@@ -21,6 +21,7 @@ public enum Messages {
 	LOGO_COLOUR_LBL("Main colour"),
 	LOGO_COLOUR_HELP_MESSAGE("This will be the main colour of your logo. Note that the logo might have more colours or different shades of the main colour you pick. If you have no colour preference, or if you want to entrust our designers with this choice, pick the question mark: we'll surprise you!"),
 	LOGO_DESC_TXTBOX("Describe here how you want your logo and what it is for!"),
+	LOGO_DESC_TXTBOX_REVISION("Describe here how you would like to change your logo, what do you like and what not? With a bit of your help now it will be just perfect!"),
 	LOGO_COLOUR_EG_LBL("Logo primary colour"),
 	LOGO_DESC_LBL("Description"),
 	LOGO_DESC_HELP_MESSAGE("You can use up to 250 characters to tell us how you would like your logo and something more about your business or product."),
@@ -31,6 +32,7 @@ public enum Messages {
 	GENERIC_ERROR("Error"), 
 	LOGO_DESC_ERROR_TOOSHORT("Sorry, description needs to be at least 25 characters long!"),
 	REQUEST_LOGO_LBL("Request your logo"),
+	REVISION_LOGO_LBL("Revise your logo"),
 	SEND_REQUEST("Send request!"),
 
 	ACCEPTED_WAITMSG("Your logo is getting ready, fancy a drink meanwhile?"),
@@ -54,10 +56,12 @@ public enum Messages {
 	IN_PROGRESS_TEXT("One of our best designers has been chosen to cook you up a tasty logo. You are in very good hands (yes, we do say the same to everyone)."),
 	QUALITY_GATE_TITLE("Quality gate"),
 	QUALITY_GATE_TEXT("We take very seriously the quality of your logo. We are now reviewing your logo and making sure it is as good as you deserve!"),
-	READY_TITLE("It's ready!"),
+	READY_TITLE("Your logo it's ready!"),
 	READY_TEXT("Your logo is finally ready - check it out clicking on the icon above and flood your senses with Wokhei goodness!"),
 	VIEWED_TITLE("It's ready!"),
-	VIEWED_TEXT("You have 24hrs to buy the logo for commercial use for only 105 EUR (VAT included) - approx 145 USD. If you don't buy you still will be able to use the logo but only unexclusively and under the Wokhei Limited License."),
+	VIEWED_TEXT("Your logo is ready! Do you like it? You can but it now for 98 EUR (VAT Included) or if you wish to have some changes to make it perfect for your needs please ask us one revision, it's FREE!"),
+	REVIEWED_TITLE("Your revised logo is ready!"),
+	REVIEWED_TEXT("The logo you helped us to design for you is now ready and just few click away to be yours for only 98 EUR (VAT Included)! As you'll complete your payment the logo will become yours and you'll be able to download its vectorial version!"),
 	BOUGHT_TITLE("You purchased this logo"),
 	BOUGHT_TEXT("You can use this logo according to the Wokhei Commercial License. Now it's your turn to make money!"),
 
@@ -127,7 +131,7 @@ public enum Messages {
 	SANDBOX("Sandbox"),
 	WEBSITE("http://www.wokhei.com"),
 	WEBSITE_SANDBOX("http://wokheisandbox.appspot.com/"), 
-	EUR(" EUR")
+	EUR(" EUR"), 
 
 
 

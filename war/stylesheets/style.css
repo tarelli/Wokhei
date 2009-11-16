@@ -635,6 +635,15 @@ select {
 	background: URL("../images/makeitON.png");
 }
 
+.revisionButton {
+	width: 213px;
+	height: 41px;
+	background: URL("../images/makeitOFF.png");
+}
+
+.revisionButton:hover {
+	background: URL("../images/makeitON.png");
+}
 .license {
 	background-color: white;
 	font-family: "Times New Roman";

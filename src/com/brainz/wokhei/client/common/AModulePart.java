@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.brainz.wokhei.shared.OrderDTO;
+
 
 /**
  * @author matteocantarelli
@@ -61,7 +63,7 @@ public abstract class AModulePart {
 	/**
 	 * 
 	 */
-	public abstract void updateModulePart();
+	public abstract void updateModulePart(OrderDTO selectedOrder);
 
 	/**
 	 * 
@@ -73,11 +75,11 @@ public abstract class AModulePart {
 	/**
 	 * 
 	 */
-	protected void notifyChanges()
+	protected void notifyChanges(OrderDTO selectedOrder)
 	{
 		for(AModulePart modulePart:_moduleParts)
 		{
-			modulePart.updateModulePart();
+			modulePart.updateModulePart(selectedOrder);
 		}
 	}
 

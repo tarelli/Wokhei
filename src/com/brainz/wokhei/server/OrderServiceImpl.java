@@ -55,20 +55,24 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 	{
 		Long orderId=null;
 		Integer newNumber=0; 
-
+		List<Order> resultExistingOrders=null;
 		// retrieve user
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 
-		String pendingOrdersQueryString = "select from " + Order.class.getName() + " where  desc range 0,1";
-		Query queryPendingOrder = pm.newQuery(pendingOrdersQueryString); 
-		queryPendingOrder.setFilter("status == paramStatus"); 
-		queryPendingOrder.declareParameters("com.brainz.wokhei.shared.Status paramStatus"); 
-		List<Order> resultPendingOrders = (List<Order>)queryPendingOrder.execute(Status.PENDING);
+		//if the orderDTO has an ID it means it already exists, just double checking
+		if(orderDTO.getId()!=null)
+		{
+			String pendingOrdersQueryString = "select from " + Order.class.getName() + " where  desc range 0,1";
+			Query queryExistingOrder = pm.newQuery(pendingOrdersQueryString); 
+			queryExistingOrder.setFilter("id == paramId");
+			queryExistingOrder.declareParameters("java.lang.Long paramId");
+			resultExistingOrders = (List<Order>)queryExistingOrder.execute(orderDTO.getId());
+		}
 
 		Order order=null;
-		if(resultPendingOrders==null || resultPendingOrders.isEmpty())
+		if(resultExistingOrders==null || resultExistingOrders.isEmpty())
 		{
 			//create it, no previous pending orders exist
 
@@ -97,10 +101,11 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 		else
 		{
 			//update it
-			order=resultPendingOrders.get(0);
+			order=resultExistingOrders.get(0);
 			order.setText(orderDTO.getText());
 			order.setColour(orderDTO.getColour());
 			order.setDescriptions(Arrays.asList(orderDTO.getDescriptions()));
+			order.setStatus(orderDTO.getStatus());
 			orderId = order.getId();
 
 		}

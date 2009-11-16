@@ -3,6 +3,7 @@
  */
 package com.brainz.wokhei.client.home;
 
+import com.brainz.wokhei.resources.Messages;
 import com.brainz.wokhei.shared.Colour;
 
 /**
@@ -42,7 +43,7 @@ public class Validator {
 	{
 		String desc = description;
 
-		if(desc.length() == 0)
+		if(desc.length() == 0 || desc.equals(Messages.LOGO_DESC_TXTBOX.getString()) || desc.equals(Messages.LOGO_DESC_TXTBOX_REVISION.getString()))
 		{
 			return DescriptionErrors.EMPTY;
 		}

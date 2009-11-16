@@ -9,6 +9,7 @@ import java.util.List;
 import com.brainz.wokhei.client.common.AModulePart;
 import com.brainz.wokhei.resources.Images;
 import com.brainz.wokhei.resources.Mails;
+import com.brainz.wokhei.shared.OrderDTO;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -340,7 +341,7 @@ public class AboutModulePart extends AModulePart implements ValueChangeHandler<S
 	 * @see com.brainz.wokhei.client.common.AModulePart#updateModulePart()
 	 */
 	@Override
-	public void updateModulePart() {	
+	public void updateModulePart(OrderDTO selection) {	
 
 	}
 

@@ -8,6 +8,7 @@ import pl.rmalinowski.gwt2swf.client.ui.SWFWidget;
 import com.brainz.wokhei.client.common.AModulePart;
 import com.brainz.wokhei.resources.Images;
 import com.brainz.wokhei.resources.Messages;
+import com.brainz.wokhei.shared.OrderDTO;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -220,7 +221,7 @@ public class IndexModulePart extends AModulePart {
 	 * @see com.brainz.wokhei.client.common.AModulePart#updateModulePart()
 	 */
 	@Override
-	public void updateModulePart() {	
+	public void updateModulePart(OrderDTO selection) {	
 
 	}
 

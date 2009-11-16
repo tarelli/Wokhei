@@ -4,6 +4,7 @@
 package com.brainz.wokhei.client.faq;
 
 import com.brainz.wokhei.client.common.AModulePart;
+import com.brainz.wokhei.shared.OrderDTO;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -145,7 +146,7 @@ public class FaqModulePart extends AModulePart {
 	 * @see com.brainz.wokhei.client.common.AModulePart#updateModulePart()
 	 */
 	@Override
-	public void updateModulePart() {	
+	public void updateModulePart(OrderDTO selection) {	
 
 	}
 

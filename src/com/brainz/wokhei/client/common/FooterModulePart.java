@@ -1,6 +1,7 @@
 package com.brainz.wokhei.client.common;
 
 import com.brainz.wokhei.resources.Images;
+import com.brainz.wokhei.shared.OrderDTO;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -103,7 +104,7 @@ public class FooterModulePart extends AModulePart {
 	}
 
 	@Override
-	public void updateModulePart() {
+	public void updateModulePart(OrderDTO selection) {
 		// TODO Auto-generated method stub
 
 	}

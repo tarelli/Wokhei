@@ -65,6 +65,7 @@ public class HomeModule extends AModule{
 
 		//Initialize the module parts
 		orderSubmitterModulePart.addModulePartListener(orderBrowserModulePart);
+		orderBrowserModulePart.addModulePartListener(orderSubmitterModulePart);
 
 		//Add the services used in each module part
 		orderSubmitterModulePart.addService(Service.ORDER_SERVICE, orderService);

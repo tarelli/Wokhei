@@ -6,6 +6,7 @@ package com.brainz.wokhei.client.common;
 import com.brainz.wokhei.client.admin.AdminModule;
 import com.brainz.wokhei.resources.Images;
 import com.brainz.wokhei.resources.Mails;
+import com.brainz.wokhei.shared.OrderDTO;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -163,7 +164,7 @@ public class HeaderModulePart extends AModulePart {
 	 * @see com.brainz.wokhei.client.AModulePart#updateModulePart()
 	 */
 	@Override
-	public void updateModulePart() {
+	public void updateModulePart(OrderDTO selection) {
 
 	}
 

@@ -99,6 +99,7 @@ public class OrderBrowserModulePart extends AModulePart{
 	private AsyncCallback<List<OrderDTO>> _getOrdersCallback = null;
 
 	private boolean _buyNowLoaded=false;
+	private final Label _askRevisionImage= new Label();
 
 	@Override
 	public void loadModulePart() 
@@ -193,7 +194,8 @@ public class OrderBrowserModulePart extends AModulePart{
 			mainPanel.add(statusTitle,170,220);
 			mainPanel.add(infoButton,147,221);
 			mainPanel.add(ordersPanel,360,13);
-			mainPanel.add(_buyNowImage, 220, 370);
+			mainPanel.add(_buyNowImage, 220, 340);
+			mainPanel.add(_askRevisionImage, 220, 380);
 			mainPanel.add(downloadPanelContainer,165,330);
 			mainPanel.add(infos,190,20);
 
@@ -214,7 +216,7 @@ public class OrderBrowserModulePart extends AModulePart{
 					//Assuming -as it is at the moment- that status callback gets called only for the Ready->Viewed transition
 					_currentOrder.setStatus(Status.VIEWED);
 					updatePanel();
-					notifyChanges();
+					notifyChanges(_currentOrder);
 					slideShow.showSingleImage("/wokhei/getfile?fileType="+FileType.PNG_LOGO_PRESENTATION.toString()+"&orderid="+_currentOrder.getId(), Messages.COPYRIGHT.getString());
 				}
 			}
@@ -518,7 +520,8 @@ public class OrderBrowserModulePart extends AModulePart{
 
 			// setup BuyNow image click handler
 
-			ClickHandler buyNowClickHandler=new ClickHandler(){
+
+			_buyNowImage.addClickHandler(new ClickHandler(){
 
 				public void onClick(ClickEvent event) 
 				{	
@@ -528,14 +531,30 @@ public class OrderBrowserModulePart extends AModulePart{
 					_buyNowPopUpPanel.show();
 				}
 
-			};
-
-			_buyNowImage.addClickHandler(buyNowClickHandler);
+			});
 
 			// setup BuyNow Icon if needed then make it visible.
 			_buyNowImage.addStyleName("labelButton");
 			_buyNowImage.addStyleName("buyNowButton");
 			_buyNowImage.setVisible(true);
+
+			_askRevisionImage.addClickHandler(new ClickHandler(){
+
+				public void onClick(ClickEvent event) 
+				{	
+					_currentOrder.setRevisionCounter(_currentOrder.getRevisionCounter()+1);
+					notifyChanges(_currentOrder);
+				}
+
+			});
+
+			// setup BuyNow Icon if needed then make it visible.
+			_askRevisionImage.addStyleName("labelButton");
+			_askRevisionImage.addStyleName("revisionButton");
+			_askRevisionImage.setVisible(true);
+
+
+
 		}
 		else
 		{
@@ -765,7 +784,7 @@ public class OrderBrowserModulePart extends AModulePart{
 	 * @see com.brainz.wokhei.client.AModulePart#updateModulePart()
 	 */
 	@Override
-	public void updateModulePart() 
+	public void updateModulePart(OrderDTO selection) 
 	{
 		getOrdersForCurrentCustomer();
 	}
