@@ -106,6 +106,7 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 			order.setColour(orderDTO.getColour());
 			order.setDescriptions(Arrays.asList(orderDTO.getDescriptions()));
 			order.setStatus(orderDTO.getStatus());
+			order.setRevisionCounter(orderDTO.getRevisionCounter());
 			orderId = order.getId();
 
 		}
@@ -233,6 +234,17 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 			{
 				query = pm.newQuery("select from " + Order.class.getName() + orderBy );
 				orderList = OrderUtils.getOrderDTOList((List<Order>) query.execute());
+
+				//remove the pending ones. no time to mess with the query, anyway Ž dentro la cascata di porcate immonde pare
+				List<OrderDTO> toRemove=new ArrayList<OrderDTO>();
+				for(OrderDTO order:orderList)
+				{
+					if(order.getStatus().equals(Status.PENDING))
+					{
+						toRemove.add(order);
+					}
+				}
+				orderList.removeAll(toRemove);
 			}
 
 		}

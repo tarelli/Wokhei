@@ -42,7 +42,8 @@ public enum Messages {
 	IN_PROGRESS_WAITMSG("Your logo is being cooked-up, have some more appetizers!"),
 	QUALITY_GATE_WAITMSG("Your logo is being reviewed by our quality experts, it will be ready soon enough!"),
 	READY_WAITMSG("Your logo is ready! Click on the steamin' wok to watch it!"),
-	VIEWED_WAITMSG("Enjoy your tasty Stir Fried Logo!"),
+	VIEWED_WAITMSG("Your tasty Stir Fried Logo is ready! You can ask us to change what you don't like! FREE!"),
+	REVIEWED_WAITMSG("The logo thanks to your suggestion is now perfect and ready to become yours!"),
 	KILLSWITCH_ON_WAITMSG("Sorry, we are fully booked at the moment, come back later!"),
 	COPYRIGHT("Copyright\u00a9 2009 WOKHEI"),
 

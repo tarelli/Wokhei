@@ -591,6 +591,28 @@ select {
 	background: URL("../images/downarrow.png");
 }
 
+.descUp {
+	background: URL("../images/descUp.png");
+	border: 0px;
+	width: 15px;
+	height: 15px;
+}
+
+.descUp:hover {
+	background: URL("../images/descUpON.png");
+}
+
+.descDown {
+	background: URL("../images/descDown.png");
+	border: 0px;
+	width: 15px;
+	height: 15px;
+}
+
+.descDown:hover {
+	background: URL("../images/descDownON.png");
+}
+
 .infoButton {
 	background: URL("../images/info.png");
 	border: 0px;

@@ -41,7 +41,8 @@ public class OrderDTO implements Serializable{
 	 */
 	public OrderDTO() 
 	{
-		super();	
+		super();
+		_revisionCounter=0;
 	}
 
 	/**
@@ -240,12 +241,39 @@ public class OrderDTO implements Serializable{
 		this._progressive = _progressive;
 	}
 
-	public int getRevisionCounter() {
+	public Integer getRevisionCounter() {
 		return _revisionCounter;
 	}
 
 	public void setRevisionCounter(Integer revisionCounter) {
 		this._revisionCounter = revisionCounter;
+	}
+
+
+	/**
+	 * @return
+	 */
+	public boolean hasCompletedReview() 
+	{
+		return _status.equals(Status.VIEWED) && _revisionCounter!=0 && _revisionCounter==_descriptions.length-1;
+	}
+
+	/**
+	 * @return
+	 */
+	public boolean isReviewRequestOngoing() 
+	{
+		if(_status == Status.VIEWED)
+		{
+			if(_revisionCounter>0)
+			{
+				if(_revisionCounter!=_descriptions.length-1)
+				{
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 }

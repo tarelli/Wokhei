@@ -28,7 +28,6 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -61,8 +60,8 @@ public class OrderBrowserModulePart extends AModulePart{
 	private final VerticalPanel _descriptionsArrowsPanel = new VerticalPanel();
 	private final VerticalPanel _orderDescriptionsPanel = new VerticalPanel();
 	private Label _descriptionLabel;
-	private Button _upArrow;
-	private Button _downArrow;
+	private Label _upArrow;
+	private Label _downArrow;
 	private int _currentDescIndex;
 
 
@@ -180,6 +179,7 @@ public class OrderBrowserModulePart extends AModulePart{
 			ordersPanel.add(orderNameLabel);
 
 			_descriptionsContainer.setHeight("100px");
+
 			_descriptionsContainer.add(_orderDescriptionsPanel);
 			_descriptionsContainer.add(_descriptionsArrowsPanel);
 
@@ -204,6 +204,9 @@ public class OrderBrowserModulePart extends AModulePart{
 			applyCufon();
 		}
 	}
+
+
+
 
 	private void hookUpCallbacks() 
 	{
@@ -364,8 +367,16 @@ public class OrderBrowserModulePart extends AModulePart{
 			setupDescriptionsPanel();
 
 			orderDateLabel.setText(fmt.format(_currentOrder.getDate()));
-			statusTitle.setText(Messages.valueOf(_currentOrder.getStatus().toString()+"_TITLE").getString());
-			statusDescription.setText(Messages.valueOf(_currentOrder.getStatus().toString()+"_TEXT").getString());
+			if(_currentOrder.getStatus().equals(Status.VIEWED) && _currentOrder.hasCompletedReview())
+			{
+				statusTitle.setText(Messages.valueOf("RE"+_currentOrder.getStatus().toString()+"_TITLE").getString());
+				statusDescription.setText(Messages.valueOf("RE"+_currentOrder.getStatus().toString()+"_TEXT").getString());
+			}
+			else
+			{
+				statusTitle.setText(Messages.valueOf(_currentOrder.getStatus().toString()+"_TITLE").getString());
+				statusDescription.setText(Messages.valueOf(_currentOrder.getStatus().toString()+"_TEXT").getString());
+			}
 			switch(_currentOrder.getStatus())
 			{
 			case INCOMING:
@@ -419,8 +430,13 @@ public class OrderBrowserModulePart extends AModulePart{
 
 		// 2. create up arrow and down arrow to show prev/next description and set arrows visibility
 		//instatiate buttons
-		_upArrow = new Button("next");
-		_downArrow = new Button("prev");
+		_upArrow = new Label();
+		_upArrow.addStyleName("descUp");
+		_upArrow.addStyleName("labelButton");
+
+		_downArrow = new Label();
+		_downArrow.setStyleName("descDown");
+		_downArrow.addStyleName("labelButton");
 
 		_upArrow.addClickHandler(new ClickHandler(){
 
@@ -439,7 +455,6 @@ public class OrderBrowserModulePart extends AModulePart{
 		// 3. fill-up the panel with the stuff
 		_orderDescriptionsPanel.setWidth("150px");
 		_orderDescriptionsPanel.add(_descriptionLabel);
-
 		_descriptionsArrowsPanel.add(_upArrow);
 		_descriptionsArrowsPanel.add(_downArrow);
 
@@ -538,21 +553,25 @@ public class OrderBrowserModulePart extends AModulePart{
 			_buyNowImage.addStyleName("buyNowButton");
 			_buyNowImage.setVisible(true);
 
-			_askRevisionImage.addClickHandler(new ClickHandler(){
+			//if it has completed a review don't show this button (only one allowed for Step2!)
+			if(!_currentOrder.hasCompletedReview())
+			{
 
-				public void onClick(ClickEvent event) 
-				{	
-					_currentOrder.setRevisionCounter(_currentOrder.getRevisionCounter()+1);
-					notifyChanges(_currentOrder);
-				}
+				_askRevisionImage.addClickHandler(new ClickHandler(){
 
-			});
+					public void onClick(ClickEvent event) 
+					{	
+						_currentOrder.setRevisionCounter(_currentOrder.getRevisionCounter()+1);
+						notifyChanges(_currentOrder);
+					}
 
-			// setup BuyNow Icon if needed then make it visible.
-			_askRevisionImage.addStyleName("labelButton");
-			_askRevisionImage.addStyleName("revisionButton");
-			_askRevisionImage.setVisible(true);
+				});
 
+				// setup BuyNow Icon if needed then make it visible.
+				_askRevisionImage.addStyleName("labelButton");
+				_askRevisionImage.addStyleName("revisionButton");
+				_askRevisionImage.setVisible(true);
+			}
 
 
 		}

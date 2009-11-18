@@ -1019,7 +1019,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 		setDescModified(true);
 		setColourModified(true);
 		if (checkErrors()) {
-			if(getSubmittedOrder().getRevisionCounter()==0)
+			if(getSubmittedOrder()!=null && getSubmittedOrder().getRevisionCounter()==0)
 			{
 				getSubmittedOrder().setStatus(Status.PENDING);
 				String[] descriptions = { _logoDescBox.getText() };
@@ -1164,20 +1164,32 @@ public class OrderSubmitterModulePart extends AModulePart {
 	{
 		if(error!=null)
 		{
-			if(order.getStatus() != Status.VIEWED)
+			//			if(order.getStatus() != Status.VIEWED)
+			//			{
+			if(order.hasCompletedReview())
 			{
-				this._waitLabel.setText(Messages.valueOf(order.getStatus().toString()+"_WAITMSG").getString()); //$NON-NLS-1$
+				this._waitLabel.setText(Messages.valueOf("RE"+order.getStatus().toString()+"_WAITMSG").getString()); //$NON-NLS-1$
+
 			}
 			else
 			{
-				this._waitLabel.setText(Messages.VIEWED_WAITMSG.getString());
+				this._waitLabel.setText(Messages.valueOf(order.getStatus().toString()+"_WAITMSG").getString()); //$NON-NLS-1$
 			}
-		} else {
+		}
+		//			}
+		//			else
+		//			{
+		//				this._waitLabel.setText(Messages.VIEWED_WAITMSG.getString());
+		//			}
+
+		else 
+		{
 			this._waitLabel.setText(Messages.ERROR_WAITMSG.getString());
 		}
 
 		applyCufon();
 	}
+
 
 	/**
 	 * Gets latest order and hooks up event success/failure handlers
@@ -1210,7 +1222,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 	protected void setShowHideStateByLatestOrder(OrderDTO result) 
 	{
 		if(result==null || (result.getStatus() == Status.BOUGHT || result.getStatus() == Status.REJECTED|| result
-				.getStatus() == Status.PENDING || (result.getStatus() == Status.VIEWED && result.getRevisionCounter()>0)))
+				.getStatus() == Status.PENDING ||result.isReviewRequestOngoing()))
 		{
 			_mainPanel.setVisible(true);
 			_requestLabel.setText(Messages.REQUEST_LOGO_LBL.getString());
@@ -1219,42 +1231,45 @@ public class OrderSubmitterModulePart extends AModulePart {
 			hideValidationImages();
 			showAlternatePanels(false);
 
-			if (result.getStatus().equals(Status.PENDING)) {
-				// load in the submitter the data from the pending request
-				_logoDescBox.setText(result.getDescriptions()[0]);
-				_logoTextBox.setText(result.getText());
-
-				_pantoneTextBox.setText(result.getColour().getName());
-				int index = Colour.indexOf(result.getColour());
-				_selectedColourButton = _colours[index];
-				_selectedColour = result.getColour();
-				_colours[index].removeStyleName("colourNormal"); //$NON-NLS-1$
-				_colours[index].addStyleName("colourSelected"); //$NON-NLS-1$
-
-				setNameModified(true);
-				setDescModified(true);
-				setColourModified(true);
-				checkErrors();
-			}
-			if(result.getStatus() == Status.VIEWED && result.getRevisionCounter()>0)
+			if(result!=null)
 			{
-				_requestLabel.setText(Messages.REVISION_LOGO_LBL.getString());
+				if (result.getStatus().equals(Status.PENDING)) {
+					// load in the submitter the data from the pending request
+					_logoDescBox.setText(result.getDescriptions()[0]);
+					_logoTextBox.setText(result.getText());
 
-				// load in the submitter the data from the pending request
-				_logoDescBox.setText(Messages.LOGO_DESC_TXTBOX_REVISION.getString());
-				_logoTextBox.setText(result.getText());
+					_pantoneTextBox.setText(result.getColour().getName());
+					int index = Colour.indexOf(result.getColour());
+					_selectedColourButton = _colours[index];
+					_selectedColour = result.getColour();
+					_colours[index].removeStyleName("colourNormal"); //$NON-NLS-1$
+					_colours[index].addStyleName("colourSelected"); //$NON-NLS-1$
 
-				_pantoneTextBox.setText(result.getColour().getName());
-				int index = Colour.indexOf(result.getColour());
-				_selectedColourButton = _colours[index];
-				_selectedColour = result.getColour();
-				_colours[index].removeStyleName("colourNormal"); //$NON-NLS-1$
-				_colours[index].addStyleName("colourSelected"); //$NON-NLS-1$
+					setNameModified(true);
+					setDescModified(true);
+					setColourModified(true);
+					checkErrors();
+				}
+				if(result.isReviewRequestOngoing())
+				{
+					_requestLabel.setText(Messages.REVISION_LOGO_LBL.getString());
 
-				setNameModified(true);
-				setColourModified(true);
-				checkErrors();
-				applyCufon();
+					// load in the submitter the data from the pending request
+					_logoDescBox.setText(Messages.LOGO_DESC_TXTBOX_REVISION.getString());
+					_logoTextBox.setText(result.getText());
+
+					_pantoneTextBox.setText(result.getColour().getName());
+					int index = Colour.indexOf(result.getColour());
+					_selectedColourButton = _colours[index];
+					_selectedColour = result.getColour();
+					_colours[index].removeStyleName("colourNormal"); //$NON-NLS-1$
+					_colours[index].addStyleName("colourSelected"); //$NON-NLS-1$
+
+					setNameModified(true);
+					setColourModified(true);
+					checkErrors();
+					applyCufon();
+				}
 			}
 		} else {
 			hideMainPanelShowAlternate(result);
@@ -1262,6 +1277,8 @@ public class OrderSubmitterModulePart extends AModulePart {
 		}
 
 	}
+
+
 
 	private void hideMainPanelShowAlternate(OrderDTO result)
 	{
@@ -1349,3 +1366,4 @@ public class OrderSubmitterModulePart extends AModulePart {
 	}
 
 }
+

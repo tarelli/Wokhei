@@ -31,7 +31,9 @@ public enum Images {
 	THE_BIG_PURPLE("./images/bigPurple.png"),
 	TIP_INSTRUCTIONS("./images/tipinstructions.png"),
 
-	WAITER("./videos/waiter.swf"),
+	WAITER("./videos/waiter.swf"), 
+	DESC_UP("./images/descUp.png"),
+	DESC_DOWN("./images/descDown.png"),
 
 
 	;
