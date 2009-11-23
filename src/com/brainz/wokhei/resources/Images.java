@@ -33,7 +33,10 @@ public enum Images {
 
 	WAITER("./videos/waiter.swf"), 
 	DESC_UP("./images/descUp.png"),
-	DESC_DOWN("./images/descDown.png"),
+	DESC_DOWN("./images/descDown.png"), 
+	TWENTYFOURHRS("./images/24hrs.png"), 
+	NOOBLIGATION("./images/nobuyingobligation.png"), 
+	TOOLS("./images/tools.png")
 
 
 	;

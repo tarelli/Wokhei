@@ -46,7 +46,7 @@ div#page-wrap {
 .indexHeaderPanel {
 	position: absolute;
 	left: 50px;
-	top: 55px;
+	top: 45px;
 	width: 873px;
 	font-family: "Trebuchet MS", Gadget, sans-serif;
 	font-size: 13px;
@@ -220,7 +220,7 @@ select {
 }
 
 /* HOME NOT LOGGED*/
-.login {
+.watchVideo {
 	position: absolute;
 	left: 450px;
 	top: 140px;
@@ -235,18 +235,18 @@ select {
 	cursor: pointer;
 }
 
-.login:hover {
+.watchVideo:hover {
 	background: URL("../images/taketouroff.png");
 }
 
-.watchVideo {
+.login {
 	position: absolute;
-	left: 490px;
-	top: 190px;
-	width: 269px;
-	height: 33px;
+	left: 320px;
+	top: 290px;
+	width: 228px;
+	height: 47px;
 	border: 0px;
-	background: URL("../images/joinoff.png");
+	background: URL("../images/getyourlogooff.png");
 	color: #000000;
 	font-size: 18px;
 	font-weight: bold;
@@ -254,12 +254,12 @@ select {
 	cursor: pointer;
 }
 
-.watchVideo:hover {
-	background: URL("../images/joinon.png");
+.login:hover {
+	background: URL("../images/getyourlogoon.png");
 }
 
 .loginTip {
-	font-size: 11px;
+	font-size: 9px;
 	color: black;
 	font-family: "Trebuchet MS", Gadget, sans-serif;
 	font-style: bold;
@@ -299,10 +299,19 @@ select {
 .hat {
 	position: absolute;
 	left: 0px;
-	top: 280px;
+	top: 140px;
 	width: 75px;
-	height: 76px;
+	height: 119px;
 	background: URL("../images/hat.png");
+}
+
+.revision {
+	position: absolute;
+	left: 580px;
+	top: 145px;
+	width: 75px;
+	height: 116px;
+	background: URL("../images/revision.png");
 }
 
 .screen {
@@ -318,6 +327,12 @@ select {
 	position: absolute;
 	left: 70px;
 	top: 14px;
+}
+
+.videoScreen {
+	position: absolute;
+	left: 275px;
+	top: 21px;
 }
 
 .screenLogos {
@@ -340,19 +355,19 @@ select {
 
 .clock {
 	position: absolute;
-	left: 275px;
-	top: 280px;
-	width: 75px;
-	height: 76px;
+	left: 5px;
+	top: 295px;
+	width: 67px;
+	height: 105px;
 	background: URL("../images/clock.png");
 }
 
 .ready {
 	position: absolute;
-	left: 540px;
-	top: 280px;
+	left: 580px;
+	top: 295px;
 	width: 75px;
-	height: 76px;
+	height: 102px;
 	background: URL("../images/ready.png");
 }
 
@@ -367,6 +382,7 @@ select {
 .stepTitle {
 	font-size: 17px;
 	color: black;
+	text-align: justify;
 	font-weight: bold;
 }
 

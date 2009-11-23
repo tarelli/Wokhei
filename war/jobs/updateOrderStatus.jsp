@@ -93,11 +93,16 @@
 					//-----------------------------------------------------------------------------
 					//send an email to the user
 				    String msgBody = Messages.EMAIL_ORDER_IN_PROGRESS.getString() + "\n\n";
+				    String descriptions="Description:\n";
+				    for(String d:order.getDescriptions())
+				    {
+				    	descriptions+=d+"\n";
+				    }
 				    
 			    	//add updated orders to email
 			    	msgBody+= 	"Order details: \n" + 
 			    				"Text: " + order.getText() + "\n" + 
-			    				"Tags: " + order.getTags().toString() + "\n" + 
+			    				descriptions+ 
 			    				"Colour: " + order.getColour().toString() + "\n" + 
 			    				"\n" +
 			    				Messages.EMAIL_ORDER_IN_PROGRESS_FOOTER.getString() + "\n\n" +
@@ -120,11 +125,16 @@
 					//-----------------------------------------------------------------------------
 					//send an email to the user
 				    String msgBody = Messages.EMAIL_ORDER_QUALITY_GATE.getString() + "\n\n";
+				    String descriptions="Description:\n";
+				    for(String d:order.getDescriptions())
+				    {
+				    	descriptions+=d+"\n";
+				    }
 				    
 			    	//add updated orders to email
 			    	msgBody+= 	"Order details: \n" + 
 			    				"Text: " + order.getText() + "\n" + 
-			    				"Tags: " + order.getTags().toString() + "\n" + 
+			    				descriptions+ 
 			    				"Colour: " + order.getColour().toString() + "\n" + 
 			    				"\n" +
 			    				Messages.EMAIL_ORDER_QUALITY_GATE_FOOTER.getString() + "\n\n" +
@@ -147,7 +157,7 @@
 						"Progressive: " + order.getProgressive() + "\n" + 
 						"OrderId: " + order.getId() + "\n" + 
 	    				"Text: " + order.getText() + "\n" + 
-	    				"Tags: " + order.getTags().toString() + "\n" + 
+	    				descriptions + 
 	    				"Colour: " + order.getColour().toString() + "\n" + 
 	    				"\n";
 	    				
@@ -174,11 +184,16 @@
 				//-----------------------------------------------------------------------------
 				//send an email to the user
 			    String msgBody = Messages.EMAIL_ORDER_READY.getString() + "\n\n";
+			    String descriptions="Description:\n";
+			    for(String d:order.getDescriptions())
+			    {
+			    	descriptions+=d+"\n";
+			    }
 			    
 		    	//add updated orders to email
 		    	msgBody+= 	"Order details: \n" +
 		    				"Text: " + order.getText() + "\n" + 
-		    				"Tags: " + order.getTags().toString() + "\n" + 
+		    				descriptions+ 
 		    				"Colour: " + order.getColour().toString() + "\n" + 
 		    				"\n" +
 		    				Messages.EMAIL_ORDER_READY_FOOTER.getString() + "\n\n" +
@@ -204,14 +219,20 @@
 	// send email to admin with list of updated orders (maybe put it in a function)
 
     String msgBody = "updateOrderStatus job updated [" + ((Integer)updatedOrders.size()).toString() + "] Orders \n";
+
     for(Order updatedOrder :updatedOrders)
     {
+        String descriptions="Descriptions: ";
+        for(String d:updatedOrder.getDescriptions())
+        {
+        	descriptions+=d+" ; ";
+        }
     	//add updated orders to email
     	msgBody+= 	updatedOrder.getId() + " | Progressive: " + 
     				updatedOrder.getProgressive() + " | " + 
     				updatedOrder.getCustomer().getEmail() + " | " + 
     				updatedOrder.getText() + " | " + 
-    				updatedOrder.getTags().toString() + " | " + 
+    				descriptions+ " | " + 
     				updatedOrder.getStatus() + " | " + 
     				updatedOrder.getDate().toString() + "\n";
     }

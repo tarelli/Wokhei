@@ -4,7 +4,6 @@
 package com.brainz.wokhei.client.common;
 
 import com.brainz.wokhei.client.admin.AdminModule;
-import com.brainz.wokhei.resources.Images;
 import com.brainz.wokhei.resources.Mails;
 import com.brainz.wokhei.shared.OrderDTO;
 import com.google.gwt.core.client.GWT;
@@ -13,7 +12,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -122,7 +120,7 @@ public class HeaderModulePart extends AModulePart {
 			RootPanel.get("headerPanel").add(_mainPanel,395,10);
 			RootPanel.get("headerPanel").add(wokheiHover,10,10);
 
-			RootPanel.get("headerPanel").add(new Image(Images.BETA.getImageURL()), 222, 35);
+			//RootPanel.get("headerPanel").add(new Image(Images.BETA.getImageURL()), 222, 35);
 
 			applyCufon();
 		}

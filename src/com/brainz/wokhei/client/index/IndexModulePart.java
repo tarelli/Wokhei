@@ -9,7 +9,6 @@ import com.brainz.wokhei.client.common.AModulePart;
 import com.brainz.wokhei.resources.Images;
 import com.brainz.wokhei.resources.Messages;
 import com.brainz.wokhei.shared.OrderDTO;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -34,6 +33,8 @@ public class IndexModulePart extends AModulePart {
 	private String _firstStep = "";
 	private String _secondStep = "";
 	private String _thirdStep = "";
+	private String _fourthStepTitle = "";
+	private String _fourthStep = "";
 
 	/* (non-Javadoc)
 	 * @see com.brainz.wokhei.client.common.AModulePart#loadModulePart()
@@ -55,16 +56,7 @@ public class IndexModulePart extends AModulePart {
 			final Button watchVideo=new Button(Messages.WATCH_A_VIDEO.getString());
 			watchVideo.setText(Messages.WATCH_A_VIDEO.getString());
 
-			Button loginWokhei=new Button(Messages.LOGIN.getString());
-			if(getModule().isSandBox())
-			{
-				loginWokhei.setText(Messages.LOGIN_SANDBOX.getString());
-			}
-			else
-			{
-				loginWokhei.setText(Messages.LOGIN.getString());
-			}
-
+			Button loginWokhei=new Button();
 
 			Label loginTip= new Label(Messages.LOGIN_TIP.getString());
 			loginTip.addClickHandler(new ClickHandler(){
@@ -72,53 +64,55 @@ public class IndexModulePart extends AModulePart {
 					Window.open("https://www.google.com/accounts/NewAccount", "_new", "");
 				}});
 
-			Image theBigPurple = new Image(Images.THE_BIG_PURPLE.getImageURL());
-			Label cloud = new Label();
 			Label firstStep = new Label();
 			Label secondStep = new Label();
 			Label thirdStep = new Label();
-			final Label screen = new Label();
-			final SWFWidget swfWidget = new SWFWidget("./videos/Wokhei.swf");
-			final Label screenLogos=new Label();
-			final Label logos = new Label();
+			Label fourthStep = new Label();
+			//			final Label screen = new Label();
+
+
+
+			final SWFWidget swfScreen = new SWFWidget("./videos/screen.swf");
+
+			final SWFWidget swfVideoWokhei = new SWFWidget("./videos/Wokhei.swf");
+
+			Image the24hrs=new Image(Images.TWENTYFOURHRS.getImageURL());
+			Image noObligation=new Image(Images.NOOBLIGATION.getImageURL());
+
 			Label firstStepTitle = new Label(_firstStepTitle);
 			Label secondStepTitle = new Label(_secondStepTitle);
 			Label thirdStepTitle = new Label(_thirdStepTitle);
+			Label fourthStepTitle = new Label(_fourthStepTitle);
 			HTML firstStepText = new HTML(_firstStep);
 			HTML secondStepText = new HTML(_secondStep);
 			HTML thirdStepText = new HTML(_thirdStep);
+			HTML fourthStepText = new HTML(_fourthStep);
 
 			watchVideo.removeStyleName("gwt-Button");
-			watchVideo.setStyleName("login");
+			watchVideo.setStyleName("watchVideo");
 			watchVideo.addStyleName("fontAR");
 			watchVideo.addClickHandler(new ClickHandler(){
 
 				public void onClick(ClickEvent event) {
-					if(screenLogos.isVisible())
+					if(swfScreen.isVisible())
 					{
 						watchVideo.setText(Messages.HIDE_VIDEO.getString());
-						screen.setVisible(true);
-						swfWidget.setVisible(true);
-						screenLogos.setVisible(false);
-						logos.setVisible(false);
+						swfScreen.setVisible(false);
+						swfVideoWokhei.setVisible(true);
 					}
 					else
 					{
 						watchVideo.setText(Messages.WATCH_A_VIDEO.getString());
-						screen.setVisible(false);
-						swfWidget.setVisible(false);
-						screenLogos.setVisible(true);
-						logos.setVisible(true);
+						swfScreen.setVisible(true);
+						swfVideoWokhei.setVisible(false);
 					}
 				}});
 
 			loginTip.setStyleName("loginTip");
 
-			theBigPurple.setStyleName("bigPurple");
-			theBigPurple.addStyleName("fontAR");
 
 			loginWokhei.removeStyleName("gwt-Button");
-			loginWokhei.setStyleName("watchVideo");
+			loginWokhei.setStyleName("login");
 			loginWokhei.addStyleName("fontAR");
 			loginWokhei.addClickHandler(new ClickHandler(){
 
@@ -127,70 +121,75 @@ public class IndexModulePart extends AModulePart {
 
 				}});
 
-			cloud.setStyleName("cloud");
-			cloud.addClickHandler(new ClickHandler(){
 
-				public void onClick(ClickEvent event) {
-					Window.open(GWT.getHostPageBaseURL()+"careers.html", "_self", "");
-
-				}});
-
-			screen.setStyleName("screen");
-			screenLogos.setStyleName("screenLogos");
-			logos.setStyleName("logos");
 
 
 			firstStep.setStyleName("hat");
 			secondStep.setStyleName("clock");
-			thirdStep.setStyleName("ready");
+			thirdStep.setStyleName("revision");
+			fourthStep.setStyleName("ready");
 			firstStepTitle.setStyleName("stepTitle");
 			firstStepTitle.addStyleName("fontAR");
 			secondStepTitle.setStyleName("stepTitle");
 			secondStepTitle.addStyleName("fontAR");
 			thirdStepTitle.setStyleName("stepTitle");
 			thirdStepTitle.addStyleName("fontAR");
+			fourthStepTitle.setStyleName("stepTitle");
+			fourthStepTitle.addStyleName("fontAR");
 			firstStepText.setStyleName("stepText");
-			firstStepText.setWidth("180px");
+			firstStepText.setWidth("200px");
 			secondStepText.setStyleName("stepText");
-			secondStepText.setWidth("180px");
+			secondStepText.setWidth("200px");
 			thirdStepText.setStyleName("stepText");
-			thirdStepText.setWidth("230px");
+			thirdStepText.setWidth("200px");
+			fourthStepText.setStyleName("stepText");
+			fourthStepText.setWidth("200px");
 
 
 
-			swfWidget.setWidth("260px");
-			swfWidget.setHeight("237px");
-			swfWidget.setStyleName("video");
-			swfWidget.setVisible(false);
-			screen.setVisible(false);
+			swfVideoWokhei.setWidth("260px");
+			swfVideoWokhei.setHeight("237px");
+			swfVideoWokhei.setStyleName("video");
+			swfVideoWokhei.setVisible(false);
+
+			swfScreen.setWidth("295px");
+			swfScreen.setHeight("219px");
+			swfScreen.setStyleName("videoScreen");
+			swfScreen.setVisible(true);
 
 			mainPanel.add(loginWokhei);
-			mainPanel.add(cloud);
-			mainPanel.add(screen);
-			mainPanel.add(screenLogos);
-			mainPanel.add(logos);
-			mainPanel.add(loginTip,502,226);
+			mainPanel.add(swfScreen);
+			mainPanel.add(loginTip,338,343);
 
 			mainPanel.add(firstStep);
 			mainPanel.add(secondStep);
 			mainPanel.add(thirdStep);
-			mainPanel.add(theBigPurple, 400,0);
-			mainPanel.add(firstStepTitle,80, 280);
-			mainPanel.add(secondStepTitle,360, 280);
-			mainPanel.add(thirdStepTitle,620, 280);
-			mainPanel.add(firstStepText,80, 310);
-			mainPanel.add(secondStepText,360, 310);
-			mainPanel.add(thirdStepText,620, 310);
+			mainPanel.add(fourthStep);
 
-			mainPanel.add(swfWidget);
+			mainPanel.add(the24hrs,660,0);
+			mainPanel.add(noObligation,332,360);
+
+			mainPanel.add(firstStepTitle,85, 150);
+			mainPanel.add(firstStepText,85, 170);
+
+			mainPanel.add(secondStepTitle,85, 290);
+			mainPanel.add(secondStepText,85, 310);
+
+			mainPanel.add(thirdStepTitle,675, 150);
+			mainPanel.add(thirdStepText,675, 170);
+
+			mainPanel.add(fourthStepTitle,675, 290);
+			mainPanel.add(fourthStepText,675, 310);
+
+			mainPanel.add(swfVideoWokhei);
 
 			RootPanel.get("indexBodyPart").add(mainPanel);
 
 			Label copyright=new Label(Messages.INDEX_COPYRIGHT.getString());
 			copyright.setStyleName("indexCopyright");
-			RootPanel.get("indexHeaderPanel").add(copyright,770,10);
-			RootPanel.get("indexHeaderPanel").add(new Image(Images.BETA.getImageURL()), 222, 35);
-			RootPanel.get("indexHeaderPanel").add(watchVideo,620,5);
+			RootPanel.get("indexHeaderPanel").add(copyright,770,20);
+			RootPanel.get("indexHeaderPanel").add(new Image(Images.TOOLS.getImageURL()), 360, 0);
+			RootPanel.get("indexHeaderPanel").add(watchVideo,620,15);
 
 			applyCufon();
 		}
@@ -207,6 +206,8 @@ public class IndexModulePart extends AModulePart {
 		_secondStepTitle = element.getInnerHTML();
 		element = RootPanel.get("THIRD_STEP_TITLE").getElement();
 		_thirdStepTitle = element.getInnerHTML();
+		element = RootPanel.get("FOURTH_STEP_TITLE").getElement();
+		_fourthStepTitle = element.getInnerHTML();
 
 		// steps descriptions
 		element = RootPanel.get("FIRST_STEP").getElement();
@@ -215,6 +216,8 @@ public class IndexModulePart extends AModulePart {
 		_secondStep = element.getInnerHTML();
 		element = RootPanel.get("THIRD_STEP").getElement();
 		_thirdStep = element.getInnerHTML();
+		element = RootPanel.get("FOURTH_STEP").getElement();
+		_fourthStep = element.getInnerHTML();
 	}
 
 	/* (non-Javadoc)
