@@ -307,7 +307,7 @@ select {
 
 .revision {
 	position: absolute;
-	left: 580px;
+	left: 585px;
 	top: 145px;
 	width: 75px;
 	height: 116px;
@@ -331,8 +331,8 @@ select {
 
 .videoScreen {
 	position: absolute;
-	left: 275px;
-	top: 21px;
+	left: 279px;
+	top: 19px;
 }
 
 .screenLogos {
@@ -364,7 +364,7 @@ select {
 
 .ready {
 	position: absolute;
-	left: 580px;
+	left: 585px;
 	top: 295px;
 	width: 75px;
 	height: 102px;

@@ -137,13 +137,13 @@ public class IndexModulePart extends AModulePart {
 			fourthStepTitle.setStyleName("stepTitle");
 			fourthStepTitle.addStyleName("fontAR");
 			firstStepText.setStyleName("stepText");
-			firstStepText.setWidth("200px");
+			firstStepText.setWidth("190px");
 			secondStepText.setStyleName("stepText");
-			secondStepText.setWidth("200px");
+			secondStepText.setWidth("190px");
 			thirdStepText.setStyleName("stepText");
-			thirdStepText.setWidth("200px");
+			thirdStepText.setWidth("190px");
 			fourthStepText.setStyleName("stepText");
-			fourthStepText.setWidth("200px");
+			fourthStepText.setWidth("190px");
 
 
 
@@ -166,7 +166,7 @@ public class IndexModulePart extends AModulePart {
 			mainPanel.add(thirdStep);
 			mainPanel.add(fourthStep);
 
-			mainPanel.add(the24hrs,660,0);
+			mainPanel.add(the24hrs,670,0);
 			mainPanel.add(noObligation,332,360);
 
 			mainPanel.add(firstStepTitle,85, 150);
