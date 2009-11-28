@@ -30,6 +30,7 @@ import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
@@ -153,6 +154,8 @@ public class OrderSubmitterModulePart extends AModulePart {
 	private SWFWidget _waiterSWFWidget=null;
 
 	Label _requestLabel = new Label(Messages.REQUEST_LOGO_LBL.getString());
+
+	private final HandlerRegistration[] _coloursHandler =new HandlerRegistration[NUM_COLOURS];;
 
 	@Override
 	public void loadModulePart() {
@@ -472,7 +475,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 		_logoDescLabelPanel.add(_logoDescHelpMark);
 		_logoDescLabelPanel.add(getNewWhiteSpace(5));
 		_logoDescLabelPanel.add(_logoDescLabel);
-		_logoDescLabelPanel.add(getNewWhiteSpace(130));
+		_logoDescLabelPanel.add(getNewWhiteSpace(125));
 		_logoDescLabelPanel.add(_charactersLabel);
 
 		_logoDescriptionPanel.add(_logoDescLabelPanel);
@@ -594,6 +597,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 					if(getSubmittedOrder().getRevisionCounter()>0)
 					{
 						hideMainPanelShowAlternate(getSubmittedOrder());
+						notifyChanges(getSubmittedOrder());
 					}
 					else
 					{
@@ -670,20 +674,24 @@ public class OrderSubmitterModulePart extends AModulePart {
 			_colours[i].addStyleName("colourBorder"); //$NON-NLS-1$
 
 			final int index = i;
-
-			_colours[i].addClickHandler(new ClickHandler() {
+			_coloursHandler[i]=_colours[i].addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
-					_pantoneTextBox.setText(Colour.values()[index].getName());
-					if (_selectedColourButton != null) {
-						_selectedColourButton.removeStyleName("colourSelected"); //$NON-NLS-1$
-						_selectedColourButton.addStyleName("colourNormal"); //$NON-NLS-1$
+					//no possible to change the colour if there is a request ongoing
+					if(_submittedOrder==null || !_submittedOrder.isReviewRequestOngoing())
+					{
+						_pantoneTextBox.setText(Colour.values()[index].getName());
+						if (_selectedColourButton != null) {
+							_selectedColourButton.removeStyleName("colourSelected"); //$NON-NLS-1$
+							_selectedColourButton.addStyleName("colourNormal"); //$NON-NLS-1$
+						}
+						_selectedColour = Colour.values()[index];
+						_colours[index].removeStyleName("colourNormal"); //$NON-NLS-1$
+						_colours[index].addStyleName("colourSelected"); //$NON-NLS-1$
+						_selectedColourButton = _colours[index];
+						setColourModified(true);
+						checkErrors();
 					}
-					_selectedColour = Colour.values()[index];
-					_colours[index].removeStyleName("colourNormal"); //$NON-NLS-1$
-					_colours[index].addStyleName("colourSelected"); //$NON-NLS-1$
-					_selectedColourButton = _colours[index];
-					setColourModified(true);
-					checkErrors();
+
 				}
 			});
 
@@ -1255,9 +1263,10 @@ public class OrderSubmitterModulePart extends AModulePart {
 					_requestLabel.setText(Messages.REVISION_LOGO_LBL.getString());
 
 					// load in the submitter the data from the pending request
+
 					_logoDescBox.setText(Messages.LOGO_DESC_TXTBOX_REVISION.getString());
 					_logoTextBox.setText(result.getText());
-
+					_logoTextBox.setEnabled(false);
 					_pantoneTextBox.setText(result.getColour().getName());
 					int index = Colour.indexOf(result.getColour());
 					_selectedColourButton = _colours[index];
@@ -1279,6 +1288,19 @@ public class OrderSubmitterModulePart extends AModulePart {
 	}
 
 
+	//
+	//	/**
+	//	 * 
+	//	 */
+	//	private void disableColours()
+	//	{
+	//		for (int i = 0; i < NUM_COLOURS; i++) {
+	//			if(_coloursHandler[i]!=null)
+	//			{
+	//				_coloursHandler[i].removeHandler();
+	//			}
+	//		}		
+	//	}
 
 	private void hideMainPanelShowAlternate(OrderDTO result)
 	{

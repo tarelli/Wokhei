@@ -10,7 +10,6 @@ import java.util.List;
 import com.brainz.wokhei.client.common.AModulePart;
 import com.brainz.wokhei.client.common.OrderServiceAsync;
 import com.brainz.wokhei.client.common.Service;
-import com.brainz.wokhei.resources.HtmlLicenses;
 import com.brainz.wokhei.resources.Images;
 import com.brainz.wokhei.resources.Messages;
 import com.brainz.wokhei.resources.PayPalStrings;
@@ -28,22 +27,16 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FormPanel;
-import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Hidden;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
 import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteHandler;
-import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
-import com.google.gwt.user.client.ui.FormPanel.SubmitHandler;
 
 /**
  * @author matteocantarelli
@@ -86,13 +79,7 @@ public class OrderBrowserModulePart extends AModulePart{
 
 	// Will load-up the panel with license + paypal 
 	private final Label _buyNowImage = new Label();
-	private final PopupPanel _buyNowPopUpPanel = new PopupPanel(true);
-	private final VerticalPanel _buyNowPanel = new VerticalPanel();
-	private final HTMLPanel _licenseText = new HTMLPanel(HtmlLicenses.COMMERCIAL_LICENSE.getString());
-	private final CheckBox _acceptLicenseCheckBox = new CheckBox(Messages.ACCEPT_CONDITIONS.getString());
-	private final Label _feedBackLabel = new Label("");
 	private final FormPanel _paypalForm = new FormPanel("");
-	private final PopupPanel _acceptAgreementPopupPanel= new PopupPanel(true);
 
 	private AsyncCallback<Long> _setOrderStatusCallback = null;
 	private AsyncCallback<List<OrderDTO>> _getOrdersCallback = null;
@@ -110,8 +97,6 @@ public class OrderBrowserModulePart extends AModulePart{
 			getOrdersForCurrentCustomer();
 
 			setupLightBox();
-
-			setupAcceptAgreement();		
 
 			previousOrderButton.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
@@ -332,6 +317,8 @@ public class OrderBrowserModulePart extends AModulePart{
 	private void updatePanel() {
 		//buy now false by default
 		_buyNowImage.setVisible(false);
+		_askRevisionImage.setVisible(false);
+
 
 		if(downloadPanel!=null)
 		{
@@ -499,13 +486,7 @@ public class OrderBrowserModulePart extends AModulePart{
 				if(status.equals(Status.BOUGHT))
 				{
 					Window.open(GWT.getHostPageBaseURL()+"wokhei/getfile?orderid="+_currentOrder.getId()+"&fileType="+FileType.PNG_LOGO, "_new", "");
-				}
-				else
-				{
-					_acceptAgreementPopupPanel.center();
-					_acceptAgreementPopupPanel.show();
-				}
-			}});
+				}}});
 
 		downloadPanel.add(downloadPng);
 
@@ -530,8 +511,7 @@ public class OrderBrowserModulePart extends AModulePart{
 		if(!_buyNowLoaded)
 		{
 			_buyNowLoaded=true;
-			// fill-up buy now pop-up panel
-			setupBuyNowPopup();
+			setupPayPalForm(); 
 
 			// setup BuyNow image click handler
 
@@ -540,10 +520,7 @@ public class OrderBrowserModulePart extends AModulePart{
 
 				public void onClick(ClickEvent event) 
 				{	
-					// setup style and show
-					_buyNowPopUpPanel.setStyleName("genericPopup");
-					_buyNowPopUpPanel.center();
-					_buyNowPopUpPanel.show();
+					_paypalForm.submit();
 				}
 
 			});
@@ -581,76 +558,76 @@ public class OrderBrowserModulePart extends AModulePart{
 		}
 	}
 
-	private void setupBuyNowPopup() {
-		setupPayPalForm(); 
+	//	private void setupBuyNowPopup() {
+	//		setupPayPalForm(); 
+	//
+	//		_buyNowPanel.setHorizontalAlignment(VerticalPanel.ALIGN_CENTER);
+	//		_buyNowPanel.setSpacing(10);
+	//
+	//		ScrollPanel sp=new ScrollPanel();
+	//		_licenseText.setWidth("340px");
+	//		_licenseText.setHeight("300px");
+	//		_licenseText.setStyleName("license");
+	//		sp.setStyleName("licensePanel");
+	//
+	//		_feedBackLabel.setStyleName("errorLabel");
+	//		sp.add(_licenseText);
+	//		_buyNowPanel.add(sp);
+	//		_buyNowPanel.add(_acceptLicenseCheckBox);
+	//		_buyNowPanel.add(_paypalForm);
+	//		_buyNowPanel.add(_feedBackLabel);
+	//
+	//		_buyNowPopUpPanel.setWidth("390px");
+	//		_buyNowPopUpPanel.add(_buyNowPanel);
+	//
+	//	}
 
-		_buyNowPanel.setHorizontalAlignment(VerticalPanel.ALIGN_CENTER);
-		_buyNowPanel.setSpacing(10);
-
-		ScrollPanel sp=new ScrollPanel();
-		_licenseText.setWidth("340px");
-		_licenseText.setHeight("300px");
-		_licenseText.setStyleName("license");
-		sp.setStyleName("licensePanel");
-
-		_feedBackLabel.setStyleName("errorLabel");
-		sp.add(_licenseText);
-		_buyNowPanel.add(sp);
-		_buyNowPanel.add(_acceptLicenseCheckBox);
-		_buyNowPanel.add(_paypalForm);
-		_buyNowPanel.add(_feedBackLabel);
-
-		_buyNowPopUpPanel.setWidth("390px");
-		_buyNowPopUpPanel.add(_buyNowPanel);
-
-	}
-
-	private void setupAcceptAgreement() {
-
-		HTMLPanel license= new HTMLPanel(HtmlLicenses.LIMITED_LICENSE.getString());	
-		ScrollPanel sp=new ScrollPanel();
-		license.setWidth("340px");
-		license.setHeight("300px");
-		license.setStyleName("license");
-		sp.setStyleName("licensePanel");
-
-		sp.add(license);
-		VerticalPanel acceptAgreementPanel=new VerticalPanel();
-		acceptAgreementPanel.setSpacing(10);
-		acceptAgreementPanel.setHorizontalAlignment(VerticalPanel.ALIGN_CENTER);
-		acceptAgreementPanel.add(sp);
-		final CheckBox acceptLicenseCheckBox=new CheckBox(Messages.ACCEPT_CONDITIONS.getString());
-		acceptAgreementPanel.add(acceptLicenseCheckBox);
-		final Label feedBackLabel=new Label(Messages.MUST_ACCEPT_LICENSE.getString());
-
-		Label downloadButton = new Label(Messages.DOWNLOAD_RASTERIZED.getString());
-		downloadButton.setStyleName("labelButton");
-		//		downloadButton.addStyleName("fontAR");
-		downloadButton.addStyleName("downloadLabelLink");
-		downloadButton.addClickHandler(new ClickHandler(){
-
-			public void onClick(ClickEvent event) {
-				if(acceptLicenseCheckBox.getValue())
-				{
-					Window.open(GWT.getHostPageBaseURL()+"wokhei/getfile?orderid="+_currentOrder.getId()+"&fileType="+FileType.PNG_LOGO, "_new", "");
-					_acceptAgreementPopupPanel.hide();
-				}
-				else
-				{
-					feedBackLabel.setVisible(true);
-				}
-
-			}});
-
-		acceptAgreementPanel.add(downloadButton);
-		feedBackLabel.setVisible(false);
-		feedBackLabel.setStyleName("errorLabel");
-		acceptAgreementPanel.add(feedBackLabel);
-
-		_acceptAgreementPopupPanel.setStyleName("genericPopup");
-		_acceptAgreementPopupPanel.setWidth("390px");
-		_acceptAgreementPopupPanel.add(acceptAgreementPanel);
-	}
+	//	private void setupAcceptAgreement() {
+	//
+	////		HTMLPanel license= new HTMLPanel(HtmlLicenses.LIMITED_LICENSE.getString());	
+	////		ScrollPanel sp=new ScrollPanel();
+	////		license.setWidth("340px");
+	////		license.setHeight("300px");
+	////		license.setStyleName("license");
+	////		sp.setStyleName("licensePanel");
+	//
+	////		sp.add(license);
+	//		VerticalPanel acceptAgreementPanel=new VerticalPanel();
+	//		acceptAgreementPanel.setSpacing(10);
+	//		acceptAgreementPanel.setHorizontalAlignment(VerticalPanel.ALIGN_CENTER);
+	//		acceptAgreementPanel.add(sp);
+	//		final CheckBox acceptLicenseCheckBox=new CheckBox(Messages.ACCEPT_CONDITIONS.getString());
+	//		acceptAgreementPanel.add(acceptLicenseCheckBox);
+	//		final Label feedBackLabel=new Label(Messages.MUST_ACCEPT_LICENSE.getString());
+	//
+	//		Label downloadButton = new Label(Messages.DOWNLOAD_RASTERIZED.getString());
+	//		downloadButton.setStyleName("labelButton");
+	//		//		downloadButton.addStyleName("fontAR");
+	//		downloadButton.addStyleName("downloadLabelLink");
+	//		downloadButton.addClickHandler(new ClickHandler(){
+	//
+	//			public void onClick(ClickEvent event) {
+	//				if(acceptLicenseCheckBox.getValue())
+	//				{
+	//					Window.open(GWT.getHostPageBaseURL()+"wokhei/getfile?orderid="+_currentOrder.getId()+"&fileType="+FileType.PNG_LOGO, "_new", "");
+	//					_acceptAgreementPopupPanel.hide();
+	//				}
+	//				else
+	//				{
+	//					feedBackLabel.setVisible(true);
+	//				}
+	//
+	//			}});
+	//
+	//		acceptAgreementPanel.add(downloadButton);
+	//		feedBackLabel.setVisible(false);
+	//		feedBackLabel.setStyleName("errorLabel");
+	//		acceptAgreementPanel.add(feedBackLabel);
+	//
+	//		_acceptAgreementPopupPanel.setStyleName("genericPopup");
+	//		_acceptAgreementPopupPanel.setWidth("390px");
+	//		_acceptAgreementPopupPanel.add(acceptAgreementPanel);
+	//	}
 
 	private void setupPayPalForm()
 	{
@@ -749,33 +726,6 @@ public class OrderBrowserModulePart extends AModulePart{
 		locale.setValue(PayPalStrings.PAYPAL_LOCALE_NAME.getString());
 		formPlaceHolder.add(locale);
 
-		//setup submit button
-		Image buyNowButton = new Image();
-		buyNowButton.setStyleName("labelButton");
-		buyNowButton.setUrl(Images.PAYPAL_BUTTON.getImageURL());
-
-		buyNowButton.addClickHandler(new ClickHandler(){
-
-			public void onClick(ClickEvent event) 
-			{
-				_paypalForm.submit();
-			}
-		});
-		formPlaceHolder.add(buyNowButton);
-
-		_paypalForm.add(formPlaceHolder);
-
-		//setup submit handlers
-		_paypalForm.addSubmitHandler(new SubmitHandler(){
-			public void onSubmit(SubmitEvent event) {
-				//cancel if license has not been accepted
-				if (! _acceptLicenseCheckBox.getValue())
-				{
-					_feedBackLabel.setText(Messages.MUST_ACCEPT_LICENSE.getString());
-					event.cancel();
-				}
-			}
-		});
 
 		_paypalForm.addSubmitCompleteHandler(new SubmitCompleteHandler() {
 
