@@ -632,10 +632,10 @@ public class OrderSubmitterModulePart extends AModulePart {
 			public void onSuccess(Long result) {
 				setViewByLatestOrder();
 				notifyChanges(_submittedOrder);
-				if(DEBUG && _micropaymentPopup!=null && _micropaymentPopup.isShowing())
-				{
-					_micropaymentPopup.hide();
-				}
+				//				if(DEBUG && _micropaymentPopup!=null && _micropaymentPopup.isShowing())
+				//				{
+				//					_micropaymentPopup.hide();
+				//				}
 			}
 
 			public void onFailure(Throwable caught) {
@@ -856,7 +856,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 		if(getSubmittedOrder().getTip()==null)
 		{
-			getSubmittedOrder().setTip(new Double(6.5d));
+			getSubmittedOrder().setTip(new Float(6.5f));
 		}
 		tipBox.setText(getSubmittedOrder().getTip()+Messages.EUR.getString()); //$NON-NLS-1$
 		tipBox.setWidth("100px"); //$NON-NLS-1$
@@ -878,8 +878,8 @@ public class OrderSubmitterModulePart extends AModulePart {
 				//it's already the minimum value 
 				if(!getSubmittedOrder().getTip().equals(TransactionType.MICROPAYMENT.getValue()))
 				{
-					setWaiterMood(waiterSWFWidget,getSubmittedOrder().getTip(),getSubmittedOrder().getTip()-0.5d);
-					getSubmittedOrder().setTip(getSubmittedOrder().getTip()-0.5d);
+					setWaiterMood(waiterSWFWidget,getSubmittedOrder().getTip(),getSubmittedOrder().getTip()-0.5f);
+					getSubmittedOrder().setTip(getSubmittedOrder().getTip()-0.5f);
 					tipBox.setText(getSubmittedOrder().getTip()+Messages.EUR.getString()); //$NON-NLS-1$
 					applyCufon();
 				}
@@ -893,8 +893,8 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				setWaiterMood(waiterSWFWidget,getSubmittedOrder().getTip(),getSubmittedOrder().getTip()+0.5d);
-				getSubmittedOrder().setTip(getSubmittedOrder().getTip()+0.5d);
+				setWaiterMood(waiterSWFWidget,getSubmittedOrder().getTip(),getSubmittedOrder().getTip()+0.5f);
+				getSubmittedOrder().setTip(getSubmittedOrder().getTip()+0.5f);
 				tipBox.setText(getSubmittedOrder().getTip()+Messages.EUR.getString()); //$NON-NLS-1$
 				applyCufon();
 			}
@@ -933,7 +933,9 @@ public class OrderSubmitterModulePart extends AModulePart {
 				}
 				else //DEBUGGING, don't open paypal, not required, change instead the status to INCOMING
 				{
-					((OrderServiceAsync)getService(Service.ORDER_SERVICE)).setOrderStatus(getSubmittedOrder().getId(), Status.INCOMING, _setOrderStatusCallback);
+					getSubmittedOrder().setStatus(Status.INCOMING);
+					((OrderServiceAsync)getService(Service.ORDER_SERVICE)).submitOrder(getSubmittedOrder(), _submitOrderCallback);
+					//					((OrderServiceAsync)getService(Service.ORDER_SERVICE)).setOrderStatus(getSubmittedOrder().getId(), Status.INCOMING, _setOrderStatusCallback);
 				}
 			}
 		});
@@ -1230,7 +1232,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 	protected void setShowHideStateByLatestOrder(OrderDTO result) 
 	{
 		if(result==null || (result.getStatus() == Status.BOUGHT || result.getStatus() == Status.REJECTED|| result
-				.getStatus() == Status.PENDING ||result.isReviewRequestOngoing()))
+				.getStatus() == Status.PENDING || result.isReviewRequestOngoing()))
 		{
 			_mainPanel.setVisible(true);
 			_requestLabel.setText(Messages.REQUEST_LOGO_LBL.getString());
@@ -1351,11 +1353,11 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 	@Override
 	public void updateModulePart(OrderDTO selection) {
-		if(selection.getRevisionCounter()>0)
-		{
-			_submittedOrder=selection;
-			setShowHideStateByLatestOrder(_submittedOrder);
-		}
+		//		if(selection.getRevisionCounter()>0)
+		//		{
+		_submittedOrder=selection;
+		setShowHideStateByLatestOrder(_submittedOrder);
+		//		}
 
 	}
 

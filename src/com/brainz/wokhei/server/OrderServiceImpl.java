@@ -107,6 +107,7 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 			order.setDescriptions(Arrays.asList(orderDTO.getDescriptions()));
 			order.setStatus(orderDTO.getStatus());
 			order.setRevisionCounter(orderDTO.getRevisionCounter());
+			order.setTip(orderDTO.getTip());
 			orderId = order.getId();
 
 		}

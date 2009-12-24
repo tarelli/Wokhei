@@ -52,6 +52,9 @@ public class Order implements IsSerializable{
 	@Persistent
 	private Integer revisionCounter;
 
+	@Persistent
+	private Float tip;
+
 
 	public Order(User author, String text, List<String> tags, Colour colour, Date date, Integer progressive) {
 		this.customer = author;
@@ -151,6 +154,14 @@ public class Order implements IsSerializable{
 
 	public void setRevisionCounter(Integer revisionCounter) {
 		this.revisionCounter = revisionCounter;
+	}
+
+	public Float getTip() {
+		return tip;
+	}
+
+	public void setTip(Float tip) {
+		this.tip = tip;
 	}
 }
 

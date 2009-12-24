@@ -31,8 +31,8 @@ public enum Messages {
 	LOGO_COLOUR_ERROR_NONE("Pick the main colour!"),
 	GENERIC_ERROR("Error"), 
 	LOGO_DESC_ERROR_TOOSHORT("Sorry, description needs to be at least 25 characters long!"),
-	REQUEST_LOGO_LBL("Request your logo"),
-	REVISION_LOGO_LBL("Revise your logo"),
+	REQUEST_LOGO_LBL("Request a new logo"),
+	REVISION_LOGO_LBL("Review your logo"),
 	SEND_REQUEST("Send request!"),
 
 	ACCEPTED_WAITMSG("Your logo is getting ready, fancy a drink meanwhile?"),

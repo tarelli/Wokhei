@@ -148,7 +148,7 @@ public class OrderBrowserModulePart extends AModulePart{
 			colour.setHeight("10px");
 			colour.setWidth("10px");
 			statusDescription.setHeight("150px");
-			statusDescription.setWidth("250px");
+			statusDescription.setWidth("340px");
 			statusDescription.setStylePrimaryName("statusDescription");
 			statusTitle.setStylePrimaryName("statusTitle");
 			statusTitle.addStyleName("fontAR");
@@ -175,12 +175,12 @@ public class OrderBrowserModulePart extends AModulePart{
 			mainPanel.add(orderImage, 154, 0);
 			mainPanel.add(previousOrderButton,370,170);
 			mainPanel.add(nextOrderButton,420,170);
-			mainPanel.add(statusDescription,170,250);
-			mainPanel.add(statusTitle,170,220);
-			mainPanel.add(infoButton,147,221);
+			mainPanel.add(statusDescription,170,240);
+			mainPanel.add(statusTitle,170,210);
+			mainPanel.add(infoButton,147,211);
 			mainPanel.add(ordersPanel,360,13);
-			mainPanel.add(_buyNowImage, 220, 340);
-			mainPanel.add(_askRevisionImage, 220, 380);
+			mainPanel.add(_buyNowImage, 220, 325);
+			mainPanel.add(_askRevisionImage, 220, 385);
 			mainPanel.add(downloadPanelContainer,165,330);
 			mainPanel.add(infos,190,20);
 
@@ -318,6 +318,7 @@ public class OrderBrowserModulePart extends AModulePart{
 		//buy now false by default
 		_buyNowImage.setVisible(false);
 		_askRevisionImage.setVisible(false);
+		notifyChanges(_currentOrder);
 
 
 		if(downloadPanel!=null)
@@ -538,8 +539,11 @@ public class OrderBrowserModulePart extends AModulePart{
 
 					public void onClick(ClickEvent event) 
 					{	
-						_currentOrder.setRevisionCounter(_currentOrder.getRevisionCounter()+1);
-						notifyChanges(_currentOrder);
+						OrderDTO orderCopy=new OrderDTO(_currentOrder);
+						orderCopy.setRevisionCounter(orderCopy.getRevisionCounter()+1);
+						notifyChanges(orderCopy);
+						_buyNowImage.setVisible(false);
+						_askRevisionImage.setVisible(false);
 					}
 
 				});
@@ -555,79 +559,13 @@ public class OrderBrowserModulePart extends AModulePart{
 		else
 		{
 			_buyNowImage.setVisible(true);
+			if(!_currentOrder.hasCompletedReview())
+			{
+				_askRevisionImage.setVisible(true);
+			}
 		}
 	}
 
-	//	private void setupBuyNowPopup() {
-	//		setupPayPalForm(); 
-	//
-	//		_buyNowPanel.setHorizontalAlignment(VerticalPanel.ALIGN_CENTER);
-	//		_buyNowPanel.setSpacing(10);
-	//
-	//		ScrollPanel sp=new ScrollPanel();
-	//		_licenseText.setWidth("340px");
-	//		_licenseText.setHeight("300px");
-	//		_licenseText.setStyleName("license");
-	//		sp.setStyleName("licensePanel");
-	//
-	//		_feedBackLabel.setStyleName("errorLabel");
-	//		sp.add(_licenseText);
-	//		_buyNowPanel.add(sp);
-	//		_buyNowPanel.add(_acceptLicenseCheckBox);
-	//		_buyNowPanel.add(_paypalForm);
-	//		_buyNowPanel.add(_feedBackLabel);
-	//
-	//		_buyNowPopUpPanel.setWidth("390px");
-	//		_buyNowPopUpPanel.add(_buyNowPanel);
-	//
-	//	}
-
-	//	private void setupAcceptAgreement() {
-	//
-	////		HTMLPanel license= new HTMLPanel(HtmlLicenses.LIMITED_LICENSE.getString());	
-	////		ScrollPanel sp=new ScrollPanel();
-	////		license.setWidth("340px");
-	////		license.setHeight("300px");
-	////		license.setStyleName("license");
-	////		sp.setStyleName("licensePanel");
-	//
-	////		sp.add(license);
-	//		VerticalPanel acceptAgreementPanel=new VerticalPanel();
-	//		acceptAgreementPanel.setSpacing(10);
-	//		acceptAgreementPanel.setHorizontalAlignment(VerticalPanel.ALIGN_CENTER);
-	//		acceptAgreementPanel.add(sp);
-	//		final CheckBox acceptLicenseCheckBox=new CheckBox(Messages.ACCEPT_CONDITIONS.getString());
-	//		acceptAgreementPanel.add(acceptLicenseCheckBox);
-	//		final Label feedBackLabel=new Label(Messages.MUST_ACCEPT_LICENSE.getString());
-	//
-	//		Label downloadButton = new Label(Messages.DOWNLOAD_RASTERIZED.getString());
-	//		downloadButton.setStyleName("labelButton");
-	//		//		downloadButton.addStyleName("fontAR");
-	//		downloadButton.addStyleName("downloadLabelLink");
-	//		downloadButton.addClickHandler(new ClickHandler(){
-	//
-	//			public void onClick(ClickEvent event) {
-	//				if(acceptLicenseCheckBox.getValue())
-	//				{
-	//					Window.open(GWT.getHostPageBaseURL()+"wokhei/getfile?orderid="+_currentOrder.getId()+"&fileType="+FileType.PNG_LOGO, "_new", "");
-	//					_acceptAgreementPopupPanel.hide();
-	//				}
-	//				else
-	//				{
-	//					feedBackLabel.setVisible(true);
-	//				}
-	//
-	//			}});
-	//
-	//		acceptAgreementPanel.add(downloadButton);
-	//		feedBackLabel.setVisible(false);
-	//		feedBackLabel.setStyleName("errorLabel");
-	//		acceptAgreementPanel.add(feedBackLabel);
-	//
-	//		_acceptAgreementPopupPanel.setStyleName("genericPopup");
-	//		_acceptAgreementPopupPanel.setWidth("390px");
-	//		_acceptAgreementPopupPanel.add(acceptAgreementPanel);
-	//	}
 
 	private void setupPayPalForm()
 	{
@@ -681,18 +619,18 @@ public class OrderBrowserModulePart extends AModulePart{
 		Hidden transactiontype = new Hidden();
 		Hidden locale = new Hidden();
 
+		Float valueToPay=TransactionType.BUYING_LOGO.getValue()-_currentOrder.getTip();
+
 		itemNameInfo.setName(PayPalStrings.PAYPAL_ITEMNAME_NAME.getString());
 		itemNameInfo.setValue(TransactionType.BUYING_LOGO.getDescription());
 		formPlaceHolder.add(itemNameInfo);
 
 		amountInfo.setName(PayPalStrings.PAYPAL_AMOUNT_NAME.getString());
-		amountInfo.setValue(TransactionType.BUYING_LOGO.getValue().toString());
+		amountInfo.setValue(valueToPay.toString());
 		formPlaceHolder.add(amountInfo);
 
 		taxInfo.setName(PayPalStrings.PAYPAL_TAX_NAME.getString());
-		//FIXME: 0d needs to be removed, just fixing the compilation errror. the price is going to be
-		//the difference between the total and the micropayment
-		taxInfo.setValue(TransactionType.BUYING_LOGO.getTax(0d).toString());
+		taxInfo.setValue(TransactionType.BUYING_LOGO.getTax(valueToPay).toString());
 		formPlaceHolder.add(taxInfo);
 
 		currencyInfo.setName(PayPalStrings.PAYPAL_CURRENCY_NAME.getString());

@@ -611,7 +611,7 @@ select {
 	background: URL("../images/descUp.png");
 	border: 0px;
 	width: 15px;
-	height: 15px;
+	height: 18px;
 }
 
 .descUp:hover {
@@ -622,7 +622,7 @@ select {
 	background: URL("../images/descDown.png");
 	border: 0px;
 	width: 15px;
-	height: 15px;
+	height: 18px;
 }
 
 .descDown:hover {
@@ -664,23 +664,23 @@ select {
 }
 
 .buyNowButton {
-	width: 213px;
-	height: 41px;
-	background: URL("../images/makeitOFF.png");
+	width: 192px;
+	height: 55px;
+	background: URL("../images/makeyourchangesOFF.png");
 }
 
 .buyNowButton:hover {
-	background: URL("../images/makeitON.png");
+	background: URL("../images/makeyourchangesON.png");
 }
 
 .revisionButton {
-	width: 213px;
-	height: 41px;
-	background: URL("../images/makeitOFF.png");
+	width: 192px;
+	height: 55px;
+	background: URL("../images/makeyourchangesOFF.png");
 }
 
 .revisionButton:hover {
-	background: URL("../images/makeitON.png");
+	background: URL("../images/makeyourchangesON.png");
 }
 .license {
 	background-color: white;
@@ -720,6 +720,12 @@ select {
 	color: #000000;
 	font-size: 13px;
 	color: #000000;
+}
+
+.textBox[disabled='disabled'] {
+  background:yellow;
+  color:blue;
+  cursor:default;
 }
 
 .textDescBox {
