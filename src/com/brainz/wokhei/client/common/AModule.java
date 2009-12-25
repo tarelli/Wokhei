@@ -15,20 +15,22 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public abstract class AModule implements EntryPoint {
 
-	private LoginInfo _loginInfo = null;
+	protected LoginInfo _loginInfo = null;
 
-	private Date _timeStamp=null;
+	protected Date _timeStamp=null;
 
-	private boolean _isKillSwitch=false;
+	protected boolean _isKillSwitch=false;
 
-	private int _responsesReceived=0;
+	protected int _responsesReceived=0;
 
-	private Boolean _isSandBox=false;
+	protected Boolean _isSandBox=false;
+
+	private static final int DEFAULT_NUM_REQUESTS=4;
 
 	/**
 	 * 
 	 */
-	public void initModule() 
+	protected void initModule() 
 	{
 		// Check login status using login service
 		LoginServiceAsync loginService = GWT.create(LoginService.class);
@@ -89,13 +91,18 @@ public abstract class AModule implements EntryPoint {
 	/**
 	 * 
 	 */
-	private synchronized void responseReceived() 
+	protected synchronized void responseReceived() 
 	{
-		if(++_responsesReceived==4)
+		if(++_responsesReceived==getNumRequests())
 		{
 			//the module will be loaded only after all the responses are received
 			loadModule();
 		}
+	}
+
+	protected int getNumRequests() 
+	{
+		return DEFAULT_NUM_REQUESTS;
 	}
 
 	public Boolean isSandBox() {

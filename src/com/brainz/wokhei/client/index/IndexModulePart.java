@@ -53,8 +53,6 @@ public class IndexModulePart extends AModulePart {
 			AbsolutePanel mainPanel= new AbsolutePanel();
 			mainPanel.setSize("900px", "450px");
 
-			final Button watchVideo=new Button(Messages.WATCH_A_VIDEO.getString());
-			watchVideo.setText(Messages.WATCH_A_VIDEO.getString());
 
 			Button loginWokhei=new Button();
 
@@ -88,28 +86,7 @@ public class IndexModulePart extends AModulePart {
 			HTML thirdStepText = new HTML(_thirdStep);
 			HTML fourthStepText = new HTML(_fourthStep);
 
-			watchVideo.removeStyleName("gwt-Button");
-			watchVideo.setStyleName("watchVideo");
-			watchVideo.addStyleName("fontAR");
-			watchVideo.addClickHandler(new ClickHandler(){
-
-				public void onClick(ClickEvent event) {
-					if(swfScreen.isVisible())
-					{
-						watchVideo.setText(Messages.HIDE_VIDEO.getString());
-						swfScreen.setVisible(false);
-						swfVideoWokhei.setVisible(true);
-					}
-					else
-					{
-						watchVideo.setText(Messages.WATCH_A_VIDEO.getString());
-						swfScreen.setVisible(true);
-						swfVideoWokhei.setVisible(false);
-					}
-				}});
-
 			loginTip.setStyleName("loginTip");
-
 
 			loginWokhei.removeStyleName("gwt-Button");
 			loginWokhei.setStyleName("login");
@@ -189,8 +166,6 @@ public class IndexModulePart extends AModulePart {
 			copyright.setStyleName("indexCopyright");
 			RootPanel.get("indexHeaderPanel").add(copyright,770,20);
 			RootPanel.get("indexHeaderPanel").add(new Image(Images.TOOLS.getImageURL()), 360, 0);
-			RootPanel.get("indexHeaderPanel").add(watchVideo,620,15);
-
 			applyCufon();
 		}
 	}
