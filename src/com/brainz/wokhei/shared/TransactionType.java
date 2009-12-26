@@ -33,11 +33,22 @@ public enum TransactionType {
 
 	public Float getTax(Float gross)
 	{
-		return getNet(gross)*0.2f;
+		return gross-getNet(gross);
 	}
 
 	public Float getNet(Float gross)
 	{
-		return _value/1.2f;
+		return round(gross/1.2f);
+	}
+
+	public Float getGrossToPay(Float micropayment)
+	{
+		return _value-micropayment;	
+	}
+
+
+	private Float round(Float toRound)
+	{
+		return Float.valueOf((int)((toRound+0.005f)*10.0f)/10.0f);
 	}
 }

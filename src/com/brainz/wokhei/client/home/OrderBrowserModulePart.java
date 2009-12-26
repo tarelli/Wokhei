@@ -619,14 +619,15 @@ public class OrderBrowserModulePart extends AModulePart{
 		Hidden transactiontype = new Hidden();
 		Hidden locale = new Hidden();
 
-		Float valueToPay=TransactionType.BUYING_LOGO.getValue()-_currentOrder.getTip();
+		//valuToPay sara il lordo(gross) da pagare
+		Float valueToPay=TransactionType.BUYING_LOGO.getGrossToPay(_currentOrder.getTip());
 
 		itemNameInfo.setName(PayPalStrings.PAYPAL_ITEMNAME_NAME.getString());
 		itemNameInfo.setValue(TransactionType.BUYING_LOGO.getDescription());
 		formPlaceHolder.add(itemNameInfo);
 
 		amountInfo.setName(PayPalStrings.PAYPAL_AMOUNT_NAME.getString());
-		amountInfo.setValue(valueToPay.toString());
+		amountInfo.setValue(TransactionType.BUYING_LOGO.getNet(valueToPay).toString());
 		formPlaceHolder.add(amountInfo);
 
 		taxInfo.setName(PayPalStrings.PAYPAL_TAX_NAME.getString());
@@ -664,6 +665,7 @@ public class OrderBrowserModulePart extends AModulePart{
 		locale.setValue(PayPalStrings.PAYPAL_LOCALE_NAME.getString());
 		formPlaceHolder.add(locale);
 
+		_paypalForm.add(formPlaceHolder);
 
 		_paypalForm.addSubmitCompleteHandler(new SubmitCompleteHandler() {
 
