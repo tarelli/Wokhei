@@ -295,9 +295,9 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 				{
 					order.setAcceptedDate(new Date());
 				}
-				else if (newStatus == Status.VIEWED)
+				else if (newStatus == Status.REVIEWING)
 				{
-					order.setViewedDate(new Date());
+					order.setReviewingDate(new Date());
 				}
 
 				//persist change

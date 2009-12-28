@@ -909,7 +909,6 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 		case BOUGHT:
 		case IN_PROGRESS:
 		case QUALITY_GATE:
-
 			if(order.getAcceptedDate() != null)
 			{
 				float diffHours = DateDifferenceCalculator.getDifferenceInHours(_serverTimeStamp,order.getAcceptedDate());
@@ -963,14 +962,25 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 				timerLabel.setText(missingTime+ " hrs");
 			}
 			break;
-		case VIEWED:
-			if(order.getViewedDate() != null)
+		case REVIEWING:
+			if(order.getReviewingDate() != null)
 			{
-				float diffHours = DateDifferenceCalculator.getDifferenceInHours(_serverTimeStamp,order.getViewedDate());
+				float diffHours = DateDifferenceCalculator.getDifferenceInHours(_serverTimeStamp,order.getReviewingDate());
 				missingTime = (24f+diffHours);
 				missingTime=Float.valueOf((int)((missingTime*-1+0.005f)*10.0f)/10.0f);
-				timerLabel.addStyleName("timerGrey");
-				timerLabel.setText(missingTime+ " hrs");
+			}
+			timerLabel.setText(missingTime+ " hrs");
+			if(missingTime<-6f)
+			{
+				timerLabel.addStyleName("timerGreen");
+			}
+			else if(missingTime<-2f)
+			{
+				timerLabel.addStyleName("timerOrange");
+			}
+			else 
+			{
+				timerLabel.addStyleName("timerRed");
 			}
 			break;
 		}
@@ -1042,6 +1052,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 		case QUALITY_GATE:
 		case READY:
 		case VIEWED:
+		case REVIEWING:
 			statusImage.addStyleName("labelButton");
 			break;
 		}
@@ -1056,6 +1067,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 				case QUALITY_GATE:
 				case READY:
 				case VIEWED:
+				case REVIEWING:
 					((OrderServiceAsync) getService(Service.ORDER_SERVICE)).hasFileUploaded(orderId, FileType.PNG_LOGO, new AsyncCallback<Boolean>(){
 						public void onFailure(Throwable caught) 
 						{

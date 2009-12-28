@@ -140,10 +140,10 @@ public class OrderSubmitterModulePart extends AModulePart {
 	private final HorizontalPanel _logoDescBoxPanel = new HorizontalPanel();
 
 	// callbacks
+	//la cosa di avere i callbacks statici ŽÊuna MERDATA.
 	private AsyncCallback<List<OrderDTO>> _getOrdersCallback = null;
 	private AsyncCallback<List<OrderDTO>> _getOrdersForKillswitchOnCallback = null;
 	private AsyncCallback<Long> _submitOrderCallback = null;
-	private AsyncCallback<Long> _setOrderStatusCallback = null;
 
 	private PopupPanel _micropaymentPopup = null;
 
@@ -627,21 +627,6 @@ public class OrderSubmitterModulePart extends AModulePart {
 			}
 		};
 
-		_setOrderStatusCallback = new AsyncCallback<Long>() {
-
-			public void onSuccess(Long result) {
-				setViewByLatestOrder();
-				notifyChanges(_submittedOrder);
-				//				if(DEBUG && _micropaymentPopup!=null && _micropaymentPopup.isShowing())
-				//				{
-				//					_micropaymentPopup.hide();
-				//				}
-			}
-
-			public void onFailure(Throwable caught) {
-				// TODO give feedback to the user that something went wrong!
-			}
-		};
 	}
 
 	protected void setMessageWithKillswitchOn(OrderDTO latestOrder) {
@@ -1042,11 +1027,9 @@ public class OrderSubmitterModulePart extends AModulePart {
 				//-1 because the first one is not a revision
 				if(getSubmittedOrder().getDescriptions().length-1<getSubmittedOrder().getRevisionCounter())
 				{
-					//going to accepted now, this could change if we introduce a revision status. This is what I call XP.
+					//going to REVIEWING (there is a check in the server code,
 					getSubmittedOrder().setStatus(Status.REVIEWING);
-					getSubmittedOrder().setText(_logoTextBox.getText());
-					getSubmittedOrder().setColour(_selectedColour);
-
+					//the text and the colour of the logo can't change
 
 					String[] descriptions = new String[getSubmittedOrder().getDescriptions().length+1];
 					int i=0;
@@ -1056,6 +1039,19 @@ public class OrderSubmitterModulePart extends AModulePart {
 					}
 					descriptions[getSubmittedOrder().getDescriptions().length]= _logoDescBox.getText();
 					getSubmittedOrder().setDescriptions(descriptions);
+					((OrderServiceAsync) getService(Service.ORDER_SERVICE))
+					.setOrderStatus(getSubmittedOrder().getId(), Status.REVIEWING, new AsyncCallback<Long>() {
+
+						public void onSuccess(Long result) {
+							//setViewByLatestOrder(); //WHY??
+							getSubmittedOrder().setStatus(Status.REVIEWING);
+							notifyChanges(_submittedOrder);
+						}
+
+						public void onFailure(Throwable caught) {
+							// TODO give feedback to the user that something went wrong!
+						}
+					});
 				}
 			}
 			((OrderServiceAsync) getService(Service.ORDER_SERVICE))

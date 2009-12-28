@@ -372,6 +372,7 @@ public class OrderBrowserModulePart extends AModulePart{
 			case IN_PROGRESS:
 			case QUALITY_GATE:
 			case REJECTED:
+			case REVIEWING:
 				orderImage.removeStyleName("labelButton");
 				orderImage.setUrl(Images.valueOf(_currentOrder.getStatus().toString()).getImageURL());
 				break;

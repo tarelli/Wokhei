@@ -20,7 +20,7 @@ public class OrderDTO implements Serializable{
 
 	private Date _acceptedDate;
 
-	private Date _viewedDate;
+	private Date _reviewingDate;
 
 	private Status _status;
 
@@ -53,7 +53,7 @@ public class OrderDTO implements Serializable{
 	 * @param colour
 	 * @param customerEmail
 	 */
-	public OrderDTO(Long id, String text, String[] descriptions, Date date, Date acceptedDate, Date viewedDate,
+	public OrderDTO(Long id, String text, String[] descriptions, Date date, Date acceptedDate, Date reviewingDate,
 			Status status, Colour colour, String customerEmail, Integer progressive, Integer revisionCounter, Float tip) 
 	{
 		super();
@@ -62,7 +62,7 @@ public class OrderDTO implements Serializable{
 		_descriptions = descriptions;
 		_date = date;
 		_acceptedDate = acceptedDate;
-		_viewedDate = viewedDate;
+		_reviewingDate = reviewingDate;
 		_status = status;
 		_colour = colour;
 		_customerEmail = customerEmail;
@@ -79,7 +79,7 @@ public class OrderDTO implements Serializable{
 		_descriptions = currentOrder.getDescriptions();
 		_date = currentOrder.getDate();
 		_acceptedDate = currentOrder.getAcceptedDate();
-		_viewedDate = currentOrder.getViewedDate();
+		_reviewingDate = currentOrder.getReviewingDate();
 		_status = currentOrder.getStatus();
 		_colour = currentOrder.getColour();
 		_customerEmail = currentOrder.getCustomerEmail();
@@ -204,9 +204,9 @@ public class OrderDTO implements Serializable{
 	/**
 	 * @return
 	 */
-	public Date getViewedDate() 
+	public Date getReviewingDate() 
 	{
-		return _viewedDate;
+		return _reviewingDate;
 	}
 
 	/**
@@ -228,9 +228,9 @@ public class OrderDTO implements Serializable{
 	/**
 	 * @param date
 	 */
-	public void setViewedDate(Date date) 
+	public void setReviewingDate(Date date) 
 	{
-		_viewedDate = date;
+		_reviewingDate = date;
 	}
 
 	/**

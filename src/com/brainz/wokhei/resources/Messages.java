@@ -6,6 +6,7 @@ public enum Messages {
 	INCOMING("Incoming"),
 	ACCEPTED("Accepted"),
 	REJECTED("Rejected"),
+	REVIEWING("Reviewing"),
 	IN_PROGRESS("In progress"),
 	QUALITY_GATE("Quality Gate"),
 	READY("Ready"),
@@ -104,6 +105,9 @@ public enum Messages {
 
 	EMAIL_ORDER_READY("Your Stir Fried Logo is ready!\nWhat are you waiting for? Go check it out at [ $w ] and enjoy!"),
 	EMAIL_ORDER_READY_FOOTER("Remember, you have 24hrs to buy the logo starting from the first time you see it. Buying the logo will give you rights for commercial use under the Wokhei Commercial License."),
+
+	EMAIL_ORDER_READY_AFTER_REVIEW("Your Stir Fried Logo is ready once again!\nOur designers changed the logo as you asked, what are you waiting for? Go check it out at [ $w ] and enjoy!"),
+	EMAIL_ORDER_READY_FOOTER_AFTER_REVIEW("The price of the logo will be.."), //TO CHANGE
 
 	EMAIL_ORDER_GOODBYE("Wokhei - Stir Fried Logos"),
 	//NOTIFY EMAILS WHEN LOGO ORDER IS SUBMITTED

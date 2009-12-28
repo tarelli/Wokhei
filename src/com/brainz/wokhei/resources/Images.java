@@ -11,7 +11,7 @@ public enum Images {
 	ACCEPTED("./images/status/accepted.png","./images/status/acceptedSmall.png"),
 	QUALITY_GATE("./images/status/qualitygate.png","./images/status/qualitygateSmall.png"),
 	VIEWED("./images/status/ready.gif","./images/status/viewedSmall.png"),
-	REVIEWING("./images/status/reviewing.gif","./images/status/reviewingSmall.png"),
+	REVIEWING("./images/status/reviewing.png","./images/status/reviewingSmall.png"),
 
 	DRINKBODY("./images/bodydrink.png"),
 	DRINKBODYTILE("./images/bodytiledrink.png"),

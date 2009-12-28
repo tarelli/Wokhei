@@ -23,7 +23,7 @@ public class OrderUtils {
 	{
 		String[] strArr = new String[order.getDescriptions().size()];
 		System.arraycopy(order.getDescriptions().toArray(), 0, strArr, 0, order.getDescriptions().size());
-		return new OrderDTO(order.getId(),order.getText(),strArr,order.getDate(),order.getAcceptedDate(),order.getViewedDate(),order.getStatus(),order.getColour(), order.getCustomer().getEmail(),order.getProgressive(),order.getRevisionCounter(), order.getTip());
+		return new OrderDTO(order.getId(),order.getText(),strArr,order.getDate(),order.getAcceptedDate(),order.getReviewingDate(),order.getStatus(),order.getColour(), order.getCustomer().getEmail(),order.getProgressive(),order.getRevisionCounter(), order.getTip());
 	}
 
 	/**
