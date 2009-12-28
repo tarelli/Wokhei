@@ -10,16 +10,16 @@ import com.google.appengine.api.users.User;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class Admin {
-    @PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    private Long id;
-    
-    @Persistent
-    private User administrator;
+	@PrimaryKey
+	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+	private Long id;
 
-    public Admin(User administrator) {
-        this.setAdministrator(administrator);
-    }
+	@Persistent 
+	private User administrator;
+
+	public Admin(User administrator) {
+		this.setAdministrator(administrator);
+	}
 
 	public void setAdministrator(User administrator) {
 		this.administrator = administrator;
@@ -31,7 +31,7 @@ public class Admin {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
+	} 
 
 	public Long getId() {
 		return id;

@@ -67,7 +67,7 @@ div#page-wrap {
 
 .header {
 	position: relative;
-	min-height: 149px;
+	min-height: 151px;
 	background: URL("../images/header.png");
 	background-repeat: no-repeat
 }
@@ -414,7 +414,7 @@ select {
 .headerDoor {
 	position: relative;
 	min-height: 149px;
-	top: 1px;
+	top: 3px;
 	background: URL("../images/headerDOOR.png");
 	background-repeat: no-repeat
 }

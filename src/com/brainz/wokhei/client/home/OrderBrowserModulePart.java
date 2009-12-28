@@ -177,12 +177,12 @@ public class OrderBrowserModulePart extends AModulePart{
 			mainPanel.add(nextOrderButton,420,170);
 			mainPanel.add(statusDescription,170,240);
 			mainPanel.add(statusTitle,170,210);
-			mainPanel.add(infoButton,147,211);
+			mainPanel.add(infoButton,120,211);
 			mainPanel.add(ordersPanel,360,13);
 			mainPanel.add(_buyNowImage, 220, 325);
 			mainPanel.add(_askRevisionImage, 220, 385);
 			mainPanel.add(downloadPanelContainer,165,330);
-			mainPanel.add(infos,190,20);
+			mainPanel.add(infos,130,10);
 
 			RootPanel.get("ordersBrowser").add(getPanel());
 

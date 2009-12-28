@@ -44,6 +44,7 @@ public enum Messages {
 	READY_WAITMSG("Your logo is ready! Click on the steamin' wok to watch it!"),
 	VIEWED_WAITMSG("Your tasty Stir Fried Logo is ready! You can ask us to change what you don't like! FREE!"),
 	REVIEWED_WAITMSG("The logo thanks to your suggestion is now perfect and ready to become yours!"),
+	REVIEWING_WAITMSG("We are working on your logo to give it the final touch!"),
 	KILLSWITCH_ON_WAITMSG("Sorry, we are fully booked at the moment, come back later!"),
 	COPYRIGHT("Copyright\u00a9 2009 WOKHEI"),
 
@@ -61,6 +62,8 @@ public enum Messages {
 	READY_TEXT("Your logo is finally ready - check it out clicking on the icon above and flood your senses with Wokhei goodness!"),
 	VIEWED_TITLE("It's ready!"),
 	VIEWED_TEXT("Your logo is ready! Do you like it? You can but it now for 98 EUR (VAT Included) or if you wish to have some changes to make it perfect for your needs please ask us one revision, it's FREE!"),
+	REVIEWING_TITLE("Taking onboard your changes!"),
+	REVIEWING_TEXT("Thanks for your suggestions, we are now working on the changes you requested for your logo. Bear with us while our designers give shape to your words!"),	
 	REVIEWED_TITLE("Your revised logo is ready!"),
 	REVIEWED_TEXT("The logo you helped us to design for you is now ready and just few click away to be yours for only 98 EUR (VAT Included)! As you'll complete your payment the logo will become yours and you'll be able to download its vectorial version!"),
 	BOUGHT_TITLE("You purchased this logo"),

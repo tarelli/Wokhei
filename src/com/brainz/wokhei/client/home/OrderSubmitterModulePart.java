@@ -1043,7 +1043,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 				if(getSubmittedOrder().getDescriptions().length-1<getSubmittedOrder().getRevisionCounter())
 				{
 					//going to accepted now, this could change if we introduce a revision status. This is what I call XP.
-					getSubmittedOrder().setStatus(Status.ACCEPTED);
+					getSubmittedOrder().setStatus(Status.REVIEWING);
 					getSubmittedOrder().setText(_logoTextBox.getText());
 					getSubmittedOrder().setColour(_selectedColour);
 
