@@ -159,6 +159,7 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 	private AsyncCallback<Date> _getServerTimestampCallback = null;
 	private AsyncCallback<Boolean> _getOrderKillswitchCallback = null;
 	private AsyncCallback<Boolean> _setOrderKillswitchCallback = null;
+	final Button _sandBoxButton= new Button();
 
 	//related with status update chaching during async call
 	private int _rowForClientStatusUpdate;
@@ -320,6 +321,73 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 
 
+		// setup order Killswitch stuff
+		Label sandBoxLabel=new Label("Sandbox");
+		sandBoxLabel.setStylePrimaryName("label");
+		// the async handler of this will set correct text on the button
+		((UtilityServiceAsync) getService(Service.UTILITY_SERVICE)).isSandBox(new AsyncCallback<Boolean>() {
+
+			@Override
+			public void onSuccess(Boolean result) {
+				// TODO Auto-generated method stub
+				updateSandBoxButton(result);
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+
+		// click handler will call service to set killswitch 
+		_sandBoxButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				boolean setToOn;
+
+				// call set orderKillswitch on order service
+				if(_sandBoxButton.getText().equals(ON))
+				{
+					// if the button says OFF-->ON it means it's off
+					// so we need to set it to on
+					setToOn = true;
+				}
+				else
+				{
+					setToOn = false;
+				}
+
+				// the async handler of this will then set correct text on the button
+				((UtilityServiceAsync) getService(Service.UTILITY_SERVICE)).setSandBox(setToOn, new AsyncCallback<Boolean>() {
+
+					@Override
+					public void onSuccess(Boolean result) {
+						boolean textIsOn;
+
+						if(_sandBoxButton.getText().equals(ON))
+						{
+							textIsOn = true;
+						}
+						else
+						{
+							textIsOn = false;
+						}
+
+						updateSandBoxButton(textIsOn);
+
+					}
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+
+					}
+				});
+			}
+		});
+
+
+
 		_configPanel.setSpacing(10);
 		_configPanel.setVerticalAlignment(HorizontalPanel.ALIGN_MIDDLE);
 		_configPanel.add(addAdminLbl);
@@ -327,6 +395,8 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 		_configPanel.add(_addAdminButton);
 		_configPanel.add(_orderKillSwitchLbl);
 		_configPanel.add(_orderKillswitchButton);
+		_configPanel.add(sandBoxLabel);
+		_configPanel.add(_sandBoxButton);
 
 	}
 
@@ -1341,6 +1411,17 @@ public class AdminOrderBrowserModulePart extends AModulePart{
 
 	}
 
+	protected void updateSandBoxButton(Boolean result) {
+		if(result)
+		{
+			_sandBoxButton.setText(OFF);
+		}
+		else
+		{
+			_sandBoxButton.setText(ON);
+		}
+
+	}
 	/**
 	 * @param result
 	 */

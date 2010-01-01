@@ -18,4 +18,6 @@ public interface UtilityService extends RemoteService {
 
 	Boolean isSandBox();
 
+	Boolean setSandBox(boolean sandBox);
+
 }

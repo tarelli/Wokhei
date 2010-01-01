@@ -74,22 +74,24 @@
 				.executeWithArray(Status.QUALITY_GATE);
 		List<Order> viewedOrders = (List<Order>) query
 				.executeWithArray(Status.VIEWED);
-
+		List<Order> reviewingOrders = (List<Order>) query
+		.executeWithArray(Status.REVIEWING);
+		
 		List<Order> orders = new ArrayList<Order>();
 
 		//process normal order lifecycle (evevrything except viewed)
 		orders.addAll(acceptedOrders);
 		orders.addAll(inProgressOrders);
 		orders.addAll(qualityGateOrders);
+		orders.addAll(reviewingOrders);
 
 		//3.foreach order get diff between items and server timestamp
 		for (Order order : orders) {
-			if (order.getStatus().equals(Status.REVIEWING)) 
-			{
-				float diffHours = DateDifferenceCalculator
-				.getDifferenceInHours(order.getReviewingDate(),
-						serverDate);
-				if (diffHours > 24) {
+			if (order.getStatus().equals(Status.REVIEWING)) {
+				float diffReviewingHours = DateDifferenceCalculator
+						.getDifferenceInHours(order.getReviewingDate(),
+								serverDate);
+				if (diffReviewingHours > 24) {
 
 					// check here to see if it's really ready
 					if (orderService.hasFileUploaded(order.getId(),
@@ -138,97 +140,142 @@
 										.getString(), msgBody);
 						//-----------------------------------------------------------------------------
 					}
-			} 
-			else 
-			{
+				} else {
 
-				//3.1.depending on the diff update statuses	
-				float diffHours = DateDifferenceCalculator
-						.getDifferenceInHours(order.getAcceptedDate(),
-								serverDate);
+					//3.1.depending on the diff update statuses	
+					float diffHours = DateDifferenceCalculator
+							.getDifferenceInHours(order
+									.getAcceptedDate(), serverDate);
 
-				// we need to retrieve only accepted - in progress - quality gate
-				if (diffHours > 4 && diffHours < 16) {
-					if (order.getStatus() != Status.IN_PROGRESS) {
-						order.setStatus(Status.IN_PROGRESS);
-						updatedOrders.add(order);
+					// we need to retrieve only accepted - in progress - quality gate
+					if (diffHours > 4 && diffHours < 16) {
+						if (order.getStatus() != Status.IN_PROGRESS) {
+							order.setStatus(Status.IN_PROGRESS);
+							updatedOrders.add(order);
 
-						//-----------------------------------------------------------------------------
-						//send an email to the user
-						String msgBody = Messages.EMAIL_ORDER_IN_PROGRESS
-								.getString()
-								+ "\n\n";
-						String descriptions = "Description:\n";
-						for (String d : order.getDescriptions()) {
-							descriptions += d + "\n";
+							//-----------------------------------------------------------------------------
+							//send an email to the user
+							String msgBody = Messages.EMAIL_ORDER_IN_PROGRESS
+									.getString()
+									+ "\n\n";
+							String descriptions = "Description:\n";
+							for (String d : order.getDescriptions()) {
+								descriptions += d + "\n";
+							}
+
+							//add updated orders to email
+							msgBody += "Order details: \n"
+									+ "Text: "
+									+ order.getText()
+									+ "\n"
+									+ descriptions
+									+ "Colour: "
+									+ order.getColour().toString()
+									+ "\n"
+									+ "\n"
+									+ Messages.EMAIL_ORDER_IN_PROGRESS_FOOTER
+											.getString()
+									+ "\n\n"
+									+ Messages.EMAIL_ORDER_GOODBYE
+											.getString();
+
+							List<String> recipients = new ArrayList<String>();
+							recipients.add(order.getCustomer()
+									.getEmail());
+
+							EmailSender.sendEmail(Mails.YOURLOGO
+									.getMailAddress(), recipients,
+									Messages.EMAIL_ORDER_SUBJ
+											.getString(), msgBody);
+							//-----------------------------------------------------------------------------
 						}
+					} else if (diffHours > 16 && diffHours < 24) {
+						if (order.getStatus() != Status.QUALITY_GATE) {
+							order.setStatus(Status.QUALITY_GATE);
+							updatedOrders.add(order);
 
-						//add updated orders to email
-						msgBody += "Order details: \n"
-								+ "Text: "
-								+ order.getText()
-								+ "\n"
-								+ descriptions
-								+ "Colour: "
-								+ order.getColour().toString()
-								+ "\n"
-								+ "\n"
-								+ Messages.EMAIL_ORDER_IN_PROGRESS_FOOTER
+							//-----------------------------------------------------------------------------
+							//send an email to the user
+							String msgBody = Messages.EMAIL_ORDER_QUALITY_GATE
+									.getString()
+									+ "\n\n";
+							String descriptions = "Description:\n";
+							for (String d : order.getDescriptions()) {
+								descriptions += d + "\n";
+							}
+
+							//add updated orders to email
+							msgBody += "Order details: \n"
+									+ "Text: "
+									+ order.getText()
+									+ "\n"
+									+ descriptions
+									+ "Colour: "
+									+ order.getColour().toString()
+									+ "\n"
+									+ "\n"
+									+ Messages.EMAIL_ORDER_QUALITY_GATE_FOOTER
+											.getString()
+									+ "\n\n"
+									+ Messages.EMAIL_ORDER_GOODBYE
+											.getString();
+
+							List<String> recipients = new ArrayList<String>();
+							recipients.add(order.getCustomer()
+									.getEmail());
+
+							EmailSender.sendEmail(Mails.YOURLOGO
+									.getMailAddress(), recipients,
+									Messages.EMAIL_ORDER_SUBJ
+											.getString(), msgBody);
+							//-----------------------------------------------------------------------------
+
+							// if not everything is uploaded notify admin as we are in quality gate
+							if (orderService.hasFileUploaded(order
+									.getId(),
+									FileType.PDF_VECTORIAL_LOGO)
+									&& orderService
+											.hasFileUploaded(
+													order.getId(),
+													FileType.PNG_LOGO_PRESENTATION)
+									&& orderService.hasFileUploaded(
+											order.getId(),
+											FileType.PNG_LOGO)) {
+								String msg = Messages.NOTIFY_QUALITY_GATE_BODY
 										.getString()
-								+ "\n\n"
-								+ Messages.EMAIL_ORDER_GOODBYE
-										.getString();
+										+ "\n\n";
+								msgBody += "Order details: \n"
+										+ "User: "
+										+ order.getCustomer()
+												.getEmail() + "\n"
+										+ "Progressive: "
+										+ order.getProgressive() + "\n"
+										+ "OrderId: " + order.getId()
+										+ "\n" + "Text: "
+										+ order.getText() + "\n"
+										+ descriptions + "Colour: "
+										+ order.getColour().toString()
+										+ "\n" + "\n";
 
-						List<String> recipients = new ArrayList<String>();
-						recipients.add(order.getCustomer().getEmail());
+								List<String> notifyRecipients = new ArrayList<String>();
+								recipients.add(Mails.SIMONE
+										.getMailAddress());
+								recipients.add(Mails.ADMIN
+										.getMailAddress());
 
-						EmailSender.sendEmail(Mails.YOURLOGO
-								.getMailAddress(), recipients,
-								Messages.EMAIL_ORDER_SUBJ.getString(),
-								msgBody);
-						//-----------------------------------------------------------------------------
-					}
-				} else if (diffHours > 16 && diffHours < 24) {
-					if (order.getStatus() != Status.QUALITY_GATE) {
-						order.setStatus(Status.QUALITY_GATE);
-						updatedOrders.add(order);
-
-						//-----------------------------------------------------------------------------
-						//send an email to the user
-						String msgBody = Messages.EMAIL_ORDER_QUALITY_GATE
-								.getString()
-								+ "\n\n";
-						String descriptions = "Description:\n";
-						for (String d : order.getDescriptions()) {
-							descriptions += d + "\n";
+								EmailSender
+										.sendEmail(
+												Mails.YOURLOGO
+														.getMailAddress(),
+												notifyRecipients,
+												Messages.NOTIFY_QUALITY_GATE_SUBJ
+														.getString(),
+												msg);
+							}
 						}
+					} else if (diffHours > 24) {
 
-						//add updated orders to email
-						msgBody += "Order details: \n"
-								+ "Text: "
-								+ order.getText()
-								+ "\n"
-								+ descriptions
-								+ "Colour: "
-								+ order.getColour().toString()
-								+ "\n"
-								+ "\n"
-								+ Messages.EMAIL_ORDER_QUALITY_GATE_FOOTER
-										.getString()
-								+ "\n\n"
-								+ Messages.EMAIL_ORDER_GOODBYE
-										.getString();
-
-						List<String> recipients = new ArrayList<String>();
-						recipients.add(order.getCustomer().getEmail());
-
-						EmailSender.sendEmail(Mails.YOURLOGO
-								.getMailAddress(), recipients,
-								Messages.EMAIL_ORDER_SUBJ.getString(),
-								msgBody);
-						//-----------------------------------------------------------------------------
-
-						// if not everything is uploaded notify admin as we are in quality gate
+						// check here to see if it's really ready
 						if (orderService.hasFileUploaded(order.getId(),
 								FileType.PDF_VECTORIAL_LOGO)
 								&& orderService.hasFileUploaded(order
@@ -236,85 +283,51 @@
 										FileType.PNG_LOGO_PRESENTATION)
 								&& orderService.hasFileUploaded(order
 										.getId(), FileType.PNG_LOGO)) {
-							String msg = Messages.NOTIFY_QUALITY_GATE_BODY
+							// update status
+							order.setStatus(Status.READY);
+							updatedOrders.add(order);
+
+							//-----------------------------------------------------------------------------
+							//send an email to the user
+							String msgBody = Messages.EMAIL_ORDER_READY
 									.getString()
 									+ "\n\n";
-							msgBody += "Order details: \n" + "User: "
-									+ order.getCustomer().getEmail()
-									+ "\n" + "Progressive: "
-									+ order.getProgressive() + "\n"
-									+ "OrderId: " + order.getId()
-									+ "\n" + "Text: " + order.getText()
-									+ "\n" + descriptions + "Colour: "
-									+ order.getColour().toString()
-									+ "\n" + "\n";
+							String descriptions = "Description:\n";
+							for (String d : order.getDescriptions()) {
+								descriptions += d + "\n";
+							}
 
-							List<String> notifyRecipients = new ArrayList<String>();
-							recipients.add(Mails.SIMONE
-									.getMailAddress());
-							recipients
-									.add(Mails.ADMIN.getMailAddress());
+							//add updated orders to email
+							msgBody += "Order details: \n"
+									+ "Text: "
+									+ order.getText()
+									+ "\n"
+									+ descriptions
+									+ "Colour: "
+									+ order.getColour().toString()
+									+ "\n"
+									+ "\n"
+									+ Messages.EMAIL_ORDER_READY_FOOTER
+											.getString()
+									+ "\n\n"
+									+ Messages.EMAIL_ORDER_GOODBYE
+											.getString();
+
+							List<String> recipients = new ArrayList<String>();
+							recipients.add(order.getCustomer()
+									.getEmail());
 
 							EmailSender.sendEmail(Mails.YOURLOGO
-									.getMailAddress(),
-									notifyRecipients,
-									Messages.NOTIFY_QUALITY_GATE_SUBJ
-											.getString(), msg);
+									.getMailAddress(), recipients,
+									Messages.EMAIL_ORDER_READY_SUBJ
+											.getString(), msgBody);
+							//-----------------------------------------------------------------------------
 						}
-					}
-				} else if (diffHours > 24) {
-
-					// check here to see if it's really ready
-					if (orderService.hasFileUploaded(order.getId(),
-							FileType.PDF_VECTORIAL_LOGO)
-							&& orderService.hasFileUploaded(order
-									.getId(),
-									FileType.PNG_LOGO_PRESENTATION)
-							&& orderService.hasFileUploaded(order
-									.getId(), FileType.PNG_LOGO)) {
-						// update status
-						order.setStatus(Status.READY);
-						updatedOrders.add(order);
-
-						//-----------------------------------------------------------------------------
-						//send an email to the user
-						String msgBody = Messages.EMAIL_ORDER_READY
-								.getString()
-								+ "\n\n";
-						String descriptions = "Description:\n";
-						for (String d : order.getDescriptions()) {
-							descriptions += d + "\n";
-						}
-
-						//add updated orders to email
-						msgBody += "Order details: \n"
-								+ "Text: "
-								+ order.getText()
-								+ "\n"
-								+ descriptions
-								+ "Colour: "
-								+ order.getColour().toString()
-								+ "\n"
-								+ "\n"
-								+ Messages.EMAIL_ORDER_READY_FOOTER
-										.getString()
-								+ "\n\n"
-								+ Messages.EMAIL_ORDER_GOODBYE
-										.getString();
-
-						List<String> recipients = new ArrayList<String>();
-						recipients.add(order.getCustomer().getEmail());
-
-						EmailSender.sendEmail(Mails.YOURLOGO
-								.getMailAddress(), recipients,
-								Messages.EMAIL_ORDER_READY_SUBJ
-										.getString(), msgBody);
-						//-----------------------------------------------------------------------------
 					}
 				}
 			}
-		}
 
+		}
 	} catch (Exception ex) {
 		log.log(Level.SEVERE,
 				"update order Status Job failed to retrieve Orders: "

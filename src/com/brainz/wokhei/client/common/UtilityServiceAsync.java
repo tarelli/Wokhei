@@ -22,4 +22,6 @@ public interface UtilityServiceAsync extends IServiceAsync{
 	void getCurrentUsername(AsyncCallback<String> result);
 
 	void isSandBox(AsyncCallback<Boolean> callback);
+
+	void setSandBox(boolean sandBox, AsyncCallback<Boolean> callback);
 }

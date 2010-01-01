@@ -56,7 +56,7 @@ import com.google.gwt.user.client.ui.FormPanel.SubmitHandler;
 public class OrderSubmitterModulePart extends AModulePart {
 	private static final int NUM_COLOURS = 24;
 
-	private static final boolean DEBUG = true;
+	private static final boolean DEBUG = false; //set to true to disable the micropayment mandatory transaction
 
 	// root panel to host main and alternate panel
 	private final VerticalPanel _rootPanel = new VerticalPanel();
@@ -744,7 +744,6 @@ public class OrderSubmitterModulePart extends AModulePart {
 		Hidden notifyInfo = new Hidden();
 		Hidden returnInfo = new Hidden();
 		Hidden custom = new Hidden();
-		Hidden transactiontype = new Hidden();
 		Hidden locale = new Hidden();
 
 		itemNameInfo.setName(PayPalStrings.PAYPAL_ITEMNAME_NAME.getString());
@@ -780,13 +779,8 @@ public class OrderSubmitterModulePart extends AModulePart {
 		returnInfo.setValue(PayPalStrings.PAYPAL_RETURN_VALUE.getString());
 
 		custom.setName(PayPalStrings.PAYPAL_CUSTOM_NAME.getString());
-		custom.setValue(getSubmittedOrder().getId().toString());
+		custom.setValue(getSubmittedOrder().getId().toString()+";"+TransactionType.MICROPAYMENT.toString());
 		formPlaceHolder.add(custom);
-
-		transactiontype.setName(PayPalStrings.PAYPAL_TRANSACTIONTYPE_NAME
-				.getString());
-		transactiontype.setValue(TransactionType.MICROPAYMENT.toString());
-		formPlaceHolder.add(transactiontype);
 
 		locale.setName(PayPalStrings.PAYPAL_LOCALE_NAME.getString());
 		locale.setValue(PayPalStrings.PAYPAL_LOCALE_NAME.getString());

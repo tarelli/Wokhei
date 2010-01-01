@@ -81,8 +81,11 @@ public class PaymentDoneServlet extends HttpServlet {
 		String receiverEmail = req.getParameter("receiver_email");
 		String payerEmail = req.getParameter("payer_email");
 		//get our custom pass-through variable containing orderID
-		Long orderId = Long.parseLong(req.getParameter(PayPalStrings.PAYPAL_CUSTOM_NAME.getString()));
-		TransactionType transactionType =TransactionType.valueOf(req.getParameter(PayPalStrings.PAYPAL_TRANSACTIONTYPE_NAME.getString()));
+		String custom=req.getParameter(PayPalStrings.PAYPAL_CUSTOM_NAME.getString());
+		log.log(Level.INFO,"CUSTOM-->"+custom);
+		String[] customs=custom.split(";");
+		Long orderId = Long.parseLong(customs[0]);
+		TransactionType transactionType =TransactionType.valueOf(customs[1]);
 
 		//check notification validation
 		if(resX.equals("VERIFIED")) {

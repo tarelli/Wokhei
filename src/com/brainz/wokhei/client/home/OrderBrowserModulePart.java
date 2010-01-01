@@ -617,7 +617,6 @@ public class OrderBrowserModulePart extends AModulePart{
 		Hidden notifyInfo = new Hidden();
 		Hidden returnInfo = new Hidden();
 		Hidden custom = new Hidden();
-		Hidden transactiontype = new Hidden();
 		Hidden locale = new Hidden();
 
 		//valuToPay sara il lordo(gross) da pagare
@@ -655,12 +654,8 @@ public class OrderBrowserModulePart extends AModulePart{
 		returnInfo.setValue(PayPalStrings.PAYPAL_RETURN_VALUE.getString());
 
 		custom.setName(PayPalStrings.PAYPAL_CUSTOM_NAME.getString());
-		custom.setValue(_currentOrder.getId().toString());
+		custom.setValue(_currentOrder.getId().toString()+";"+TransactionType.BUYING_LOGO.toString());
 		formPlaceHolder.add(custom);
-
-		transactiontype.setName(PayPalStrings.PAYPAL_TRANSACTIONTYPE_NAME.getString());
-		transactiontype.setValue(TransactionType.BUYING_LOGO.toString());
-		formPlaceHolder.add(transactiontype);
 
 		locale.setName(PayPalStrings.PAYPAL_LOCALE_NAME.getString());
 		locale.setValue(PayPalStrings.PAYPAL_LOCALE_NAME.getString());

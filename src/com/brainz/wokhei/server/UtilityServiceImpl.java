@@ -76,4 +76,50 @@ public class UtilityServiceImpl extends RemoteServiceServlet implements UtilityS
 		return returnValue;
 	}
 
+	public synchronized Boolean setSandBox(boolean isSandBox)
+	{
+		// returnValue shows success of the setting operation
+		Boolean returnValue = false;
+
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+
+		try
+		{
+
+			String selectQuery = "select from " + WokheiConfig.class.getName();
+			Query query = pm.newQuery(selectQuery);
+			//execute
+			List<WokheiConfig> configOptions = (List<WokheiConfig>) query.execute();
+
+			if(configOptions.isEmpty())
+			{
+				//is sandbox false by default
+				boolean isOn = false;
+				// need to create it if not already there
+				WokheiConfig config = new WokheiConfig(isOn, isSandBox);
+				pm.makePersistent(config);
+
+				log.log(Level.INFO, "Sandbox set to: " + isOn);
+			}
+			else
+			{
+				WokheiConfig config = configOptions.get(0);
+				config.setSandBox(isSandBox);
+				log.log(Level.INFO, "Sandbox set to: " + isSandBox);
+			}
+
+			returnValue = true;
+		}
+		catch(Exception e)
+		{
+			log.log(Level.SEVERE, e.toString());
+		}
+		finally
+		{
+			pm.close();
+		}
+
+		return returnValue;
+	}
+
 }

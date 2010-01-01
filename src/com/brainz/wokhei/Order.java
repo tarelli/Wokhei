@@ -22,10 +22,10 @@ public class Order implements IsSerializable{
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
 	private Long id; 
 
-	@Persistent
+	@Persistent 
 	private Integer progressive;
 
-	@Persistent
+	@Persistent 
 	private User customer;
 
 	@Persistent

@@ -33,7 +33,7 @@ public enum TransactionType {
 
 	public Float getTax(Float gross)
 	{
-		return gross-getNet(gross);
+		return round(gross-getNet(gross));
 	}
 
 	public Float getNet(Float gross)
