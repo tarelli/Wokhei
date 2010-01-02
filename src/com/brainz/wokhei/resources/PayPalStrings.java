@@ -28,7 +28,6 @@ public enum PayPalStrings {
 	PAYPAL_AMOUNT_TEST_TOTAL("1.00"),
 	PAYPAL_LOCALE_NAME("lc"),
 	PAYPAL_LOCALE_VALUE("US"), 
-	PAYPAL_TRANSACTIONTYPE_NAME("transactiontype"),
 	;
 
 	private String _text;

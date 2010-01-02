@@ -1224,6 +1224,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 		if(result==null || (result.getStatus() == Status.BOUGHT || result.getStatus() == Status.REJECTED|| result
 				.getStatus() == Status.PENDING || result.isReviewRequestOngoing()))
 		{
+			_submittedOrder=result;
 			_mainPanel.setVisible(true);
 			_requestLabel.setText(Messages.REQUEST_LOGO_LBL.getString());
 
@@ -1345,8 +1346,11 @@ public class OrderSubmitterModulePart extends AModulePart {
 	public void updateModulePart(OrderDTO selection) {
 		//		if(selection.getRevisionCounter()>0)
 		//		{
-		_submittedOrder=selection;
-		setShowHideStateByLatestOrder(_submittedOrder);
+		if(selection!=null)
+		{
+			_submittedOrder=selection;
+			setShowHideStateByLatestOrder(_submittedOrder);
+		}
 		//		}
 
 	}
