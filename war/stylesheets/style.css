@@ -534,7 +534,7 @@ select {
 }
 
 .sendTip {
-	border: none 0px;
+	border: 0px;
 	width: 159px;
 	height: 55px;
 	background: URL("../images/sendTipOFF.png");

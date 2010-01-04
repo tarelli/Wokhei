@@ -90,7 +90,6 @@ public class IndexModulePart extends AModulePart {
 
 			loginWokhei.removeStyleName("gwt-Button");
 			loginWokhei.setStyleName("login");
-			loginWokhei.addStyleName("fontAR");
 			loginWokhei.addClickHandler(new ClickHandler(){
 
 				public void onClick(ClickEvent event) {

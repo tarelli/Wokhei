@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.brainz.wokhei.resources.PayPalStrings;
 import com.brainz.wokhei.server.InvoiceSender;
 import com.brainz.wokhei.server.OrderServiceImpl;
+import com.brainz.wokhei.server.UtilityServiceImpl;
 import com.brainz.wokhei.shared.InvoiceDTO;
 import com.brainz.wokhei.shared.Status;
 import com.brainz.wokhei.shared.TransactionType;
@@ -58,7 +59,23 @@ public class PaymentDoneServlet extends HttpServlet {
 		// NOTE: change http: to https: in the following URL to verify using SSL (for increased security).
 		// using HTTPS requires either Java 1.4 or greater, or Java Secure Socket Extension (JSSE)
 		// and configured for older versions.
-		URL u = new URL(PayPalStrings.PAYPAL_ACTION.getString());
+		UtilityServiceImpl utility=new UtilityServiceImpl();
+		URL u=null;
+		String expectedReceiverMail;
+		if(utility.isSandBox())
+		{
+			log.log(Level.INFO,"SANDBOX");
+			expectedReceiverMail=PayPalStrings.PAYPAL_SANDBOX_BUSINESS_VALUE.getString();
+			u= new URL(PayPalStrings.PAYPAL_SANDBOX_ACTION.getString());
+		}
+		else
+		{
+			log.log(Level.INFO,"NOT SANDBOX");
+			expectedReceiverMail=PayPalStrings.PAYPAL_BUSINESS_VALUE.getString();
+			u= new URL(PayPalStrings.PAYPAL_ACTION.getString());
+		}
+
+
 		URLConnection uc = u.openConnection();
 		uc.setDoOutput(true);
 		uc.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
@@ -72,14 +89,17 @@ public class PaymentDoneServlet extends HttpServlet {
 
 		// assign posted variables to local variables
 		// we run checks on some of these before processing the transaction
-		String itemName = req.getParameter("item_name");
-		String itemNumber = req.getParameter("item_number");
+		//		String itemName = req.getParameter("item_name");
+		//		String itemNumber = req.getParameter("item_number");
+		//		Float paymentAmount = Float.parseFloat(req.getParameter("mc_gross"));
+		//		String txnId = req.getParameter("txn_id");
+		//		String payerEmail = req.getParameter("payer_email");
+
 		String paymentStatus = req.getParameter("payment_status");
-		Double paymentAmount = Double.parseDouble(req.getParameter("mc_gross"));
 		String paymentCurrency = req.getParameter("mc_currency");
-		String txnId = req.getParameter("txn_id");
 		String receiverEmail = req.getParameter("receiver_email");
-		String payerEmail = req.getParameter("payer_email");
+
+
 		//get our custom pass-through variable containing orderID
 		String custom=req.getParameter(PayPalStrings.PAYPAL_CUSTOM_NAME.getString());
 		log.log(Level.INFO,"CUSTOM-->"+custom);
@@ -94,19 +114,16 @@ public class PaymentDoneServlet extends HttpServlet {
 			// check that receiverEmail is your Primary PayPal email
 			// check that paymentAmount/paymentCurrency are correct
 
-
-			if((paymentStatus.equalsIgnoreCase("pending") || paymentStatus.equalsIgnoreCase("completed")) 
-					&& receiverEmail.equalsIgnoreCase(PayPalStrings.PAYPAL_BUSINESS_VALUE.getString())
-					//&& paymentAmount==transactionType.getTotal() FIXTHIS!!
-					&& paymentCurrency.equalsIgnoreCase(PayPalStrings.PAYPAL_CURRENCY_VALUE.getString()))
+			OrderServiceImpl orderService=new OrderServiceImpl();
+			switch(transactionType)
 			{
-				switch(transactionType)
-				{
-				case BUYING_LOGO:
+			case BUYING_LOGO:
+			{
+				if(checkFields(paymentStatus, paymentCurrency,
+						receiverEmail,expectedReceiverMail))
 				{
 					// process payment
 					// here we do our shit (which is hot SHITE)
-					OrderServiceImpl orderService=new OrderServiceImpl();
 					InvoiceDTO invoiceDTO = orderService.attachInvoice(orderId);
 					orderService.setOrderStatus(orderId, Status.BOUGHT);
 
@@ -119,25 +136,20 @@ public class PaymentDoneServlet extends HttpServlet {
 					{
 						log.log(Level.SEVERE,"Payment completed request but there was an error generating the invoice (most likely no user logged)");
 					}
-
-					break;
 				}
-				case MICROPAYMENT:
+				break;
+			}
+			case MICROPAYMENT:
+			{
+				if(checkFields(paymentStatus, paymentCurrency,
+						receiverEmail,expectedReceiverMail))
 				{
-					OrderServiceImpl orderService=new OrderServiceImpl();
 					orderService.setOrderStatus(orderId, Status.INCOMING);
 					log.log(Level.INFO,"MicroPayment completed successfully for order: " + orderId);
-					break;
 				}
-				}
+				break;
 			}
-			else
-			{
-				logError(paymentStatus, paymentAmount, paymentCurrency,
-						receiverEmail, transactionType);
 			}
-
-
 		}
 		else if(resX.equals("INVALID")) {
 			// log for investigation
@@ -152,22 +164,30 @@ public class PaymentDoneServlet extends HttpServlet {
 	}
 
 
-	/**
-	 * @param paymentStatus
-	 * @param paymentAmount
-	 * @param paymentCurrency
-	 * @param receiverEmail
-	 */
-	private void logError(String paymentStatus, Double paymentAmount,
-			String paymentCurrency, String receiverEmail, TransactionType transactionType) 
-	{
-		// some errors in the parameters checked
-		String errorMsg = "Checked failed on Paypal parameters sent with IPN, actual values follow: ";
-		errorMsg += "paymentStatus = " + paymentStatus + "[" + (paymentStatus.equalsIgnoreCase("pending") || paymentStatus.equalsIgnoreCase("completed")) + "]";
-		errorMsg += " - receiverEmail = " + receiverEmail + "[" + receiverEmail.equalsIgnoreCase(PayPalStrings.PAYPAL_BUSINESS_VALUE.getString()) + "]";
-		errorMsg += " - paymentAmount = " + paymentAmount + "[" + /*paymentAmount==transactionType.getTotal() + FIX THIS!!*/ "]";
-		errorMsg += " - paymentCurrency = " + paymentCurrency + "[" + paymentCurrency.equalsIgnoreCase(PayPalStrings.PAYPAL_CURRENCY_VALUE.getString()) + "]";
-		// log the error
-		log.log(Level.SEVERE, errorMsg);
+	private boolean checkFields(String paymentStatus, 
+			String paymentCurrency, String receiverEmail, String expectedReceiverMail)  {
+		// TODO Auto-generated method stub
+		if((paymentStatus.equalsIgnoreCase("pending") || paymentStatus.equalsIgnoreCase("completed")) 
+				&& receiverEmail.equalsIgnoreCase(expectedReceiverMail)
+				//&& paymentAmount.equals(expectedAmount)
+				&& paymentCurrency.equalsIgnoreCase(PayPalStrings.PAYPAL_CURRENCY_VALUE.getString()))
+		{
+			log.log(Level.INFO, "PayPal fields check passed!");
+			return true;
+		}
+		else
+		{
+			// some errors in the parameters checked
+			String errorMsg = "Checked failed on Paypal parameters sent with IPN, actual values follow: ";
+			errorMsg += "paymentStatus RECEIVED = " + paymentStatus + " EXPECTED = "+"pending OR completed"+ " CHECK=[" + (paymentStatus.equalsIgnoreCase("pending") || paymentStatus.equalsIgnoreCase("completed")) + "]";
+			errorMsg += " - receiverEmail RECEIVED = " + receiverEmail  + " EXPECTED = "+expectedReceiverMail+ " CHECK=[" + receiverEmail.equalsIgnoreCase(expectedReceiverMail) + "]";
+			//errorMsg += " - paymentAmount RECEIVED = " + paymentAmount  + " EXPECTED = "+expectedAmount+ " CHECK=[" + paymentAmount.equals(expectedAmount)+"]";
+			errorMsg += " - paymentCurrency RECEIVED = " + paymentCurrency  + " EXPECTED = "+PayPalStrings.PAYPAL_CURRENCY_VALUE.getString()+ " CHECK=[" + paymentCurrency.equalsIgnoreCase(PayPalStrings.PAYPAL_CURRENCY_VALUE.getString()) + "]";
+			// log the error
+			log.log(Level.SEVERE, errorMsg);
+			return false;
+		}
 	}
+
+
 }

@@ -123,7 +123,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 	private final Button _submitOrderButton = new Button(Messages.SEND_REQUEST
 			.getString()); //$NON-NLS-1$
 
-	// these panels are the place olders for the drink images
+	// these panels are the place-holders for the drink images
 	private final VerticalPanel _alternateRootPanelBody = new VerticalPanel();
 	private final VerticalPanel _alternateRootPanelBodyTile = new VerticalPanel();
 	private final VerticalPanel _alternateRootPanelFooter = new VerticalPanel();
@@ -428,7 +428,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 		_logoDescBox.setWidth("290px");
 		_logoDescBox.setText(Messages.LOGO_DESC_TXTBOX.getString());
 		_logoDescBox.setStyleName("textDescBox");
-
+		_logoTextBox.addStyleName("fontAR");
 		_logoDescBox.addBlurHandler(new BlurHandler() {
 			public void onBlur(BlurEvent event) {
 				setDescModified(true);
@@ -594,6 +594,8 @@ public class OrderSubmitterModulePart extends AModulePart {
 				if (result != null && getSubmittedOrder() != null) {
 					getSubmittedOrder().setId(result);
 
+					_submitOrderButton.setEnabled(true);
+					_submitOrderButton.setText(Messages.SEND_REQUEST.getString());
 					if(getSubmittedOrder().getRevisionCounter()>0)
 					{
 						hideMainPanelShowAlternate(getSubmittedOrder());
@@ -872,16 +874,20 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				setWaiterMood(waiterSWFWidget,getSubmittedOrder().getTip(),getSubmittedOrder().getTip()+0.5f);
-				getSubmittedOrder().setTip(getSubmittedOrder().getTip()+0.5f);
-				tipBox.setText(getSubmittedOrder().getTip()+Messages.EUR.getString()); //$NON-NLS-1$
-				applyCufon();
+				if(!getSubmittedOrder().getTip().equals(98f))
+				{
+					setWaiterMood(waiterSWFWidget,getSubmittedOrder().getTip(),getSubmittedOrder().getTip()+0.5f);
+					getSubmittedOrder().setTip(getSubmittedOrder().getTip()+0.5f);
+					tipBox.setText(getSubmittedOrder().getTip()+Messages.EUR.getString()); //$NON-NLS-1$
+					applyCufon();
+				}
 			}
 
 
 		});
 
-		Image payTipButton = new Image();
+		Button payTipButton = new Button();
+		payTipButton.removeStyleName("gwt-Button");
 		payTipButton.setStyleName("sendTip");
 		payTipButton.addClickHandler(new ClickHandler(){
 
@@ -1010,6 +1016,11 @@ public class OrderSubmitterModulePart extends AModulePart {
 		if (checkErrors()) {
 			if(getSubmittedOrder()!=null && getSubmittedOrder().getRevisionCounter()==0)
 			{
+				//stiamo inviando l'ordine la prima volta, si aprira il pannellino una volta ricevuta la risposta
+				//se la connessione ŽÊlenta ci potrebbe volere un po, nel frattempo disabilito il buttone
+				//per evitare succedano casini
+				_submitOrderButton.setText(Messages.WAIT.getString());
+				_submitOrderButton.setEnabled(false);
 				getSubmittedOrder().setStatus(Status.PENDING);
 				String[] descriptions = { _logoDescBox.getText() };
 				getSubmittedOrder().setDescriptions(descriptions);
@@ -1270,14 +1281,14 @@ public class OrderSubmitterModulePart extends AModulePart {
 					setNameModified(true);
 					setColourModified(true);
 					checkErrors();
-					applyCufon();
+
 				}
 			}
 		} else {
 			hideMainPanelShowAlternate(result);
 
 		}
-
+		applyCufon();
 	}
 
 

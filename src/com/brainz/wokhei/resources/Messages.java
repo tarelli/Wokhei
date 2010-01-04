@@ -140,6 +140,7 @@ public enum Messages {
 	WEBSITE("http://www.wokhei.com"),
 	WEBSITE_SANDBOX("http://wokheisandbox.appspot.com/"), 
 	EUR(" EUR"), 
+	WAIT("Wait..."), 
 
 
 
