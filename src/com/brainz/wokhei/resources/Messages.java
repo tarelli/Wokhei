@@ -53,7 +53,7 @@ public enum Messages {
 	"You can use up to 250 characters to tell us how you would like your logo and something more about your business or product."),
 
 	LOGO_DESC_EG_LBL(
-	"e.g. We'd like a nice tree in the logo for our recycling business (...)"),
+	"e.g. We'd like a tree in the logo for our recycling business (...)"),
 
 	LOGO_DESC_ERROR_EMPTY("Sorry, you need to put in a description!"),
 
@@ -110,7 +110,7 @@ public enum Messages {
 	INCOMING_TITLE("Pending request..."),
 
 	INCOMING_TEXT(
-	"Your request has been registered. It will be shortly approved or rejected and you will be notified via email. Just give us a moment, we might be on a coffee break!"),
+	"Your request has been registered. It will be shortly approved and you will be notified via email. Just give us a moment, we might be on a coffee break!"),
 
 	ACCEPTED_TITLE("Request accepted!"),
 
