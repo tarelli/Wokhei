@@ -886,7 +886,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 		});
 
-		Button payTipButton = new Button();
+		final Button payTipButton = new Button();
 		payTipButton.removeStyleName("gwt-Button");
 		payTipButton.setStyleName("sendTip");
 		payTipButton.addClickHandler(new ClickHandler(){
@@ -894,6 +894,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 			public void onClick(ClickEvent event) 
 			{
+				payTipButton.setEnabled(false);
 				if(!DEBUG)
 				{
 					((OrderServiceAsync)getService(Service.ORDER_SERVICE)).submitOrder(getSubmittedOrder(), _submitOrderCallback);
