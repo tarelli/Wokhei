@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.brainz.wokhei.client.common.AModulePart;
-import com.brainz.wokhei.resources.Images;
 import com.brainz.wokhei.resources.Mails;
 import com.brainz.wokhei.shared.OrderDTO;
 import com.google.gwt.dom.client.Element;
@@ -18,10 +17,7 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -147,44 +143,45 @@ public class AboutModulePart extends AModulePart implements ValueChangeHandler<S
 
 		panel.add(getSectionText(_licensesText,"sectionText"));
 
-		FlexTable table=new FlexTable();
-		table.setStyleName("licenseTable");
-
-		Label wll=new Label("Wokhei Limited License");
-		wll.setStyleName("fontAR");
-		Label wcl=new Label("Wokhei Commercial License");
-		wcl.setStyleName("fontAR");
-
-		table.setWidget(0, 1, wll);
-		table.setWidget(0, 2, wcl);
-
-		table.getCellFormatter().setAlignment(1, 1,HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
-		table.getCellFormatter().setAlignment(1, 2,HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
-		table.setText(1,0,"Non Commercial Use");
-		table.setWidget(1, 1, new Image(Images.OK.getImageURL()));
-		table.setWidget(1, 2, new Image(Images.OK.getImageURL()));
-
-		table.getCellFormatter().setAlignment(2, 1,HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
-		table.getCellFormatter().setAlignment(2, 2,HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
-		table.setText(2,0,"Commercial use");
-		table.setWidget(2, 1, new Image(Images.NOK.getImageURL()));
-		table.setWidget(2, 2, new Image(Images.OK.getImageURL()));
-
-		table.getCellFormatter().setAlignment(3, 1,HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
-		table.getCellFormatter().setAlignment(3, 2,HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
-		table.setText(3,0,"Uncredited use");
-		table.setWidget(3, 1, new Image(Images.NOK.getImageURL()));
-		table.setWidget(3, 2, new Image(Images.OK.getImageURL()));
-
-		table.getCellFormatter().setAlignment(4, 1,HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
-		table.getCellFormatter().setAlignment(4, 2,HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
-		table.setText(4,0,"Price");
-		table.setText(4, 1, "FREE");
-		table.setText(4, 2, "105 EUR");
-
-
-
-		panel.add(table);
+		//LICENSES ARE GONE! 
+		//		FlexTable table=new FlexTable();
+		//		table.setStyleName("licenseTable");
+		//
+		//		Label wll=new Label("Wokhei Limited License");
+		//		wll.setStyleName("fontAR");
+		//		Label wcl=new Label("Wokhei Commercial License");
+		//		wcl.setStyleName("fontAR");
+		//
+		//		table.setWidget(0, 1, wll);
+		//		table.setWidget(0, 2, wcl);
+		//
+		//		table.getCellFormatter().setAlignment(1, 1,HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
+		//		table.getCellFormatter().setAlignment(1, 2,HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
+		//		table.setText(1,0,"Non Commercial Use");
+		//		table.setWidget(1, 1, new Image(Images.OK.getImageURL()));
+		//		table.setWidget(1, 2, new Image(Images.OK.getImageURL()));
+		//
+		//		table.getCellFormatter().setAlignment(2, 1,HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
+		//		table.getCellFormatter().setAlignment(2, 2,HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
+		//		table.setText(2,0,"Commercial use");
+		//		table.setWidget(2, 1, new Image(Images.NOK.getImageURL()));
+		//		table.setWidget(2, 2, new Image(Images.OK.getImageURL()));
+		//
+		//		table.getCellFormatter().setAlignment(3, 1,HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
+		//		table.getCellFormatter().setAlignment(3, 2,HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
+		//		table.setText(3,0,"Uncredited use");
+		//		table.setWidget(3, 1, new Image(Images.NOK.getImageURL()));
+		//		table.setWidget(3, 2, new Image(Images.OK.getImageURL()));
+		//
+		//		table.getCellFormatter().setAlignment(4, 1,HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
+		//		table.getCellFormatter().setAlignment(4, 2,HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
+		//		table.setText(4,0,"Price");
+		//		table.setText(4, 1, "FREE");
+		//		table.setText(4, 2, "105 EUR");
+		//
+		//
+		//
+		//		panel.add(table);
 		return panel;
 	}
 
