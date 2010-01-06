@@ -82,7 +82,7 @@ public enum Messages {
 	"Your request has been sent to the kitchen. Enjoy the appetizers!"),
 
 	PENDING_WAITMSG(
-	"Thanks for your tip! Once you'll complete the Paypal payment your order will be queued! Refresh this page if in need to make any change!"),
+	"Thanks for your tip! Redirecting to PayPal..."),
 
 	IN_PROGRESS_WAITMSG(
 	"Your logo is being cooked-up, have some more appetizers!"),

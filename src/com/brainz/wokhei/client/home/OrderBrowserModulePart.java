@@ -27,6 +27,7 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.Hidden;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -78,7 +79,7 @@ public class OrderBrowserModulePart extends AModulePart{
 	private final SlideShow slideShow = new SlideShow();
 
 	// Will load-up the panel with license + paypal 
-	private final Label _buyNowImage = new Label();
+	private final Button _buyNowImage = new Button();
 	private final FormPanel _paypalForm = new FormPanel("");
 
 	private AsyncCallback<Long> _setOrderStatusCallback = null;
@@ -179,7 +180,7 @@ public class OrderBrowserModulePart extends AModulePart{
 			mainPanel.add(statusTitle,170,210);
 			mainPanel.add(infoButton,120,211);
 			mainPanel.add(ordersPanel,360,13);
-			mainPanel.add(_buyNowImage, 220, 325);
+			mainPanel.add(_paypalForm, 220, 325);
 			mainPanel.add(_askRevisionImage, 220, 385);
 			mainPanel.add(downloadPanelContainer,165,330);
 			mainPanel.add(infos,130,10);
@@ -528,7 +529,7 @@ public class OrderBrowserModulePart extends AModulePart{
 			});
 
 			// setup BuyNow Icon if needed then make it visible.
-			_buyNowImage.addStyleName("labelButton");
+			_buyNowImage.removeStyleName("gwt-Button");
 			_buyNowImage.addStyleName("buyNowButton");
 			_buyNowImage.setVisible(true);
 
@@ -660,6 +661,8 @@ public class OrderBrowserModulePart extends AModulePart{
 		locale.setName(PayPalStrings.PAYPAL_LOCALE_NAME.getString());
 		locale.setValue(PayPalStrings.PAYPAL_LOCALE_NAME.getString());
 		formPlaceHolder.add(locale);
+
+		formPlaceHolder.add(_buyNowImage);
 
 		_paypalForm.add(formPlaceHolder);
 

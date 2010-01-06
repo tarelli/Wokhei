@@ -45,10 +45,6 @@ import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
-import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteHandler;
-import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
-import com.google.gwt.user.client.ui.FormPanel.SubmitHandler;
 
 /**
  * @author matteocantarelli / giovazza
@@ -428,7 +424,6 @@ public class OrderSubmitterModulePart extends AModulePart {
 		_logoDescBox.setWidth("290px");
 		_logoDescBox.setText(Messages.LOGO_DESC_TXTBOX.getString());
 		_logoDescBox.setStyleName("textDescBox");
-		_logoTextBox.addStyleName("fontAR");
 		_logoDescBox.addBlurHandler(new BlurHandler() {
 			public void onBlur(BlurEvent event) {
 				setDescModified(true);
@@ -591,6 +586,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 			}
 
 			public void onSuccess(Long result) {
+				//QUESTI IF SONO LA PORCATA I CALLBACK VANNO ANONYMOUS INLINED NELLA CALL
 				if (result != null && getSubmittedOrder() != null) {
 					getSubmittedOrder().setId(result);
 
@@ -634,7 +630,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 	protected void setMessageWithKillswitchOn(OrderDTO latestOrder) {
 		// sets wait message when killswitch is on depending on the latest order
 
-		if(latestOrder==null || ( latestOrder.getStatus() == Status.BOUGHT || latestOrder.getStatus() == Status.REJECTED))
+		if(latestOrder==null || ( latestOrder.getStatus() == Status.BOUGHT || latestOrder.getStatus() == Status.REJECTED || latestOrder.getStatus() == Status.PENDING))
 		{
 			//set wait label text --> killswitch message
 			_waitLabel.setText(Messages.valueOf("KILLSWITCH_ON_WAITMSG").getString());
@@ -789,17 +785,61 @@ public class OrderSubmitterModulePart extends AModulePart {
 		formPlaceHolder.add(locale);
 
 		// setup submit button
-		Image buyNowButton = new Image();
-		buyNowButton.setStyleName("labelButton");
-		buyNowButton.setUrl(Images.PAYPAL_BUTTON.getImageURL());
+		final Button payTipButton = new Button();
+		payTipButton.removeStyleName("gwt-Button");
+		payTipButton.setStyleName("sendTip");
+		payTipButton.addClickHandler(new ClickHandler(){
 
-		buyNowButton.addClickHandler(new ClickHandler() {
 
-			public void onClick(ClickEvent event) {
-				paypalForm.submit();
+			public void onClick(ClickEvent event) 
+			{
+				payTipButton.setEnabled(false);
+				if(!DEBUG)
+				{
+					((OrderServiceAsync)getService(Service.ORDER_SERVICE)).submitOrder(getSubmittedOrder(), _submitOrderCallback);
+
+
+					//setup submit handlers
+
+					paypalForm.submit();
+
+				}
+				else //DEBUGGING, don't open paypal, not required, change instead the status to INCOMING
+				{
+					getSubmittedOrder().setStatus(Status.INCOMING);
+					((OrderServiceAsync)getService(Service.ORDER_SERVICE)).submitOrder(getSubmittedOrder(), _submitOrderCallback);
+					//					((OrderServiceAsync)getService(Service.ORDER_SERVICE)).setOrderStatus(getSubmittedOrder().getId(), Status.INCOMING, _setOrderStatusCallback);
+				}
 			}
 		});
-		formPlaceHolder.add(buyNowButton);
+		formPlaceHolder.add(payTipButton);
+
+
+		//		paypalForm.addSubmitHandler(new SubmitHandler(){
+		//			public void onSubmit(SubmitEvent event) {
+		//
+		//			}
+		//		});
+		//
+		//		paypalForm.addSubmitCompleteHandler(new SubmitCompleteHandler() {
+		//
+		//			public void onSubmitComplete(SubmitCompleteEvent event)
+		//			{
+		//				//nothing to handle? whoo-yeah! AVP sucks dick
+		//			}
+		//		});
+
+		//		Image buyNowButton = new Image();
+		//		buyNowButton.setStyleName("labelButton");
+		//		buyNowButton.setUrl(Images.PAYPAL_BUTTON.getImageURL());
+		//
+		//		buyNowButton.addClickHandler(new ClickHandler() {
+		//
+		//			public void onClick(ClickEvent event) {
+		//				paypalForm.submit();
+		//			}
+		//		});
+		//		formPlaceHolder.add(buyNowButton);
 
 		paypalForm.add(formPlaceHolder);
 
@@ -886,52 +926,16 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 		});
 
-		final Button payTipButton = new Button();
-		payTipButton.removeStyleName("gwt-Button");
-		payTipButton.setStyleName("sendTip");
-		payTipButton.addClickHandler(new ClickHandler(){
+		FormPanel paypalForm=getPayPalForm();
 
 
-			public void onClick(ClickEvent event) 
-			{
-				payTipButton.setEnabled(false);
-				if(!DEBUG)
-				{
-					((OrderServiceAsync)getService(Service.ORDER_SERVICE)).submitOrder(getSubmittedOrder(), _submitOrderCallback);
-					FormPanel paypalForm=getPayPalForm();
-
-					//setup submit handlers
-					paypalForm.addSubmitHandler(new SubmitHandler(){
-						public void onSubmit(SubmitEvent event) {
-
-						}
-					});
-
-					paypalForm.addSubmitCompleteHandler(new SubmitCompleteHandler() {
-
-						public void onSubmitComplete(SubmitCompleteEvent event)
-						{
-							//nothing to handle? whoo-yeah! AVP sucks dick
-						}
-					});
-					paypalForm.submit();
-
-				}
-				else //DEBUGGING, don't open paypal, not required, change instead the status to INCOMING
-				{
-					getSubmittedOrder().setStatus(Status.INCOMING);
-					((OrderServiceAsync)getService(Service.ORDER_SERVICE)).submitOrder(getSubmittedOrder(), _submitOrderCallback);
-					//					((OrderServiceAsync)getService(Service.ORDER_SERVICE)).setOrderStatus(getSubmittedOrder().getId(), Status.INCOMING, _setOrderStatusCallback);
-				}
-			}
-		});
 
 		tipChangeVPanel.add(increaseTip);
 		tipChangeVPanel.add(decreaseTip);
 
 		tipHPanel.add(tipBox);
 		tipHPanel.add(tipChangeVPanel);
-		tipHPanel.add(payTipButton);
+		tipHPanel.add(paypalForm);
 
 
 
