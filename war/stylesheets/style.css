@@ -709,6 +709,7 @@ select {
 }
 
 .textBox {
+	font-family: "Trebuchet MS", Verdana, Arial;
 	border: 3px #c60089 solid;
 	margin-top: 0px;
 	margin-right: 0px;
@@ -731,6 +732,7 @@ select {
 }
 
 .textDescBox {
+	font-family: "Trebuchet MS", Verdana, Arial;
 	border: 3px #c60089 solid;
 	margin-top: 0px;
 	margin-right: 0px;
