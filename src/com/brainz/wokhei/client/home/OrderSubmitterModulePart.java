@@ -96,6 +96,9 @@ public class OrderSubmitterModulePart extends AModulePart {
 	private final Label _pantoneTextBox = new Label();
 	private final Label _colours[] = new Label[NUM_COLOURS];
 
+	Hidden _amountInfo = new Hidden();
+	Hidden _taxInfo = new Hidden();
+
 	private Colour _selectedColour;
 	private Label _selectedColourButton = null;
 
@@ -736,8 +739,8 @@ public class OrderSubmitterModulePart extends AModulePart {
 		formPlaceHolder.add(cmdInfo);
 		// specify purchase details
 		Hidden itemNameInfo = new Hidden();
-		Hidden amountInfo = new Hidden();
-		Hidden taxInfo = new Hidden();
+		_amountInfo = new Hidden();
+		_taxInfo = new Hidden();
 		Hidden currencyInfo = new Hidden();
 		Hidden notifyInfo = new Hidden();
 		Hidden returnInfo = new Hidden();
@@ -748,15 +751,15 @@ public class OrderSubmitterModulePart extends AModulePart {
 		itemNameInfo.setValue(TransactionType.MICROPAYMENT.getDescription());
 		formPlaceHolder.add(itemNameInfo);
 
-		amountInfo.setName(PayPalStrings.PAYPAL_AMOUNT_NAME.getString());
-		amountInfo.setValue(TransactionType.MICROPAYMENT.getNet(
+		_amountInfo.setName(PayPalStrings.PAYPAL_AMOUNT_NAME.getString());
+		_amountInfo.setValue(TransactionType.MICROPAYMENT.getNet(
 				getSubmittedOrder().getTip()).toString());
-		formPlaceHolder.add(amountInfo);
+		formPlaceHolder.add(_amountInfo);
 
-		taxInfo.setName(PayPalStrings.PAYPAL_TAX_NAME.getString());
-		taxInfo.setValue(TransactionType.MICROPAYMENT.getTax(
+		_taxInfo.setName(PayPalStrings.PAYPAL_TAX_NAME.getString());
+		_taxInfo.setValue(TransactionType.MICROPAYMENT.getTax(
 				getSubmittedOrder().getTip()).toString());
-		formPlaceHolder.add(taxInfo);
+		formPlaceHolder.add(_taxInfo);
 
 		currencyInfo.setName(PayPalStrings.PAYPAL_CURRENCY_NAME.getString());
 		currencyInfo.setValue(PayPalStrings.PAYPAL_CURRENCY_VALUE.getString());
@@ -814,36 +817,20 @@ public class OrderSubmitterModulePart extends AModulePart {
 		});
 		formPlaceHolder.add(payTipButton);
 
-
-		//		paypalForm.addSubmitHandler(new SubmitHandler(){
-		//			public void onSubmit(SubmitEvent event) {
-		//
-		//			}
-		//		});
-		//
-		//		paypalForm.addSubmitCompleteHandler(new SubmitCompleteHandler() {
-		//
-		//			public void onSubmitComplete(SubmitCompleteEvent event)
-		//			{
-		//				//nothing to handle? whoo-yeah! AVP sucks dick
-		//			}
-		//		});
-
-		//		Image buyNowButton = new Image();
-		//		buyNowButton.setStyleName("labelButton");
-		//		buyNowButton.setUrl(Images.PAYPAL_BUTTON.getImageURL());
-		//
-		//		buyNowButton.addClickHandler(new ClickHandler() {
-		//
-		//			public void onClick(ClickEvent event) {
-		//				paypalForm.submit();
-		//			}
-		//		});
-		//		formPlaceHolder.add(buyNowButton);
-
 		paypalForm.add(formPlaceHolder);
 
 		return paypalForm;
+	}
+
+	/**
+	 * 
+	 */
+	private void updateHiddenTip() 
+	{
+		_amountInfo.setValue(TransactionType.MICROPAYMENT.getNet(
+				getSubmittedOrder().getTip()).toString());
+		_taxInfo.setValue(TransactionType.MICROPAYMENT.getTax(
+				getSubmittedOrder().getTip()).toString());
 	}
 
 	/**
@@ -862,6 +849,8 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 	private PopupPanel getMicroPaymentPanel()
 	{
+		FormPanel paypalForm=getPayPalForm();
+
 		//setup submit button
 		final VerticalPanel microPaymentPanel=new VerticalPanel();
 
@@ -901,6 +890,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 				{
 					setWaiterMood(waiterSWFWidget,getSubmittedOrder().getTip(),getSubmittedOrder().getTip()-0.5f);
 					getSubmittedOrder().setTip(getSubmittedOrder().getTip()-0.5f);
+					updateHiddenTip();
 					tipBox.setText(getSubmittedOrder().getTip()+Messages.EUR.getString()); //$NON-NLS-1$
 					applyCufon();
 				}
@@ -918,15 +908,17 @@ public class OrderSubmitterModulePart extends AModulePart {
 				{
 					setWaiterMood(waiterSWFWidget,getSubmittedOrder().getTip(),getSubmittedOrder().getTip()+0.5f);
 					getSubmittedOrder().setTip(getSubmittedOrder().getTip()+0.5f);
+					updateHiddenTip();
 					tipBox.setText(getSubmittedOrder().getTip()+Messages.EUR.getString()); //$NON-NLS-1$
 					applyCufon();
 				}
 			}
 
 
+
 		});
 
-		FormPanel paypalForm=getPayPalForm();
+
 
 
 
