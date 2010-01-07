@@ -150,7 +150,7 @@ public enum Messages {
 	REVIEWED_TITLE("The revision is now ready!"),
 
 	REVIEWED_TEXT(
-	"Thanks to your suggestions a new revision of your logo is now ready. Click on the steamin' wok above to view it and make it yours in just a few clicks for only 98 EUR (VAT Included)! After the payment you'll be able to download rasterized and vectorial versions of your logo!"),
+	"Thanks to your suggestions a new revision of your logo is now ready. Make it yours in just a few clicks for only 98 EUR (VAT Included)! After the payment you'll be able to download rasterized and vectorial versions of your logo!"),
 
 	BOUGHT_TITLE("You purchased this logo"),
 

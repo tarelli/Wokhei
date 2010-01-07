@@ -752,15 +752,12 @@ public class OrderSubmitterModulePart extends AModulePart {
 		formPlaceHolder.add(itemNameInfo);
 
 		_amountInfo.setName(PayPalStrings.PAYPAL_AMOUNT_NAME.getString());
-		_amountInfo.setValue(TransactionType.MICROPAYMENT.getNet(
-				getSubmittedOrder().getTip()).toString());
 		formPlaceHolder.add(_amountInfo);
 
 		_taxInfo.setName(PayPalStrings.PAYPAL_TAX_NAME.getString());
-		_taxInfo.setValue(TransactionType.MICROPAYMENT.getTax(
-				getSubmittedOrder().getTip()).toString());
 		formPlaceHolder.add(_taxInfo);
 
+		//the value for the two fields above will be added later
 		currencyInfo.setName(PayPalStrings.PAYPAL_CURRENCY_NAME.getString());
 		currencyInfo.setValue(PayPalStrings.PAYPAL_CURRENCY_VALUE.getString());
 		formPlaceHolder.add(currencyInfo);
@@ -868,6 +865,8 @@ public class OrderSubmitterModulePart extends AModulePart {
 		{
 			getSubmittedOrder().setTip(new Float(6.5f));
 		}
+
+		updateHiddenTip() ;
 		tipBox.setText(getSubmittedOrder().getTip()+Messages.EUR.getString()); //$NON-NLS-1$
 		tipBox.setWidth("100px"); //$NON-NLS-1$
 		tipBox.setHeight("19px");
