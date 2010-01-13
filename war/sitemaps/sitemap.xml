@@ -1,15 +1,15 @@
 <?xml version='1.0' encoding='utf-8' ?>
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
-        <loc>http://wokhei.com</loc>
+        <loc>http://www.wokhei.com</loc>
     </url>
     <url>
-        <loc>http://wokhei.com/about.html</loc>
+        <loc>http://www.wokhei.com/about.html</loc>
     </url>
     <url>
-        <loc>http://wokhei.com/faq.html</loc>
+        <loc>http://www.wokhei.com/faq.html</loc>
     </url>
     <url>
-        <loc>http://wokhei.com/careers.html</loc>
+        <loc>http://www.wokhei.com/careers.html</loc>
     </url>
 </urlset>
