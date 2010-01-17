@@ -43,7 +43,8 @@ public enum Messages {
 	LOGO_DESC_TXTBOX("Describe here how you want your logo and what it is for!"),
 
 	LOGO_DESC_TXTBOX_REVISION(
-			"Describe here how you would like to change your logo, what you did not like and whatnot. With your help the next iteration will be just perfect!"),
+			"Use this field to request some changes. You can tell us what you don't like about your logo, how would you like it to be instead ... and whatnot! "
+					+ "With your input the next iteration will be just perfect!"),
 
 	LOGO_COLOUR_EG_LBL("Logo primary colour"),
 
@@ -69,7 +70,7 @@ public enum Messages {
 
 	REQUEST_LOGO_LBL("Request a new logo"),
 
-	REVISION_LOGO_LBL("Review your logo"),
+	REVISION_LOGO_LBL("Request some changes"),
 
 	SEND_REQUEST("Send request!"),
 
@@ -93,7 +94,7 @@ public enum Messages {
 			"Your Stir Fried logo is ready! Click on the steamin' wok to view it!"),
 
 	VIEWED_WAITMSG(
-			"How do you like your logo? Add spice by suggesting some changes!"),
+			"How do you like your logo? Add spice to it by suggesting some changes!"),
 
 	REVIEWED_WAITMSG(
 			"Thanks to your suggestions the final version of your logo is now ready!"),
@@ -139,7 +140,7 @@ public enum Messages {
 	VIEWED_TITLE("Your logo is ready!"),
 
 	VIEWED_TEXT(
-			"Request some free changes or buy now for 98 EUR (tip to be deducted from total) and get your logo in high-res and vectorial format!"),
+			"Request some changes for free or buy now for 98 EUR (tip will be deducted from total) and get your logo in high-res and vectorial format!"),
 
 	REVIEWING_TITLE("Taking onboard your changes!"),
 
