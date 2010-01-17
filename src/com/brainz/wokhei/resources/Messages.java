@@ -93,7 +93,7 @@ public enum Messages {
 			"Your Stir Fried logo is ready! Click on the steamin' wok to view it!"),
 
 	VIEWED_WAITMSG(
-			"You can now buy the logo or add spice claiming your free revision!"),
+			"How do you like your logo? Add spice by suggesting some changes!"),
 
 	REVIEWED_WAITMSG(
 			"Thanks to your suggestions the final version of your logo is now ready!"),
@@ -136,10 +136,10 @@ public enum Messages {
 	READY_TEXT(
 			"Your logo is finally ready - check it out clicking on the steamin' wok icon above and flood your senses with Wokhei goodness!"),
 
-	VIEWED_TITLE("It's ready!"),
+	VIEWED_TITLE("Your logo is ready!"),
 
 	VIEWED_TEXT(
-			"Your logo is ready! Buy it now for 98 EUR (VAT Included - tip will be deducted from total) or request some changes for FREE by clicking the 'Make Your Changes' button below, then inserting a new description and hitting 'Submit'!"),
+			"Request some free changes or buy now for 98 EUR (tip to be deducted from total) and get your logo in high-res and vectorial format!"),
 
 	REVIEWING_TITLE("Taking onboard your changes!"),
 
@@ -149,7 +149,7 @@ public enum Messages {
 	REVIEWED_TITLE("The revision is now ready!"),
 
 	REVIEWED_TEXT(
-			"Thanks to your suggestions a revised version of your logo is now ready. Make it yours in a few clicks for only 98 EUR (VAT Included - upfront tip will be deducted from total). After the payment you'll be able to download rasterized and vectorial versions of your logo!"),
+			"Thanks to your suggestions a revised version of your logo is now ready. Make it yours in a few clicks for only 98 EUR (VAT Included - tip will be deducted from total). After the payment you'll be able to download rasterized and vectorial versions of your logo!"),
 
 	BOUGHT_TITLE("You purchased this logo"),
 
