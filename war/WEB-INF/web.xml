@@ -82,6 +82,15 @@
 		<url-pattern>/wokhei/serveSitemap</url-pattern>
 	</servlet-mapping>
 	
+	<servlet>
+		<servlet-name>setForseti</servlet-name>
+		<servlet-class>com.brainz.wokhei.servlet.SetForsetiFirstDescriptionById</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>setForseti</servlet-name>
+		<url-pattern>/wokhei/setForseti</url-pattern>
+	</servlet-mapping>
+	
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>

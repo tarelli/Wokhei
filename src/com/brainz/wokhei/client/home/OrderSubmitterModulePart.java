@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.brainz.wokhei.client.home;
 
@@ -67,10 +67,10 @@ public class OrderSubmitterModulePart extends AModulePart {
 			Messages.LOGO_NAME_HELP_MESSAGE.getString());
 	private final PopupPanel _logoTextHelpPopup = new PopupPanel(true);
 	private final Label _logoTextLabel = new Label(Messages.LOGO_NAME_LBL
-			.getString()); //$NON-NLS-1$
+			.getString());
 	private final HorizontalPanel _logoTextLabelPanel = new HorizontalPanel();
 	private final Label _logoHintLabel = new Label(Messages.LOGO_NAME_EG_LBL
-			.getString()); //$NON-NLS-1$
+			.getString());
 	private final Label _logoErrorLabel = new Label();
 	private final Image _logoOkImage = new Image();
 	private boolean _nameModified = false;
@@ -82,7 +82,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 			Messages.LOGO_COLOUR_HELP_MESSAGE.getString());
 	private final PopupPanel _logoColourHelpPopup = new PopupPanel(true);
 	private final Label _colourLabel = new Label(Messages.LOGO_COLOUR_LBL
-			.getString()); //$NON-NLS-1$
+			.getString());
 	private final HorizontalPanel _colourLabelPanel = new HorizontalPanel();
 	private final Label _colourErrorLabel = new Label();
 	private final Image _colourOkImage = new Image();
@@ -110,17 +110,17 @@ public class OrderSubmitterModulePart extends AModulePart {
 			Messages.LOGO_DESC_HELP_MESSAGE.getString());
 	private final PopupPanel _logoDescHelpPopup = new PopupPanel(true);
 	private final Label _logoDescLabel = new Label(Messages.LOGO_DESC_LBL
-			.getString()); //$NON-NLS-1$
+			.getString());
 	private final HorizontalPanel _logoDescLabelPanel = new HorizontalPanel();
 	private final Label _descHintLabel = new Label(Messages.LOGO_DESC_EG_LBL
-			.getString()); //$NON-NLS-1$
+			.getString());
 	private final Label _descErrorLabel = new Label();
 	private final Image _descOkImage = new Image();
 	private boolean _descModified = false;
 
 	// a pretty self-explanatory submit button
 	private final Button _submitOrderButton = new Button(Messages.SEND_REQUEST
-			.getString()); //$NON-NLS-1$
+			.getString());
 
 	// these panels are the place-holders for the drink images
 	private final VerticalPanel _alternateRootPanelBody = new VerticalPanel();
@@ -132,7 +132,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 	private final AbsolutePanel _alternateSubPanelBodyTile = new AbsolutePanel();
 	private final AbsolutePanel _alternateSubPanelFooter = new AbsolutePanel();
 
-	private final Label _waitLabel = new Label(); //$NON-NLS-1$
+	private final Label _waitLabel = new Label();
 
 	private final HorizontalPanel _logoTextBoxPanel = new HorizontalPanel();
 
@@ -488,7 +488,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 		_logoTextLabel.addStyleName("fontAR");
 		_logoHintLabel.setStyleName("hintLabel"); //$NON-NLS-1$
 
-		_logoTextBox.setText(Messages.LOGO_NAME_TXTBOX.getString()); //$NON-NLS-1$
+		_logoTextBox.setText(Messages.LOGO_NAME_TXTBOX.getString());
 		_logoTextBox.setWidth("290px"); //$NON-NLS-1$
 		_logoTextBox.setStyleName("textBox"); //$NON-NLS-1$
 		_logoTextBox.addStyleName("fontAR");
@@ -502,7 +502,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 		_logoTextBox.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				if (_logoTextBox.getText().equals(
-						Messages.LOGO_NAME_TXTBOX.getString())) //$NON-NLS-1$
+						Messages.LOGO_NAME_TXTBOX.getString()))
 				{
 					_logoTextBox.selectAll();
 				}
@@ -590,7 +590,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 			public void onSuccess(Long result) {
 				//QUESTI IF SONO LA PORCATA I CALLBACK VANNO ANONYMOUS INLINED NELLA CALL
-				if (result != null && getSubmittedOrder() != null) {
+				if ((result != null) && (getSubmittedOrder() != null)) {
 					getSubmittedOrder().setId(result);
 
 					_submitOrderButton.setEnabled(true);
@@ -602,11 +602,11 @@ public class OrderSubmitterModulePart extends AModulePart {
 					}
 					else
 					{
-						if (_micropaymentPopup == null
+						if ((_micropaymentPopup == null)
 								|| !_micropaymentPopup.isShowing()) {
 							//the micropayment popup panel is not open
 							_micropaymentPopup = getMicroPaymentPanel();
-							_micropaymentPopup.center(); 
+							_micropaymentPopup.center();
 							_micropaymentPopup.show();
 							applyCufon();
 						}
@@ -633,7 +633,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 	protected void setMessageWithKillswitchOn(OrderDTO latestOrder) {
 		// sets wait message when killswitch is on depending on the latest order
 
-		if(latestOrder==null || ( latestOrder.getStatus() == Status.BOUGHT || latestOrder.getStatus() == Status.REJECTED || latestOrder.getStatus() == Status.PENDING))
+		if((latestOrder==null) || ( (latestOrder.getStatus() == Status.BOUGHT) || (latestOrder.getStatus() == Status.REJECTED) || (latestOrder.getStatus() == Status.PENDING)))
 		{
 			//set wait label text --> killswitch message
 			_waitLabel.setText(Messages.valueOf("KILLSWITCH_ON_WAITMSG").getString());
@@ -663,7 +663,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 			_coloursHandler[i]=_colours[i].addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
 					//no possible to change the colour if there is a request ongoing
-					if(_submittedOrder==null || !_submittedOrder.isReviewRequestOngoing())
+					if((_submittedOrder==null) || !_submittedOrder.isReviewRequestOngoing())
 					{
 						_pantoneTextBox.setText(Colour.values()[index].getName());
 						if (_selectedColourButton != null) {
@@ -681,12 +681,13 @@ public class OrderSubmitterModulePart extends AModulePart {
 				}
 			});
 
-			if (i < 8)
+			if (i < 8) {
 				_firstRow.add(_colours[i]);
-			else if (i < 16)
+			} else if (i < 16) {
 				_secondRow.add(_colours[i]);
-			else if (i < NUM_COLOURS)
+			} else if (i < NUM_COLOURS) {
 				_thirdRow.add(_colours[i]);
+			}
 		}
 
 		// Lucky Number Seven
@@ -791,7 +792,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 		payTipButton.addClickHandler(new ClickHandler(){
 
 
-			public void onClick(ClickEvent event) 
+			public void onClick(ClickEvent event)
 			{
 				payTipButton.setEnabled(false);
 				if(!DEBUG)
@@ -820,9 +821,9 @@ public class OrderSubmitterModulePart extends AModulePart {
 	}
 
 	/**
-	 * 
+	 *
 	 */
-	private void updateHiddenTip() 
+	private void updateHiddenTip()
 	{
 		_amountInfo.setValue(TransactionType.MICROPAYMENT.getNet(
 				getSubmittedOrder().getTip()).toString());
@@ -867,7 +868,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 		}
 
 		updateHiddenTip() ;
-		tipBox.setText(getSubmittedOrder().getTip()+Messages.EUR.getString()); //$NON-NLS-1$
+		tipBox.setText(getSubmittedOrder().getTip()+Messages.EUR.getString());
 		tipBox.setWidth("100px"); //$NON-NLS-1$
 		tipBox.setHeight("19px");
 		tipBox.setStyleName("tipLabel"); //$NON-NLS-1$
@@ -884,13 +885,13 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				//it's already the minimum value 
+				//it's already the minimum value
 				if(!getSubmittedOrder().getTip().equals(TransactionType.MICROPAYMENT.getValue()))
 				{
 					setWaiterMood(waiterSWFWidget,getSubmittedOrder().getTip(),getSubmittedOrder().getTip()-0.5f);
 					getSubmittedOrder().setTip(getSubmittedOrder().getTip()-0.5f);
 					updateHiddenTip();
-					tipBox.setText(getSubmittedOrder().getTip()+Messages.EUR.getString()); //$NON-NLS-1$
+					tipBox.setText(getSubmittedOrder().getTip()+Messages.EUR.getString());
 					applyCufon();
 				}
 			}
@@ -908,7 +909,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 					setWaiterMood(waiterSWFWidget,getSubmittedOrder().getTip(),getSubmittedOrder().getTip()+0.5f);
 					getSubmittedOrder().setTip(getSubmittedOrder().getTip()+0.5f);
 					updateHiddenTip();
-					tipBox.setText(getSubmittedOrder().getTip()+Messages.EUR.getString()); //$NON-NLS-1$
+					tipBox.setText(getSubmittedOrder().getTip()+Messages.EUR.getString());
 					applyCufon();
 				}
 			}
@@ -936,7 +937,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 		microPaymentPanel.add(tipHPanel);
 		microPaymentPanel.add(tipInstructions);
 
-		PopupPanel micropaymentPopup= new PopupPanel(true); 
+		PopupPanel micropaymentPopup= new PopupPanel(true);
 		micropaymentPopup.setStyleName("microPaymentPopup");
 		micropaymentPopup.setWidget(microPaymentPanel);
 		micropaymentPopup.setWidth("350px");
@@ -988,7 +989,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 	 * @return
 	 */
 	private SWFWidget getWaiterSWFWidget(String imageURL) {
-		if(_micropaymentPopup!=null && _micropaymentPopup.isShowing())
+		if((_micropaymentPopup!=null) && _micropaymentPopup.isShowing())
 		{
 			return _waiterSWFWidget;
 		}
@@ -998,19 +999,19 @@ public class OrderSubmitterModulePart extends AModulePart {
 			_waiterSWFWidget.setWidth("300px");
 			_waiterSWFWidget.setHeight("300px");
 			_waiterSWFWidget.setVisible(true);
-			return _waiterSWFWidget; 
+			return _waiterSWFWidget;
 		}
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	protected void submitOrder() {
 		setNameModified(true);
 		setDescModified(true);
 		setColourModified(true);
 		if (checkErrors()) {
-			if(getSubmittedOrder()!=null && getSubmittedOrder().getRevisionCounter()==0)
+			if((getSubmittedOrder()!=null) && (getSubmittedOrder().getRevisionCounter()==0))
 			{
 				//stiamo inviando l'ordine la prima volta, si aprira il pannellino una volta ricevuta la risposta
 				//se la connessione ŽÊlenta ci potrebbe volere un po, nel frattempo disabilito il buttone
@@ -1061,7 +1062,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private OrderDTO getSubmittedOrder() {
 		if (_submittedOrder == null) {
@@ -1167,7 +1168,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 	 * @param error
 	 */
 
-	protected void updateAlternatePanelMessage(OrderDTO order, Boolean error) 
+	protected void updateAlternatePanelMessage(OrderDTO order, Boolean error)
 	{
 		if(error!=null)
 		{
@@ -1175,12 +1176,12 @@ public class OrderSubmitterModulePart extends AModulePart {
 			//			{
 			if(order.hasCompletedReview())
 			{
-				this._waitLabel.setText(Messages.valueOf("RE"+order.getStatus().toString()+"_WAITMSG").getString()); //$NON-NLS-1$
+				_waitLabel.setText(Messages.valueOf("RE"+order.getStatus().toString()+"_WAITMSG").getString()); //$NON-NLS-1$
 
 			}
 			else
 			{
-				this._waitLabel.setText(Messages.valueOf(order.getStatus().toString()+"_WAITMSG").getString()); //$NON-NLS-1$
+				_waitLabel.setText(Messages.valueOf(order.getStatus().toString()+"_WAITMSG").getString()); //$NON-NLS-1$
 			}
 		}
 		//			}
@@ -1189,9 +1190,9 @@ public class OrderSubmitterModulePart extends AModulePart {
 		//				this._waitLabel.setText(Messages.VIEWED_WAITMSG.getString());
 		//			}
 
-		else 
+		else
 		{
-			this._waitLabel.setText(Messages.ERROR_WAITMSG.getString());
+			_waitLabel.setText(Messages.ERROR_WAITMSG.getString());
 		}
 
 		applyCufon();
@@ -1207,7 +1208,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	protected void showHidePanels() {
 		if (_mainPanel.isVisible()) {
@@ -1226,12 +1227,11 @@ public class OrderSubmitterModulePart extends AModulePart {
 	 * @param result
 	 */
 
-	protected void setShowHideStateByLatestOrder(OrderDTO result) 
+	protected void setShowHideStateByLatestOrder(OrderDTO result)
 	{
-		if(result==null || (result.getStatus() == Status.BOUGHT || result.getStatus() == Status.REJECTED|| result
-				.getStatus() == Status.PENDING || result.isReviewRequestOngoing()))
-		{
-			_submittedOrder=result;
+		if((result==null) || ((result.getStatus() == Status.BOUGHT) || (result.getStatus() == Status.REJECTED)|| (result
+				.getStatus() == Status.PENDING) || result.isReviewRequestOngoing()))
+ {
 			_mainPanel.setVisible(true);
 			_requestLabel.setText(Messages.REQUEST_LOGO_LBL.getString());
 
@@ -1242,6 +1242,10 @@ public class OrderSubmitterModulePart extends AModulePart {
 			if(result!=null)
 			{
 				if (result.getStatus().equals(Status.PENDING)) {
+					// only if pending - this is the order that's going to be
+					// submitted and if pending
+					_submittedOrder = result;
+
 					// load in the submitter the data from the pending request
 					_logoDescBox.setText(result.getDescriptions()[0]);
 					_logoTextBox.setText(result.getText());
@@ -1290,7 +1294,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 	//
 	//	/**
-	//	 * 
+	//	 *
 	//	 */
 	//	private void disableColours()
 	//	{
@@ -1299,7 +1303,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 	//			{
 	//				_coloursHandler[i].removeHandler();
 	//			}
-	//		}		
+	//		}
 	//	}
 
 	private void hideMainPanelShowAlternate(OrderDTO result)

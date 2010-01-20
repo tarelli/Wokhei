@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.brainz.wokhei.client.home;
 
@@ -78,7 +78,7 @@ public class OrderBrowserModulePart extends AModulePart{
 	private final Label colourSpace = new Label();
 	private final SlideShow slideShow = new SlideShow();
 
-	// Will load-up the panel with license + paypal 
+	// Will load-up the panel with license + paypal
 	private final Button _buyNowImage = new Button();
 	private final FormPanel _paypalForm = new FormPanel("");
 
@@ -89,7 +89,7 @@ public class OrderBrowserModulePart extends AModulePart{
 	private final Label _askRevisionImage= new Label();
 
 	@Override
-	public void loadModulePart() 
+	public void loadModulePart()
 	{
 		if(RootPanel.get("ordersBrowser")!=null)
 		{
@@ -171,7 +171,7 @@ public class OrderBrowserModulePart extends AModulePart{
 
 			ordersPanel.add(_descriptionsContainer);
 			ordersPanel.add(colourPanel);
-			ordersPanel.add(orderDateLabel);			
+			ordersPanel.add(orderDateLabel);
 
 			mainPanel.add(orderImage, 154, 0);
 			mainPanel.add(previousOrderButton,370,170);
@@ -194,7 +194,7 @@ public class OrderBrowserModulePart extends AModulePart{
 
 
 
-	private void hookUpCallbacks() 
+	private void hookUpCallbacks()
 	{
 		_setOrderStatusCallback = new AsyncCallback<Long>() {
 
@@ -223,13 +223,13 @@ public class OrderBrowserModulePart extends AModulePart{
 
 			}
 
-			public void onSuccess(List<OrderDTO> result) {				
+			public void onSuccess(List<OrderDTO> result) {
 
 				_orders=result;
 				List<OrderDTO> pendingOrders=new ArrayList<OrderDTO>();
 
 				//remove all the pending orders from the received ones
-				//if needed the pendingorders could become global				
+				//if needed the pendingorders could become global
 				for(OrderDTO o:_orders)
 				{
 					if(o.getStatus().equals(Status.PENDING))
@@ -249,14 +249,14 @@ public class OrderBrowserModulePart extends AModulePart{
 	private void setupLightBox() {
 		orderImage.addClickHandler(new ClickHandler(){
 
-			public void onClick(ClickEvent event) 
-			{	
+			public void onClick(ClickEvent event)
+			{
 				switch (_currentOrder.getStatus())
 				{
 				case READY:
 					if(_setOrderStatusCallback!=null)
 					{
-						((OrderServiceAsync) getService(Service.ORDER_SERVICE)).setOrderStatus(_currentOrder.getId(),Status.VIEWED, _setOrderStatusCallback);						
+						((OrderServiceAsync) getService(Service.ORDER_SERVICE)).setOrderStatus(_currentOrder.getId(),Status.VIEWED, _setOrderStatusCallback);
 					}
 					break;
 				case VIEWED:
@@ -274,52 +274,53 @@ public class OrderBrowserModulePart extends AModulePart{
 	/**
 	 * @return
 	 */
-	private Widget getPanel() 
+	private Widget getPanel()
 	{
 		return mainPanel;
 	}
 
 	/**
-	 * 
+	 *
 	 */
-	protected void getOrdersForCurrentCustomer() 
+	protected void getOrdersForCurrentCustomer()
 	{
 		((OrderServiceAsync) getService(Service.ORDER_SERVICE)).getOrdersForCurrentUser(_getOrdersCallback);
 	}
 
 	/**
-	 * 
+	 *
 	 */
-	protected void getNextOrder() 
+	protected void getNextOrder()
 	{
 		_currentOrder=OrderDTOUtils.getNextOrder(_orders,_currentOrder);
 	}
 
 	/**
-	 * 
+	 *
 	 */
-	protected void getPreviousOrder() 
+	protected void getPreviousOrder()
 	{
 		_currentOrder=OrderDTOUtils.getPreviousOrder(_orders,_currentOrder);
 	}
 
 	/**
-	 * 
+	 *
 	 */
-	public void getLastOrder() 
+	public void getLastOrder()
 	{
 		_currentOrder=OrderDTOUtils.getMostRecentOrder(_orders);
 	}
 
 
 	/**
-	 * 
+	 *
 	 */
 	private void updatePanel() {
 		//buy now false by default
 		_buyNowImage.setVisible(false);
 		_askRevisionImage.setVisible(false);
-		notifyChanges(_currentOrder);
+
+		// TODO: notifyChanges(_currentOrder);
 
 
 		if(downloadPanel!=null)
@@ -383,12 +384,12 @@ public class OrderBrowserModulePart extends AModulePart{
 				break;
 			case VIEWED:
 				orderImage.addStyleName("labelButton");
-				orderImage.setUrl(Images.valueOf(_currentOrder.getStatus().toString()).getImageURL()); 
+				orderImage.setUrl(Images.valueOf(_currentOrder.getStatus().toString()).getImageURL());
 				setupBuyNowStuff();
 				break;
 			case BOUGHT:
 				orderImage.addStyleName("labelButton");
-				orderImage.setUrl(Images.valueOf(_currentOrder.getStatus().toString()).getImageURL()); 
+				orderImage.setUrl(Images.valueOf(_currentOrder.getStatus().toString()).getImageURL());
 				setupDownloadStuff(_currentOrder.getStatus());
 				break;
 			}
@@ -454,22 +455,22 @@ public class OrderBrowserModulePart extends AModulePart{
 
 	private void setUpDownArrowsVisibility(List<String> descriptionsList) {
 
-		if(_currentDescIndex > 0 && _currentDescIndex < descriptionsList.size()-1)
+		if((_currentDescIndex > 0) && (_currentDescIndex < descriptionsList.size()-1))
 		{
 			_upArrow.setVisible(true);
 			_downArrow.setVisible(true);
 		}
-		else if(_currentDescIndex == 0 && _currentDescIndex < descriptionsList.size()-1)
+		else if((_currentDescIndex == 0) && (_currentDescIndex < descriptionsList.size()-1))
 		{
 			_upArrow.setVisible(true);
 			_downArrow.setVisible(false);
 		}
-		else if(_currentDescIndex > 0 && _currentDescIndex == descriptionsList.size()-1)
+		else if((_currentDescIndex > 0) && (_currentDescIndex == descriptionsList.size()-1))
 		{
 			_upArrow.setVisible(false);
 			_downArrow.setVisible(true);
 		}
-		else if(_currentDescIndex == 0 && _currentDescIndex == descriptionsList.size()-1)
+		else if((_currentDescIndex == 0) && (_currentDescIndex == descriptionsList.size()-1))
 		{
 			_upArrow.setVisible(false);
 			_downArrow.setVisible(false);
@@ -514,15 +515,15 @@ public class OrderBrowserModulePart extends AModulePart{
 		if(!_buyNowLoaded)
 		{
 			_buyNowLoaded=true;
-			setupPayPalForm(); 
+			setupPayPalForm();
 
 			// setup BuyNow image click handler
 
 
 			_buyNowImage.addClickHandler(new ClickHandler(){
 
-				public void onClick(ClickEvent event) 
-				{	
+				public void onClick(ClickEvent event)
+				{
 					_paypalForm.submit();
 				}
 
@@ -539,8 +540,8 @@ public class OrderBrowserModulePart extends AModulePart{
 
 				_askRevisionImage.addClickHandler(new ClickHandler(){
 
-					public void onClick(ClickEvent event) 
-					{	
+					public void onClick(ClickEvent event)
+					{
 						OrderDTO orderCopy=new OrderDTO(_currentOrder);
 						orderCopy.setRevisionCounter(orderCopy.getRevisionCounter()+1);
 						notifyChanges(orderCopy);
@@ -579,8 +580,8 @@ public class OrderBrowserModulePart extends AModulePart{
 		}
 		else
 		{
-			_paypalForm.setAction(PayPalStrings.PAYPAL_ACTION.getString());	
-		}	
+			_paypalForm.setAction(PayPalStrings.PAYPAL_ACTION.getString());
+		}
 
 		_paypalForm.setEncoding(FormPanel.ENCODING_MULTIPART);
 		_paypalForm.setMethod(FormPanel.METHOD_POST);
@@ -598,8 +599,8 @@ public class OrderBrowserModulePart extends AModulePart{
 		}
 		else
 		{
-			sellerInfo.setValue(PayPalStrings.PAYPAL_BUSINESS_VALUE.getString());	
-		}		
+			sellerInfo.setValue(PayPalStrings.PAYPAL_BUSINESS_VALUE.getString());
+		}
 
 		formPlaceHolder.add(sellerInfo);
 		//specify buy now button
@@ -679,7 +680,7 @@ public class OrderBrowserModulePart extends AModulePart{
 	/**
 	 * @param show
 	 */
-	private void alwaysInfos(boolean show) 
+	private void alwaysInfos(boolean show)
 	{
 		if(show==infoButton.isVisible())
 		{
@@ -692,7 +693,7 @@ public class OrderBrowserModulePart extends AModulePart{
 	 * @see com.brainz.wokhei.client.AModulePart#updateModulePart()
 	 */
 	@Override
-	public void updateModulePart(OrderDTO selection) 
+	public void updateModulePart(OrderDTO selection)
 	{
 		getOrdersForCurrentCustomer();
 	}

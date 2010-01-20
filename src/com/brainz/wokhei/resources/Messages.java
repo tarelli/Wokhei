@@ -105,7 +105,7 @@ public enum Messages {
 	KILLSWITCH_ON_WAITMSG(
 			"Sorry, we are fully booked at the moment, come back later!"),
 
-	COPYRIGHT("Copyright\u00a9 2009 WOKHEI"),
+	COPYRIGHT("Copyright\u00a9 2010 WOKHEI"),
 
 	INCOMING_TITLE("Pending request..."),
 
@@ -150,7 +150,7 @@ public enum Messages {
 	REVIEWED_TITLE("The revision is now ready!"),
 
 	REVIEWED_TEXT(
-			"Thanks to your suggestions a revised version of your logo is now ready. Make it yours in a few clicks for only 98 EUR (VAT Included - tip will be deducted from total). After the payment you'll be able to download rasterized and vectorial versions of your logo!"),
+			"Thanks to your suggestions the final version of your logo is now ready. Make it yours for only 98 EUR (tip will be deducted from total). After the payment you'll be able to download rasterized and vectorial versions of your logo!"),
 
 	BOUGHT_TITLE("You purchased this logo"),
 
@@ -253,7 +253,7 @@ public enum Messages {
 
 	LOGIN_TIP("Click HERE if you don't have a Google Account"),
 
-	INDEX_COPYRIGHT("\u00a9 2009 Wokhei"),
+	INDEX_COPYRIGHT("\u00a9 2010 Wokhei"),
 
 	// ABOUT --> moved to HTML
 
