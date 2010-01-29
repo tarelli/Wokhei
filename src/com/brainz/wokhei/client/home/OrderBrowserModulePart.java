@@ -534,28 +534,24 @@ public class OrderBrowserModulePart extends AModulePart{
 			_buyNowImage.addStyleName("buyNowButton");
 			_buyNowImage.setVisible(true);
 
-			//if it has completed a review don't show this button (only one allowed for Step2!)
-			if(!_currentOrder.hasCompletedReview())
-			{
+			_askRevisionImage.addClickHandler(new ClickHandler(){
 
-				_askRevisionImage.addClickHandler(new ClickHandler(){
+				public void onClick(ClickEvent event)
+				{
+					OrderDTO orderCopy=new OrderDTO(_currentOrder);
+					orderCopy.setRevisionCounter(orderCopy.getRevisionCounter()+1);
+					notifyChanges(orderCopy);
+					_buyNowImage.setVisible(false);
+					_askRevisionImage.setVisible(false);
+				}
 
-					public void onClick(ClickEvent event)
-					{
-						OrderDTO orderCopy=new OrderDTO(_currentOrder);
-						orderCopy.setRevisionCounter(orderCopy.getRevisionCounter()+1);
-						notifyChanges(orderCopy);
-						_buyNowImage.setVisible(false);
-						_askRevisionImage.setVisible(false);
-					}
+			});
 
-				});
-
-				// setup BuyNow Icon if needed then make it visible.
-				_askRevisionImage.addStyleName("labelButton");
-				_askRevisionImage.addStyleName("revisionButton");
-				_askRevisionImage.setVisible(true);
-			}
+			// setup BuyNow Icon if needed then make it visible.
+			_askRevisionImage.addStyleName("labelButton");
+			_askRevisionImage.addStyleName("revisionButton");
+			_askRevisionImage.setVisible(true);
+			//			}
 
 
 		}

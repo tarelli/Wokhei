@@ -21,9 +21,14 @@ public class OrderUtils {
 	 */
 	public static OrderDTO getOrderDTO(Order order) 
 	{
+		//descriptions
 		String[] strArr = new String[order.getDescriptions().size()];
 		System.arraycopy(order.getDescriptions().toArray(), 0, strArr, 0, order.getDescriptions().size());
-		return new OrderDTO(order.getId(),order.getText(),strArr,order.getDate(),order.getAcceptedDate(),order.getReviewingDate(),order.getStatus(),order.getColour(), order.getCustomer().getEmail(),order.getProgressive(),order.getRevisionCounter(), order.getTip());
+		//revisionTip
+		Float[] floatArr = new Float[order.getRevisionTip().size()];
+		System.arraycopy(order.getRevisionTip().toArray(), 0, floatArr, 0, order.getRevisionTip().size());
+
+		return new OrderDTO(order.getId(),order.getText(),strArr,order.getDate(),order.getAcceptedDate(),order.getReviewingDate(),order.getStatus(),order.getColour(), order.getCustomer().getEmail(),order.getProgressive(),order.getRevisionCounter(), order.getTip(), floatArr);
 	}
 
 	/**

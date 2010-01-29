@@ -52,7 +52,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class OrderSubmitterModulePart extends AModulePart {
 	private static final int NUM_COLOURS = 24;
 
-	private static final boolean DEBUG = false; //set to true to disable the micropayment mandatory transaction
+	private static final boolean DEBUG = true; //set to true to disable the micropayment mandatory transaction
 
 	// root panel to host main and alternate panel
 	private final VerticalPanel _rootPanel = new VerticalPanel();
@@ -595,8 +595,9 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 					_submitOrderButton.setEnabled(true);
 					_submitOrderButton.setText(Messages.SEND_REQUEST.getString());
-					if(getSubmittedOrder().getRevisionCounter()>0)
+					if(getSubmittedOrder().getRevisionCounter()==1)
 					{
+						//non pannellino la prima la paga il pazza
 						hideMainPanelShowAlternate(getSubmittedOrder());
 						notifyChanges(getSubmittedOrder());
 					}
@@ -616,14 +617,6 @@ public class OrderSubmitterModulePart extends AModulePart {
 							hideMainPanelShowAlternate(getSubmittedOrder());
 						}
 					}
-					// QUESTO DOVRA ESSERE FATTO NELLA SERVLET QUANDO ARRIVA IL
-					// PAGAMENTO..forse
-					// updateAlternatePanelMessage(_submittedOrder, result);
-					//
-					// _mainPanel.setVisible(false);
-					//
-					// showHidePanels();
-					// notifyChanges();
 				}
 			}
 		};
@@ -798,10 +791,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 				if(!DEBUG)
 				{
 					((OrderServiceAsync)getService(Service.ORDER_SERVICE)).submitOrder(getSubmittedOrder(), _submitOrderCallback);
-
-
 					//setup submit handlers
-
 					paypalForm.submit();
 
 				}
@@ -825,10 +815,22 @@ public class OrderSubmitterModulePart extends AModulePart {
 	 */
 	private void updateHiddenTip()
 	{
-		_amountInfo.setValue(TransactionType.MICROPAYMENT.getNet(
-				getSubmittedOrder().getTip()).toString());
-		_taxInfo.setValue(TransactionType.MICROPAYMENT.getTax(
-				getSubmittedOrder().getTip()).toString());
+		if(getSubmittedOrder().getRevisionCounter()==0)
+		{
+			//si sta facendo il paypal form per quando si ordina la prima volta
+			_amountInfo.setValue(TransactionType.MICROPAYMENT.getNet(
+					getSubmittedOrder().getTip()).toString());
+			_taxInfo.setValue(TransactionType.MICROPAYMENT.getTax(
+					getSubmittedOrder().getTip()).toString());
+		}
+		else
+		{
+			//pay pal form per le revisioni
+			_amountInfo.setValue(TransactionType.REVISION.getNet(
+					getSubmittedOrder().getRevisionTip()[getSubmittedOrder().getRevisionCounter()-1]).toString());
+			_taxInfo.setValue(TransactionType.REVISION.getTax(
+					getSubmittedOrder().getRevisionTip()[getSubmittedOrder().getRevisionCounter()-1]).toString());	
+		}
 	}
 
 	/**
@@ -862,9 +864,31 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 		final Label tipBox=new Label();
 
-		if(getSubmittedOrder().getTip()==null)
+
+		if(getSubmittedOrder().getRevisionCounter()==0)
 		{
-			getSubmittedOrder().setTip(new Float(6.5f));
+			if(getSubmittedOrder().getTip()==null)
+			{
+				getSubmittedOrder().setTip(new Float(6.5f)); //default tip
+			}
+		}
+		else
+		{
+			if(getSubmittedOrder().getRevisionTip().length < (getSubmittedOrder().getRevisionCounter()-1) )
+			{
+				if(getSubmittedOrder().getRevisionTip()==null)
+				{
+
+					Float[] augRev = new Float[getSubmittedOrder().getRevisionTip().length+1];
+					int i=0;
+					for(Float revTip:getSubmittedOrder().getRevisionTip())
+					{
+						augRev[i++]=revTip;
+					}
+					augRev[augRev.length]=new Float(10.5f);
+					getSubmittedOrder().setRevisionTip(augRev);
+				}
+			}
 		}
 
 		updateHiddenTip() ;
@@ -886,7 +910,16 @@ public class OrderSubmitterModulePart extends AModulePart {
 			@Override
 			public void onClick(ClickEvent event) {
 				//it's already the minimum value
-				if(!getSubmittedOrder().getTip().equals(TransactionType.MICROPAYMENT.getValue()))
+				Float min;
+				if(getSubmittedOrder().getRevisionCounter()==0)
+				{
+					min=TransactionType.MICROPAYMENT.getValue();
+				}
+				else
+				{
+					min=TransactionType.REVISION.getValue();
+				}
+				if(!getSubmittedOrder().getTip().equals(min))
 				{
 					setWaiterMood(waiterSWFWidget,getSubmittedOrder().getTip(),getSubmittedOrder().getTip()-0.5f);
 					getSubmittedOrder().setTip(getSubmittedOrder().getTip()-0.5f);
@@ -894,6 +927,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 					tipBox.setText(getSubmittedOrder().getTip()+Messages.EUR.getString());
 					applyCufon();
 				}
+
 			}
 		});
 
@@ -904,7 +938,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				if(!getSubmittedOrder().getTip().equals(98f))
+				if(!getSubmittedOrder().getTip().equals(TransactionType.BUYING_LOGO.getValue()))
 				{
 					setWaiterMood(waiterSWFWidget,getSubmittedOrder().getTip(),getSubmittedOrder().getTip()+0.5f);
 					getSubmittedOrder().setTip(getSubmittedOrder().getTip()+0.5f);
@@ -949,6 +983,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 		return micropaymentPopup;
 
 	}
+
 
 	/**
 	 * @param waiterSWFWidget
@@ -1050,13 +1085,11 @@ public class OrderSubmitterModulePart extends AModulePart {
 					.setOrderStatus(getSubmittedOrder().getId(), Status.REVIEWING, new AsyncCallback<Long>() {
 
 						public void onSuccess(Long result) {
-							//setViewByLatestOrder(); //WHY??
 							getSubmittedOrder().setStatus(Status.REVIEWING);
 							notifyChanges(_submittedOrder);
 						}
 
 						public void onFailure(Throwable caught) {
-							// TODO give feedback to the user that something went wrong!
 						}
 					});
 				}
@@ -1360,15 +1393,11 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 	@Override
 	public void updateModulePart(OrderDTO selection) {
-		//		if(selection.getRevisionCounter()>0)
-		//		{
 		if(selection!=null)
 		{
 			_submittedOrder=selection;
 			setShowHideStateByLatestOrder(_submittedOrder);
 		}
-		//		}
-
 	}
 
 	private boolean isNameModified() {
