@@ -18,7 +18,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 public class Order implements IsSerializable{
 
 
-	@PrimaryKey
+	@PrimaryKey 
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
 	private Long id; 
 

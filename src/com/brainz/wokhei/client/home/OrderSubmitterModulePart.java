@@ -931,11 +931,16 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 
 
+		Label otherInstructions=new Label();
+		otherInstructions.setText(Messages.TIP_INSTRUCTIONS.getString());
+		otherInstructions.setStyleName("otherTipInstructions");
+
 		microPaymentPanel.setSpacing(10);
 		microPaymentPanel.setHorizontalAlignment(VerticalPanel.ALIGN_CENTER);
 		microPaymentPanel.add(waiterSWFWidget);
 		microPaymentPanel.add(tipHPanel);
 		microPaymentPanel.add(tipInstructions);
+		microPaymentPanel.add(otherInstructions);
 
 		PopupPanel micropaymentPopup= new PopupPanel(true);
 		micropaymentPopup.setStyleName("microPaymentPopup");
@@ -1231,7 +1236,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 	{
 		if((result==null) || ((result.getStatus() == Status.BOUGHT) || (result.getStatus() == Status.REJECTED)|| (result
 				.getStatus() == Status.PENDING) || result.isReviewRequestOngoing()))
- {
+		{
 			_mainPanel.setVisible(true);
 			_requestLabel.setText(Messages.REQUEST_LOGO_LBL.getString());
 

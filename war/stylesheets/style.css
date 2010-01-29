@@ -393,6 +393,13 @@ select {
 	color: black;
 }
 
+.otherTipInstructions {
+	color: #bf007e;
+	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	text-align: justify;
+}
+
 .licenseLink {
 	color: #bf007e;
 	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
