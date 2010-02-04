@@ -303,7 +303,7 @@ public class OrderDTO implements Serializable{
 	 * @param descriptions
 	 */
 	public void setRevisionTip(Float[] revisionTip) 
-	{
+	{ 
 		_revisionTip=revisionTip;		
 	}
 }
