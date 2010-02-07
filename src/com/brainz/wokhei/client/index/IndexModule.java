@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.brainz.wokhei.client.index;
 
@@ -8,7 +8,6 @@ import com.brainz.wokhei.client.common.FooterModulePart;
 import com.brainz.wokhei.client.common.LoginInfo;
 import com.brainz.wokhei.client.common.LoginService;
 import com.brainz.wokhei.client.common.LoginServiceAsync;
-import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -18,13 +17,13 @@ import com.google.gwt.user.client.ui.RootPanel;
  * @author matteocantarelli
  *
  */
-public class IndexModule extends AModule implements EntryPoint {
+public class IndexModule extends AModule {
 
 
 	/* (non-Javadoc)
 	 * @see com.google.gwt.core.client.EntryPoint#onModuleLoad()
 	 */
-	public void onModuleLoad() 
+	public void onModuleLoad()
 	{
 		if(RootPanel.get("index")!=null)
 		{
@@ -33,18 +32,19 @@ public class IndexModule extends AModule implements EntryPoint {
 	}
 
 	@Override
-	protected int getNumRequests() 
+	protected int getNumRequests()
 	{
 		return 1;
 	}
 
 	@Override
-	protected void initModule() 
+	protected void initModule()
 	{
 		// Check login status using login service
 		LoginServiceAsync loginService = GWT.create(LoginService.class);
 		loginService.login(GWT.getHostPageBaseURL(), new AsyncCallback<LoginInfo>() {
 			public void onFailure(Throwable error) {
+
 			}
 
 			public void onSuccess(LoginInfo result) {
@@ -59,7 +59,7 @@ public class IndexModule extends AModule implements EntryPoint {
 	 * @see com.brainz.wokhei.client.common.AModule#loadModule()
 	 */
 	@Override
-	public void loadModule() 
+	public void loadModule()
 	{
 		if(getLoginInfo().isLoggedIn()) {
 			//redirect to home

@@ -42,8 +42,7 @@ public enum Messages {
 
 	LOGO_DESC_TXTBOX("Describe here how you want your logo and what it is for!"),
 
-	LOGO_DESC_TXTBOX_REVISION(
-			"Use this field to request some changes. You can tell us what you don't like about your logo, how would you like it to be instead ... and whatnot! "
+	LOGO_DESC_TXTBOX_REVISION("Use this field to request some changes. "
 			+ "With your input the next iteration will be just perfect!"),
 
 			LOGO_COLOUR_EG_LBL("Logo primary colour"),

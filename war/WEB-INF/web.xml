@@ -4,6 +4,209 @@
  "http://java.sun.com/dtd/web-app_2_3.dtd">
 
 <web-app xmlns="http://java.sun.com/xml/ns/javaee" version="2.5">
+
+	<!-- INDEX START -->
+	<servlet>
+		<servlet-name>loginService</servlet-name>
+		<servlet-class>com.brainz.wokhei.server.LoginServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>loginService</servlet-name>
+		<url-pattern>/index_module/login</url-pattern>
+	</servlet-mapping>
+	<!-- INDEX END -->
+	
+	<!-- HOME START -->
+	<servlet>
+		<servlet-name>loginService</servlet-name>
+		<servlet-class>com.brainz.wokhei.server.LoginServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>loginService</servlet-name>
+		<url-pattern>/home_module/login</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>orderservice</servlet-name>
+		<servlet-class>com.brainz.wokhei.server.OrderServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>orderservice</servlet-name>
+		<url-pattern>/home_module/orderservice</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>utilityservice</servlet-name>
+		<servlet-class>com.brainz.wokhei.server.UtilityServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>utilityservice</servlet-name>
+		<url-pattern>/home_module/utilityservice</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>getfileservlet</servlet-name>
+		<servlet-class>com.brainz.wokhei.servlet.GetFileServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>getfileservlet</servlet-name>
+		<url-pattern>/home_module/getfile</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>adminservice</servlet-name>
+		<servlet-class>com.brainz.wokhei.server.AdminServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>adminservice</servlet-name>
+		<url-pattern>/home_module/adminservice</url-pattern>
+	</servlet-mapping>
+	<!-- HOME END -->
+	
+	<!-- ABOUT START -->
+	<servlet>
+		<servlet-name>loginService</servlet-name>
+		<servlet-class>com.brainz.wokhei.server.LoginServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>loginService</servlet-name>
+		<url-pattern>/about_module/login</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>orderservice</servlet-name>
+		<servlet-class>com.brainz.wokhei.server.OrderServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>orderservice</servlet-name>
+		<url-pattern>/about_module/orderservice</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>utilityservice</servlet-name>
+		<servlet-class>com.brainz.wokhei.server.UtilityServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>utilityservice</servlet-name>
+		<url-pattern>/about_module/utilityservice</url-pattern>
+	</servlet-mapping>
+	<!-- ABOUT END -->
+	
+	<!-- FAQ START -->
+	<servlet>
+		<servlet-name>loginService</servlet-name>
+		<servlet-class>com.brainz.wokhei.server.LoginServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>loginService</servlet-name>
+		<url-pattern>/faq_module/login</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>orderservice</servlet-name>
+		<servlet-class>com.brainz.wokhei.server.OrderServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>orderservice</servlet-name>
+		<url-pattern>/faq_module/orderservice</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>utilityservice</servlet-name>
+		<servlet-class>com.brainz.wokhei.server.UtilityServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>utilityservice</servlet-name>
+		<url-pattern>/faq_module/utilityservice</url-pattern>
+	</servlet-mapping>
+	<!-- FAQ END -->
+	
+	<!-- CAREERS START -->
+	<servlet>
+		<servlet-name>loginService</servlet-name>
+		<servlet-class>com.brainz.wokhei.server.LoginServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>loginService</servlet-name>
+		<url-pattern>/careers_module/login</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>orderservice</servlet-name>
+		<servlet-class>com.brainz.wokhei.server.OrderServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>orderservice</servlet-name>
+		<url-pattern>/careers_module/orderservice</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>utilityservice</servlet-name>
+		<servlet-class>com.brainz.wokhei.server.UtilityServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>utilityservice</servlet-name>
+		<url-pattern>/careers_module/utilityservice</url-pattern>
+	</servlet-mapping>
+	<!-- CAREERS END -->
+	
+	<!-- ADMIN START -->
+	<servlet>
+		<servlet-name>loginService</servlet-name>
+		<servlet-class>com.brainz.wokhei.server.LoginServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>loginService</servlet-name>
+		<url-pattern>/admin_module/login</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>orderservice</servlet-name>
+		<servlet-class>com.brainz.wokhei.server.OrderServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>orderservice</servlet-name>
+		<url-pattern>/admin_module/orderservice</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>utilityservice</servlet-name>
+		<servlet-class>com.brainz.wokhei.server.UtilityServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>utilityservice</servlet-name>
+		<url-pattern>/admin_module/utilityservice</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>adminservice</servlet-name>
+		<servlet-class>com.brainz.wokhei.server.AdminServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>adminservice</servlet-name>
+		<url-pattern>/admin_module/adminservice</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>uploadfileservlet</servlet-name>
+		<servlet-class>com.brainz.wokhei.servlet.UploadFileServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>uploadfileservlet</servlet-name>
+		<url-pattern>/admin_module/uploadfile</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>getfileservlet</servlet-name>
+		<servlet-class>com.brainz.wokhei.servlet.GetFileServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>getfileservlet</servlet-name>
+		<url-pattern>/admin_module/getfile</url-pattern>
+	</servlet-mapping>
+	<!-- ADMIN START -->
+	
+	<!-- WOKHEI START -->
 	<servlet>
 		<servlet-name>loginService</servlet-name>
 		<servlet-class>com.brainz.wokhei.server.LoginServiceImpl</servlet-class>
@@ -12,6 +215,7 @@
 		<servlet-name>loginService</servlet-name>
 		<url-pattern>/wokhei/login</url-pattern>
 	</servlet-mapping>
+
 	<servlet>
 		<servlet-name>orderservice</servlet-name>
 		<servlet-class>com.brainz.wokhei.server.OrderServiceImpl</servlet-class>
@@ -20,6 +224,7 @@
 		<servlet-name>orderservice</servlet-name>
 		<url-pattern>/wokhei/orderservice</url-pattern>
 	</servlet-mapping>
+
 	<servlet>
 		<servlet-name>utilityservice</servlet-name>
 		<servlet-class>com.brainz.wokhei.server.UtilityServiceImpl</servlet-class>
@@ -28,6 +233,7 @@
 		<servlet-name>utilityservice</servlet-name>
 		<url-pattern>/wokhei/utilityservice</url-pattern>
 	</servlet-mapping>
+
 	<servlet>
 		<servlet-name>adminservice</servlet-name>
 		<servlet-class>com.brainz.wokhei.server.AdminServiceImpl</servlet-class>
@@ -36,6 +242,7 @@
 		<servlet-name>adminservice</servlet-name>
 		<url-pattern>/wokhei/adminservice</url-pattern>
 	</servlet-mapping>
+
 	<servlet>
 		<servlet-name>uploadfileservlet</servlet-name>
 		<servlet-class>com.brainz.wokhei.servlet.UploadFileServlet</servlet-class>
@@ -54,7 +261,6 @@
 		<url-pattern>/wokhei/getfile</url-pattern>
 	</servlet-mapping>
 
-
 	<servlet>
 		<servlet-name>paymentDoneServlet</servlet-name>
 		<servlet-class>com.brainz.wokhei.servlet.PaymentDoneServlet</servlet-class>
@@ -72,7 +278,7 @@
 		<servlet-name>changeStatusServlet</servlet-name>
 		<url-pattern>/wokhei/changeStatus</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>serveSitemapServlet</servlet-name>
 		<servlet-class>com.brainz.wokhei.servlet.ServeSiteMapServlet</servlet-class>
@@ -81,7 +287,7 @@
 		<servlet-name>serveSitemapServlet</servlet-name>
 		<url-pattern>/wokhei/serveSitemap</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>setForseti</servlet-name>
 		<servlet-class>com.brainz.wokhei.servlet.SetForsetiFirstDescriptionById</servlet-class>
@@ -90,8 +296,10 @@
 		<servlet-name>setForseti</servlet-name>
 		<url-pattern>/wokhei/setForseti</url-pattern>
 	</servlet-mapping>
-	
+	<!-- WOKHEI END -->
+
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
+
 </web-app>
