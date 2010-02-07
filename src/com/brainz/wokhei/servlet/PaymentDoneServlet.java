@@ -149,6 +149,18 @@ public class PaymentDoneServlet extends HttpServlet {
 				}
 				break;
 			}
+			case REVISION:
+			{
+				if(checkFields(paymentStatus, paymentCurrency,
+						receiverEmail,expectedReceiverMail))
+				{
+					orderService.setOrderStatus(orderId, Status.REVIEWING);
+					log.log(Level.INFO,"Revision microPayment completed successfully for order: " + orderId);
+					orderService.incrementRevisionById(orderId);
+				}
+
+				break;
+			}
 			}
 		}
 		else if(resX.equals("INVALID")) {
@@ -166,7 +178,6 @@ public class PaymentDoneServlet extends HttpServlet {
 
 	private boolean checkFields(String paymentStatus, 
 			String paymentCurrency, String receiverEmail, String expectedReceiverMail)  {
-		// TODO Auto-generated method stub
 		if((paymentStatus.equalsIgnoreCase("pending") || paymentStatus.equalsIgnoreCase("completed")) 
 				&& receiverEmail.equalsIgnoreCase(expectedReceiverMail)
 				//&& paymentAmount.equals(expectedAmount)

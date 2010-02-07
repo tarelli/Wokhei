@@ -595,11 +595,22 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 					_submitOrderButton.setEnabled(true);
 					_submitOrderButton.setText(Messages.SEND_REQUEST.getString());
-					if(getSubmittedOrder().getRevisionCounter()==1)
+					//bisogna controllare anche la lunghezza della descrizione
+					if(getSubmittedOrder().getRevisionCounter()==1 && getSubmittedOrder().getDescriptions().length==2)
 					{
 						//non pannellino la prima la paga il pazza
-						hideMainPanelShowAlternate(getSubmittedOrder());
-						notifyChanges(getSubmittedOrder());
+						//setta a review lo status
+						((OrderServiceAsync) getService(Service.ORDER_SERVICE)).setOrderStatus(getSubmittedOrder().getId(), Status.REVIEWING, new AsyncCallback<Long>() {
+
+							public void onSuccess(Long result) {
+								getSubmittedOrder().setStatus(Status.REVIEWING);
+								hideMainPanelShowAlternate(getSubmittedOrder());
+								notifyChanges(getSubmittedOrder());
+							}
+
+							public void onFailure(Throwable caught) {
+							}
+						});
 					}
 					else
 					{
@@ -656,7 +667,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 			_coloursHandler[i]=_colours[i].addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
 					//no possible to change the colour if there is a request ongoing
-					if((_submittedOrder==null) || !_submittedOrder.isReviewRequestOngoing())
+					if((_submittedOrder==null) || !_submittedOrder.isRevisionOngoing())
 					{
 						_pantoneTextBox.setText(Colour.values()[index].getName());
 						if (_selectedColourButton != null) {
@@ -797,9 +808,16 @@ public class OrderSubmitterModulePart extends AModulePart {
 				}
 				else //DEBUGGING, don't open paypal, not required, change instead the status to INCOMING
 				{
-					getSubmittedOrder().setStatus(Status.INCOMING);
+					if(getSubmittedOrder().isRevisionOngoing())
+					{
+						getSubmittedOrder().setRevisionCounter(getSubmittedOrder().getRevisionCounter()+1);
+						getSubmittedOrder().setStatus(Status.REVIEWING);
+					}
+					else
+					{
+						getSubmittedOrder().setStatus(Status.INCOMING);
+					}
 					((OrderServiceAsync)getService(Service.ORDER_SERVICE)).submitOrder(getSubmittedOrder(), _submitOrderCallback);
-					//					((OrderServiceAsync)getService(Service.ORDER_SERVICE)).setOrderStatus(getSubmittedOrder().getId(), Status.INCOMING, _setOrderStatusCallback);
 				}
 			}
 		});
@@ -815,7 +833,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 	 */
 	private void updateHiddenTip()
 	{
-		if(getSubmittedOrder().getRevisionCounter()==0)
+		if(!getSubmittedOrder().isRevisionOngoing())
 		{
 			//si sta facendo il paypal form per quando si ordina la prima volta
 			_amountInfo.setValue(TransactionType.MICROPAYMENT.getNet(
@@ -827,9 +845,9 @@ public class OrderSubmitterModulePart extends AModulePart {
 		{
 			//pay pal form per le revisioni
 			_amountInfo.setValue(TransactionType.REVISION.getNet(
-					getSubmittedOrder().getRevisionTip()[getSubmittedOrder().getRevisionCounter()-1]).toString());
+					getSubmittedOrder().getRevisionTip()[getSubmittedOrder().getRevisionTip().length-1]).toString());
 			_taxInfo.setValue(TransactionType.REVISION.getTax(
-					getSubmittedOrder().getRevisionTip()[getSubmittedOrder().getRevisionCounter()-1]).toString());	
+					getSubmittedOrder().getRevisionTip()[getSubmittedOrder().getRevisionTip().length-1]).toString());	
 		}
 	}
 
@@ -864,35 +882,39 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 		final Label tipBox=new Label();
 
-
-		if(getSubmittedOrder().getRevisionCounter()==0)
+		//if there is not revision ongoing it's the original request
+		if(!getSubmittedOrder().isRevisionOngoing())
 		{
 			if(getSubmittedOrder().getTip()==null)
 			{
 				getSubmittedOrder().setTip(new Float(6.5f)); //default tip
 			}
+			tipBox.setText(getSubmittedOrder().getTip()+Messages.EUR.getString());
 		}
 		else
 		{
-			if(getSubmittedOrder().getRevisionTip().length < (getSubmittedOrder().getRevisionCounter()-1) )
+			if(getSubmittedOrder().getRevisionTip().length != getSubmittedOrder().getRevisionCounter() )
 			{
-				if(getSubmittedOrder().getRevisionTip()==null)
+				Float[] augRev = new Float[getSubmittedOrder().getRevisionTip().length+1];
+				int i=0;
+				for(Float revTip:getSubmittedOrder().getRevisionTip())
 				{
-
-					Float[] augRev = new Float[getSubmittedOrder().getRevisionTip().length+1];
-					int i=0;
-					for(Float revTip:getSubmittedOrder().getRevisionTip())
-					{
-						augRev[i++]=revTip;
-					}
-					augRev[augRev.length]=new Float(10.5f);
-					getSubmittedOrder().setRevisionTip(augRev);
+					augRev[i++]=revTip;
 				}
+				//un euro Ž sommato di modo che resti sempre qualcosa da pagare
+				Float defaultRevisionTip=TransactionType.BUYING_LOGO.getValue()+1.0f-getSubmittedOrder().getTotalTips();
+				if(defaultRevisionTip>10.5f)
+				{
+					defaultRevisionTip=10.5f;
+				}
+				augRev[augRev.length-1]=new Float(defaultRevisionTip);
+				getSubmittedOrder().setRevisionTip(augRev);
 			}
+			tipBox.setText(getSubmittedOrder().getRevisionTip()[getSubmittedOrder().getRevisionTip().length-1]+Messages.EUR.getString());
 		}
 
 		updateHiddenTip() ;
-		tipBox.setText(getSubmittedOrder().getTip()+Messages.EUR.getString());
+
 		tipBox.setWidth("100px"); //$NON-NLS-1$
 		tipBox.setHeight("19px");
 		tipBox.setStyleName("tipLabel"); //$NON-NLS-1$
@@ -911,22 +933,33 @@ public class OrderSubmitterModulePart extends AModulePart {
 			public void onClick(ClickEvent event) {
 				//it's already the minimum value
 				Float min;
-				if(getSubmittedOrder().getRevisionCounter()==0)
+				if(!getSubmittedOrder().isRevisionOngoing())
 				{
 					min=TransactionType.MICROPAYMENT.getValue();
+					if(!getSubmittedOrder().getTip().equals(min))
+					{
+						setWaiterMood(waiterSWFWidget,getSubmittedOrder().getTip(),getSubmittedOrder().getTip()-0.5f);
+						getSubmittedOrder().setTip(getSubmittedOrder().getTip()-0.5f);
+						updateHiddenTip();
+						tipBox.setText(getSubmittedOrder().getTip()+Messages.EUR.getString());
+						applyCufon();
+					}
 				}
 				else
 				{
 					min=TransactionType.REVISION.getValue();
+					int indexOfRevisionTip=getSubmittedOrder().getRevisionTip().length-1;
+					Float revisionTip=getSubmittedOrder().getRevisionTip()[indexOfRevisionTip];
+					if(!(revisionTip<=min))
+					{
+						setWaiterMood(waiterSWFWidget,revisionTip,revisionTip-0.5f);
+						getSubmittedOrder().getRevisionTip()[indexOfRevisionTip]=revisionTip-0.5f;
+						updateHiddenTip();
+						tipBox.setText(getSubmittedOrder().getRevisionTip()[indexOfRevisionTip]+Messages.EUR.getString());
+						applyCufon();
+					}
 				}
-				if(!getSubmittedOrder().getTip().equals(min))
-				{
-					setWaiterMood(waiterSWFWidget,getSubmittedOrder().getTip(),getSubmittedOrder().getTip()-0.5f);
-					getSubmittedOrder().setTip(getSubmittedOrder().getTip()-0.5f);
-					updateHiddenTip();
-					tipBox.setText(getSubmittedOrder().getTip()+Messages.EUR.getString());
-					applyCufon();
-				}
+
 
 			}
 		});
@@ -938,23 +971,29 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				if(!getSubmittedOrder().getTip().equals(TransactionType.BUYING_LOGO.getValue()))
+				if(!getSubmittedOrder().getTotalTips().equals(TransactionType.BUYING_LOGO.getValue()))
 				{
-					setWaiterMood(waiterSWFWidget,getSubmittedOrder().getTip(),getSubmittedOrder().getTip()+0.5f);
-					getSubmittedOrder().setTip(getSubmittedOrder().getTip()+0.5f);
-					updateHiddenTip();
-					tipBox.setText(getSubmittedOrder().getTip()+Messages.EUR.getString());
-					applyCufon();
+					if(!getSubmittedOrder().isRevisionOngoing())
+					{
+						setWaiterMood(waiterSWFWidget,getSubmittedOrder().getTip(),getSubmittedOrder().getTip()+0.5f);
+						getSubmittedOrder().setTip(getSubmittedOrder().getTip()+0.5f);
+						updateHiddenTip();
+						tipBox.setText(getSubmittedOrder().getTip()+Messages.EUR.getString());
+						applyCufon();
+					}
+					else
+					{
+						int indexOfRevisionTip=getSubmittedOrder().getRevisionTip().length-1;
+						Float revisionTip=getSubmittedOrder().getRevisionTip()[indexOfRevisionTip];
+						setWaiterMood(waiterSWFWidget,revisionTip,revisionTip+0.5f);
+						getSubmittedOrder().getRevisionTip()[indexOfRevisionTip]=revisionTip+0.5f;
+						updateHiddenTip();
+						tipBox.setText(getSubmittedOrder().getRevisionTip()[indexOfRevisionTip]+Messages.EUR.getString());
+						applyCufon();
+					}
 				}
 			}
-
-
-
 		});
-
-
-
-
 
 		tipChangeVPanel.add(increaseTip);
 		tipChangeVPanel.add(decreaseTip);
@@ -962,8 +1001,6 @@ public class OrderSubmitterModulePart extends AModulePart {
 		tipHPanel.add(tipBox);
 		tipHPanel.add(tipChangeVPanel);
 		tipHPanel.add(paypalForm);
-
-
 
 		Label otherInstructions=new Label();
 		otherInstructions.setText(Messages.TIP_INSTRUCTIONS.getString());
@@ -1051,7 +1088,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 		setDescModified(true);
 		setColourModified(true);
 		if (checkErrors()) {
-			if((getSubmittedOrder()!=null) && (getSubmittedOrder().getRevisionCounter()==0))
+			if(!getSubmittedOrder().isRevisionOngoing())
 			{
 				//stiamo inviando l'ordine la prima volta, si aprira il pannellino una volta ricevuta la risposta
 				//se la connessione ŽÊlenta ci potrebbe volere un po, nel frattempo disabilito il buttone
@@ -1066,38 +1103,36 @@ public class OrderSubmitterModulePart extends AModulePart {
 			}
 			else
 			{
-				//-1 because the first one is not a revision
-				if(getSubmittedOrder().getDescriptions().length-1<getSubmittedOrder().getRevisionCounter())
-				{
-					//going to REVIEWING (there is a check in the server code,
-					getSubmittedOrder().setStatus(Status.REVIEWING);
-					//the text and the colour of the logo can't change
+				//c'Ž una revisione in corso quindi dobbiamo aggiornare la descrizione
+				//la descrizione puo gia essere stata creata e in tal caso va sovrascritta
+				//oppure puo essere la prima volta e va creata
+				String[] descriptions=getSubmittedOrder().getDescriptions();
 
-					String[] descriptions = new String[getSubmittedOrder().getDescriptions().length+1];
+				//-1 perche la prima non Ž una revisione. se sono uguali allora ŽÊda creare
+				if(getSubmittedOrder().getRevisionCounter().equals(getSubmittedOrder().getDescriptions().length-1))
+				{
+					descriptions = new String[getSubmittedOrder().getDescriptions().length+1];
 					int i=0;
 					for(String description:getSubmittedOrder().getDescriptions())
 					{
 						descriptions[i++]=description;
 					}
-					descriptions[getSubmittedOrder().getDescriptions().length]= _logoDescBox.getText();
-					getSubmittedOrder().setDescriptions(descriptions);
-					((OrderServiceAsync) getService(Service.ORDER_SERVICE))
-					.setOrderStatus(getSubmittedOrder().getId(), Status.REVIEWING, new AsyncCallback<Long>() {
+				}
+				descriptions[descriptions.length-1]= _logoDescBox.getText();
+				getSubmittedOrder().setDescriptions(descriptions);
 
-						public void onSuccess(Long result) {
-							getSubmittedOrder().setStatus(Status.REVIEWING);
-							notifyChanges(_submittedOrder);
-						}
-
-						public void onFailure(Throwable caught) {
-						}
-					});
+				//if it's the first revision there won't be any panel and any call back from paypal so the counter gets incremented here
+				if(getSubmittedOrder().getRevisionCounter()==0)
+				{
+					getSubmittedOrder().setRevisionCounter(1);
 				}
 			}
-			((OrderServiceAsync) getService(Service.ORDER_SERVICE))
-			.submitOrder(getSubmittedOrder(), _submitOrderCallback);
 		}
+		((OrderServiceAsync) getService(Service.ORDER_SERVICE))
+		.submitOrder(getSubmittedOrder(), _submitOrderCallback);
+
 	}
+
 
 	/**
 	 *
@@ -1210,8 +1245,6 @@ public class OrderSubmitterModulePart extends AModulePart {
 	{
 		if(error!=null)
 		{
-			//			if(order.getStatus() != Status.VIEWED)
-			//			{
 			if(order.hasCompletedReview())
 			{
 				_waitLabel.setText(Messages.valueOf("RE"+order.getStatus().toString()+"_WAITMSG").getString()); //$NON-NLS-1$
@@ -1222,11 +1255,6 @@ public class OrderSubmitterModulePart extends AModulePart {
 				_waitLabel.setText(Messages.valueOf(order.getStatus().toString()+"_WAITMSG").getString()); //$NON-NLS-1$
 			}
 		}
-		//			}
-		//			else
-		//			{
-		//				this._waitLabel.setText(Messages.VIEWED_WAITMSG.getString());
-		//			}
 
 		else
 		{
@@ -1268,7 +1296,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 	protected void setShowHideStateByLatestOrder(OrderDTO result)
 	{
 		if((result==null) || ((result.getStatus() == Status.BOUGHT) || (result.getStatus() == Status.REJECTED)|| (result
-				.getStatus() == Status.PENDING) || result.isReviewRequestOngoing()))
+				.getStatus() == Status.PENDING) || result.isRevisionOngoing()))
 		{
 			_mainPanel.setVisible(true);
 			_requestLabel.setText(Messages.REQUEST_LOGO_LBL.getString());
@@ -1300,7 +1328,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 					setColourModified(true);
 					checkErrors();
 				}
-				if(result.isReviewRequestOngoing())
+				if(result.isRevisionOngoing())
 				{
 					_requestLabel.setText(Messages.REVISION_LOGO_LBL.getString());
 
@@ -1318,6 +1346,12 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 					setNameModified(true);
 					setColourModified(true);
+
+					if(getSubmittedOrder().getDescriptions().length>(getSubmittedOrder().getRevisionCounter()+1))
+					{
+						_logoDescBox.setText(getSubmittedOrder().getDescriptions()[getSubmittedOrder().getDescriptions().length-1]);
+						setDescModified(true);
+					}
 					checkErrors();
 
 				}
@@ -1329,20 +1363,6 @@ public class OrderSubmitterModulePart extends AModulePart {
 		applyCufon();
 	}
 
-
-	//
-	//	/**
-	//	 *
-	//	 */
-	//	private void disableColours()
-	//	{
-	//		for (int i = 0; i < NUM_COLOURS; i++) {
-	//			if(_coloursHandler[i]!=null)
-	//			{
-	//				_coloursHandler[i].removeHandler();
-	//			}
-	//		}
-	//	}
 
 	private void hideMainPanelShowAlternate(OrderDTO result)
 	{
@@ -1429,4 +1449,5 @@ public class OrderSubmitterModulePart extends AModulePart {
 	}
 
 }
+
 

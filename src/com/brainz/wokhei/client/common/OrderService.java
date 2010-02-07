@@ -37,4 +37,6 @@ public interface OrderService extends RemoteService {
 	Boolean setOrderKillswitch(boolean isOn);
 
 	Boolean getOrderKillswitch();
+
+	long incrementRevisionById(long orderId);
 }

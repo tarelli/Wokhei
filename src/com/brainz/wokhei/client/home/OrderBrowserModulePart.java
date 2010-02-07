@@ -413,11 +413,13 @@ public class OrderBrowserModulePart extends AModulePart{
 		_descriptionLabel.setStyleName("logoTagsDateLabel");
 
 		//set text to latest description
-		int size = Arrays.asList(_currentOrder.getDescriptions()).size();
-		_descriptionLabel.setText(Arrays.asList(_currentOrder.getDescriptions()).get(size-1));
+		//size dovrebbe essere -1 perche parte da zero e +1 perche oltre alla revisione c'Ž una descrizione dell'ordine originale
+		//quindi alla fine ne -1 ne +1
+		final int size=_currentOrder.getRevisionCounter();
+		_descriptionLabel.setText(Arrays.asList(_currentOrder.getDescriptions()).get(size));
 
 		//set index
-		_currentDescIndex = size - 1;
+		_currentDescIndex = size;
 
 		// 2. create up arrow and down arrow to show prev/next description and set arrows visibility
 		//instatiate buttons
@@ -433,14 +435,14 @@ public class OrderBrowserModulePart extends AModulePart{
 
 			public void onClick(ClickEvent event) {
 				_descriptionLabel.setText(Arrays.asList(_currentOrder.getDescriptions()).get(++_currentDescIndex));
-				setUpDownArrowsVisibility(Arrays.asList(_currentOrder.getDescriptions()));
+				setUpDownArrowsVisibility(size);
 			}});
 
 		_downArrow.addClickHandler(new ClickHandler(){
 
 			public void onClick(ClickEvent event) {
 				_descriptionLabel.setText(Arrays.asList(_currentOrder.getDescriptions()).get(--_currentDescIndex));
-				setUpDownArrowsVisibility(Arrays.asList(_currentOrder.getDescriptions()));
+				setUpDownArrowsVisibility(size);
 			}});
 
 		// 3. fill-up the panel with the stuff
@@ -450,27 +452,27 @@ public class OrderBrowserModulePart extends AModulePart{
 		_descriptionsArrowsPanel.add(_downArrow);
 
 		// 4. set arrows visibility
-		setUpDownArrowsVisibility(Arrays.asList(_currentOrder.getDescriptions()));
+		setUpDownArrowsVisibility(size);
 	}
 
-	private void setUpDownArrowsVisibility(List<String> descriptionsList) {
+	private void setUpDownArrowsVisibility(int size) {
 
-		if((_currentDescIndex > 0) && (_currentDescIndex < descriptionsList.size()-1))
+		if((_currentDescIndex > 0) && (_currentDescIndex <size))
 		{
 			_upArrow.setVisible(true);
 			_downArrow.setVisible(true);
 		}
-		else if((_currentDescIndex == 0) && (_currentDescIndex < descriptionsList.size()-1))
+		else if((_currentDescIndex == 0) && (_currentDescIndex <size))
 		{
 			_upArrow.setVisible(true);
 			_downArrow.setVisible(false);
 		}
-		else if((_currentDescIndex > 0) && (_currentDescIndex == descriptionsList.size()-1))
+		else if((_currentDescIndex > 0) && (_currentDescIndex == size))
 		{
 			_upArrow.setVisible(false);
 			_downArrow.setVisible(true);
 		}
-		else if((_currentDescIndex == 0) && (_currentDescIndex == descriptionsList.size()-1))
+		else if((_currentDescIndex == 0) && (_currentDescIndex == size))
 		{
 			_upArrow.setVisible(false);
 			_downArrow.setVisible(false);
@@ -539,7 +541,7 @@ public class OrderBrowserModulePart extends AModulePart{
 				public void onClick(ClickEvent event)
 				{
 					OrderDTO orderCopy=new OrderDTO(_currentOrder);
-					orderCopy.setRevisionCounter(orderCopy.getRevisionCounter()+1);
+					orderCopy.setRevisionOngoing(true);
 					notifyChanges(orderCopy);
 					_buyNowImage.setVisible(false);
 					_askRevisionImage.setVisible(false);
@@ -618,7 +620,7 @@ public class OrderBrowserModulePart extends AModulePart{
 		Hidden locale = new Hidden();
 
 		//valuToPay sara il lordo(gross) da pagare
-		Float valueToPay=TransactionType.BUYING_LOGO.getGrossToPay(_currentOrder.getTip());
+		Float valueToPay=TransactionType.BUYING_LOGO.getGrossToPay(_currentOrder.getTotalPaidTips());
 
 		itemNameInfo.setName(PayPalStrings.PAYPAL_ITEMNAME_NAME.getString());
 		itemNameInfo.setValue(TransactionType.BUYING_LOGO.getDescription());

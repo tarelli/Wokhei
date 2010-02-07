@@ -34,5 +34,7 @@ public interface OrderServiceAsync extends IServiceAsync {
 
 	void setOrderKillswitch(boolean isOn, AsyncCallback<Boolean> callback);
 
-	void getOrderKillswitch(AsyncCallback<Boolean> callback);	
+	void getOrderKillswitch(AsyncCallback<Boolean> callback);
+
+	void incrementRevisionById(long orderId, AsyncCallback<Long> callback);
 }

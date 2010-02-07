@@ -36,6 +36,8 @@ public class OrderDTO implements Serializable{
 
 	private Float[] _revisionTip;
 
+	private boolean _isRevisionOngoing=false;
+
 
 	/**
 	 * 
@@ -280,23 +282,49 @@ public class OrderDTO implements Serializable{
 	/**
 	 * @return
 	 */
-	public boolean isReviewRequestOngoing() 
+	public boolean isRevisionOngoing() 
 	{
-		if(_status == Status.VIEWED)
-		{
-			if(_revisionCounter>0)
-			{
-				if(_revisionCounter!=_descriptions.length-1)
-				{
-					return true;
-				}
-			}
-		}
-		return false;
+		return _isRevisionOngoing;
 	}
 
 	public Float[] getRevisionTip() {
 		return _revisionTip;
+	}
+
+	/**
+	 * @return
+	 */
+	public Float getTotalTips()
+	{
+		float totalTips=_tip;
+		if(_revisionTip!=null)
+		{
+			for(int i=0;i<_revisionTip.length;i++)
+			{
+				totalTips+=_revisionTip[i];
+			}
+		}
+		return totalTips;
+	}
+
+	/**
+	 * @return
+	 */
+	public Float getTotalPaidTips()
+	{
+		if(_revisionTip!=null && _revisionTip.length>0)
+		{
+			//il +1 ŽÊli perche revision counter comprende anche la prima revision che ŽÊgratuita
+			//mentre per quella non c'Ž un tip
+			if(_revisionCounter<(_revisionTip.length+1))
+			{
+				//l'ultimo tip ŽÊsolo storato ma non pagato, sbogalo male che non voglio il bug/trick di pagare di meno il logo
+				//se uno ha iniziato a fare un'altra revisione, ha settato il tip ma poi non l'ha fatta e poi va a tornare il logo
+				//GENTE CHE NON SI FA FOTTERE NULLA
+				return getTotalTips()-_revisionTip[_revisionTip.length-1];
+			}
+		}
+		return getTotalTips();
 	}
 
 	/**
@@ -305,5 +333,12 @@ public class OrderDTO implements Serializable{
 	public void setRevisionTip(Float[] revisionTip) 
 	{ 
 		_revisionTip=revisionTip;		
+	} 
+
+	public void setRevisionOngoing(boolean revisionOngoing)
+	{
+		_isRevisionOngoing=revisionOngoing;
 	}
+
+
 }

@@ -108,6 +108,10 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 			order.setDescriptions(Arrays.asList(orderDTO.getDescriptions()));
 			order.setStatus(orderDTO.getStatus());
 			order.setRevisionCounter(orderDTO.getRevisionCounter());
+			if(orderDTO.getRevisionTip()!=null)
+			{
+				order.setRevisionTip(Arrays.asList(orderDTO.getRevisionTip()));
+			}
 			order.setTip(orderDTO.getTip());
 			orderId = order.getId();
 
@@ -271,6 +275,7 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 		}
 		return new Results(orderList.size(),partialResult);
 	}
+
 
 	public Long setOrderStatus(long orderId, Status newStatus)
 	{
@@ -566,6 +571,43 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 			log.log(Level.SEVERE, "No order found with id "+orderID);
 			return null;
 		}
+	}
+
+	@Override
+	public long incrementRevisionById(long orderId) {
+		Long returnValue = null;
+
+		UserService userService = UserServiceFactory.getUserService();
+		User user = userService.getCurrentUser();
+
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		String select_query = "select from " + Order.class.getName();
+		Query query = pm.newQuery(select_query);
+		query.setFilter("id == paramId");
+		query.declareParameters("java.lang.Long paramId");
+		//execute
+		List<Order> orders = (List<Order>) query.execute(orderId);
+
+		if (!orders.isEmpty()) {
+			//should be only one - safety check here
+			Order order = orders.get(0);
+
+			try {
+				//set new status and accepted/viewed date
+				order.setRevisionCounter(order.getRevisionCounter()+1);
+				//persist change
+				pm.makePersistent(order);
+
+				returnValue = order.getId();
+
+				log.log(Level.INFO, "Revision counter incremented for order "+orderId+" now it's equal to: "+order.getRevisionCounter());
+			}
+			finally 
+			{
+				pm.close();
+			}
+		}
+		return returnValue;
 	}
 
 }
