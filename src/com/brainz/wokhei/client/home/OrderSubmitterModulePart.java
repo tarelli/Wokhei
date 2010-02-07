@@ -52,7 +52,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class OrderSubmitterModulePart extends AModulePart {
 	private static final int NUM_COLOURS = 24;
 
-	private static final boolean DEBUG = true; //set to true to disable the micropayment mandatory transaction
+	private static final boolean DEBUG = false; //set to true to disable the micropayment mandatory transaction
 
 	// root panel to host main and alternate panel
 	private final VerticalPanel _rootPanel = new VerticalPanel();
