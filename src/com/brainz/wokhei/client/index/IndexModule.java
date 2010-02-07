@@ -8,7 +8,6 @@ import com.brainz.wokhei.client.common.FooterModulePart;
 import com.brainz.wokhei.client.common.LoginInfo;
 import com.brainz.wokhei.client.common.LoginService;
 import com.brainz.wokhei.client.common.LoginServiceAsync;
-import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -18,7 +17,7 @@ import com.google.gwt.user.client.ui.RootPanel;
  * @author matteocantarelli
  *
  */
-public class IndexModule extends AModule implements EntryPoint {
+public class IndexModule extends AModule {
 
 
 	/* (non-Javadoc)
