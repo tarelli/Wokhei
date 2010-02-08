@@ -704,7 +704,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 	}
 
-	private FormPanel getPayPalForm() {
+	private FormPanel getPayPalForm(TransactionType transaction) {
 		final FormPanel paypalForm = new FormPanel("");
 		boolean isSandbox = getModule().isSandBox();
 		// fill-up paypal form
@@ -753,7 +753,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 		Hidden locale = new Hidden();
 
 		itemNameInfo.setName(PayPalStrings.PAYPAL_ITEMNAME_NAME.getString());
-		itemNameInfo.setValue(TransactionType.MICROPAYMENT.getDescription());
+		itemNameInfo.setValue(transaction.getDescription());
 		formPlaceHolder.add(itemNameInfo);
 
 		_amountInfo.setName(PayPalStrings.PAYPAL_AMOUNT_NAME.getString());
@@ -782,7 +782,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 		returnInfo.setValue(PayPalStrings.PAYPAL_RETURN_VALUE.getString());
 
 		custom.setName(PayPalStrings.PAYPAL_CUSTOM_NAME.getString());
-		custom.setValue(getSubmittedOrder().getId().toString()+";"+TransactionType.MICROPAYMENT.toString());
+		custom.setValue(getSubmittedOrder().getId().toString()+";"+transaction.toString());
 		formPlaceHolder.add(custom);
 
 		locale.setName(PayPalStrings.PAYPAL_LOCALE_NAME.getString());
@@ -867,7 +867,16 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 	private PopupPanel getMicroPaymentPanel()
 	{
-		FormPanel paypalForm=getPayPalForm();
+		TransactionType transaction=null;
+		if(!getSubmittedOrder().isRevisionOngoing())
+		{
+			transaction=TransactionType.MICROPAYMENT;	
+		}
+		else
+		{
+			transaction=TransactionType.REVISION;	
+		}
+		FormPanel paypalForm=getPayPalForm(transaction);
 
 		//setup submit button
 		final VerticalPanel microPaymentPanel=new VerticalPanel();
@@ -1088,13 +1097,13 @@ public class OrderSubmitterModulePart extends AModulePart {
 		setDescModified(true);
 		setColourModified(true);
 		if (checkErrors()) {
+			_submitOrderButton.setText(Messages.WAIT.getString());
+			_submitOrderButton.setEnabled(false);
 			if(!getSubmittedOrder().isRevisionOngoing())
 			{
 				//stiamo inviando l'ordine la prima volta, si aprira il pannellino una volta ricevuta la risposta
 				//se la connessione ŽÊlenta ci potrebbe volere un po, nel frattempo disabilito il buttone
 				//per evitare succedano casini
-				_submitOrderButton.setText(Messages.WAIT.getString());
-				_submitOrderButton.setEnabled(false);
 				getSubmittedOrder().setStatus(Status.PENDING);
 				String[] descriptions = { _logoDescBox.getText() };
 				getSubmittedOrder().setDescriptions(descriptions);
