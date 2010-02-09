@@ -139,27 +139,6 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 			}
 
 			orderId = order.getId();
-			//non stanno pagando niente, ne teniamo traccia senza broadcastarci er culo
-			if(!order.getStatus().equals(Status.PENDING))
-			{
-				//notify via email cool people
-				List<String> recipients = new ArrayList<String>();
-				//recipients.add(Mails.GIOVANNI.getMailAddress());
-				//recipients.add(Mails.MATTEO.getMailAddress());
-				//recipients.add(Mails.SIMONE.getMailAddress());
-				recipients.add(Mails.ADMIN.getMailAddress());
-				//subject
-				String subj = Messages.NOTIFY_SUBMITTED_SUBJ.getString() + order.getCustomer().getEmail() + "!";
-				//msgbody
-				String msgBody = Messages.NOTIFY_SUBMITTED_BODY.getString() + order.getCustomer().getEmail() + ":\n\n";
-				msgBody += "Progressive: " + order.getProgressive() + "\n";
-				msgBody += "OrderID: " + order.getId() + "\n";
-				msgBody += "Text: " + order.getText() + "\n";
-				msgBody += "Description: " + order.getDescriptions().toString() + "\n";
-				msgBody += "Colour: " + order.getColour().toString() + "\n";
-				EmailSender.sendEmail(Mails.YOURLOGO.getMailAddress(), recipients, subj, msgBody);
-			}
-
 		}
 		return orderId;
 	}
@@ -314,8 +293,15 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 				returnValue = order.getId();
 
 				//if the order is incoming now send an email to us!
-				if(newStatus == Status.INCOMING)
+				if(newStatus == Status.INCOMING && newStatus == Status.REVIEWING)
 				{	
+
+					String descriptions="";
+					for(String desc:order.getDescriptions())
+					{
+						descriptions+=desc+"\n";
+					}
+
 					//notify via email cool people
 					List<String> recipients = new ArrayList<String>();
 					//					recipients.add(Mails.GIOVANNI.getMailAddress());
@@ -329,7 +315,7 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 					msgBody += "Progressive: " + order.getProgressive() + "\n";
 					msgBody += "OrderID: " + order.getId() + "\n";
 					msgBody += "Text: " + order.getText() + "\n";
-					msgBody += "Description: " + order.getDescriptions().toString() + "\n";
+					msgBody += "Description: \n\n" + descriptions + "\n\n";
 					msgBody += "Colour: " + order.getColour().toString() + "\n";
 					EmailSender.sendEmail(Mails.YOURLOGO.getMailAddress(), recipients, subj, msgBody);
 

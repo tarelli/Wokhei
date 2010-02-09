@@ -89,7 +89,7 @@ public enum Messages {
 			"Your logo is being prepared, have some more appetizers!"),
 
 			QUALITY_GATE_WAITMSG(
-			"Your logo is being reviewed by our quality experts, it will be ready soon enough!"),
+			"Your logo is being reviewed by our quality team, it will be ready soon enough!"),
 
 			READY_WAITMSG(
 			"Your Stir Fried logo is ready! Click on the steamin' wok to view it!"),
@@ -131,7 +131,7 @@ public enum Messages {
 			QUALITY_GATE_TITLE("Quality gate"),
 
 			QUALITY_GATE_TEXT(
-			"We take very seriously the quality of our products. We are now reviewing your logo and making sure it is as good as you deserve!"),
+			"We take very seriously the quality of our logos. We are now reviewing yours and making sure it is as good as you deserve!"),
 
 			READY_TITLE("Your logo it's ready!"),
 
@@ -148,15 +148,15 @@ public enum Messages {
 			REVIEWING_TEXT(
 			"Thanks for your suggestions, we are now working on the changes you requested. Your logo will be ready in 24hrs!"),
 
-	REVIEWED_TITLE("Your revision is ready!"),
+			REVIEWED_TITLE("Your revision is ready!"),
 
 			REVIEWED_TEXT(
-			"A revised logo is ready. Ask for further changes (tip required) or make it yours for only 98 EUR (tips will be deducted from total) to download rasterized and vectorial versions of your logo!"),
+			"Ask for further changes (tip required) or make it yours for only 98 EUR (tips will be deducted from total) to download rasterized and vectorial versions of your logo!"),
 
 			BOUGHT_TITLE("You purchased this logo"),
 
 			BOUGHT_TEXT(
-			"You are the proud owner of this stir fried logo! Now it's your turn to make money!"),
+			"You are the proud owner of this Stir Fried Logo! Now it's your turn to make money!"),
 
 			DOWNLOAD_RASTERIZED("Download Logo (Rasterized PNG)"),
 
@@ -224,12 +224,12 @@ public enum Messages {
 			EMAIL_ORDER_READY_FOOTER("Purchase the logo or claim your free revision!"),
 
 			EMAIL_ORDER_READY_AFTER_REVIEW(
-			"Your free revision is ready!\nOur designers refined the logo as per your suggestions. What are you waiting for? Go check it out at [ $w ] and enjoy!"),
+			"Your revision is ready!\nOur designers refined the logo as per your suggestions. What are you waiting for? Go check it out at [ $w ] and enjoy!"),
 
 			EMAIL_ORDER_READY_FOOTER_AFTER_REVIEW(
 			"You can now purchase the logo or ask for further changes!"),
 
-			EMAIL_ORDER_GOODBYE("Wokhei - Stir Fried Logos"),
+			EMAIL_ORDER_GOODBYE("--\nWokhei - Stir Fried Logos\nInternet: http://www.wokhei.com\nTwitter: http://www.twitter.com/wokhei/"),
 
 			// NOTIFY EMAILS WHEN LOGO ORDER IS SUBMITTED
 

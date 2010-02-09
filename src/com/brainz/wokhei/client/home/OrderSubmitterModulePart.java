@@ -883,7 +883,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 		final SWFWidget waiterSWFWidget = getWaiterSWFWidget(Images.WAITER.getImageURL());
 
-		Image tipInstructions = new Image(Images.TIP_INSTRUCTIONS.getImageURL());
+		Image tipInstructions=null;
 
 		HorizontalPanel tipHPanel =new HorizontalPanel();
 
@@ -894,6 +894,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 		//if there is not revision ongoing it's the original request
 		if(!getSubmittedOrder().isRevisionOngoing())
 		{
+			tipInstructions= new Image(Images.TIP_INSTRUCTIONS.getImageURL());
 			if(getSubmittedOrder().getTip()==null)
 			{
 				getSubmittedOrder().setTip(new Float(6.5f)); //default tip
@@ -902,6 +903,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 		}
 		else
 		{
+			tipInstructions= new Image(Images.REVTIP_INSTRUCTIONS.getImageURL());
 			if(getSubmittedOrder().getRevisionTip().length != getSubmittedOrder().getRevisionCounter() )
 			{
 				Float[] augRev = new Float[getSubmittedOrder().getRevisionTip().length+1];

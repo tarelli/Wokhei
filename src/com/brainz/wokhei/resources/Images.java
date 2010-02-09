@@ -31,6 +31,7 @@ public enum Images {
 	PAID("./images/paid.png"), 
 	THE_BIG_PURPLE("./images/bigPurple.png"),
 	TIP_INSTRUCTIONS("./images/tipinstructions.png"),
+	REVTIP_INSTRUCTIONS("./images/revtipinstructions.png"),
 
 	WAITER("./videos/waiter.swf"), 
 	DESC_UP("./images/descUp.png"),
