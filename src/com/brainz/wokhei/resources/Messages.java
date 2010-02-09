@@ -86,7 +86,7 @@ public enum Messages {
 			PENDING_WAITMSG("Thanks for your tip! Redirecting to PayPal..."),
 
 			IN_PROGRESS_WAITMSG(
-			"Your logo is being cooked-up, have some more appetizers!"),
+			"Your logo is being prepared, have some more appetizers!"),
 
 			QUALITY_GATE_WAITMSG(
 			"Your logo is being reviewed by our quality experts, it will be ready soon enough!"),
@@ -98,7 +98,7 @@ public enum Messages {
 			"How do you like your logo? Add spice to it by suggesting some changes!"),
 
 			REVIEWED_WAITMSG(
-			"Thanks to your suggestions the final version of your logo is now ready!"),
+			"Thanks to your suggestions a new version of your logo is now ready!"),
 
 			REVIEWING_WAITMSG(
 			"We are working on your suggestions to give your logo the final touch!"),
@@ -148,10 +148,10 @@ public enum Messages {
 			REVIEWING_TEXT(
 			"Thanks for your suggestions, we are now working on the changes you requested. Your logo will be ready in 24hrs!"),
 
-			REVIEWED_TITLE("The revision is now ready!"),
+	REVIEWED_TITLE("Your revision is ready!"),
 
 			REVIEWED_TEXT(
-			"Thanks to your suggestions the final version of your logo is now ready. Make it yours for only 98 EUR (tip will be deducted from total). After the payment you'll be able to download rasterized and vectorial versions of your logo!"),
+			"A revised logo is ready. Ask for further changes (tip required) or make it yours for only 98 EUR (tips will be deducted from total) to download rasterized and vectorial versions of your logo!"),
 
 			BOUGHT_TITLE("You purchased this logo"),
 
@@ -227,7 +227,7 @@ public enum Messages {
 			"Your free revision is ready!\nOur designers refined the logo as per your suggestions. What are you waiting for? Go check it out at [ $w ] and enjoy!"),
 
 			EMAIL_ORDER_READY_FOOTER_AFTER_REVIEW(
-			"Purchase the logo to be the proud owner of this unique Wokhei creation!"),
+			"You can now purchase the logo or ask for further changes!"),
 
 			EMAIL_ORDER_GOODBYE("Wokhei - Stir Fried Logos"),
 
