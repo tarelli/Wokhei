@@ -293,7 +293,7 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 				returnValue = order.getId();
 
 				//if the order is incoming now send an email to us!
-				if(newStatus == Status.INCOMING && newStatus == Status.REVIEWING)
+				if(newStatus == Status.INCOMING || newStatus == Status.REVIEWING)
 				{	
 
 					String descriptions="";

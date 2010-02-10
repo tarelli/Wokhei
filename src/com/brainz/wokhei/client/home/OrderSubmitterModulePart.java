@@ -1098,7 +1098,8 @@ public class OrderSubmitterModulePart extends AModulePart {
 		setNameModified(true);
 		setDescModified(true);
 		setColourModified(true);
-		if (checkErrors()) {
+		if (checkErrors()) 
+		{
 			_submitOrderButton.setText(Messages.WAIT.getString());
 			_submitOrderButton.setEnabled(false);
 			if(!getSubmittedOrder().isRevisionOngoing())
@@ -1138,9 +1139,9 @@ public class OrderSubmitterModulePart extends AModulePart {
 					getSubmittedOrder().setRevisionCounter(1);
 				}
 			}
+			((OrderServiceAsync) getService(Service.ORDER_SERVICE)).submitOrder(getSubmittedOrder(), _submitOrderCallback);
 		}
-		((OrderServiceAsync) getService(Service.ORDER_SERVICE))
-		.submitOrder(getSubmittedOrder(), _submitOrderCallback);
+
 
 	}
 
