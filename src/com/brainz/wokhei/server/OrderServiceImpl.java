@@ -296,9 +296,14 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 				if(newStatus == Status.INCOMING || newStatus == Status.REVIEWING)
 				{	
 
-					String descriptions="";
+					String descriptions="::ORIGINAL\n";
+					int i=0;
 					for(String desc:order.getDescriptions())
 					{
+						if(i>0)
+						{
+							descriptions+="::REVIEW#"+i;
+						}
 						descriptions+=desc+"\n";
 					}
 
@@ -315,7 +320,7 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 					msgBody += "Progressive: " + order.getProgressive() + "\n";
 					msgBody += "OrderID: " + order.getId() + "\n";
 					msgBody += "Text: " + order.getText() + "\n";
-					msgBody += "Description: \n\n" + descriptions + "\n\n";
+					msgBody += "Description: \n" + descriptions ;
 					msgBody += "Colour: " + order.getColour().toString() + "\n";
 					EmailSender.sendEmail(Mails.YOURLOGO.getMailAddress(), recipients, subj, msgBody);
 

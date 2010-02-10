@@ -276,7 +276,7 @@ public class OrderDTO implements Serializable{
 	 */
 	public boolean hasCompletedReview() 
 	{
-		return _status.equals(Status.VIEWED) && _revisionCounter!=0 && _revisionCounter==_descriptions.length-1;
+		return _status.equals(Status.VIEWED) && _revisionCounter!=0;
 	}
 
 	/**
