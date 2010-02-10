@@ -1027,7 +1027,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 		PopupPanel micropaymentPopup= new PopupPanel(true);
 		micropaymentPopup.setStyleName("microPaymentPopup");
 		micropaymentPopup.setWidget(microPaymentPanel);
-		micropaymentPopup.setWidth("355px");
+		micropaymentPopup.setWidth("360px");
 		return micropaymentPopup;
 
 	}
