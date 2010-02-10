@@ -302,7 +302,7 @@ public class OrderServiceImpl extends RemoteServiceServlet implements OrderServi
 					{
 						if(i>0)
 						{
-							descriptions+="::REVIEW#"+i;
+							descriptions+="::REVIEW#"+i++;
 						}
 						descriptions+=desc+"\n";
 					}
