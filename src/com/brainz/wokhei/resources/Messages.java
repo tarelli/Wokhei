@@ -25,7 +25,7 @@ public enum Messages {
 	LOGO_NAME_LBL("Product name"),
 
 	LOGO_NAME_HELP_MESSAGE(
-	"This is the name of the company, product, service (or anything else!) that you need the logo for. This name will appear in the logo unless you specify otherwise in the description."),
+			"This is the name of the company, product, service (or anything else!) that you need the logo for. This text will appear in the logo unless you specify otherwise in the description."),
 
 	LOGO_NAME_EG_LBL("e.g. Tree Of Life Ltd"),
 
@@ -40,7 +40,11 @@ public enum Messages {
 	LOGO_COLOUR_HELP_MESSAGE(
 	"This will be the main colour of your logo. Note that the logo might have more colours or different shades of the main colour you pick. If you have no colour preference, or if you want to entrust our designers with this choice, pick the question mark: we'll surprise you!"),
 
-	LOGO_DESC_TXTBOX("Describe here how you want your logo and what it is for!"),
+	LOGO_DESC_TXTBOX(
+			"Describe here how you want your logo and what it is for! "
+					+ "If you have an idea, please try to be as descriptive as you can. "
+					+ "You can also use links to show examples of designs similar to the one you have in mind. "
+					+ "Please also indicate here if you want a graphics only logo, if that's the case."),
 
 	LOGO_DESC_TXTBOX_REVISION("Use this field to request some changes. "
 			+ "With your input the next iteration will be just perfect!"),
