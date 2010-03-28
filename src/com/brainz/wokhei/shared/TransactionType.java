@@ -9,9 +9,9 @@ package com.brainz.wokhei.shared;
  */
 public enum TransactionType {
 
-	MICROPAYMENT(3.50f,"Stir Fried Logo 24h Order submission request"),
-	BUYING_LOGO(98.00f,"Stir Fried Logo 24h"), 
-	REVISION(7.5f,"Stir Fried Logo 24h Revision");
+	MICROPAYMENT(15f,"Stir Fried Logo 24h Order submission request"),
+	BUYING_LOGO(160.00f,"Stir Fried Logo 24h"), 
+	REVISION(15f,"Stir Fried Logo 24h Revision");
 
 	private Float _value;
 	private String _description;

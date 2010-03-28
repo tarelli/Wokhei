@@ -50,9 +50,12 @@ import com.google.gwt.user.client.ui.Widget;
  * @author matteocantarelli / giovazza
  */
 public class OrderSubmitterModulePart extends AModulePart {
+
+	private static final float DEFAULT_TIP = 18.50f;
+
 	private static final int NUM_COLOURS = 24;
 
-	private static final boolean DEBUG = false; //set to true to disable the micropayment mandatory transaction
+	private static final boolean DEBUG = true; //set to true to disable the micropayment mandatory transaction
 
 	// root panel to host main and alternate panel
 	private final VerticalPanel _rootPanel = new VerticalPanel();
@@ -596,23 +599,26 @@ public class OrderSubmitterModulePart extends AModulePart {
 					_submitOrderButton.setEnabled(true);
 					_submitOrderButton.setText(Messages.SEND_REQUEST.getString());
 					//bisogna controllare anche la lunghezza della descrizione
-					if(getSubmittedOrder().getRevisionCounter()==1 && getSubmittedOrder().getDescriptions().length==2)
-					{
-						//non pannellino la prima la paga il pazza
-						//setta a review lo status
-						((OrderServiceAsync) getService(Service.ORDER_SERVICE)).setOrderStatus(getSubmittedOrder().getId(), Status.REVIEWING, new AsyncCallback<Long>() {
+					// Revisione gratuita rimossa
+					//					if(getSubmittedOrder().getRevisionCounter()==1 && getSubmittedOrder().getDescriptions().length==2)
+					//					{
+					//						//non pannellino la prima la paga il pazza
+					//						//setta a review lo status
+					//						((OrderServiceAsync) getService(Service.ORDER_SERVICE)).setOrderStatus(getSubmittedOrder().getId(), Status.REVIEWING, new AsyncCallback<Long>() {
+					//
+					//							public void onSuccess(Long result) {
+					//								getSubmittedOrder().setStatus(Status.REVIEWING);
+					//								hideMainPanelShowAlternate(getSubmittedOrder());
+					//								notifyChanges(getSubmittedOrder());
+					//							}
+					//
+					//							public void onFailure(Throwable caught) {
+					//							}
+					//						});
+					//					}
+					//					else
+					// FINE Revisione gratuita rimossa
 
-							public void onSuccess(Long result) {
-								getSubmittedOrder().setStatus(Status.REVIEWING);
-								hideMainPanelShowAlternate(getSubmittedOrder());
-								notifyChanges(getSubmittedOrder());
-							}
-
-							public void onFailure(Throwable caught) {
-							}
-						});
-					}
-					else
 					{
 						if ((_micropaymentPopup == null)
 								|| !_micropaymentPopup.isShowing()) {
@@ -641,6 +647,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 		{
 			//set wait label text --> killswitch message
 			_waitLabel.setText(Messages.valueOf("KILLSWITCH_ON_WAITMSG").getString());
+			applyCufon();
 		}
 		else
 		{
@@ -897,14 +904,14 @@ public class OrderSubmitterModulePart extends AModulePart {
 			tipInstructions= new Image(Images.TIP_INSTRUCTIONS.getImageURL());
 			if(getSubmittedOrder().getTip()==null)
 			{
-				getSubmittedOrder().setTip(new Float(6.5f)); //default tip
+				getSubmittedOrder().setTip(new Float(DEFAULT_TIP)); //default tip
 			}
 			tipBox.setText(getSubmittedOrder().getTip()+Messages.EUR.getString());
 		}
 		else
 		{
 			tipInstructions= new Image(Images.REVTIP_INSTRUCTIONS.getImageURL());
-			if(getSubmittedOrder().getRevisionTip().length != getSubmittedOrder().getRevisionCounter() )
+			if(getSubmittedOrder().getRevisionTip().length <= getSubmittedOrder().getRevisionCounter() )
 			{
 				Float[] augRev = new Float[getSubmittedOrder().getRevisionTip().length+1];
 				int i=0;
@@ -914,9 +921,9 @@ public class OrderSubmitterModulePart extends AModulePart {
 				}
 				//un euro Ž sommato di modo che resti sempre qualcosa da pagare
 				Float defaultRevisionTip=TransactionType.BUYING_LOGO.getValue()+1.0f-getSubmittedOrder().getTotalTips();
-				if(defaultRevisionTip>10.5f)
+				if(defaultRevisionTip>DEFAULT_TIP)
 				{
-					defaultRevisionTip=10.5f;
+					defaultRevisionTip=DEFAULT_TIP;
 				}
 				augRev[augRev.length-1]=new Float(defaultRevisionTip);
 				getSubmittedOrder().setRevisionTip(augRev);
@@ -1049,22 +1056,22 @@ public class OrderSubmitterModulePart extends AModulePart {
 		{
 			mood="sad";
 		}
-		if(newtip>=15d)
+		if(newtip>=30d)
 		{
 			sendStatusToSeppia(waiterSWFWidget.getElement(),"start");
 			mood="smokingrock";
 		}
-		else if(newtip>=12d)
+		else if(newtip>=25d)
 		{
 			sendStatusToSeppia(waiterSWFWidget.getElement(),"start");
 			mood="smokinghot";
 		}
-		else if(newtip>=9d)
+		else if(newtip>=22d)
 		{
 			sendStatusToSeppia(waiterSWFWidget.getElement(),"start");
 			mood="smokingcool";
 		}
-		else if(newtip>=7d)
+		else if(newtip>=20d)
 		{
 			sendStatusToSeppia(waiterSWFWidget.getElement(),"start");
 			mood="smoking";
@@ -1133,11 +1140,13 @@ public class OrderSubmitterModulePart extends AModulePart {
 				descriptions[descriptions.length-1]= _logoDescBox.getText();
 				getSubmittedOrder().setDescriptions(descriptions);
 
-				//if it's the first revision there won't be any panel and any call back from paypal so the counter gets incremented here
-				if(getSubmittedOrder().getRevisionCounter()==0)
-				{
-					getSubmittedOrder().setRevisionCounter(1);
-				}
+				// Revisione Gratuita Rimossa
+				//				//if it's the first revision there won't be any panel and any call back from paypal so the counter gets incremented here
+				//				if(getSubmittedOrder().getRevisionCounter()==0)
+				//				{
+				//					getSubmittedOrder().setRevisionCounter(1);
+				//				}
+				// Fine Revisione Gratuita Rimossa
 			}
 			((OrderServiceAsync) getService(Service.ORDER_SERVICE)).submitOrder(getSubmittedOrder(), _submitOrderCallback);
 		}
