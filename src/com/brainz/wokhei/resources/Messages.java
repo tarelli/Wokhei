@@ -36,19 +36,24 @@ public enum Messages {
 
 	LOGO_COLOUR_LBL("Main colour"),
 
-	LOGO_COLOUR_HELP_MESSAGE("This will be the main colour of your logo. Note that the logo might have more colours or different shades of the main colour you pick. If you have no colour preference, or if you want to entrust our designers with this choice, pick the question mark: we'll surprise you!"),
+	LOGO_COLOUR_HELP_MESSAGE(
+			"This will be the main colour of your logo. Note that the logo might have more colours or different shades of the main colour you pick. If you have no colour preference pick the question mark: we'll surprise you!"),
 
-	LOGO_DESC_TXTBOX("Describe here how you want your logo and what it is for! You can include links to your website or any graphics that might be similar to what you need."),
+	LOGO_DESC_TXTBOX(
+			"Describe here how you want your logo and what it is for! You can include links to your website or any graphics that might serve as an example of what you need."),
 
-	LOGO_DESC_TXTBOX_REVISION("Use this field to request some changes to the previous logo. Please, be as precise as possible with your suggestions so that with your input the next iteration can be just perfect!"),
+	LOGO_DESC_TXTBOX_REVISION(
+			"Use this field to request some changes to the previous logo proposal. Try to be as precise as possible in your suggestions so that the next iteration will be just perfect!"),
 
 	LOGO_COLOUR_EG_LBL("Logo primary colour"),
 
 	LOGO_DESC_LBL("Description"),
 
-	LOGO_DESC_HELP_MESSAGE("You can use up to 250 characters to tell us how you would like your logo and something more about your business or product. Please be as precise as possible if you have an idea. Also if you want no text or no graphics in your logo please specify so."),
+	LOGO_DESC_HELP_MESSAGE(
+			"You can use up to 250 characters to tell us how you would like your logo and something more about your business or product. If you already have an idea for your logo, please try to be as precise as possible. Also if you want no text or no graphics in your logo please specify so."),
 
-	LOGO_DESC_EG_LBL("e.g. We'd like a tree in the logo for our recycling business (...)"),
+	LOGO_DESC_EG_LBL(
+			"e.g. We'd like a green tree in the logo for our recycling business (...)"),
 
 	LOGO_DESC_ERROR_EMPTY("Sorry, you need to put in a description!"),
 
@@ -66,7 +71,8 @@ public enum Messages {
 
 	SEND_REQUEST("Send request!"),
 
-	TIP_INSTRUCTIONS("The tip will be deducted from the cost of the logo (98 EUR, VAT incl.)"),
+	TIP_INSTRUCTIONS(
+			"The tip will be deducted from the cost of the logo (160 EUR, VAT incl.)"),
 
 	ACCEPTED_WAITMSG("Your logo is getting ready, fancy a drink meanwhile?"),
 
@@ -82,11 +88,13 @@ public enum Messages {
 
 	READY_WAITMSG("Your Stir Fried logo is ready! Click on the steamin' wok to view it!"),
 
-	VIEWED_WAITMSG("How do you like your logo? Add spice to it by suggesting some changes!"),
+	VIEWED_WAITMSG(
+			"How do you like your logo? Add spice to it by requesting some changes!"),
 
 	REVIEWED_WAITMSG("Thanks to your suggestions a new version of your logo is now ready!"),
 
-	REVIEWING_WAITMSG("We are working on your suggestions to give your logo the final touch!"),
+	REVIEWING_WAITMSG(
+			"We are working on your revision request to add the final touch!"),
 
 	KILLSWITCH_ON_WAITMSG("Sorry, we are fully booked at the moment, come back later!"),
 
@@ -106,7 +114,8 @@ public enum Messages {
 
 	IN_PROGRESS_TITLE("Designing your logo..."),
 
-	IN_PROGRESS_TEXT("One of our best designers has been chosen to cook you up a tasty logo. You are in very good hands (yes, we do say the same to everyone)."),
+	IN_PROGRESS_TEXT(
+			"A designers with expertise in your area has been chosen to cook you up a tasty logo. You are in very good hands (yes, we do say the same to everyone)."),
 
 	QUALITY_GATE_TITLE("Quality gate"),
 
@@ -118,7 +127,8 @@ public enum Messages {
 
 	VIEWED_TITLE("Your logo is ready!"),
 
-	VIEWED_TEXT("Request some changes for free or buy now for 98 EUR (tip will be deducted from total) and get your logo in high-res and vectorial format!"),
+	VIEWED_TEXT(
+			"Tip us for some changes or buy now for 160 EUR (tips will be deducted from total) and get your logo in high-res and vectorial format!"),
 
 	REVIEWING_TITLE("Taking onboard your changes!"),
 
@@ -126,7 +136,8 @@ public enum Messages {
 
 	REVIEWED_TITLE("Your revision is ready!"),
 
-	REVIEWED_TEXT("Ask for further changes (tip required) or make it yours for only 98 EUR (tips will be deducted from total) to download rasterized and vectorial versions of your logo!"),
+	REVIEWED_TEXT(
+			"Ask for further changes (tip required) or make it yours for only 160 EUR (tips will be deducted from total) to download rasterized and vectorial versions of your logo!"),
 
 	BOUGHT_TITLE("You purchased this logo"),
 
@@ -186,9 +197,10 @@ public enum Messages {
 
 	EMAIL_ORDER_READY("Your Stir Fried Logo is ready!\nWhat are you waiting for? Go check it out at [ $w ] and enjoy!"),
 
-	EMAIL_ORDER_READY_FOOTER("Purchase the logo or claim your free revision!"),
+	EMAIL_ORDER_READY_FOOTER("Purchase the logo or ask for further changes!"),
 
-	EMAIL_ORDER_READY_AFTER_REVIEW("Your revision is ready!\nOur designers refined the logo as per your suggestions. What are you waiting for? Go check it out at [ $w ] and enjoy!"),
+	EMAIL_ORDER_READY_AFTER_REVIEW(
+			"Your revision is ready!\nOur designers refined the logo as per your requests: go check it out at [ $w ] and enjoy!"),
 
 	EMAIL_ORDER_READY_FOOTER_AFTER_REVIEW("You can now purchase the logo or ask for further changes!"),
 
