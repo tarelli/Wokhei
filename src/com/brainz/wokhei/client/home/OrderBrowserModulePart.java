@@ -102,7 +102,6 @@ public class OrderBrowserModulePart extends AModulePart{
 			previousOrderButton.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
 					getPreviousOrder();
-
 					updatePanel();
 				}
 			});
@@ -110,7 +109,6 @@ public class OrderBrowserModulePart extends AModulePart{
 			nextOrderButton.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
 					getNextOrder();
-
 					updatePanel();
 				}
 			});
@@ -552,17 +550,28 @@ public class OrderBrowserModulePart extends AModulePart{
 			// setup BuyNow Icon if needed then make it visible.
 			_askRevisionImage.addStyleName("labelButton");
 			_askRevisionImage.addStyleName("revisionButton");
-			_askRevisionImage.setVisible(true);
+
+			// disable if killswitch --> ON
+			if (!getModule().isKillSwitchOn()) {
+				_askRevisionImage.setVisible(true);
+			} else {
+				// TODO: should disable not make invisible
+				_askRevisionImage.setVisible(false);
+			}
 			//			}
-
-
 		}
 		else
 		{
 			_buyNowImage.setVisible(true);
 			if(!_currentOrder.hasCompletedReview())
 			{
-				_askRevisionImage.setVisible(true);
+				// disable if killswitch --> ON
+				if (!getModule().isKillSwitchOn()) {
+					_askRevisionImage.setVisible(true);
+				} else {
+					// TODO: should disable not make invisible
+					_askRevisionImage.setVisible(false);
+				}
 			}
 		}
 	}
@@ -581,7 +590,7 @@ public class OrderBrowserModulePart extends AModulePart{
 			_paypalForm.setAction(PayPalStrings.PAYPAL_ACTION.getString());
 		}
 
-		_paypalForm.setEncoding(FormPanel.ENCODING_MULTIPART);
+		// _paypalForm.setEncoding(FormPanel.ENCODING_MULTIPART);
 		_paypalForm.setMethod(FormPanel.METHOD_POST);
 
 		VerticalPanel formPlaceHolder = new VerticalPanel();
