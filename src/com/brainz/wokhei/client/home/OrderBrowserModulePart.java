@@ -551,27 +551,14 @@ public class OrderBrowserModulePart extends AModulePart{
 			_askRevisionImage.addStyleName("labelButton");
 			_askRevisionImage.addStyleName("revisionButton");
 
-			// disable if killswitch --> ON
-			if (!getModule().isKillSwitchOn()) {
 				_askRevisionImage.setVisible(true);
-			} else {
-				// TODO: should disable not make invisible
-				_askRevisionImage.setVisible(false);
-			}
-			//			}
 		}
 		else
 		{
 			_buyNowImage.setVisible(true);
 			if(!_currentOrder.hasCompletedReview())
 			{
-				// disable if killswitch --> ON
-				if (!getModule().isKillSwitchOn()) {
 					_askRevisionImage.setVisible(true);
-				} else {
-					// TODO: should disable not make invisible
-					_askRevisionImage.setVisible(false);
-				}
 			}
 		}
 	}
