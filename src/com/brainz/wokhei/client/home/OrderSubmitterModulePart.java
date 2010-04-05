@@ -642,12 +642,11 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 	protected void setMessageWithKillswitchOn(OrderDTO latestOrder) {
 		// sets wait message when killswitch is on depending on the latest order
-
+		// NOTE: if latestOrder == null it's coming from ask revision
 		if ((latestOrder == null)
-				|| ((latestOrder.getStatus() == Status.BOUGHT)
-						|| (latestOrder.getStatus() == Status.REJECTED)
-						|| (latestOrder.getStatus() == Status.PENDING) || (latestOrder
-						.getStatus() == Status.VIEWED)))
+		|| ((latestOrder.getStatus() == Status.BOUGHT)
+			|| (latestOrder.getStatus() == Status.REJECTED) || (latestOrder
+			.getStatus() == Status.PENDING)))
 		{
 			//set wait label text --> killswitch message
 			_waitLabel.setText(Messages.valueOf("KILLSWITCH_ON_WAITMSG").getString());
@@ -868,8 +867,8 @@ public class OrderSubmitterModulePart extends AModulePart {
 	 * @return
 	 */
 	native String sendStatusToSeppia(Element swfWidget, String status) /*-{
-		swfWidget.childNodes[0].sendToActionScript(status);
-	}-*/;
+            swfWidget.childNodes[0].sendToActionScript(status);
+        }-*/;
 
 	// COMMENTING THE MICROPAYMENT POPUP PANEL FOR NOW.
 	// WE NEVER KNOW IF WE CHANGE OUR MIND AGAIN.
@@ -1268,32 +1267,18 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 	protected void updateAlternatePanelMessage(OrderDTO order, Boolean error)
 	{
-		if (!getModule().isKillSwitchOn())
-		{
-			if (error != null)
-			{
-				if (order.hasCompletedReview()) {
-					_waitLabel
-							.setText(Messages
-									.valueOf(
-											"RE"	+ order	.getStatus().toString() + "_WAITMSG").getString()); //$NON-NLS-1$
-
-				} else {
-					_waitLabel
-							.setText(Messages
-									.valueOf(
-											order.getStatus().toString()
-													+ "_WAITMSG").getString()); //$NON-NLS-1$
-				}
+		if (error != null) {
+			if (order.hasCompletedReview()) {
+				_waitLabel
+						.setText(Messages
+								.valueOf(
+										"RE"	+ order.getStatus().toString() + "_WAITMSG").getString()); //$NON-NLS-1$
+			} else {
+				_waitLabel.setText(Messages.valueOf(
+						order.getStatus().toString() + "_WAITMSG").getString()); //$NON-NLS-1$
 			}
-			else
-			{
-				_waitLabel.setText(Messages.ERROR_WAITMSG.getString());
-			}
-		}
-		else
-		{
-			_waitLabel.setText(Messages.KILLSWITCH_ON_WAITMSG.getString());
+		} else {
+			_waitLabel.setText(Messages.ERROR_WAITMSG.getString());
 		}
 
 		applyCufon();
@@ -1448,7 +1433,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 	@Override
 	public void updateModulePart(OrderDTO selection) {
-		if (getModule().isKillSwitchOn()) {
+		if ((selection == null) && getModule().isKillSwitchOn()) {
 			setMessageWithKillswitchOn(selection);
 		} else if (selection != null)
 		{

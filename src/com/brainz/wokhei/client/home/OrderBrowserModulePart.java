@@ -540,8 +540,18 @@ public class OrderBrowserModulePart extends AModulePart{
 				{
 					OrderDTO orderCopy=new OrderDTO(_currentOrder);
 					orderCopy.setRevisionOngoing(true);
+
+					boolean isBuyVisible = false;
+
+					// send down null if killswitch on to indicate it's coming
+					// from ask review
+					if (getModule().isKillSwitchOn()) {
+						orderCopy = null;
+						isBuyVisible = true;
+					}
+
 					notifyChanges(orderCopy);
-					_buyNowImage.setVisible(false);
+					_buyNowImage.setVisible(isBuyVisible);
 					_askRevisionImage.setVisible(false);
 				}
 
