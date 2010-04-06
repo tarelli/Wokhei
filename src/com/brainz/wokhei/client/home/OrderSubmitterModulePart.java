@@ -55,7 +55,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 
 	private static final int NUM_COLOURS = 24;
 
-	private static final boolean DEBUG = true; //set to true to disable the micropayment mandatory transaction
+	private static final boolean DEBUG = false; //set to true to disable the micropayment mandatory transaction
 
 	// root panel to host main and alternate panel
 	private final VerticalPanel _rootPanel = new VerticalPanel();
@@ -644,9 +644,9 @@ public class OrderSubmitterModulePart extends AModulePart {
 		// sets wait message when killswitch is on depending on the latest order
 		// NOTE: if latestOrder == null it's coming from ask revision
 		if ((latestOrder == null)
-		|| ((latestOrder.getStatus() == Status.BOUGHT)
-			|| (latestOrder.getStatus() == Status.REJECTED) || (latestOrder
-			.getStatus() == Status.PENDING)))
+				|| ((latestOrder.getStatus() == Status.BOUGHT)
+						|| (latestOrder.getStatus() == Status.REJECTED) || (latestOrder
+								.getStatus() == Status.PENDING)))
 		{
 			//set wait label text --> killswitch message
 			_waitLabel.setText(Messages.valueOf("KILLSWITCH_ON_WAITMSG").getString());
@@ -1270,9 +1270,9 @@ public class OrderSubmitterModulePart extends AModulePart {
 		if (error != null) {
 			if (order.hasCompletedReview()) {
 				_waitLabel
-						.setText(Messages
-								.valueOf(
-										"RE"	+ order.getStatus().toString() + "_WAITMSG").getString()); //$NON-NLS-1$
+				.setText(Messages
+						.valueOf(
+								"RE"	+ order.getStatus().toString() + "_WAITMSG").getString()); //$NON-NLS-1$
 			} else {
 				_waitLabel.setText(Messages.valueOf(
 						order.getStatus().toString() + "_WAITMSG").getString()); //$NON-NLS-1$
