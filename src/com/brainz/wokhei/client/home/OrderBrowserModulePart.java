@@ -405,6 +405,8 @@ public class OrderBrowserModulePart extends AModulePart{
 		else
 		{
 			//there's no current order means we have no order - need to set invisible for IE
+			nextOrderButton.setVisible(false);
+			previousOrderButton.setVisible(false);
 			orderImage.setVisible(false);
 			alwaysInfos(true);
 		}
