@@ -725,7 +725,7 @@ public class OrderSubmitterModulePart extends AModulePart {
 			paypalForm.setAction(PayPalStrings.PAYPAL_ACTION.getString());
 		}
 
-		paypalForm.setEncoding(FormPanel.ENCODING_MULTIPART);
+	// paypalForm.setEncoding(FormPanel.ENCODING_MULTIPART);
 		paypalForm.setMethod(FormPanel.METHOD_POST);
 
 		VerticalPanel formPlaceHolder = new VerticalPanel();
