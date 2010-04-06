@@ -573,8 +573,8 @@ select {
 .leftArrow {
 	background: URL("../images/leftarrowOFF.png");
 	border: 0px;
-	width: 34px;
-	height: 29px;
+	width: 29px;
+	height: 34px;
 }
 
 .leftArrow:hover {
@@ -584,8 +584,8 @@ select {
 .rightArrow {
 	background: URL("../images/rightarrowOFF.png");
 	border: 0px;
-	width: 34px;
-	height: 29px;
+	width: 29px;
+	height: 34px;
 }
 
 .rightArrow:hover {

@@ -165,6 +165,7 @@ public class OrderBrowserModulePart extends AModulePart{
 			_descriptionsContainer.setHeight("100px");
 
 			_descriptionsContainer.add(_orderDescriptionsPanel);
+			_descriptionsContainer.add(getNewWhiteSpace(5));
 			_descriptionsContainer.add(_descriptionsArrowsPanel);
 
 			ordersPanel.add(_descriptionsContainer);
@@ -172,12 +173,12 @@ public class OrderBrowserModulePart extends AModulePart{
 			ordersPanel.add(orderDateLabel);
 
 			mainPanel.add(orderImage, 154, 0);
-			mainPanel.add(previousOrderButton,370,170);
-			mainPanel.add(nextOrderButton,420,170);
+			mainPanel.add(previousOrderButton,113,50);
+			mainPanel.add(nextOrderButton,113,90);
 			mainPanel.add(statusDescription,170,240);
 			mainPanel.add(statusTitle,170,210);
 			mainPanel.add(infoButton,120,211);
-			mainPanel.add(ordersPanel,360,13);
+			mainPanel.add(ordersPanel,355,0);
 			mainPanel.add(_paypalForm, 220, 325);
 			mainPanel.add(_askRevisionImage, 220, 385);
 			mainPanel.add(downloadPanelContainer,165,330);
@@ -191,6 +192,15 @@ public class OrderBrowserModulePart extends AModulePart{
 
 
 
+	/**
+	 * @param i
+	 * @return
+	 */
+	private Widget getNewWhiteSpace(Integer i) {
+		Label whiteSpace = new Label();
+		whiteSpace.setWidth(i.toString() + "px");
+		return whiteSpace;
+	}
 
 	private void hookUpCallbacks()
 	{
@@ -561,14 +571,14 @@ public class OrderBrowserModulePart extends AModulePart{
 			_askRevisionImage.addStyleName("labelButton");
 			_askRevisionImage.addStyleName("revisionButton");
 
-				_askRevisionImage.setVisible(true);
+			_askRevisionImage.setVisible(true);
 		}
 		else
 		{
 			_buyNowImage.setVisible(true);
 			if(!_currentOrder.hasCompletedReview())
 			{
-					_askRevisionImage.setVisible(true);
+				_askRevisionImage.setVisible(true);
 			}
 		}
 	}
